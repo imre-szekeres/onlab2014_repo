@@ -6,11 +6,8 @@
 package hu.bme.aut.tomeesample.model;
 
 import java.util.*;
-
 import javax.validation.constraints.*;
-
 import java.io.Serializable;
-
 import javax.persistence.*;
 
 
@@ -18,7 +15,19 @@ import javax.persistence.*;
  * Entity implementation class for Entity: User
  *
  */
+@SuppressWarnings("serial")
 @Entity
+@NamedQueries({
+	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
+	@NamedQuery(name="User.findById", query="SELECT u FROM User u "
+										   +"WHERE u.id=:id"),
+	@NamedQuery(name="User.findByName", query="SELECT u FROM User u "
+										     +"WHERE u.username=:username"),
+	@NamedQuery(name="User.findCommentsByName", query="SELECT c FROM Comment c "
+										     	     +"WHERE c.user.username=:username"),
+    @NamedQuery(name="User.findProjectsByName", query="SELECT p FROM Project p "
+										     	     +"WHERE p.projectAssignment.user.username=:username")
+})
 public class User implements Serializable {
 
 	@Id
@@ -27,6 +36,7 @@ public class User implements Serializable {
 	
 	@NotNull
 	@Size(min=5, max=16)
+	@Column(unique=true)
 	private String username;
 	
 	@NotNull

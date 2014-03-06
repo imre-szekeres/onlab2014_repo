@@ -6,17 +6,22 @@
 package hu.bme.aut.tomeesample.model;
 
 import javax.validation.constraints.*;
-
 import java.io.Serializable;
-
-import javax.enterprise.deploy.shared.ActionType;
 import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: Action
  *
  */
+@SuppressWarnings("serial")
 @Entity
+@NamedQueries({
+	@NamedQuery(name="Action.findAll", query="SELECT a FROM Action a"),
+	@NamedQuery(name="Action.findById", query="SELECT a FROM Action a "
+											 +"WHERE a.id=:id"),
+	@NamedQuery(name="Action.findByType", query="SELECT a FROM Action a "
+											   +"WHERE a.actionType.id=:typeID")
+})
 public class Action implements Serializable {
 	
 	@Id
