@@ -62,6 +62,8 @@ public class User implements Serializable {
 		this.username = username;
 		this.password = password;
 		this.roles = roles;
+		this.comments = new java.util.ArrayList<>();
+		this.projectAssignments = new java.util.LinkedList<>();
 	}
    
 	public Long getId() {
