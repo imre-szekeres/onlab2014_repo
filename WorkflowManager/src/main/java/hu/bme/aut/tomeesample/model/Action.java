@@ -6,12 +6,15 @@
 package hu.bme.aut.tomeesample.model;
 
 import javax.validation.constraints.*;
+
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: Action
- *
+ * @author Imre Szekeres
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
@@ -63,19 +66,40 @@ public class Action implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-   
+
+	/** 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
-	public boolean equals(Object o){
-		if(!(o instanceof Action)) return false;
-		return (((Action)o).id).equals(this.id);
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
-	
+
+	/** 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
-	public int hashCode(){
-		int hash = 0;
-		hash = 31*hash + id.hashCode();
-		hash = 31*hash + actionType.hashCode();
-		hash = 31*hash + description.hashCode();
-		return hash;
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Action)) {
+			return false;
+		}
+		Action other = (Action) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		return true;
 	}
 }
