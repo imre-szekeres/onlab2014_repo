@@ -23,7 +23,7 @@ import javax.persistence.*;
 	@NamedQuery(name="Action.findById", query="SELECT a FROM Action a "
 											 +"WHERE a.id=:id"),
 	@NamedQuery(name="Action.findByType", query="SELECT a FROM Action a "
-											   +"WHERE a.actionType.id=:typeID")
+											   +"WHERE a.actionType.id=:typeId")
 })
 public class Action implements Serializable {
 	

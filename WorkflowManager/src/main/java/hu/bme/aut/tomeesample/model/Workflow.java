@@ -53,13 +53,11 @@ public class Workflow implements Serializable {
 		super();
 	}
    
-	public Workflow(String name, String descripion){
+	public Workflow(String name, String description){
 		this.name = name;
 		this.description = description;
-		/*this.states = new HashSet<>();
-		states.add(new State(State.init, this));
-		states.add(new State(State.dead, this));
-		states.add(new State(State.pause, this));*/
+		this.states = new HashSet<>();
+		this.states.addAll(Workflow.getBasicStates());
 		this.projects = new ArrayList<>();
 	}
 	
@@ -104,14 +102,43 @@ public class Workflow implements Serializable {
 		projects.add(project);
 	}
 	
+	public void addAll(Collection<State> states){
+		states.addAll(states);
+	}
+	
 	public boolean remove(State state){
 		return states.remove(state);
+	}
+	
+	public boolean removeAll(Collection<State> states){
+		return states.removeAll(states);
 	}
 	
 	public boolean remove(Project project){
 		return projects.remove(project);
 	}
+	
+	/**
+	 * Checks if this workflow contains all the states given as argument.
+	 * 
+	 * @param states that are checked if they are contained already by this <code>Workflow</code>
+	 * @return true if and only if all the states are contained
+	 * */
+	public boolean containsAll(Collection<State> states){
+		return this.states.containsAll(states);
+	}
 
+	/**
+	 * Returns the pre-definit collection of <code>State</code>s that every and
+	 * each <code>Workflow</code> has like Initial, Paused, Closed.
+	 * 
+	 * @return basic states that every <code>Workflow</code> has by default.
+	 * */
+	public static List<State> getBasicStates(){
+		//TODO: something more sophisticated :D 
+		return new java.util.ArrayList<State>();
+	}
+	
 	/** 
 	 * @see java.lang.Object#hashCode()
 	 */

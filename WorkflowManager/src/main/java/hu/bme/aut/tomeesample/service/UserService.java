@@ -3,9 +3,9 @@
  */
 package hu.bme.aut.tomeesample.service;
 
-import hu.bme.aut.tomeesample.model.*;
+import hu.bme.aut.tomeesample.model.User;
 import javax.persistence.*;
-import java.util.*;
+import java.util.List;
 import javax.ejb.*;
 /**
  * @author Imre Szekeres
@@ -33,9 +33,21 @@ public class UserService {
 		return em.createNamedQuery("User.findAll", User.class).getResultList();
 	}
 	
-	public User findByID(Long id){
+	public User findById(Long id){
 		try{
-			return em.createNamedQuery("User.findById", User.class).getSingleResult();
+			TypedQuery<User> select = em.createNamedQuery("User.findById", User.class);
+			select.setParameter("id", id);
+			return select.getSingleResult();
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
+	public User findByName(String username){
+		try{
+			TypedQuery<User> select = em.createNamedQuery("User.findByName", User.class);
+			select.setParameter("username", username);
+			return select.getSingleResult();
 		}catch(Exception e){
 			return null;
 		}

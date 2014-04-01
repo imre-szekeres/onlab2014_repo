@@ -27,8 +27,6 @@ import javax.persistence.*;
 										   +"WHERE u.id=:id"),
 	@NamedQuery(name="User.findByName", query="SELECT u FROM User u "
 										     +"WHERE u.username=:username"),
-	@NamedQuery(name="User.findCommentsByName", query="SELECT c FROM Comment c "
-										     	     +"WHERE c.user.username=:username"),
 })
 public class User implements Serializable {
 
@@ -58,6 +56,16 @@ public class User implements Serializable {
 	
 	public User() {
 		super();
+	}
+	
+	public User(String username, String password, Role role){
+		super();
+		this.username = username;
+		this.password = password;
+		this.roles = new java.util.HashSet<>();
+		this.roles.add(role);
+		this.comments = new java.util.ArrayList<>();
+		this.projectAssignments = new java.util.HashSet<>();
 	}
 	
 	public User(String username, String password, Set<Role> roles){
