@@ -25,8 +25,6 @@ import javax.persistence.*;
 										     +"WHERE u.username=:username"),
 	@NamedQuery(name="User.findCommentsByName", query="SELECT c FROM Comment c "
 										     	     +"WHERE c.user.username=:username"),
-    @NamedQuery(name="User.findProjectsByName", query="SELECT p FROM Project p "
-										     	     +"WHERE p.projectAssignment.user.username=:username")
 })
 public class User implements Serializable {
 
@@ -43,7 +41,7 @@ public class User implements Serializable {
 	@Size(min=7, max=32)
 	private String password;
 	
-	//TODO: refine the term ROLE ~ specify it in JAAS
+	//TODO: refine the term ROLE ~ specify it in JAAS/Shiro
 	@NotNull
 	private Set<Role> roles;
 	
@@ -59,13 +57,15 @@ public class User implements Serializable {
 	}
 	
 	public User(String username, String password, Set<Role> roles){
+		super();
 		this.username = username;
 		this.password = password;
 		this.roles = roles;
 		this.comments = new java.util.ArrayList<>();
-		this.projectAssignments = new java.util.LinkedList<>();
+		this.projectAssignments = new java.util.HashSet<>();
 	}
    
+	
 	public Long getId() {
 		return id;
 	}

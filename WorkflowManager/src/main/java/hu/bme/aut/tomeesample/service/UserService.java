@@ -17,12 +17,27 @@ public class UserService {
 	@PersistenceContext
 	EntityManager em;
 	
-	public void createUser(Map<String, Object> properties) {
-		User user = new User(
-				(String)properties.get("username"),
-				(String)properties.get("password"),
-				(Set<Role>)properties.get("roles")
-		);
+	public void create(User user) {
 		em.persist(user);
+	}
+	
+	public void update(User user){
+		em.merge(user);
+	}
+	
+	public void remove(User user){
+		em.remove(user);
+	}
+	
+	public List<User> findAll(){
+		return em.createNamedQuery("User.findAll", User.class).getResultList();
+	}
+	
+	public User findByID(Long id){
+		try{
+			return em.createNamedQuery("User.findById", User.class).getSingleResult();
+		}catch(Exception e){
+			return null;
+		}
 	}
 }

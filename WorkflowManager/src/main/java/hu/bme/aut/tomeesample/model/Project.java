@@ -50,7 +50,7 @@ public class Project implements Serializable {
 	private List<HistoryEntry> historyEntries;
 	
 	@OneToMany(mappedBy="project")
-	private List<ProjectAssignments> projectAssignments;
+	private List<ProjectAssignment> projectAssignments;
 	
 	public Project() {
 		super();
@@ -90,7 +90,7 @@ public class Project implements Serializable {
 		return historyEntries;
 	}
 	
-	public List<ProjectAssignments> getProjectAssignments() {
+	public List<ProjectAssignment> getProjectAssignments() {
 		return projectAssignments;
 	}
 	
@@ -114,7 +114,7 @@ public class Project implements Serializable {
 		historyEntries.add(entry);
 	}
 	
-	public void add(ProjectAssignment assignemnt){
+	public void add(ProjectAssignment assignment){
 		projectAssignments.add(assignment);
 	}
 	
