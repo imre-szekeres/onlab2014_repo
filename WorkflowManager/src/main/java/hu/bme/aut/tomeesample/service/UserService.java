@@ -11,6 +11,7 @@ import javax.ejb.*;
  * @author Imre Szekeres
  *
  */
+@Stateless
 @LocalBean
 public class UserService {
 

@@ -12,6 +12,7 @@ import javax.ejb.*;
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
+@Stateless
 @LocalBean
 public class ActionService {
 
