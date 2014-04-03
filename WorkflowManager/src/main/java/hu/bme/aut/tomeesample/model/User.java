@@ -43,6 +43,12 @@ public class User implements Serializable {
 	@Size(min=7, max=32)
 	private String password;
 	
+	@NotNull
+	private String email;
+	
+	@Size(min=64, max=1024)
+	private String description;
+	
 	//TODO: refine the term ROLE ~ specify it in JAAS/Shiro
 	@NotNull
 	private Set<Role> roles;
@@ -58,25 +64,28 @@ public class User implements Serializable {
 		super();
 	}
 	
-	public User(String username, String password, Role role){
+	public User(String username, String password, String email, Role role){
+		this(username, password, email, "");
+		this.roles = new java.util.HashSet<>();
+		this.roles.add(role);
+	}
+	
+	public User(String username, String password, String email, Set<Role> roles){
+		this(username, password, email, "");
+		this.roles = roles;
+	}
+   
+	
+	protected User(String username, String password, String email, String description){
 		super();
 		this.username = username;
 		this.password = password;
-		this.roles = new java.util.HashSet<>();
-		this.roles.add(role);
+		this.email = email;
+		this.description = description;
 		this.comments = new java.util.ArrayList<>();
 		this.projectAssignments = new java.util.HashSet<>();
 	}
 	
-	public User(String username, String password, Set<Role> roles){
-		super();
-		this.username = username;
-		this.password = password;
-		this.roles = roles;
-		this.comments = new java.util.ArrayList<>();
-		this.projectAssignments = new java.util.HashSet<>();
-	}
-   
 	
 	public Long getId() {
 		return id;
@@ -108,6 +117,22 @@ public class User implements Serializable {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public void add(Comment comment){
