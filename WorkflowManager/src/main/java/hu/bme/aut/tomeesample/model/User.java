@@ -28,6 +28,7 @@ import javax.persistence.*;
 	@NamedQuery(name="User.findByName", query="SELECT u FROM User u "
 										     +"WHERE u.username=:username"),
 })
+@Table(name="WM_USER") // just in case table User already exists...
 public class User implements Serializable {
 
 	@Id
