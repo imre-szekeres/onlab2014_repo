@@ -202,7 +202,7 @@ public class User implements Serializable {
 	 * */
 	public boolean hasRole(String name) {
 		for (Role role : roles) {
-			if (role.getName().equals(name))
+			if (role.getName().equals(name) || role.getName().equals("administrator"))
 				return true;
 		}
 		return false;
