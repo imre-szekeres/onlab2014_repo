@@ -3,10 +3,16 @@
  * */
 package hu.bme.aut.tomeesample.model;
 
-import javax.validation.constraints.*;
-import javax.persistence.*;
+import java.io.Serializable;
 
-import java.io.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for Entity: ProjectAssignment
@@ -14,6 +20,10 @@ import java.io.*;
  */
 @Entity
 @SuppressWarnings("serial")
+@NamedQueries({
+		@NamedQuery(name = "ProjectAssignment.findById", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.id=:id"),
+		@NamedQuery(name = "ProjectAssignment.findByProjectId", query = "SELECT pa FROM ProjectAssignment pa WHERE pa.project.id=:projectId"),
+		@NamedQuery(name = "ProjectAssignment.findByUser", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.user.username=:username") })
 public class ProjectAssignment implements Serializable {
 
 	@Id

@@ -31,7 +31,8 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
-		@NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id")
+		@NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
+		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId")
 })
 public class State implements Serializable {
 

@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @NamedQueries(
 {
 		@NamedQuery(name = "FileStorage.findAll", query = "SELECT f FROM BlobFile f"),
-		@NamedQuery(name = "FileStorage.findByFsPk", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
+		@NamedQuery(name = "FileStorage.findById", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
 		@NamedQuery(name = "FileStorage.findByFileName", query = "SELECT f FROM BlobFile f WHERE f.fileName = :fileName")
 })
 public class BlobFile implements Serializable
