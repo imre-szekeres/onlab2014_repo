@@ -17,8 +17,9 @@ import javax.persistence.ManyToMany;
 
 /**
  * Entity implementation class for Entity: Role
- * 
+ *
  * @author Imre Szekeres
+ * @version "%I%, %G%"
  */
 @Entity
 @SuppressWarnings("serial")
@@ -42,9 +43,10 @@ public class Role implements Serializable {
 	}
 
 	public Role(String name) {
-		super();
+		this();
 		this.name = name;
 		this.users = new HashSet<>();
+		this.actionTypes = new HashSet<>();
 	}
 
 	/**
