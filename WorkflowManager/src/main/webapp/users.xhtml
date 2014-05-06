@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	
+	<ui:composition template="../WEB-INF/templates/wm_frame.xhtml">
+	        <ui:define name='content_title'>
+	           Users
+	        </ui:define>
+			<ui:define name="content">
+			    <div id='usrstable_div'>			
+				<h:dataTable values='#{ loginManager.listUsers }' var='user' id='users_table'
+				             styleClass="cvf_table"
+				             headerClass='usrstable_th'
+				             rowClasses="usrstable_row" >
+				    <h:column>
+				        <f:facet name='header'>
+				            Username
+				        </f:facet>
+				        <h:outputText value='#{ user.username }' />
+				    </h:column>
+				    <h:column>
+				        <f:facet name='header'>
+				            Password
+				        </f:facet>
+				        <h:outputText value='#{ user.password }' />
+				    </h:column>
+				    <h:column>
+				        <f:facet name='header'>
+				            Balance
+				        </f:facet>
+				        <h:outputText value='#{ user.balance }' />
+				    </h:column>
+				    <h:column>
+				        <f:facet name='header'>
+				            Description
+				        </f:facet>
+				        <h:inputTextarea value='#{ user.description }' readonly='true' />
+				    </h:column>
+				</h:dataTable>
+				</div>
+			</ui:define>
+	</ui:composition>
+
+</html>

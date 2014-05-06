@@ -1,0 +1,283 @@
+
+#header_div {
+    position: absolute;
+    top:  0px;
+    left: 0px;
+    background-color: #800000;
+    width:  100%;
+    height: 70px;
+}
+
+.home_link {
+    position: relative;
+    text-decoration: none;
+    color: white;
+    top: 2px;
+    left: 5px;
+    font-size: 30px;
+}
+
+#brand_span {
+    position: absolute;
+    top: 0px;
+    width: 315px;
+    height: 65px;
+    border-right: black 2px ridge;
+}
+
+#unavbar_div {
+    position: absolute;
+    top: 70px;
+    left: 0px;
+    width: 100%;
+    height: 30px;
+}
+
+#unavbar {
+    list-style-type: none;
+    margin:  0;
+    padding: 0;
+    width: auto;
+    position: relative;
+    display: block;
+    height: 30px;
+    text-transform: uppercase;
+    font-size:12px;
+    font-weight: bold;
+    /*background: transparent url('off.gif') repeat-x top left;*/
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    border-bottom: 4px solid #555555;
+    border-top:    1px solid #919191;
+}
+
+#unavbar li {
+    display: block;
+    float: left;
+    margin:  0;
+    padding: 0;
+}
+
+#unavbar li a {
+    display: block;
+    float: left;
+    color: rgb( 128,0,0 );
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px 20px 0px 20px;
+    height: 24px;
+    /*background: transparent url('divider.gif') no-repeat top right;*/
+}
+
+#unavbar li a:hover {
+    /*background: transparent url("hover.gif") no-repeat top right;*/
+    color: #8c3a3a;
+}
+
+#content_container {
+    position: absolute;
+    top: 113px;
+    left: 50%;
+    width:  800px;
+    height: 618px;
+}
+
+#content_title_div {
+    position: relative;
+    left: -400px;
+}
+
+#content_title_div H3 {
+    position: absolute;
+    text-align: center;
+    top: -21px;
+    width: 100%;
+    line-height: 30px;
+    border-radius: 5px 5px 5px 5px;
+    vertical-align: middle;
+    border: blue 2px dotted;
+}
+
+#content_div {
+    left: -400px;
+    position: absolute;
+    top: 38px;
+    width: 100%;
+    height: 777px;
+    border-radius: 5px;
+    border: red 2px dotted;
+}
+
+#footer_div {
+    position: absolute;
+    top: 943px;
+    left: 0px;
+    background-color: #C8C8C8;
+    width: 100%;
+    height: 35px;
+}
+
+#footer_div H5 {
+    float: right;
+    position: relative;
+    top: -21px;
+    left: -5px;
+    line-height: 35px;
+    vertical-align: middle;
+}
+
+#footer_span_r {
+    position: relative;
+    left: -35px;
+}
+
+/* Sign In Space */
+#signin-bodiv {
+    position: absolute;
+    left: 50%;
+    top: 21px;
+    width:  350px;
+    height: 700px;
+}
+
+#brand-div {
+    position:relative;
+    left: -180px;
+    width: 350px;
+    height: 200px;
+}
+
+#brand-div IMG {
+    border-top: black 4px solid;
+    border-bottom: black 4px solid;
+    border-left: #D8D8D8 2px solid;
+    border-right: #D8D8D8 2px solid;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#brand-div P {
+    position: relative;
+    left: 10px;
+    font-size: 13px;
+}
+
+#usrimg-div{
+    position: relative;
+    width:  150px;
+    height: 150px;
+    left:   100px;
+    top:    30px;
+    background-image: url('images/usr_03.jpg') no-repeat top right;
+    border: rgb( 128,0,0 ) 2px solid;
+    border-radius: 2px 2px 2px 2px;
+}
+
+#signin-container {
+    position: relative;
+    left: -175px;
+    width:  350px;
+    height: 450px;
+    border-radius: 7px 7px 7px 7px;
+    border-bottom: #989898 2px solid;
+    border-right:  #A8A8A8 1px solid;
+    border-left:   #A8A8A8 1px solid;  
+    background-color: #F0F0F0;
+}
+
+#form-div {
+    position: relative;
+    top: 115px;
+    left: 70px;
+    width: 210px;
+}
+
+.user-input {
+    width: 210px;
+    height: 35px;
+    font: 21px;
+}
+
+.user-input-button {
+    width: 218px;
+    height: 35px;
+    color: #800000;
+    border: rgb( 128,0,0 ) 2px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+
+/* Error Space */
+.singin-error {
+    position: relative;
+    top: -35px;
+}
+
+#signin-error-msgs-log {
+    position: absolute;
+    top: 700px;
+    left: 50%;
+    width: 400px;
+    height: 210px;
+}
+
+#signin-error-msgs-log textarea {
+    position: relative;
+    left: -200px;
+    width: 400px;
+    height: 210px;
+    overflow-y: scroll;
+}
+
+#signin-error-msgs-log label {
+    position: relative;
+    left: -200px;
+}
+
+.error-message {
+    text-decoration: none;
+    color: red;
+}
+
+/* Users Space */
+
+#usrstable_div {
+    position: relative;
+    width: 700px;
+    height: 600px;
+    left: 50%;
+}
+
+#users_table {
+    position: relative;
+    width:  100%;
+    height: 100%;
+    top: 13px;
+    left: -350px;
+    border-radius: 3px 3px 3px 3px;
+    border: 0;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+#users_table tbody {
+    top: 35px;
+    width: 700px;
+    overflow-y: scroll;
+}
+
+#users_table thead {
+    width: 100%;
+    height: 30px;
+    color: rgb( 128,0,0 );
+}
+
+#users_table thead tr {
+    border-collapse: collapse;
+    border-spacing: 0px;
+    border-bottom-color: black;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+}
+
+.usrstable_th {
+    
+}
