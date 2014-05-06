@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -41,8 +42,8 @@ public class HistoryEntry implements Serializable {
 	private String userName;
 
 	@NotNull
-	@Size(min = 4, max = 25)
-	private String stateName;
+	@ManyToOne
+	private State state;
 
 	@NotNull
 	@Size(min = 2, max = 20)
@@ -88,12 +89,12 @@ public class HistoryEntry implements Serializable {
 		this.userName = userName;
 	}
 
-	public String getStateName() {
-		return stateName;
+	public State getStateName() {
+		return state;
 	}
 
-	public void setStateName(String stateName) {
-		this.stateName = stateName;
+	public void setStateName(State state) {
+		this.state = state;
 	}
 
 	public String getActionTypeName() {
@@ -118,7 +119,7 @@ public class HistoryEntry implements Serializable {
 		result = prime * result + ((actionTypeName == null) ? 0 : actionTypeName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((project == null) ? 0 : project.hashCode());
-		result = prime * result + ((stateName == null) ? 0 : stateName.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		result = prime * result + ((when == null) ? 0 : when.hashCode());
 		return result;

@@ -3,11 +3,21 @@
  * */
 package hu.bme.aut.tomeesample.model;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.*;
-import java.io.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
 /**
  * Entity implementation class for Entity: Role
+ * 
  * @author Imre Szekeres
  */
 @Entity
@@ -15,34 +25,76 @@ import java.io.*;
 public class Role implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(unique=true)
+
+	@Column(unique = true)
 	private String name;
-	
-	
+
+	@ManyToMany(targetEntity = ActionType.class, fetch = FetchType.EAGER)
+	private Set<ActionType> actionTypes;
+
+	@ManyToMany(targetEntity = hu.bme.aut.tomeesample.model.User.class, mappedBy = "roles")
+	private Set<User> users;
+
 	public Role() {
 		super();
 	}
-   
-	public Role(String name){
+
+	public Role(String name) {
+		super();
 		this.name = name;
+		this.users = new HashSet<>();
 	}
-	
+
+	/**
+	 * @return the id
+	 */
 	public Long getId() {
 		return id;
 	}
-	
+
+	/**
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
-	
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/** 
+	/**
+	 * @return the users
+	 */
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	/**
+	 * @param user
+	 *            the user to add
+	 * @return true if the user is added
+	 */
+	public boolean add(User user) {
+		return this.users.add(user);
+	}
+
+	/**
+	 * @param user
+	 *            the user to remove
+	 * @return true if the user is removed
+	 */
+	public boolean remove(User user) {
+		return this.users.remove(user);
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -53,7 +105,7 @@ public class Role implements Serializable {
 		return result;
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

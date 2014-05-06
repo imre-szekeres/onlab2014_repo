@@ -6,8 +6,10 @@
 package hu.bme.aut.tomeesample.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -44,15 +47,18 @@ public class State implements Serializable {
 	private String description;
 
 	@NotNull
-	private State currentState;
-
-	@NotNull
 	@ManyToOne
 	private Workflow workflow;
 
-	// @OneToMany(mappedBy = "state")
+	@OneToMany
 	@MapKeyJoinColumn
-	private Map<State> nextStates;
+	private Map<ActionType, State> nextStates;
+
+	@OneToMany(mappedBy = "state")
+	private Set<HistoryEntry> historyEntries;
+
+	@OneToMany(mappedBy = "state")
+	private List<FileStorage> files;
 
 	public State() {
 		super();
@@ -63,8 +69,7 @@ public class State implements Serializable {
 		this.description = description;
 		this.workflow = workflow;
 		this.workflow.add(this);
-		this.currentState = this.workflow.getInitialState();
-		this.historyEntries = new ArrayList<>();
+		this.historyEntries = new HashSet<>();
 	}
 
 	public Long getId() {
@@ -79,16 +84,32 @@ public class State implements Serializable {
 		return description;
 	}
 
-	public State getCurrentState() {
-		return currentState;
-	}
+	// public State getCurrentState() {
+	// return currentState;
+	// }
 
 	public Workflow getWorkflow() {
 		return workflow;
 	}
 
-	public List<HistoryEntry> getHistoryEntries() {
+	public Set<HistoryEntry> getHistoryEntries() {
 		return historyEntries;
+	}
+
+	public Map<ActionType, State> getNextStates() {
+		return nextStates;
+	}
+
+	public void setNextStates(Map<ActionType, State> nextStates) {
+		this.nextStates = nextStates;
+	}
+
+	public List<FileStorage> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<FileStorage> files) {
+		this.files = files;
 	}
 
 	public void setName(String name) {
@@ -99,9 +120,9 @@ public class State implements Serializable {
 		this.description = description;
 	}
 
-	public void setCurrentState(State currentState) {
-		this.currentState = currentState;
-	}
+	// public void setCurrentState(State currentState) {
+	// this.currentState = currentState;
+	// }
 
 	public void setWorkflow(Workflow workflow) {
 		this.workflow = workflow;
@@ -128,10 +149,9 @@ public class State implements Serializable {
 		hash = 31 * hash + id.hashCode();
 		hash = 31 * hash + name.hashCode();
 		hash = 31 * hash + description.hashCode();
-		hash = 31 * hash + currentState.hashCode();
+		// hash = 31 * hash + currentState.hashCode();
 		hash = 31 * hash + workflow.hashCode();
 		hash = 31 * hash + historyEntries.hashCode();
-		hash = 31 * hash + StateAssignments.hashCode();
 		return hash;
 	}
 }
