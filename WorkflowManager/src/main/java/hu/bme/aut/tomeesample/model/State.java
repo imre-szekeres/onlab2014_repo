@@ -1,6 +1,6 @@
 /**
  * State.java
- * 
+ *
  * @author Imre Szekeres
  * */
 package hu.bme.aut.tomeesample.model;
@@ -25,7 +25,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: State
- * 
+ *
  */
 @SuppressWarnings("serial")
 @Entity
@@ -58,7 +58,7 @@ public class State implements Serializable {
 	private Set<HistoryEntry> historyEntries;
 
 	@OneToMany(mappedBy = "state")
-	private List<FileStorage> files;
+	private List<BlobFile> files;
 
 	public State() {
 		super();
