@@ -104,11 +104,11 @@ public class State implements Serializable {
 		this.nextStates = nextStates;
 	}
 
-	public List<FileStorage> getFiles() {
+	public List<BlobFile> getFiles() {
 		return files;
 	}
 
-	public void setFiles(List<FileStorage> files) {
+	public void setFiles(List<BlobFile> files) {
 		this.files = files;
 	}
 
