@@ -8,11 +8,14 @@ import hu.bme.aut.tomeesample.model.Role;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 /**
  *
@@ -26,9 +29,18 @@ public class RoleService implements Serializable {
 
 	@PersistenceContext
 	EntityManager em;
+	private Validator validator;
 
 	public RoleService() {
 		super();
+	}
+
+	/**
+	 * Initialises the <code>Validator</code> for future use.
+	 * */
+	@PostConstruct
+	public void init() {
+		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
 	/**
@@ -99,5 +111,18 @@ public class RoleService implements Serializable {
 	 * */
 	public String[] findRoleNames() {
 		return em.createQuery("SELECT r.name FROM Role r", String[].class).getResultList().toArray(new String[0]);
+	}
+
+	/**
+	 * Validates the given name against the constraints given in the
+	 * <code>Role</code> class.
+	 *
+	 * @param name
+	 *            that will be validated
+	 * @return true only if the given name corresponds to the constraints given
+	 *         in the class <code>Role</code>
+	 * */
+	public boolean validateName(String name) {
+		return validator.validateValue(Role.class, "name", name).size() == 0;
 	}
 }

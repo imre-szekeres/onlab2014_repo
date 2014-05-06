@@ -29,30 +29,28 @@
 				      </f:facet>
 				      
 				      <h:message for="user_in" styleClass='error-message' />
-				      <h:outputLabel for='user_in'>Username: </h:outputLabel>
+				      <h:outputLabel >Username: </h:outputLabel>
     				  <h:inputText id="user_in" name="username" value="#{ loginManager.username }" 
                         validator='#{ loginManager.validateUsernameIn }' />
 				      
 				      <h:message for="pass_in" styleClass='error-message' />
-				      <h:outputLabel for='pass_in'>Password: </h:outputLabel>
+				      <h:outputLabel >Password: </h:outputLabel>
 				      <h:inputSecret id="pass_in" name="password" value="#{ loginManager.password }" 
 				                validator='#{ loginManager.validatePasswordIn }' label='Password: ' />
 				      
 				      <h:message for="passa_in" styleClass='error-message' />
-                      <h:outputLabel for='passa_in'>Password Again: </h:outputLabel>
+                      <h:outputLabel >Password Again: </h:outputLabel>
                       <h:inputSecret id="passa_in" name="passwordAgain" 
-                             value="#{ loginManager.passwordAgain }" 
-                             validator='#{ loginManager.validatePasswordAgainIn }' />
+                             value="#{ loginManager.passwordAgain }" />
 				      
-				      <h:message for="bal_in" styleClass='error-message' />
-				      <h:outputLabel for='bal_in' >Balance: </h:outputLabel>
-                      <h:inputText id="bal_in" name="balance" value="#{ loginManager.balance }" 
-                            validator='#{ loginManager.validateBalanceIn }' label='Balance: '/>
+				      <h:message for="email_in" styleClass='error-message' />
+				      <h:outputLabel >Email: </h:outputLabel>
+                      <h:inputText id="email_in" name="email" value="#{ loginManager.email }" 
+                            validator='#{ loginManager.validateEmailIn }' label='Balance: '/>
 				      
 				      <h:message for='desc_in' styleClass='error-message' />
-				      <h:outputLabel for="desc_in" >Description</h:outputLabel>
-				      <h:inputTextarea id='desc_in' name="description" value="#{ loginManager.description }"
-				                       validator='#{ loginManager.validateDescriptionIn }' />
+				      <h:outputLabel >Description</h:outputLabel>
+				      <h:inputTextarea id='desc_in' name="description" value="#{ loginManager.description }" />
 				      
 				      <!-- TODO: add roles... -->
 				      <h:commandButton action="#{loginManager.register}" value="#{ button_text }" id="login_button" />

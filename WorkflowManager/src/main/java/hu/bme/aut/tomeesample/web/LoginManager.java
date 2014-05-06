@@ -29,7 +29,7 @@ public class LoginManager {
 	/*
 	 * static { PropertyConfigurator.configure(System.getProperty("user.dir") +
 	 * "/src/main/java/log4j.properties"); }
-	 * 
+	 *
 	 * private static Logger logger = Logger.getLogger(LoginManager.class);
 	 */
 
@@ -281,7 +281,7 @@ public class LoginManager {
 	 * */
 	public void validateDescriptionIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateDescription((String) value))
+		if (!userService.validateDescription(((String) value).trim()))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"description is too long! it msut be at most 1024 chars long!",
 					"description is too long! it msut be at most 1024 chars long!"));
