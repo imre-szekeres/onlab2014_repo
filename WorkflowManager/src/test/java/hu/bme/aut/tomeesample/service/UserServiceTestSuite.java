@@ -35,7 +35,7 @@ public class UserServiceTestSuite {
 	public static Collection<Object[]> dataSource(){
 		Object[][] data = new Object[][]{
 				{new UserService(),
-				new User("cvirtue", "cvirtue", new Role("administrator"))
+				new User("cvirtue", "cvirtue", "cvirtue@wm.cvf.com", new Role("administrator"))
 		}};
 		return Arrays.asList(data);
 	}

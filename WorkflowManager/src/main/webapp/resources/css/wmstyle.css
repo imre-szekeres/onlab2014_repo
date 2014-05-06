@@ -1,0 +1,43 @@
+
+/*      FOOTER          */
+#footer_div{
+    background-color: #E8E8E8;
+    text-align: right;
+    color: #600000;
+}
+#cont_s{
+    color:black;
+}
+/* END OF FOOTER */
+
+
+#login_button {
+    width: 100%;
+}
+
+
+/*      MENU      */
+#menu {
+    vertical-align: top;
+    width: 100%;
+    margin: 7px;
+}
+
+.menu_item {
+    
+}
+
+#ul_menu{
+    list-style-type:none;
+    margin:auto;
+    padding:0;
+    height:80px;
+    width:663px;
+}
+#ul_menu li {
+    float: left;
+    display: inline;
+    margin:0;
+    padding:0;
+}
+/* END OF MENU */
