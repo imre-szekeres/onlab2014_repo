@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>
+            <ui:insert name='title'>WorkflowManager</ui:insert>
+        </title>
+        <h:outputStylesheet library='css' name='cvf_style.css'></h:outputStylesheet>
+        <h:outputScript     library='js'  name='jquery-1.11.0.min.js'></h:outputScript>
+        <h:outputScript     library='js'  name='jquery-ui-1.10.4.js' ></h:outputScript>
+    </h:head>
+    <h:body>
+        <div id='header_div' class='container'>
+            <span id='brand_span'>
+                <h:form>
+                <h3>
+                    <h:commandLink styleClass="home_link" action='index' value="WorkflowManager" />
+                </h3>
+                </h:form>
+            </span>
+        </div>
+        <div id='unavbar_div' class='container'>
+            <h:form>
+                <ul id='unavbar'>
+                    <li>
+                        <h:commandLink styleClass='menu-item' action='login'><span>Sign In</span></h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink styleClass='menu-item' action='add_user'><span>Register</span></h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink styleClass='menu-item' action='profile'><span>Profile</span></h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink styleClass='menu-item' action='priv/users'><span>Users</span></h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink styleClass='menu-item' action='priv/roles'><span>Roles</span></h:commandLink>
+                    </li>
+                </ul>
+            </h:form>
+        </div>
+        
+        <div id='content_container' class='container'>
+            <div id='content_title_div'>
+                <h3>
+                    <ui:insert name='content_title'>Welcome!</ui:insert>
+                </h3>
+            </div>
+            
+            <div id='content_div'>
+                <ui:insert name='content'>
+                    <p>
+                        Welcome to WorkflowManager!
+                    </p>
+                </ui:insert>
+            </div>
+        </div>
+        
+        <div id='footer_div' class='container'>
+            <div>
+                 <h5>
+                    <span id='footer_span_r' class='footer_span'>
+                        (R) WorkflowManager
+                    </span>
+                    <span id='footer_span_c' class='footer_span'>
+                        Contact: vagege@gmail.com | icloudred@gmail.com
+                    </span>
+                 </h5>    
+            </div>
+        </div>
+        <div>
+            <h4><h:outputLabel>#{ securityInitiator.message }</h:outputLabel></h4>
+        </div>
+    </h:body>
+</html>
