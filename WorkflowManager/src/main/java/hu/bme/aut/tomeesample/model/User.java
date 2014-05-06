@@ -1,12 +1,13 @@
 /**
  * User.java
- * 
+ *
  * @author Imre Szekeres
  * */
 package hu.bme.aut.tomeesample.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: User
- * 
+ *
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -75,6 +76,8 @@ public class User implements Serializable {
 
 	public User() {
 		super();
+		this.roles = new HashSet<Role>();
+		this.roles.add(new Role("visitor"));
 	}
 
 	public User(String username, String password, String email, Role role) {
@@ -85,6 +88,17 @@ public class User implements Serializable {
 
 	public User(String username, String password, String email, Set<Role> roles) {
 		this(username, password, email, "");
+		this.roles = roles;
+	}
+
+	public User(String username, String password, String email, Role role, String description) {
+		this(username, password, email, description);
+		this.roles = new java.util.HashSet<>();
+		this.roles.add(role);
+	}
+
+	public User(String username, String password, String email, Set<Role> roles, String description) {
+		this(username, password, email, description);
 		this.roles = roles;
 	}
 
@@ -177,6 +191,21 @@ public class User implements Serializable {
 
 	public boolean remove(ProjectAssignment assignment) {
 		return projectAssignments.remove(assignment);
+	}
+
+	/**
+	 * Checks whether the <code>User</code> has any <code>Role</code> with the
+	 * given name.
+	 *
+	 * @param name
+	 * @return true only if any of the roles has a name like the passed argument
+	 * */
+	public boolean hasRole(String name) {
+		for (Role role : roles) {
+			if (role.getName().equals(name))
+				return true;
+		}
+		return false;
 	}
 
 	/**
