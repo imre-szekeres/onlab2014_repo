@@ -13,7 +13,8 @@
 	       <h:panelGrid>
 	           <h:message for='rolename_in' styleClass='error-message' />
 	           <h:outputLabel >Role Name:</h:outputLabel>
-	           <h:inputText id='rolename_in' name='rolename_in' value='#{ roleManager.name }' />
+	           <h:inputText id='rolename_in' name='rolename_in' value='#{ roleManager.name }' 
+	                        validator='#{ roleManager.validateName }'/>
 	           <h:commandButton id='rolein_btn' action='#{ roleManager.create }' value='Create' />
 	       </h:panelGrid>
 	       </h:form>
