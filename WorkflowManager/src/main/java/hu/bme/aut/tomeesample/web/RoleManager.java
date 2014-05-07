@@ -16,6 +16,8 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author Imre Szekeres
@@ -24,6 +26,8 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class RoleManager {
+
+	private static final Logger logger = Logger.getLogger(RoleManager.class);
 
 	@Inject
 	private RoleService roleService;
@@ -41,10 +45,10 @@ public class RoleManager {
 	 * @return a list containing all the roles
 	 * */
 	public List<Role> listRoles() {
-		System.out.println("in listRoles");
+		logger.debug("in listRoles");
 		if (availableRoles == null)
 			this.availableRoles = this.roleService.findAll();
-		System.out.println(availableRoles);
+		logger.debug(availableRoles);
 		return availableRoles;
 	}
 
@@ -57,7 +61,9 @@ public class RoleManager {
 	public String create() {
 		try {
 			roleService.create(newRole);
+			logger.debug("created new role: " + newRole.toString());
 		} catch (Exception e) {
+			logger.error("ERROR in RoleManager.create: ", e);
 		}
 		return "add_role";
 	}
