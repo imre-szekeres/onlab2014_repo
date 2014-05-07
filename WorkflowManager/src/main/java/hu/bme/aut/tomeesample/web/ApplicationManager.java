@@ -29,4 +29,11 @@ public class ApplicationManager implements java.io.Serializable {
 
 		logger.debug("logger configured..");
 	}
+
+	public String getLoggerName() {
+		return logger.getName();
+	}
+
+	public void setLoggerName(String name) {
+	}
 }

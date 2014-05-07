@@ -48,7 +48,7 @@ public class RoleManager {
 		logger.debug("in listRoles");
 		if (availableRoles == null)
 			this.availableRoles = this.roleService.findAll();
-		logger.debug(availableRoles);
+		logger.debug("listRoles: " + availableRoles.toString());
 		return availableRoles;
 	}
 
@@ -63,7 +63,7 @@ public class RoleManager {
 			roleService.create(newRole);
 			logger.debug("created new role: " + newRole.toString());
 		} catch (Exception e) {
-			logger.error("ERROR in RoleManager.create: ", e);
+			logger.error("in RoleManager.create: ", e);
 		}
 		return "add_role";
 	}

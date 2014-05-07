@@ -18,6 +18,8 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author Imre Szekeres
@@ -27,12 +29,7 @@ import javax.inject.Named;
 @RequestScoped
 public class LoginManager {
 
-	/*
-	 * static { PropertyConfigurator.configure(System.getProperty("user.dir") +
-	 * "/src/main/java/log4j.properties"); }
-	 *
-	 * private static Logger logger = Logger.getLogger(LoginManager.class);
-	 */
+	private static Logger logger = Logger.getLogger(LoginManager.class);
 
 	@Inject
 	private UserService userService;
@@ -59,7 +56,7 @@ public class LoginManager {
 	 * */
 	public List<User> listUsers() {
 		List<User> all = userService.findAll();
-		System.out.println(all);
+		logger.debug("listUsers: " + all.toString());
 		return all;
 	}
 
@@ -73,9 +70,10 @@ public class LoginManager {
 			User user = userService.findByName(username);
 			Role uRole = roleService.findByName(role);
 			userService.addRoleFor(user, uRole);
+			logger.debug("user " + user.toString() + " and role " + uRole.toString() + " are created..");
 			return "users";
 		} catch (Exception e) {
-			// TODO: logger.error("in addRoleFor: ", e);
+			logger.error("in addRoleFor: ", e);
 			return "add_role";
 		}
 	}
@@ -90,9 +88,10 @@ public class LoginManager {
 			Role uRole = roleService.findByName(role == null ? "visitor" : role);
 			this.subject = new User(username, password, email, uRole, description);
 			userService.create(this.subject);
+			logger.debug("user " + subject.getUsername() + " is created");
 			return login();
 		} catch (Exception e) {
-			// TODO: logger.error("in register: ", e);
+			logger.error("in register: ", e);
 			return "add_user";
 		}
 	}
@@ -106,8 +105,10 @@ public class LoginManager {
 	public String login() {
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("subject", subject);
+			logger.debug("user " + subject.getUsername() + " is logged in");
 			return "profile";
 		} catch (Exception e) {
+			logger.error("in login: ", e);
 			return "login";
 		}
 	}
