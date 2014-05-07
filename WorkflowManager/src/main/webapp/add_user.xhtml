@@ -8,7 +8,7 @@
 	
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
 			<ui:define name="content">
-			
+                <div>			
 				<h:form id="adduser_form" method='POST'>
 				    <h:panelGrid columns="1" cellspacing="1" cellpadding="2">
 				      <f:facet name="header">
@@ -55,6 +55,39 @@
 				      <h:commandButton action="#{ loginManager.register }" value="#{ button_text }" id="adduser_btn" />
 				    </h:panelGrid>
 				</h:form>
+				</div>
+				
+				<div id='usrstable_div'>            
+                <h:dataTable value='#{ loginManager.listUsers }' var='user' id='users_table'
+                             styleClass="cvf_table"
+                             headerClass='usrstable_th'
+                             rowClasses="usrstable_row" >
+                    <h:column>
+                        <f:facet name='header'>
+                            Username
+                        </f:facet>
+                        <h:outputText value='#{ user.username }' />
+                    </h:column>
+                    <h:column>
+                        <f:facet name='header'>
+                            Password
+                        </f:facet>
+                        <h:outputText value='#{ user.password }' />
+                    </h:column>
+                    <h:column>
+                        <f:facet name='header'>
+                            Balance
+                        </f:facet>
+                        <h:outputText value='#{ user.balance }' />
+                    </h:column>
+                    <h:column>
+                        <f:facet name='header'>
+                            Description
+                        </f:facet>
+                        <h:inputTextarea value='#{ user.description }' readonly='true' />
+                    </h:column>
+                </h:dataTable>
+                </div>
 				
 			</ui:define>
 	</ui:composition>
