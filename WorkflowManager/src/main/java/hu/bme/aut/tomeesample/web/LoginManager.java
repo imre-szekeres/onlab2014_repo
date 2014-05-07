@@ -10,7 +10,7 @@ import hu.bme.aut.tomeesample.service.UserService;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -24,6 +24,7 @@ import javax.inject.Named;
  * @version "%I%, %G%"
  */
 @Named
+@RequestScoped
 public class LoginManager {
 
 	/*
@@ -52,21 +53,14 @@ public class LoginManager {
 	}
 
 	/**
-	 * Initialises the current user as a visitor after the
-	 * <code>LoginManager</code> was instantiated (for this session).
-	 * */
-	@PostConstruct
-	public void init() {
-
-	}
-
-	/**
 	 * Fetches the users already registered/created into/in the application.
 	 *
 	 * @return a list of all the found users
 	 * */
 	public List<User> listUsers() {
-		return userService.findAll();
+		List<User> all = userService.findAll();
+		System.out.println(all);
+		return all;
 	}
 
 	/**
@@ -93,7 +87,7 @@ public class LoginManager {
 	 * */
 	public String register() {
 		try {
-			Role uRole = roleService.findByName(role == null ? "customer" : role);
+			Role uRole = roleService.findByName(role == null ? "visitor" : role);
 			this.subject = new User(username, password, email, uRole, description);
 			userService.create(this.subject);
 			return login();

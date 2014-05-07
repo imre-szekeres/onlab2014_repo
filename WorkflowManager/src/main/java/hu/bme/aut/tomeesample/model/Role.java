@@ -40,13 +40,13 @@ public class Role implements Serializable {
 
 	public Role() {
 		super();
+		this.users = new HashSet<>();
+		this.actionTypes = new HashSet<>();
 	}
 
 	public Role(String name) {
 		this();
 		this.name = name;
-		this.users = new HashSet<>();
-		this.actionTypes = new HashSet<>();
 	}
 
 	/**

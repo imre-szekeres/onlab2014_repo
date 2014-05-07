@@ -27,7 +27,8 @@ public class RoleManager {
 
 	@Inject
 	private RoleService roleService;
-	private String name;
+	private Role newRole = new Role();
+	private List<Role> availableRoles;
 
 	public RoleManager() {
 		super();
@@ -40,7 +41,11 @@ public class RoleManager {
 	 * @return a list containing all the roles
 	 * */
 	public List<Role> listRoles() {
-		return this.roleService.findAll();
+		System.out.println("in listRoles");
+		if (availableRoles == null)
+			this.availableRoles = this.roleService.findAll();
+		System.out.println(availableRoles);
+		return availableRoles;
 	}
 
 	/**
@@ -51,10 +56,10 @@ public class RoleManager {
 	 * */
 	public String create() {
 		try {
-			roleService.create(new Role(name));
+			roleService.create(newRole);
 		} catch (Exception e) {
 		}
-		return "index";
+		return "add_role";
 	}
 
 	/**
@@ -78,17 +83,16 @@ public class RoleManager {
 	}
 
 	/**
-	 * @return the name
+	 * @return the newRole
 	 */
-	public String getName() {
-		return name;
+	public Role getNewRole() {
+		return newRole;
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param newRole
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setNewRole(Role role) {
+		this.newRole = role;
 	}
 }

@@ -9,15 +9,37 @@
 	       Create Role
 	   </ui:define>
 	   <ui:define name='content'>
-	       <h:form method='POST' >
-	       <h:panelGrid>
-	           <h:message for='rolename_in' styleClass='error-message' />
-	           <h:outputLabel >Role Name:</h:outputLabel>
-	           <h:inputText id='rolename_in' name='rolename_in' value='#{ roleManager.name }' 
-	                        validator='#{ roleManager.validateName }'/>
-	           <h:commandButton id='rolein_btn' action='#{ roleManager.create }' value='Create' />
-	       </h:panelGrid>
-	       </h:form>
+	       <div>
+	           <h:form method='POST' >
+	           <h:panelGrid>
+	               <h:message for='rolename_in' styleClass='error-message' />
+	               <h:outputLabel >Role Name:</h:outputLabel>
+	               <h:inputText id='rolename_in' name='rolename_in' value='#{ roleManager.newRole.name }' 
+	                            validator='#{ roleManager.validateName }'/>
+	               <h:commandButton id='addrole_btn' action='#{ roleManager.create }' value='Create' />
+	           </h:panelGrid>
+               </h:form>
+	       </div>
+	       <hr />
+	       <div id='rolestable_div'>         
+                <h:dataTable values='#{ roleManager.listRoles }' var='role' id='roles_table'
+                             styleClass="cvf_table"
+                             headerClass='rolestable_th'
+                             rowClasses="rolestable_row" >
+                    <h:column>
+                        <f:facet name='header'>
+                            RoleID
+                        </f:facet>
+                        <h:outputText value='#{ role.id }' />
+                    </h:column>
+                    <h:column>
+                        <f:facet name='header'>
+                            RoleName
+                        </f:facet>
+                        <h:outputText value='#{ role.name }' />
+                    </h:column>
+                </h:dataTable>
+          </div>
 	   </ui:define>
 	</ui:composition>
 </html>

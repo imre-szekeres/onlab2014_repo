@@ -49,10 +49,11 @@
                             validator='#{ loginManager.validateEmailIn }' label='Balance: '/>
 				      
 				      <h:message for='desc_in' styleClass='error-message' />
-				      <h:outputLabel >Description</h:outputLabel>
+				      <h:outputLabel >Description:</h:outputLabel>
 				      <h:inputTextarea id='desc_in' name="description" value="#{ loginManager.description }" />
 				      
-				      <!-- TODO: add roles... -->
+				      <h:outputLabel >Role:</h:outputLabel>
+				      <h:inputText id='role_in' name='role' value='#{ loginManager.role }' />
 				      <h:commandButton action="#{loginManager.register}" value="#{ button_text }" id="login_button" />
 				    </h:panelGrid>
 				</h:form>
