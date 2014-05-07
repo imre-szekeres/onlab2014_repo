@@ -48,7 +48,8 @@
 				      
 				      <h:message for='desc_in' styleClass='error-message' />
 				      <h:outputText value='Description:' />
-				      <h:inputTextarea id='desc_in' name="description" value="#{ loginManager.description }" />
+				      <h:inputTextarea size='50' id='desc_in' name="description" value="#{ loginManager.description }" 
+				                       validator='#{ loginManager.validateDescriptionIn }'/>
 				      
 				      <h:outputText value='Role: ' />
 				      <h:inputText id='role_in' name='rolename' value='#{ loginManager.role }' />
@@ -56,7 +57,7 @@
 				    </h:panelGrid>
 				</h:form>
 				</div>
-				
+				<br />
 				<div id='usrstable_div'>            
                 <h:dataTable value='#{ loginManager.listUsers() }' var='user' id='users_table'
                              styleClass="cvf_table"

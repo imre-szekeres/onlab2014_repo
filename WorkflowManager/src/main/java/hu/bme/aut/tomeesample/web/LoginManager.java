@@ -35,7 +35,7 @@ public class LoginManager {
 	private UserService userService;
 	@Inject
 	private RoleService roleService;
-	private String description;
+	private String description = "User description";
 
 	private User subject;
 
@@ -382,6 +382,6 @@ public class LoginManager {
 	 *            the description to set
 	 */
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = description.trim();
 	}
 }

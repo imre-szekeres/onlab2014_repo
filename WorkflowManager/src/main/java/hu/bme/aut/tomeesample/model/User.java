@@ -60,7 +60,7 @@ public class User implements Serializable {
 	@NotNull
 	private String email;
 
-	@Size(min = 64, max = 1024)
+	@Size(min = 0, max = 1024)
 	private String description;
 
 	// TODO: refine the term ROLE ~ specify it in JAAS/Shiro

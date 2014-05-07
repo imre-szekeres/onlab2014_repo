@@ -84,6 +84,22 @@ public class RoleManager {
 	}
 
 	/**
+	 * Removes the specified <code>Role</code> from the application.
+	 * 
+	 * @param role
+	 *            to be removed permanently
+	 * */
+	public String delete(Role role) {
+		try {
+			roleService.removeDetached(role);
+			logger.debug("in delte: " + role.toString() + " removed");
+		} catch (Exception e) {
+			logger.error("ERROR in delete: ", e);
+		}
+		return "add_role";
+	}
+
+	/**
 	 * @return the newRole
 	 */
 	public Role getNewRole() {

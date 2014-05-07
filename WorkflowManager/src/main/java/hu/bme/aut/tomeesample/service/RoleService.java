@@ -82,6 +82,18 @@ public class RoleService implements Serializable {
 	}
 
 	/**
+	 * Removes permanently a detached <code>Role</code> by first replacing it
+	 * into the persistence context.
+	 * 
+	 * @param role
+	 *            to be removed permanently
+	 * */
+	public void removeDetached(Role role) {
+		Object managed = em.merge(role);
+		em.remove(managed);
+	}
+
+	/**
 	 * Fetches the already created <code>Role</code>s from the persistence
 	 * context.
 	 *
