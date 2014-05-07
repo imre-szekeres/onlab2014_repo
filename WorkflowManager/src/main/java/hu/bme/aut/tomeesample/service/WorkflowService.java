@@ -7,11 +7,14 @@ import hu.bme.aut.tomeesample.model.Workflow;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 /**
  * @author Imre Szekeres
@@ -23,6 +26,15 @@ public class WorkflowService {
 
 	@PersistenceContext
 	EntityManager em;
+	private Validator validator;
+
+	/**
+	 * Initialises the <code>Validator</code> for future use.
+	 * */
+	@PostConstruct
+	public void init() {
+		validator = Validation.buildDefaultValidatorFactory().getValidator();
+	}
 
 	/**
 	 * Persists a newly created <code>Workflow</code>.
@@ -69,5 +81,13 @@ public class WorkflowService {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public boolean validateName(String name) {
+		return validator.validateValue(Workflow.class, "name", name).size() == 0;
+	}
+
+	public boolean validateDescription(String description) {
+		return validator.validateValue(Workflow.class, "description", description).size() == 0;
 	}
 }

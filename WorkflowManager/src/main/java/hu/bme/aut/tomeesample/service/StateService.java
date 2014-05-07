@@ -7,11 +7,14 @@ import hu.bme.aut.tomeesample.model.State;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 /**
  * @author Gergely Várkonyi
@@ -22,6 +25,15 @@ public class StateService {
 
 	@PersistenceContext
 	EntityManager em;
+	private Validator validator;
+
+	/**
+	 * Initialises the <code>Validator</code> for future use.
+	 * */
+	@PostConstruct
+	public void init() {
+		validator = Validation.buildDefaultValidatorFactory().getValidator();
+	}
 
 	public void create(State state) {
 		em.persist(state);
@@ -33,6 +45,10 @@ public class StateService {
 
 	public void remove(State state) {
 		em.remove(state);
+	}
+
+	public State getParent(State state) {
+		return state.getParent();
 	}
 
 	public List<State> findAll() {
@@ -57,5 +73,23 @@ public class StateService {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public List<State> findChildrenByParentId(Long parentId) {
+		try {
+			TypedQuery<State> select = em.createNamedQuery("State.findChildByParentId", State.class);
+			select.setParameter("parentId", parentId);
+			return select.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public boolean validateName(String name) {
+		return validator.validateValue(State.class, "name", name).size() == 0;
+	}
+
+	public boolean validateDescription(String description) {
+		return validator.validateValue(State.class, "description", description).size() == 0;
 	}
 }

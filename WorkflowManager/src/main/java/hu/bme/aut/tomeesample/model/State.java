@@ -6,6 +6,7 @@
 package hu.bme.aut.tomeesample.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +26,15 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: State
- *
+ * 
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
 		@NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
-		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId")
+		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId"),
+		@NamedQuery(name = "State.findChildrenByParentId", query = "SELECT s FROM State s WHERE s.parent.id=:parentId")
 })
 public class State implements Serializable {
 
@@ -44,7 +46,7 @@ public class State implements Serializable {
 	@Size(min = 4, max = 25)
 	private String name;
 
-	@Size(min = 13, max = 512)
+	@Size(min = 0, max = 512)
 	private String description;
 
 	@NotNull
@@ -61,16 +63,27 @@ public class State implements Serializable {
 	@OneToMany(mappedBy = "state")
 	private List<BlobFile> files;
 
+	@ManyToOne
+	private State parent;
+
+	@OneToMany(mappedBy = "parent")
+	private List<State> children;
+
 	public State() {
 		super();
 	}
 
-	public State(String name, String description, Workflow workflow) {
+	public State(String name, String description, Workflow workflow, State parent) {
 		this.name = name;
 		this.description = description;
 		this.workflow = workflow;
 		this.workflow.add(this);
 		this.historyEntries = new HashSet<>();
+		this.files = new ArrayList<>();
+		if (parent != null) {
+			this.parent = parent;
+			this.parent.addChild(this);
+		}
 	}
 
 	public Long getId() {
@@ -85,10 +98,6 @@ public class State implements Serializable {
 		return description;
 	}
 
-	// public State getCurrentState() {
-	// return currentState;
-	// }
-
 	public Workflow getWorkflow() {
 		return workflow;
 	}
@@ -99,6 +108,22 @@ public class State implements Serializable {
 
 	public Map<ActionType, State> getNextStates() {
 		return nextStates;
+	}
+
+	public State getParent() {
+		return parent;
+	}
+
+	public void setParent(State parent) {
+		this.parent = parent;
+	}
+
+	public List<State> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<State> children) {
+		this.children = children;
 	}
 
 	public void setNextStates(Map<ActionType, State> nextStates) {
@@ -121,20 +146,24 @@ public class State implements Serializable {
 		this.description = description;
 	}
 
-	// public void setCurrentState(State currentState) {
-	// this.currentState = currentState;
-	// }
-
 	public void setWorkflow(Workflow workflow) {
 		this.workflow = workflow;
 	}
 
-	public void add(HistoryEntry entry) {
+	public void addHistoryEntry(HistoryEntry entry) {
 		historyEntries.add(entry);
 	}
 
-	public boolean remove(HistoryEntry entry) {
+	public boolean removeHistoryEntry(HistoryEntry entry) {
 		return historyEntries.remove(entry);
+	}
+
+	public void addChild(State child) {
+		children.add(child);
+	}
+
+	public boolean removeChild(State child) {
+		return children.remove(child);
 	}
 
 	@Override
@@ -150,9 +179,13 @@ public class State implements Serializable {
 		hash = 31 * hash + id.hashCode();
 		hash = 31 * hash + name.hashCode();
 		hash = 31 * hash + description.hashCode();
-		// hash = 31 * hash + currentState.hashCode();
 		hash = 31 * hash + workflow.hashCode();
 		hash = 31 * hash + historyEntries.hashCode();
 		return hash;
+	}
+
+	@Override
+	public String toString() {
+		return "State [id=" + id + ", name=" + name + ", workflow=" + workflow.getId() + ", parent=" + parent.getId() + "]";
 	}
 }

@@ -9,11 +9,11 @@
       	<table>
       	<tr>
         	<td>Name:</td>
-            <td><h:inputText size="15" value="#{workflowManager.name}" /></td>
+            <td><h:inputText size="15" value="#{workflowManager.name}" validator='#{ workflowManager.validateName }' /></td>
       	</tr>
       	<tr>
             <td>Description:</td>
-            <td><h:inputTextarea size="50" value="#{workflowManager.description}" /></td>
+            <td><h:inputTextarea size="50" value="#{workflowManager.description}" validator='#{ workflowManager.validateDescription }' /></td>
       	</tr>
       	<tr>
             <td> </td>
