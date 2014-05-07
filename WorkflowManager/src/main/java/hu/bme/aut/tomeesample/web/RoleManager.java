@@ -9,6 +9,7 @@ import hu.bme.aut.tomeesample.service.RoleService;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -44,6 +45,11 @@ public class RoleManager {
 		logger.debug("roleManager " + this.toString() + " created");
 	}
 
+	@PreDestroy
+	public void dispose() {
+		logger.debug("avalRoles: " + availableRoles == null ? "null" : availableRoles.toString());
+	}
+
 	/**
 	 * Fetches the already created <code>Role</code>s from the persistence
 	 * context.
@@ -66,6 +72,7 @@ public class RoleManager {
 	 * */
 	public String create() {
 		try {
+			logger.debug("in create - roleService: " + roleService == null ? "null" : roleService.toString());
 			roleService.create(newRole);
 			logger.debug("created new role: " + newRole.toString());
 		} catch (Exception e) {
@@ -90,6 +97,8 @@ public class RoleManager {
 	 * */
 	public void validateName(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
+		logger.debug("validating: " + value.toString());
+		logger.debug("in validateName - roleService: " + roleService == null ? "null" : roleService.toString());
 		if (!roleService.validateName(((String) value).trim()))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "role name already exists", "role name already exists"));
 	}
@@ -98,6 +107,7 @@ public class RoleManager {
 	 * @return the newRole
 	 */
 	public Role getNewRole() {
+		logger.debug("GET-newRole: " + newRole.toString());
 		return newRole;
 	}
 
@@ -105,6 +115,7 @@ public class RoleManager {
 	 * @param newRole
 	 */
 	public void setNewRole(Role role) {
+		logger.debug("SET-newRole: " + newRole.toString());
 		this.newRole = role;
 	}
 }
