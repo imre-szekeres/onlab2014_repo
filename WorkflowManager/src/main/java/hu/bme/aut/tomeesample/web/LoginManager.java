@@ -10,6 +10,7 @@ import hu.bme.aut.tomeesample.service.UserService;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -47,6 +48,11 @@ public class LoginManager {
 
 	public LoginManager() {
 		super();
+	}
+
+	@PostConstruct
+	public void init() {
+		logger.debug("loginManager " + this.toString() + " created");
 	}
 
 	/**
