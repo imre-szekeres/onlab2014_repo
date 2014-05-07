@@ -1,46 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<h:head>
-	<title>Workflow Manager - Workflows</title>
-</h:head>
-<h:body>
-	<h3>List of workflows</h3>
-	<h:form>
-      	<h:dataTable value="#{WorkflowManager.workflowList}" var="workflowList"
-         		styleClass="employeeTable"
-         		headerClass="employeeTableHeader"
-         		rowClasses="employeeTableOddRow,employeeTableEvenRow">
-        	<h:column>    				
-            	<f:facet name="header">Name</f:facet>    				
-           		<h:outputText value="#{workflowList.name}"></h:outputText>
-         	</h:column>
-         	<h:column>
-            	<f:facet name="header">Description</f:facet>
-            	<h:outputText value="#{workflowList.description}"></h:outputText>
-         	</h:column>
-      	</h:dataTable>
-   	
-   		<h3>Add Workflow</h3>
-      	<hr/>
-      	<table>
-      	<tr>
-        	<td>Name:</td>
-            <td><h:inputText size="15" value="#{WorkflowManager.name}" /></td>
-      	</tr>
-      	<tr>
-            <td>Description:</td>
-            <td><h:inputText size="50" value="#{WorkflowManager.description}" /></td>
-      	</tr>
-      	<tr>
-            <td> </td>
-            <td><h:commandButton value="Add Workflow" 
-               action="#{WorkflowManager.addWorkflow()}" /></td>
-      	</tr>
-      	</table>	 
-   	</h:form>
-</h:body>
+	<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
+		<ui:define name="content">
+			<h3>List of workflows</h3>
+			<h:form>
+		      	<h:dataTable value="#{workflowManager.workflowList}" var="workflow"
+		         		styleClass="workflowTable"
+		         		headerClass="workflowTableHeader"
+		         		rowClasses="workflowTableOddRow,workflowTableEvenRow">
+		        	<h:column>    				
+		            	<f:facet name="header">Name</f:facet>    				
+		           		<h:outputText value="#{workflow.name}"></h:outputText>
+		         	</h:column>
+		         	<h:column>
+		            	<f:facet name="header">Description</f:facet>
+		            	<h:outputText value="#{workflow.description}"></h:outputText>
+		         	</h:column>
+		         	<!-- TODO Has role -->
+		         	<h:column>
+		         		<f:facet name="header">Delete</f:facet>
+		               <h:commandButton value="Delete" action="#{workflowManager.deleteWorkflow(workflow)}">                
+		                 <!--<f:setPropertyActionListener target="#{workflowManager.workflow}" value="#{workflow}"/>-->
+		               </h:commandButton>
+		            </h:column>
+		      	</h:dataTable>
+		   	</h:form>
+		    <!-- TODO Has role -->
+		   	<ui:include src="add_workflow.xhtml" />
+		</ui:define>
+	</ui:composition>
 </html>

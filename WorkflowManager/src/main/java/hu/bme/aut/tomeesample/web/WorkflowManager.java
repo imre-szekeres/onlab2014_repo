@@ -5,8 +5,7 @@ import hu.bme.aut.tomeesample.service.WorkflowService;
 
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -14,12 +13,13 @@ import javax.inject.Named;
  * @author Gergely Várkonyi
  */
 @Named
-@ViewScoped
+@RequestScoped
 public class WorkflowManager {
 
 	@Inject
 	WorkflowService workflowService;
 	private List<Workflow> workflowList;
+	private Workflow workflow;
 
 	private String name = "Default Workflow";
 	private String description = "This is a default workflow.";
@@ -45,12 +45,22 @@ public class WorkflowManager {
 	 *            The name of the workflow
 	 * @param description
 	 *            The description of the workflow
-	 * @return The created workflow
 	 */
-	public Workflow addWorkflow() {
+	public String addWorkflow() {
 		Workflow newWorkflow = new Workflow(name, description);
 		workflowService.create(newWorkflow);
-		return newWorkflow;
+		return "workflows";
+	}
+
+	/**
+	 * Deletes the given workflow
+	 * 
+	 * @param workflow
+	 *            Workflow to delete
+	 */
+	public String deleteWorkflow(Workflow workflow) {
+		workflowService.removeDetached(workflow);
+		return "workflows";
 	}
 
 	public String getName() {
@@ -59,6 +69,14 @@ public class WorkflowManager {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public Workflow getWorkflow() {
+		return workflow;
+	}
+
+	public void setWorkflow(Workflow workflow) {
+		this.workflow = workflow;
 	}
 
 	public void setName(String name) {

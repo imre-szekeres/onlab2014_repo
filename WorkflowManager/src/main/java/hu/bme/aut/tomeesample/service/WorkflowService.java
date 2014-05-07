@@ -3,11 +3,16 @@
  */
 package hu.bme.aut.tomeesample.service;
 
-
 import hu.bme.aut.tomeesample.model.Workflow;
-import javax.persistence.*;
+
 import java.util.List;
-import javax.ejb.*;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 /**
  * @author Imre Szekeres
  * @version "%I%, %G%"
@@ -18,44 +23,50 @@ public class WorkflowService {
 
 	@PersistenceContext
 	EntityManager em;
-	
+
 	/**
 	 * Persists a newly created <code>Workflow</code>.
-	 *  
-	 * @param workflow the newly created worklow that is about to be persisted.
+	 * 
+	 * @param workflow
+	 *            the newly created worklow that is about to be persisted.
 	 * */
 	public void create(Workflow workflow) {
 		em.persist(workflow);
 	}
-	
-	public void update(Workflow workflow){
+
+	public void update(Workflow workflow) {
 		em.merge(workflow);
 	}
-	
-	public void remove(Workflow workflow){
+
+	public void remove(Workflow workflow) {
 		em.remove(workflow);
 	}
-	
-	public List<Workflow> findAll(){
+
+	public void removeDetached(Workflow workflow) {
+		Object managed = em.merge(workflow);
+		em.remove(managed);
+	}
+
+	public List<Workflow> findAll() {
 		return em.createNamedQuery("Workflow.findAll", Workflow.class).getResultList();
 	}
-	
-	public Workflow findById(Long id){
-		try{
+
+	public Workflow findById(Long id) {
+		try {
 			TypedQuery<Workflow> select = em.createNamedQuery("Workflow.findById", Workflow.class);
 			select.setParameter("id", id);
 			return select.getSingleResult();
-		}catch(Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 	}
-	
-	public Workflow findByName(String name){
-		try{
+
+	public Workflow findByName(String name) {
+		try {
 			TypedQuery<Workflow> select = em.createNamedQuery("Workflow.findByName", Workflow.class);
 			select.setParameter("name", name);
 			return select.getSingleResult();
-		}catch(Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 	}

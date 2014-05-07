@@ -1,0 +1,26 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+	<h:form>
+   		<h3>Add Workflow</h3>
+      	<table>
+      	<tr>
+        	<td>Name:</td>
+            <td><h:inputText size="15" value="#{workflowManager.name}" /></td>
+      	</tr>
+      	<tr>
+            <td>Description:</td>
+            <td><h:inputTextarea size="50" value="#{workflowManager.description}" /></td>
+      	</tr>
+      	<tr>
+            <td> </td>
+            <td><h:commandButton id="add_button" value="Add Workflow" 
+               action="#{workflowManager.addWorkflow}" /></td>
+      	</tr>
+      	</table>	 
+   	</h:form>
+   	
+</ui:composition>
