@@ -1,6 +1,33 @@
-2014-05-07/20:13:41.193/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@100fcb95 created
-2014-05-07/20:23:06.779/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@20459863 created
-2014-05-07/20:23:17.468/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@30722294 created
-2014-05-07/20:33:17.380/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@2579d884 created
-2014-05-07/20:57:04.255/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@1180d2a3 created
-2014-05-07/20:57:04.258/CESTDEBUGGET-newRole: hu.bme.aut.tomeesample.model.Role@1f
+2014-05-07/21:03:58.800/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@1ee3b538 created
+2014-05-07/21:03:58.841/CESTDEBUGGET-newRole: hu.bme.aut.tomeesample.model.Role@1f
+2014-05-07/21:03:58.859/CESTDEBUGin listRoles
+2014-05-07/21:03:59.026/CESTDEBUGlistRoles: [hu.bme.aut.tomeesample.model.Role@20]
+2014-05-07/21:03:59.049/CESTDEBUG[hu.bme.aut.tomeesample.model.Role@20]
+2014-05-07/21:04:24.328/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@5e21f34 created
+2014-05-07/21:04:24.328/CESTDEBUGin listRoles
+2014-05-07/21:04:24.347/CESTDEBUGlistRoles: [hu.bme.aut.tomeesample.model.Role@20]
+2014-05-07/21:04:24.350/CESTDEBUGGET-newRole: hu.bme.aut.tomeesample.model.Role@1f
+2014-05-07/21:04:24.356/CESTDEBUGvalidating: administrator
+2014-05-07/21:04:24.357/CESTDEBUGproxy=hu.bme.aut.tomeesample.service.RoleService;deployment=RoleService;pk=null
+2014-05-07/21:04:24.450/CESTDEBUGGET-newRole: hu.bme.aut.tomeesample.model.Role@1f
+2014-05-07/21:04:24.468/CESTDEBUGGET-newRole: hu.bme.aut.tomeesample.model.Role@1f
+2014-05-07/21:04:24.471/CESTDEBUGGET-newRole: hu.bme.aut.tomeesample.model.Role@1f
+2014-05-07/21:04:24.473/CESTDEBUGproxy=hu.bme.aut.tomeesample.service.RoleService;deployment=RoleService;pk=null
+2014-05-07/21:04:24.781/CESTDEBUGcreated new role: hu.bme.aut.tomeesample.model.Role@21
+2014-05-07/21:04:24.809/CESTDEBUGGET-newRole: hu.bme.aut.tomeesample.model.Role@21
+2014-05-07/21:04:24.811/CESTDEBUGin listRoles
+2014-05-07/21:04:24.811/CESTDEBUGlistRoles: [hu.bme.aut.tomeesample.model.Role@20]
+2014-05-07/21:04:24.813/CESTDEBUG[hu.bme.aut.tomeesample.model.Role@20]
+2014-05-07/21:04:44.927/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@3a2b52d7 created
+2014-05-07/21:04:44.928/CESTDEBUGin listRoles
+2014-05-07/21:04:44.933/CESTDEBUGlistRoles: [hu.bme.aut.tomeesample.model.Role@20, hu.bme.aut.tomeesample.model.Role@21]
+2014-05-07/21:04:44.980/CESTDEBUG[hu.bme.aut.tomeesample.model.Role@20, hu.bme.aut.tomeesample.model.Role@21]
+2014-05-07/21:04:45.777/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@2afaab39 created
+2014-05-07/21:04:45.778/CESTDEBUGGET-newRole: hu.bme.aut.tomeesample.model.Role@1f
+2014-05-07/21:04:45.779/CESTDEBUGin listRoles
+2014-05-07/21:04:45.787/CESTDEBUGlistRoles: [hu.bme.aut.tomeesample.model.Role@20, hu.bme.aut.tomeesample.model.Role@21]
+2014-05-07/21:04:45.790/CESTDEBUG[hu.bme.aut.tomeesample.model.Role@20, hu.bme.aut.tomeesample.model.Role@21]
+2014-05-07/21:04:47.744/CESTDEBUGroleManager hu.bme.aut.tomeesample.web.RoleManager@359717e5 created
+2014-05-07/21:04:47.745/CESTDEBUGin listRoles
+2014-05-07/21:04:47.752/CESTDEBUGlistRoles: [hu.bme.aut.tomeesample.model.Role@20, hu.bme.aut.tomeesample.model.Role@21]
+2014-05-07/21:04:47.766/CESTDEBUG[hu.bme.aut.tomeesample.model.Role@20, hu.bme.aut.tomeesample.model.Role@21]

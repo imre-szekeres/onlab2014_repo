@@ -10,7 +10,6 @@ import hu.bme.aut.tomeesample.service.UserService;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -50,20 +49,13 @@ public class LoginManager {
 		super();
 	}
 
-	@PostConstruct
-	public void init() {
-		logger.debug("loginManager " + this.toString() + " created");
-	}
-
 	/**
 	 * Fetches the users already registered/created into/in the application.
 	 *
 	 * @return a list of all the found users
 	 * */
 	public List<User> listUsers() {
-		List<User> all = userService.findAll();
-		logger.debug("listUsers: " + all.toString());
-		return all;
+		return this.userService.findAll();
 	}
 
 	/**
