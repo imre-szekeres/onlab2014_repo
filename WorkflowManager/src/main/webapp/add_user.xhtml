@@ -8,7 +8,8 @@
 	
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
 			<ui:define name="content">
-				<h:form id="add_uform">
+			
+				<h:form id="adduser_form" method='POST'>
 				    <h:panelGrid columns="1" cellspacing="1" cellpadding="2">
 				      <f:facet name="header">
 				        
@@ -26,34 +27,35 @@
 				      </f:facet>
 				      
 				      <h:message for="user_in" styleClass='error-message' />
-				      <h:outputLabel >Username: </h:outputLabel>
+				      <h:outputText value='Username:' />
     				  <h:inputText id="user_in" name="username" value="#{ loginManager.username }" 
                         validator='#{ loginManager.validateUsernameIn }' />
 				      
 				      <h:message for="pass_in" styleClass='error-message' />
-				      <h:outputLabel >Password: </h:outputLabel>
+				      <h:outputText value='Password:' />
 				      <h:inputSecret id="pass_in" name="password" value="#{ loginManager.password }" 
 				                validator='#{ loginManager.validatePasswordIn }' label='Password: ' />
 				      
 				      <h:message for="passa_in" styleClass='error-message' />
-                      <h:outputLabel >Password Again: </h:outputLabel>
+                      <h:outputText value='Password Again:' />
                       <h:inputSecret id="passa_in" name="passwordAgain" 
                              value="#{ loginManager.passwordAgain }" />
 				      
 				      <h:message for="email_in" styleClass='error-message' />
-				      <h:outputLabel >Email: </h:outputLabel>
+				      <h:outputText value='Email:' />
                       <h:inputText id="email_in" name="email" value="#{ loginManager.email }" 
                             validator='#{ loginManager.validateEmailIn }' label='Balance: '/>
 				      
 				      <h:message for='desc_in' styleClass='error-message' />
-				      <h:outputLabel >Description:</h:outputLabel>
+				      <h:outputText value='Description:' />
 				      <h:inputTextarea id='desc_in' name="description" value="#{ loginManager.description }" />
 				      
-				      <h:outputLabel >Role:</h:outputLabel>
-				      <h:inputText id='role_in' name='role' value='#{ loginManager.role }' />
-				      <h:commandButton action="#{loginManager.register}" value="#{ button_text }" id="login_button" />
+				      <h:outputText value='Role: ' />
+				      <h:inputText id='role_in' name='rolename' value='#{ loginManager.role }' />
+				      <h:commandButton action="#{ loginManager.register }" value="#{ button_text }" id="adduser_btn" />
 				    </h:panelGrid>
 				</h:form>
+				
 			</ui:define>
 	</ui:composition>
 
