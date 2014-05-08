@@ -140,6 +140,18 @@ public class UserService implements Serializable {
 	}
 
 	/**
+	 * Removes permanently a detached <code>User</code> by first replacing it
+	 * into the persistence context.
+	 * 
+	 * @param user
+	 *            to be removed permanently
+	 * */
+	public void removeDetached(User user) {
+		Object managed = em.merge(user);
+		em.remove(managed);
+	}
+
+	/**
 	 *
 	 * @return
 	 * */

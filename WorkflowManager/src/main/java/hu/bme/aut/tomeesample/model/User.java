@@ -77,18 +77,14 @@ public class User implements Serializable {
 	public User() {
 		super();
 		this.roles = new HashSet<Role>();
-		this.roles.add(new Role("visitor"));
 	}
 
 	public User(String username, String password, String email, Role role) {
-		this(username, password, email, "");
-		this.roles = new java.util.HashSet<>();
-		this.roles.add(role);
+		this(username, password, email, role, "");
 	}
 
 	public User(String username, String password, String email, Set<Role> roles) {
-		this(username, password, email, "");
-		this.roles = roles;
+		this(username, password, email, roles, "");
 	}
 
 	public User(String username, String password, String email, Role role, String description) {

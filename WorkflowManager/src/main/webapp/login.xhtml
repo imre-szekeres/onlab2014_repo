@@ -30,11 +30,11 @@
                     <h:panelGrid id='signin-panel' columns='1' cellspacing='2' cellpadding='0'>
                         <h:message for='username' styleClass='singin-error error-message' />
                         <h:message for='password' styleClass='singin-error error-message'  />
-                        <h:inputText   styleClass="user-input" id='username' name="username" value='#{loginManager.username}' 
+                        <h:inputText   styleClass="user-input" id='username' name="username" value='#{ loginManager.subject.username }' 
                                        validator='#{ loginManager.validateUsername }'></h:inputText>
-                        <h:inputSecret styleClass="user-input" id='password' name="password" value='#{loginManager.username}' 
+                        <h:inputSecret styleClass="user-input" id='password' name="password" value='#{ loginManager.subject.password }' 
                                        validator='#{ loginManager.validatePassword }'></h:inputSecret>
-                        <h:commandButton styleClass="user-input-button" action="#{loginManager.login}" value="Sign In"></h:commandButton>
+                        <h:commandButton styleClass="user-input-button" action="#{ loginManager.login }" value="Sign In"></h:commandButton>
                     </h:panelGrid>
                 </h:form>
             </div>

@@ -28,12 +28,12 @@
 				      
 				      <h:message for="user_in" styleClass='error-message' />
 				      <h:outputText value='Username:' />
-    				  <h:inputText id="user_in" name="username" value="#{ loginManager.username }" 
+    				  <h:inputText id="user_in" name="username" value="#{ loginManager.subject.username }" 
                         validator='#{ loginManager.validateUsernameIn }' />
 				      
 				      <h:message for="pass_in" styleClass='error-message' />
 				      <h:outputText value='Password:' />
-				      <h:inputSecret id="pass_in" name="password" value="#{ loginManager.password }" 
+				      <h:inputSecret id="pass_in" name="password" value="#{ loginManager.subject.password }" 
 				                validator='#{ loginManager.validatePasswordIn }' label='Password: ' />
 				      
 				      <h:message for="passa_in" styleClass='error-message' />
@@ -43,12 +43,12 @@
 				      
 				      <h:message for="email_in" styleClass='error-message' />
 				      <h:outputText value='Email:' />
-                      <h:inputText id="email_in" name="email" value="#{ loginManager.email }" 
+                      <h:inputText id="email_in" name="email" value="#{ loginManager.subject.email }" 
                             validator='#{ loginManager.validateEmailIn }' label='Balance: '/>
 				      
 				      <h:message for='desc_in' styleClass='error-message' />
 				      <h:outputText value='Description:' />
-				      <h:inputTextarea size='50' id='desc_in' name="description" value="#{ loginManager.description }" 
+				      <h:inputTextarea size='50' id='desc_in' name="description" value="#{ loginManager.subject.description }" 
 				                       validator='#{ loginManager.validateDescriptionIn }'/>
 				      
 				      <h:outputText value='Role: ' />
@@ -58,36 +58,44 @@
 				</h:form>
 				</div>
 				<br />
-				<div id='usrstable_div'>            
-                <h:dataTable value='#{ loginManager.listUsers() }' var='user' id='users_table'
-                             styleClass="cvf_table"
-                             headerClass='usrstable_th'
-                             rowClasses="usrstable_row" >
-                    <h:column>
-                        <f:facet name='header'>
-                            Username
-                        </f:facet>
-                        <h:outputText value='#{ user.username }' />
-                    </h:column>
-                    <h:column>
-                        <f:facet name='header'>
-                            Password
-                        </f:facet>
-                        <h:outputText value='#{ user.password }' />
-                    </h:column>
-                    <h:column>
-                        <f:facet name='header'>
-                            Balance
-                        </f:facet>
-                        <h:outputText value='#{ user.balance }' />
-                    </h:column>
-                    <h:column>
-                        <f:facet name='header'>
-                            Description
-                        </f:facet>
-                        <h:inputTextarea value='#{ user.description }' readonly='true' />
-                    </h:column>
-                </h:dataTable>
+				<div id='usrstable_div'>
+				<h:form>          
+	                <h:dataTable value='#{ loginManager.listUsers() }' var='user' id='users_table'
+	                             styleClass="cvf_table"
+	                             headerClass='usrstable_th'
+	                             rowClasses="usrstable_row" >
+	                    <h:column>
+	                        <f:facet name='header'>
+	                            Username
+	                        </f:facet>
+	                        <h:outputText value='#{ user.username }' />
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name='header'>
+	                            Password
+	                        </f:facet>
+	                        <h:outputText value='#{ user.password }' />
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name='header'>
+	                            Email
+	                        </f:facet>
+	                        <h:outputText value='#{ user.email }' />
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name='header'>
+	                            Description
+	                        </f:facet>
+	                        <h:inputTextarea value='#{ user.description }' readonly='true' />
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name='header'>
+	                            Delete
+	                        </f:facet>
+	                        <h:commandButton value='Delete' action='#{ loginManager.delete(user) }' />
+	                    </h:column>
+	                </h:dataTable>
+                </h:form>
                 </div>
 				
 			</ui:define>

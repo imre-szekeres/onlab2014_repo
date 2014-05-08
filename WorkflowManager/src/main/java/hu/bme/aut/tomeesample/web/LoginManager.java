@@ -10,6 +10,7 @@ import hu.bme.aut.tomeesample.service.UserService;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -35,18 +36,15 @@ public class LoginManager {
 	private UserService userService;
 	@Inject
 	private RoleService roleService;
-	private String description = "User description";
 
-	private User subject;
-
-	private String username = "Username";
-	private String password;
+	private User subject = new User();
 	private String passwordAgain;
-	private String email;
 	private String role;
 
-	public LoginManager() {
-		super();
+	@PostConstruct
+	public void init() {
+		this.subject.setUsername("Username");
+		this.subject.setDescription("Default description!");
 	}
 
 	/**
@@ -65,7 +63,7 @@ public class LoginManager {
 	 * */
 	public String addRoleFor() {
 		try {
-			User user = userService.findByName(username);
+			User user = userService.findByName(subject.getUsername());
 			Role uRole = roleService.findByName(role);
 			userService.addRoleFor(user, uRole);
 			logger.debug("user " + user.toString() + " and role " + uRole.toString() + " are created..");
@@ -83,8 +81,9 @@ public class LoginManager {
 	 * */
 	public String register() {
 		try {
+			// TODO: check whether the user added to the role is persisted!
 			Role uRole = roleService.findByName(role == null ? "visitor" : role);
-			this.subject = new User(username, password, email, uRole, description);
+			this.subject.add(uRole);
 			userService.create(this.subject);
 			logger.debug("user " + subject.getUsername() + " is created");
 			return login();
@@ -213,7 +212,7 @@ public class LoginManager {
 			throws ValidatorException {
 		if (!userService.validatePassword((String) value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password!", "invalid password!"));
-		this.password = (String) value;
+		this.subject.setPassword((String) value);
 	}
 
 	/**
@@ -233,7 +232,7 @@ public class LoginManager {
 	 * */
 	public void validatePasswordAgainIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validatePasswords(password, (String) value))
+		if (!userService.validatePasswords(this.subject.getPassword(), (String) value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "passwords do not match!", "passwords do not match!"));
 	}
 
@@ -281,6 +280,22 @@ public class LoginManager {
 	}
 
 	/**
+	 * Removes the specified <code>User</code> from the application.
+	 * 
+	 * @param user
+	 *            to be removed permanently
+	 * */
+	public String delete(User user) {
+		try {
+			userService.removeDetached(user);
+			logger.debug("in delte: " + user.toString() + " removed");
+		} catch (Exception e) {
+			logger.error("ERROR in delete: ", e);
+		}
+		return "add_user";
+	}
+
+	/**
 	 * @return the subject
 	 */
 	public User getSubject() {
@@ -293,36 +308,6 @@ public class LoginManager {
 	 */
 	public void setSubject(User subject) {
 		this.subject = subject;
-	}
-
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * @param username
-	 *            the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * @param password
-	 *            the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	/**
@@ -341,21 +326,6 @@ public class LoginManager {
 	}
 
 	/**
-	 * @return the balance
-	 */
-	public String getEmail() {
-		return email;
-	}
-
-	/**
-	 * @param balance
-	 *            the balance to set
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	/**
 	 * @return the role
 	 */
 	public String getRole() {
@@ -368,20 +338,5 @@ public class LoginManager {
 	 */
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description.trim();
 	}
 }
