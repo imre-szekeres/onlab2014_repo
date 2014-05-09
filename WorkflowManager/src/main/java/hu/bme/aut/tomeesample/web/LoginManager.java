@@ -161,6 +161,28 @@ public class LoginManager {
 	}
 
 	/**
+	 * Validates the submitted old password and if it differs from the one in
+	 * the session then the authentication fails with error message.
+	 *
+	 * @param context
+	 *            representing the current JSF context
+	 * @param component
+	 *            the <code>UIComponent</code> from which the given value came
+	 *            from
+	 * @param value
+	 *            that was submitted
+	 *
+	 * @throws ValidatorException
+	 *             when the submitted password value differs from the required
+	 * */
+	public void validateOldPassword(FacesContext context, UIComponent component, Object value)
+			throws ValidatorException {
+		User subject = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject");
+		if (!subject.getPassword().equals(value))
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid old password was given", "old password is invalid"));
+	}
+
+	/**
 	 * Checks whether the given password equals to the password registered in
 	 * the found user.
 	 *
@@ -277,6 +299,18 @@ public class LoginManager {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"description is too long! it msut be at most 1024 chars long!",
 					"description is too long! it msut be at most 1024 chars long!"));
+	}
+
+	/**
+	 * Updates the specified <code>User</code> from the application.
+	 * 
+	 * @param user
+	 *            to be updated
+	 * */
+	public String modify(User user) {
+		userService.update(user);
+		logger.debug("user " + user.getUsername() + " was updated..");
+		return "profile";
 	}
 
 	/**

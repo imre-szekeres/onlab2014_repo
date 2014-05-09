@@ -8,9 +8,10 @@
                 <h:form id="adduser_form" method='POST'>
                     <h:panelGrid columns="1" cellspacing="1" cellpadding="2">                      
                       <h:message for="user_in" styleClass='error-message' />
+                      
                       <h:outputText value='Username:' />
                       <h:inputText id="user_in" name="username" value="#{ loginManager.subject.username }" 
-                        validator='#{ loginManager.validateUsernameIn }' />
+                                   validator='#{ loginManager.validateUsernameIn }'  />
                       
                       <h:message for="pass_in" styleClass='error-message' />
                       <h:outputText value='Password:' />
@@ -25,7 +26,7 @@
                       <h:message for="email_in" styleClass='error-message' />
                       <h:outputText value='Email:' />
                       <h:inputText id="email_in" name="email" value="#{ loginManager.subject.email }" 
-                            validator='#{ loginManager.validateEmailIn }' label='Balance: '/>
+                                   validator='#{ loginManager.validateEmailIn }' />
                       
                       <h:message for='desc_in' styleClass='error-message' />
                       <h:outputText value='Description:' />

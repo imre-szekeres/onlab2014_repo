@@ -8,8 +8,8 @@
 	
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
 	       <ui:define name='content_title'>
-	           <h:outputText rendered="#{ sessionScope.subject != null and sessionScope.subject.hasRole('administrator') }" value='Create User' />
-	           <h:outputText rendered="#{ sessionScope.subject == null }" value='Register' />
+	           <h:outputText rendered="#{ sessionScope.subject ne null and sessionScope.subject.hasRole('administrator') }" value='Create User' />
+	           <h:outputText rendered="#{ sessionScope.subject eq null }" value='Register' />
 	       </ui:define>
 			<ui:define name="content">
                 <ui:include src="/user_form.xhtml" />

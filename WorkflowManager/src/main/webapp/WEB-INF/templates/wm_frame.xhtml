@@ -28,7 +28,9 @@
             <h:form>
                 <ul id='unavbar'>
                     <li>
-                        <h:commandLink styleClass='menu-item' action='login'><span>Sign In</span></h:commandLink>
+                        <c:if test='#{ sessionScope.subject eq null }' >
+                            <h:commandLink styleClass='menu-item' action='login'><span>Sign In</span></h:commandLink>
+                        </c:if>
                     </li>
                     <li>
                         <h:commandLink styleClass='menu-item' action='add_user'>
@@ -36,9 +38,11 @@
                         </h:commandLink>
                     </li>
                     <li>
-                        <h:commandLink styleClass='menu-item' action='profile'>
-                            <span>Profile</span>
-                        </h:commandLink>
+                        <c:if test='#{ sessionScope.subject ne null }' >
+                            <h:commandLink styleClass='menu-item' action='profile'>
+                                <span>Profile</span>
+                            </h:commandLink>
+                        </c:if>
                     </li>
                     <li>
                         <h:commandLink styleClass='menu-item' action='add_role'>
@@ -51,9 +55,11 @@
                         </h:commandLink>
                     </li>
                     <li>
-                        <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'>
-                            <span>Sign out</span>
-                        </h:commandLink>
+                        <c:if test='#{ sessionScope.subject ne null }' >
+                            <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'>
+                                <span>Sign out</span>
+                            </h:commandLink>
+                        </c:if>
                     </li>
                 </ul>
             </h:form>
