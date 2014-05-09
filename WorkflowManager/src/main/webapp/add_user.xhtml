@@ -7,96 +7,14 @@
 
 	
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
+	       <ui:define name='content_title'>
+	           <h:outputText rendered="#{ sessionScope.subject != null and sessionScope.subject.hasRole('administrator') }" value='Create User' />
+	           <h:outputText rendered="#{ sessionScope.subject == null }" value='Register' />
+	       </ui:define>
 			<ui:define name="content">
-                <div>			
-				<h:form id="adduser_form" method='POST'>
-				    <h:panelGrid columns="1" cellspacing="1" cellpadding="2">
-				      <f:facet name="header">
-				        
-				        <c:choose>
-				          <c:when test="#{ sessionScope['subject'].hasRole('administrator') }">
-				            <h:outputText value="Create User" />
-				            <c:set var="button_text" value="Create User"></c:set>
-				          </c:when>
-				          <c:otherwise>
-				            <h:outputText value="Register Form" />
-				            <c:set var="button_text" value="Register"></c:set>
-				          </c:otherwise>
-				        </c:choose>
-				        
-				      </f:facet>
-				      
-				      <h:message for="user_in" styleClass='error-message' />
-				      <h:outputText value='Username:' />
-    				  <h:inputText id="user_in" name="username" value="#{ loginManager.subject.username }" 
-                        validator='#{ loginManager.validateUsernameIn }' />
-				      
-				      <h:message for="pass_in" styleClass='error-message' />
-				      <h:outputText value='Password:' />
-				      <h:inputSecret id="pass_in" name="password" value="#{ loginManager.subject.password }" 
-				                validator='#{ loginManager.validatePasswordIn }' label='Password: ' />
-				      
-				      <h:message for="passa_in" styleClass='error-message' />
-                      <h:outputText value='Password Again:' />
-                      <h:inputSecret id="passa_in" name="passwordAgain" 
-                             value="#{ loginManager.passwordAgain }" />
-				      
-				      <h:message for="email_in" styleClass='error-message' />
-				      <h:outputText value='Email:' />
-                      <h:inputText id="email_in" name="email" value="#{ loginManager.subject.email }" 
-                            validator='#{ loginManager.validateEmailIn }' label='Balance: '/>
-				      
-				      <h:message for='desc_in' styleClass='error-message' />
-				      <h:outputText value='Description:' />
-				      <h:inputTextarea size='50' id='desc_in' name="description" value="#{ loginManager.subject.description }" 
-				                       validator='#{ loginManager.validateDescriptionIn }'/>
-				      
-				      <h:outputText value='Role: ' />
-				      <h:inputText id='role_in' name='rolename' value='#{ loginManager.role }' />
-				      <h:commandButton action="#{ loginManager.register }" value="#{ button_text }" id="adduser_btn" />
-				    </h:panelGrid>
-				</h:form>
-				</div>
+                <ui:include src="/user_form.xhtml" />
 				<br />
-				<div id='usrstable_div'>
-				<h:form>          
-	                <h:dataTable value='#{ loginManager.listUsers() }' var='user' id='users_table'
-	                             styleClass="cvf_table"
-	                             headerClass='usrstable_th'
-	                             rowClasses="usrstable_row" >
-	                    <h:column>
-	                        <f:facet name='header'>
-	                            Username
-	                        </f:facet>
-	                        <h:outputText value='#{ user.username }' />
-	                    </h:column>
-	                    <h:column>
-	                        <f:facet name='header'>
-	                            Password
-	                        </f:facet>
-	                        <h:outputText value='#{ user.password }' />
-	                    </h:column>
-	                    <h:column>
-	                        <f:facet name='header'>
-	                            Email
-	                        </f:facet>
-	                        <h:outputText value='#{ user.email }' />
-	                    </h:column>
-	                    <h:column>
-	                        <f:facet name='header'>
-	                            Description
-	                        </f:facet>
-	                        <h:inputTextarea value='#{ user.description }' readonly='true' />
-	                    </h:column>
-	                    <h:column>
-	                        <f:facet name='header'>
-	                            Delete
-	                        </f:facet>
-	                        <h:commandButton value='Delete' action='#{ loginManager.delete(user) }' />
-	                    </h:column>
-	                </h:dataTable>
-                </h:form>
-                </div>
+				<ui:include src="/users.xhtml" />
 				
 			</ui:define>
 	</ui:composition>

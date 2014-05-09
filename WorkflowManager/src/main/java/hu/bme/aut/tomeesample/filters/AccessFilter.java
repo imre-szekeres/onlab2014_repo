@@ -3,8 +3,6 @@
  * */
 package hu.bme.aut.tomeesample.filters;
 
-import hu.bme.aut.tomeesample.model.User;
-
 import java.io.IOException;
 
 import javax.servlet.DispatcherType;
@@ -51,11 +49,9 @@ public class AccessFilter implements Filter {
 	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		if (httpRequest.getSession().getAttribute("subject") == null)
-			httpRequest.getSession().setAttribute("subject", new User());
 		// TODO: if user is not authorised to access several pages then redirect
-		// to index.xhtml
+		// to login.xhtml
+		System.out.println(((HttpServletRequest) request).getRequestURI());
 		chain.doFilter(request, response);
 	}
 

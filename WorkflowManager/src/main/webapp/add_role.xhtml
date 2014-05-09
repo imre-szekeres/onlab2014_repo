@@ -24,34 +24,7 @@
                
 	       </div>
 	       <hr />
-	       
-	       <div id='rolestable_div'>         
-	            <h:form >
-                <h:dataTable value='#{ roleManager.listRoles() }' var='role' id='roles_table'
-                             styleClass="cvf_table"
-                             headerClass='rolestable_th'
-                             rowClasses="rolestable_row" >
-                    <h:column>
-                        <f:facet name='header'>
-                            RoleID
-                        </f:facet>
-                        <h:outputText value='#{ role.id }' />
-                    </h:column>
-                    <h:column>
-                        <f:facet name='header'>
-                            RoleName
-                        </f:facet>
-                        <h:outputText value='#{ role.name }' />
-                    </h:column>
-                    <h:column>
-                        <f:facet name='header'>
-                            Delete
-                        </f:facet>
-                        <h:commandButton action='#{ roleManager.delete( role ) }' value='Delete' />
-                    </h:column>
-                </h:dataTable>
-                </h:form>
-          </div>
+	       <ui:include src="/roles.xhtml" />
           
 	   </ui:define>
 	</ui:composition>

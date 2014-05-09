@@ -1,0 +1,46 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html">
+
+                <div id='usrstable_div'>
+                <h:form id='usrstable_form'>          
+                    <h:dataTable value='#{ loginManager.listUsers() }' var='user' id='users_table'
+                                 styleClass="cvf_table"
+                                 headerClass='usrstable_th'
+                                 rowClasses="usrstable_row" >
+                        <h:column>
+                            <f:facet name='header'>
+                                Username
+                            </f:facet>
+                            <h:outputText value='#{ user.username }' />
+                        </h:column>
+                        <h:column>
+                            <f:facet name='header'>
+                                Password
+                            </f:facet>
+                            <h:outputText value='#{ user.password }' />
+                        </h:column>
+                        <h:column>
+                            <f:facet name='header'>
+                                Email
+                            </f:facet>
+                            <h:outputText value='#{ user.email }' />
+                        </h:column>
+                        <h:column>
+                            <f:facet name='header'>
+                                Description
+                            </f:facet>
+                            <h:inputTextarea value='#{ user.description }' readonly='true' />
+                        </h:column>
+                        <h:column>
+                            <f:facet name='header'>
+                                Delete
+                            </f:facet>
+                            <h:commandButton value='Delete' action='#{ loginManager.delete(user) }' />
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+                </div>
+</ui:composition>

@@ -246,6 +246,12 @@
     left: 50%;
 }
 
+#usrstable_form {
+    position: relative;
+    width: 100%;
+    left: -350px;
+}
+
 #users_table {
     position: relative;
     width:  100%;

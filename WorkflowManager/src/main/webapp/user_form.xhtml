@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                    xmlns:ui="http://java.sun.com/jsf/facelets"
+                    xmlns:f="http://java.sun.com/jsf/core"
+                    xmlns:h="http://java.sun.com/jsf/html"
+                    xmlns:c='http://java.sun.com/jsp/jstl/core'>
+                    
+	            <div>          
+                <h:form id="adduser_form" method='POST'>
+                    <h:panelGrid columns="1" cellspacing="1" cellpadding="2">                      
+                      <h:message for="user_in" styleClass='error-message' />
+                      <h:outputText value='Username:' />
+                      <h:inputText id="user_in" name="username" value="#{ loginManager.subject.username }" 
+                        validator='#{ loginManager.validateUsernameIn }' />
+                      
+                      <h:message for="pass_in" styleClass='error-message' />
+                      <h:outputText value='Password:' />
+                      <h:inputSecret id="pass_in" name="password" value="#{ loginManager.subject.password }" 
+                                validator='#{ loginManager.validatePasswordIn }' label='Password: ' />
+                      
+                      <h:message for="passa_in" styleClass='error-message' />
+                      <h:outputText value='Password Again:' />
+                      <h:inputSecret id="passa_in" name="passwordAgain" 
+                             value="#{ loginManager.passwordAgain }" />
+                      
+                      <h:message for="email_in" styleClass='error-message' />
+                      <h:outputText value='Email:' />
+                      <h:inputText id="email_in" name="email" value="#{ loginManager.subject.email }" 
+                            validator='#{ loginManager.validateEmailIn }' label='Balance: '/>
+                      
+                      <h:message for='desc_in' styleClass='error-message' />
+                      <h:outputText value='Description:' />
+                      <h:inputTextarea size='50' id='desc_in' name="description" value="#{ loginManager.subject.description }" 
+                                       validator='#{ loginManager.validateDescriptionIn }'/>
+                      
+                      <h:outputText value='Role: ' />
+                      <h:inputText id='role_in' name='rolename' value='#{ loginManager.role }' />
+                      <h:commandButton action="#{ loginManager.register }" value="#{ button_text }" id="adduser_btn" />
+                    </h:panelGrid>
+                </h:form>
+                </div>
+</ui:composition>

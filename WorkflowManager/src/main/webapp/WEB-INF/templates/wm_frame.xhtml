@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:h="http://java.sun.com/jsf/html" 
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c='http://java.sun.com/jsp/jstl/core'>
 
     <h:head>
         <title>
@@ -30,16 +31,29 @@
                         <h:commandLink styleClass='menu-item' action='login'><span>Sign In</span></h:commandLink>
                     </li>
                     <li>
-                        <h:commandLink styleClass='menu-item' action='add_user'><span>Register</span></h:commandLink>
+                        <h:commandLink styleClass='menu-item' action='add_user'>
+                            <span>Users</span>
+                        </h:commandLink>
                     </li>
                     <li>
-                        <h:commandLink styleClass='menu-item' action='profile'><span>Profile</span></h:commandLink>
+                        <h:commandLink styleClass='menu-item' action='profile'>
+                            <span>Profile</span>
+                        </h:commandLink>
                     </li>
                     <li>
-                        <h:commandLink styleClass='menu-item' action='add_role'><span>Create Role</span></h:commandLink>
+                        <h:commandLink styleClass='menu-item' action='add_role'>
+                            <span>Roles</span>
+                        </h:commandLink>
                     </li>
                     <li>
-                        <h:commandLink styleClass='menu-item' action='workflows'><span>Workflows</span></h:commandLink>
+                        <h:commandLink styleClass='menu-item' action='workflows'>
+                            <span>Workflows</span>
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'>
+                            <span>Sign out</span>
+                        </h:commandLink>
                     </li>
                 </ul>
             </h:form>

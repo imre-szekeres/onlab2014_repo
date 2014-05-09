@@ -111,7 +111,7 @@ public class LoginManager {
 	}
 
 	public String logout() {
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("subject", new User());
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("subject", null);
 		return "index";
 	}
 
