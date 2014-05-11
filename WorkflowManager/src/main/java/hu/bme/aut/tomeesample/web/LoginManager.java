@@ -283,8 +283,12 @@ public class LoginManager {
 	 *             only if the given password differs
 	 * */
 	private void checkPassword(String password) throws ValidatorException {
-		if (!subject.getPassword().equals(password))
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password", "invalid password"));
+		try {
+			if (!subject.getPassword().equals(password))
+				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password", "invalid password"));
+		} catch (Exception e) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password", "invalid password"), e);
+		}
 	}
 
 	/**
