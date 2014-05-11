@@ -1,33 +1,21 @@
-2014-05-11/17:00:08.728/CESTDEBUGin init with loginManager: LoginManager@e5d0d79
-2014-05-11/17:00:08.762/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:00:08.763/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:00:23.268/CESTDEBUGin init with loginManager: LoginManager@2ec2bc58
-2014-05-11/17:00:23.270/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:00:23.270/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:01:52.922/CESTDEBUGin init with loginManager: LoginManager@3ad7880c
-2014-05-11/17:01:52.923/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:01:52.923/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:04:16.642/CESTDEBUGin init with loginManager: LoginManager@634d6f81
-2014-05-11/17:04:16.643/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:04:16.643/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:04:32.005/CESTDEBUGin init with loginManager: LoginManager@31595d4d
-2014-05-11/17:04:32.007/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:04:32.007/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:04:47.136/CESTDEBUGin init with loginManager: LoginManager@5e624fc9
-2014-05-11/17:04:47.137/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:04:47.137/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:04:59.634/CESTDEBUGin init with loginManager: LoginManager@67550126
-2014-05-11/17:04:59.635/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:04:59.635/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:05:06.504/CESTDEBUGin init with loginManager: LoginManager@25a6e6
-2014-05-11/17:05:06.504/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:05:06.505/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:05:27.461/CESTDEBUGin init with loginManager: LoginManager@c28c9a0
-2014-05-11/17:05:27.461/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:05:27.462/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:05:46.746/CESTDEBUGin init with loginManager: LoginManager@39d53a81
-2014-05-11/17:05:46.747/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:05:46.748/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
-2014-05-11/17:05:58.199/CESTDEBUGin init with loginManager: LoginManager@69ba42ae
-2014-05-11/17:05:58.199/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@26
-2014-05-11/17:05:58.199/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-11/18:09:55.591/CESTDEBUGin init with loginManager: LoginManager@145f7161
+2014-05-11/18:09:55.594/CESTDEBUG	and session.user as null
+2014-05-11/18:09:55.595/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-11/18:10:09.251/CESTDEBUGin init with loginManager: LoginManager@28c37e73
+2014-05-11/18:10:09.252/CESTDEBUG	and session.user as null
+2014-05-11/18:10:09.252/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-11/18:10:14.013/CESTDEBUGuser <hu.bme.aut.tomeesample.model.User@26> is found
+2014-05-11/18:10:14.124/CESTDEBUGpassword <sudummy> equals to the users
+2014-05-11/18:10:14.136/CESTDEBUGuser sudummy is logged in
+2014-05-11/18:10:14.138/CESTDEBUG
+loginManager: LoginManager@28c37e73
+2014-05-11/18:10:14.139/CESTDEBUGuser: hu.bme.aut.tomeesample.model.User@26
+2014-05-11/18:10:14.140/CESTDEBUGprops:
+Username: sudummy
+Password: sudummy
+Email: sudummy0@su.dummy.com
+Description: sususuduuummmyy.sususuduuummmyy.
+Roles: [administrator]
+Comments: null
+ProjectAssignments: null
+
