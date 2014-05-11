@@ -24,43 +24,40 @@
                 </h:form>
             </span>
         </div>
+        
         <div id='unavbar_div' class='container'>
             <h:form>
                 <ul id='unavbar'>
-                    <li>
-                        <c:if test='#{ sessionScope.subject eq null }' >
-                            <h:commandLink styleClass='menu-item' action='login'><span>Sign In</span></h:commandLink>
-                        </c:if>
-                    </li>
-                    <li>
-                        <h:commandLink styleClass='menu-item' action='add_user'>
-                            <span>Users</span>
-                        </h:commandLink>
-                    </li>
-                    <li>
-                        <c:if test='#{ sessionScope.subject ne null }' >
-                            <h:commandLink styleClass='menu-item' action='profile'>
-                                <span>Profile</span>
-                            </h:commandLink>
-                        </c:if>
-                    </li>
-                    <li>
-                        <h:commandLink styleClass='menu-item' action='add_role'>
-                            <span>Roles</span>
-                        </h:commandLink>
-                    </li>
-                    <li>
-                        <h:commandLink styleClass='menu-item' action='workflows'>
-                            <span>Workflows</span>
-                        </h:commandLink>
-                    </li>
-                    <li>
-                        <c:if test='#{ sessionScope.subject ne null }' >
-                            <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'>
-                                <span>Sign out</span>
-                            </h:commandLink>
-                        </c:if>
-                    </li>
+                    <c:choose>
+                        <c:when test='#{ sessionScope.subject eq null }'>
+                            <li>
+                                <h:commandLink styleClass='menu-item' action='login'><span>Sign In</span></h:commandLink>
+                            </li>
+                            <li>
+                                <h:commandLink styleClass='menu-item' action='add_user'><span>Register</span></h:commandLink>
+                            </li>
+                        </c:when>
+                    
+                        <c:otherwise>
+                            <li>
+	                            <h:commandLink styleClass='menu-item' action='profile'><span>Profile</span></h:commandLink>
+	                        </li>
+	                        <li>
+	                            <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
+	                        </li>
+                        </c:otherwise>                       
+                    </c:choose>
+                    <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'administrator' ) }">
+                        <li>
+                            <h:commandLink styleClass='menu-item' action='add_user'><span>Users</span></h:commandLink>
+                        </li>
+                        <li>
+                            <h:commandLink styleClass='menu-item' action='add_role'><span>Roles</span></h:commandLink>
+                        </li>
+                        <li>
+                            <h:commandLink styleClass='menu-item' action='workflows'><span>Workflows</span></h:commandLink>
+                        </li>
+                    </c:if>
                 </ul>
             </h:form>
         </div>
@@ -73,6 +70,13 @@
             </div>
             
             <div id='content_div'>
+                
+                <c:if test='#{ not empty facesContext.messageList }' >
+	                <div id='global-messages-container'>
+	                    <h:messages id='global-messages' globalOnly='true' ></h:messages>
+	                </div>
+	            </c:if>
+                
                 <ui:insert name='content'>
                     <p>
                         Welcome to WorkflowManager!
@@ -93,5 +97,13 @@
                  </h5>    
             </div>
         </div>
+        
+        <h:outputScript>
+            var $_gmsgs = $("#global-messages-container");
+            
+            $_gmsgs.click(function() {
+                $_gmsgs.slideUp(1500);
+            }).hide().slideDown(1600);
+        </h:outputScript>
     </h:body>
 </html>

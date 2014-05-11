@@ -41,7 +41,6 @@ import javax.validation.constraints.Size;
 				+ "WHERE u.username=:username"),
 })
 @Table(name = "WM_USER")
-// just in case table User already exists...
 public class User implements Serializable {
 
 	@Id
@@ -89,7 +88,7 @@ public class User implements Serializable {
 
 	public User(String username, String password, String email, Role role, String description) {
 		this(username, password, email, description);
-		this.roles = new java.util.HashSet<>();
+		this.roles = new java.util.HashSet<Role>();
 		this.roles.add(role);
 	}
 
@@ -104,8 +103,8 @@ public class User implements Serializable {
 		this.password = password;
 		this.email = email;
 		this.description = description;
-		this.comments = new ArrayList<>();
-		this.projectAssignments = new java.util.HashSet<>();
+		this.comments = new ArrayList<Comment>();
+		this.projectAssignments = new java.util.HashSet<ProjectAssignment>();
 	}
 
 	public Long getId() {
@@ -175,6 +174,14 @@ public class User implements Serializable {
 	public void setProjectAssignments(Set<ProjectAssignment>
 			projectAssignments) {
 		this.projectAssignments = projectAssignments;
+	}
+
+	/**
+	 * @param comments
+	 *            the comments to set
+	 */
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	public boolean remove(Comment comment) {

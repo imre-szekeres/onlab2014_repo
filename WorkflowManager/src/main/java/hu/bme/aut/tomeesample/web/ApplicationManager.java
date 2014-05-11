@@ -5,6 +5,7 @@ package hu.bme.aut.tomeesample.web;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
@@ -26,7 +27,7 @@ public class ApplicationManager implements java.io.Serializable {
 	@PostConstruct
 	public void init() {
 		PropertyConfigurator.configure(LOG_PROPERTIES);
-
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("subject", null);
 		logger.debug("logger configured..");
 	}
 

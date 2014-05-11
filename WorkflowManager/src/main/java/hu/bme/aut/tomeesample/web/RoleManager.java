@@ -4,10 +4,13 @@
 package hu.bme.aut.tomeesample.web;
 
 import hu.bme.aut.tomeesample.model.Role;
+import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.service.RoleService;
 
 import java.util.List;
+import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -31,10 +34,22 @@ public class RoleManager {
 
 	@Inject
 	private RoleService roleService;
-	private Role newRole = new Role();
+	private Role newRole;
 
-	public RoleManager() {
-		super();
+	@PostConstruct
+	public void init() {
+		newRole = new Role();
+	}
+
+	/**
+	 * Navigates to the profile page of the specified <code>Role</code>.
+	 * 
+	 * @param role
+	 * @return the page id of the profile page
+	 * */
+	public String profileOf(Role role) {
+		newRole = role;
+		return "role_profile";
 	}
 
 	/**
@@ -81,6 +96,16 @@ public class RoleManager {
 			throws ValidatorException {
 		if (!roleService.validateName(((String) value).trim()))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "role name already exists", "role name already exists"));
+	}
+
+	/**
+	 * 
+	 * 
+	 * @return a list of <code>User</code> assigned to the given
+	 *         <code>Role</code>
+	 * */
+	public Set<User> listUsersFor(Role role) {
+		return roleService.findUsersBy(role.getId());
 	}
 
 	/**

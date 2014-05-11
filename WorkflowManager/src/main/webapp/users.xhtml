@@ -4,12 +4,9 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html">
 
-                <div id='usrstable_div'>
-                <h:form id='usrstable_form'>          
-                    <h:dataTable value='#{ loginManager.listUsers() }' var='user' id='users_table'
-                                 styleClass="cvf_table"
-                                 headerClass='usrstable_th'
-                                 rowClasses="usrstable_row" >
+                <div id='usrstable-div'>
+                <h:form id='usrstable-form'>          
+                    <h:dataTable value='#{ loginManager.listUsers() }' var='user' >
                         <h:column>
                             <f:facet name='header'>
                                 Username

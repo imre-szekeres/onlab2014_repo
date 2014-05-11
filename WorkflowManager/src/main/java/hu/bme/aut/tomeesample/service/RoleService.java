@@ -4,9 +4,11 @@
 package hu.bme.aut.tomeesample.service;
 
 import hu.bme.aut.tomeesample.model.Role;
+import hu.bme.aut.tomeesample.model.User;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
@@ -119,7 +121,16 @@ public class RoleService implements Serializable {
 	}
 
 	/**
-	 * @return
+	 * 
+	 * @param roleId
+	 * @return a set or users owning the specified role
+	 * */
+	public Set<User> findUsersBy(Long roleId) {
+		return em.find(Role.class, roleId).getUsers();
+	}
+
+	/**
+	 * @return the role names available
 	 * */
 	public String[] findRoleNames() {
 		return em.createQuery("SELECT r.name FROM Role r", String[].class).getResultList().toArray(new String[0]);

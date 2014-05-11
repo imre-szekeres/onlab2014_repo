@@ -19,7 +19,7 @@
                         <f:facet name='header'>
                             Role Name
                         </f:facet>
-                        <h:outputText value='#{ role.name }' />
+                        <h:commandLink value='#{ role.name }' action='#{ roleManager.profileOf( role ) }'></h:commandLink>
                     </h:column>
                     <h:column>
                         <f:facet name='header'>

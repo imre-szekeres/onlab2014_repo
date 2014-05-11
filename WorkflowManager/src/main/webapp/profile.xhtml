@@ -2,52 +2,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:c='http://java.sun.com/jstl/core'>
+      xmlns:h="http://java.sun.com/jsf/html">
 
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml">
+	
 	   <ui:define name='content_title'>
 	       #{ sessionScope.subject.username }
 	   </ui:define>
-	   <ui:define name='content'>
 	   
+	   <ui:define name='content'>
+	       #{ loginManager.profileSetup() }
 	       <h:form id='pro-form' prependId="false" >
-		       <h:panelGrid columns='1'  cellspacing='1' cellpadding='2' id='profile-grid' >
-		           <h:panelGrid columns='2'>
+		       <h:inputHidden value='#{ loginManager.subjectId }' immediate='true' id='sudject-in' />
+		       
+		       <h:panelGrid columns='1'  cellspacing='1' cellpadding='2' id='profile-grid'  >
+		           
+		           <h:message for='username' styleClass='error-message profile-grid' />
+		           <h:panelGrid columns='2' styleClass='profile-grid' >
 		               <h:outputText value='Username: ' />
-	                   <h:inputText value='#{ loginManager.subject.username }' name='username' disabled="true"
-	                            validator='#{ loginManager.validateUsernameIn }'  />
+	                   <h:outputText value='#{ loginManager.username }' name='username' id='username' />
 		           </h:panelGrid>
 		           
-		           <div id='chpass-panel-div'>
-		           <h:panelGrid columns='2' id='chpass-panel' >
+		           <h:message for='old_password' styleClass='error-message profile-grid' />
+		           <h:message for='new_password' styleClass='error-message profile-grid' />
+		           <h:panelGrid columns='2' id='chpass-panel' styleClass='profile-grid' >
 		               <h:outputText value='Old Password: ' />
-	                   <h:inputSecret value='#{ loginManager.subject.password }' name='old_password' disabled="true"
+	                   <h:inputSecret value='#{ loginManager.oldPassword }' name='old_password' id='old_password' 
 	                            validator='#{ loginManager.validateOldPassword }'  />
 		               
 		               <h:outputText value='New Password: ' />
-	                   <h:inputSecret value='#{ loginManager.subject.password }' name='new_password' disabled="true"
-	                            validator='#{ loginManager.validatePasswordIn }'  />
-	                      
+	                   <h:inputSecret value='#{ loginManager.newPassword }' name='new_password' id='new_password' 
+	                            validator='#{ loginManager.validateNewPassword }'  />   
 		           </h:panelGrid>
-		           </div>
 		           
-		           <h:panelGrid columns='2'>
+		           <h:message for='email'       styleClass='error-message profile-grid' />
+		           <h:message for='description' styleClass='error-message profile-grid' />
+		           <h:panelGrid columns='2' styleClass='profile-grid'>
 		               <h:outputText value='Email: ' />
-		               <h:inputText value='#{ sessionScope.subject.email }' name='email' disabled="true"  id='email-in'
+		               <h:inputText value='#{ loginManager.email }' name='email' id='email' 
 		                            validator='#{ loginManager.validateEmailIn }'/>
 		               
 		               <h:outputText value='Description: ' />
-		               <h:inputTextarea value='#{ sessionScope.subject.description }' name='description' disabled="true" size='50'
-	                                validator='#{ loginManager.validateDescriptionIn }' />
+		               <h:inputTextarea value='#{ loginManager.description }' name='description' id='description' 
+	                                    validator='#{ loginManager.validateDescriptionIn }' size='100' />
 		           </h:panelGrid>
 		           
-	               <h:panelGrid columns='2' id='submit-panel'>
-	                   <h:commandButton action='#{ loginManager.modify(sessionScope.subject) }' value='Submit' id='submit-btn' />
+	               <h:panelGrid columns='2' id='submit-panel' styleClass='profile-grid'>
+	                   <h:commandButton type='submit' value='Submit' id='submit-btn' action='#{ loginManager.modify }' />
 	                   <h:commandButton type='button' value='Cancel' id='cancel-btn' />
 	               </h:panelGrid>
 	               
-	               <h:panelGrid columns='2' id='modif-panel'>
+	               <h:panelGrid columns='2' id='modif-panel' styleClass='profile-grid'>
 		               <h:commandButton type="button" id='modify-btn' styleClass='cvf-btn' style='width:100%;' value='Modify'></h:commandButton>
 		               <h:commandButton type='button' id='chpass-btn' styleClass='cvf-btn' style='width:100%;' value='Change Password'></h:commandButton>               
 	               </h:panelGrid>
@@ -67,8 +72,8 @@
 	           var chpass_pnl = $("#chpass-panel");
 	           var modif_pnl  = $("#modif-panel");
 	       
-	           function onCancel() {
-	               $("input[type!='button'],textarea").prop( 'disabled',true );
+	           function onCancel( event ) {
+	               $("input[type!='button'][type!='submit'],textarea").prop( 'disabled',true );
 	               chpass_pnl.hide();
                    submit_pnl.hide();
                    modif_pnl.show();
@@ -76,7 +81,6 @@
 	       
 	           function startPassChange() {
 	               $("input[type='password']").prop( 'disabled',false );
-	               $("#submit-btn").prop( 'disabled',false );
 	               modif_pnl.hide();
                    chpass_pnl.show();
                    submit_pnl.show();
@@ -92,7 +96,9 @@
 	           $("#modify-btn").click( startModify );
 	           $("#chpass-btn").click( startPassChange );
 	           $("#cancel-btn").click( onCancel );
+	           $('#subject-in').hide();
 	       </h:outputScript>
 	   </ui:define>
+	   
 	</ui:composition>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:composition template="WEB-INF/templates/wm_frame.xhtml">
+	   <ui:define name='content_title'>
+	       #{ roleManager.newRole.name } Details
+	   </ui:define>
+	   
+	   <ui:define name='content'>
+	       
+	       <h:panelGrid columns='1' id='role-profile-grid'>
+	       
+	           <h:panelGrid columns='2'>
+	               <h:outputText value='Role Name: ' />
+	               <h:outputText value='#{ roleManager.newRole.name }' />
+	               
+	               <h:outputText value='Role ID: ' />
+	               <h:outputText value='#{ roleManager.newRole.id }' />
+	           </h:panelGrid>
+	           <br />
+	           
+	           <h:dataTable value='#{roleManager.listUsersFor( roleManager.newRole )}' var='user' >
+	               <h:column>
+	                   <f:facet name='header'>
+	                       Username
+	                   </f:facet>
+	                   <h:outputText value='#{ user.username }' />
+	               </h:column>
+	               
+	               <h:column>
+	                   <f:facet name='header'>
+	                       Remove
+	                   </f:facet>
+	                   <h:outputText value='TODO: make it a commandButton ;)' />
+	               </h:column>
+	           </h:dataTable>
+	       
+	       </h:panelGrid>
+	       
+	   </ui:define>
+	
+	</ui:composition>
+</html>
