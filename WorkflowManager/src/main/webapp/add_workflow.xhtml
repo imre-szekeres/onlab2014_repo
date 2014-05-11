@@ -4,23 +4,18 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     
-	<h:form>
-   		<h3>Add Workflow</h3>
-      	<table>
-      	<tr>
-        	<td>Name:</td>
-            <td><h:inputText size="15" value="#{workflowManager.name}" validator='#{ workflowManager.validateName }' /></td>
-      	</tr>
-      	<tr>
-            <td>Description:</td>
-            <td><h:inputTextarea size="50" value="#{workflowManager.description}" validator='#{ workflowManager.validateDescription }' /></td>
-      	</tr>
-      	<tr>
-            <td> </td>
-            <td><h:commandButton id="add_button" value="Add Workflow" 
-               action="#{workflowManager.addWorkflow}" /></td>
-      	</tr>
-      	</table>	 
-   	</h:form>
+    <div>
+		<h:form>
+	   		<h3>Add Workflow</h3>
+	   		<h:panelGrid columns="1" cellspacing="1" cellpadding="2">
+	   			<h:outputText value='Name:'/>
+	   			<h:inputText size="15" value="#{workflowManager.name}" validator='#{ workflowManager.validateName }' />
+	   			<h:outputText value='Description:'/>
+	   			<h:inputTextarea size="50" value="#{workflowManager.description}" validator='#{ workflowManager.validateDescription }' />
+	   			<h:commandButton id="add_button" value="Add Workflow" 
+	               action="#{workflowManager.addWorkflow}" /> 
+	        </h:panelGrid>
+	   	</h:form>
+   	</div>
    	
 </ui:composition>

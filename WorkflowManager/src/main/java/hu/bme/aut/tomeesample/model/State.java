@@ -7,6 +7,7 @@ package hu.bme.aut.tomeesample.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.NamedQueries;
@@ -49,8 +51,8 @@ public class State implements Serializable {
 	@Size(min = 0, max = 512)
 	private String description;
 
-	@NotNull
 	@ManyToOne
+	@JoinColumn
 	private Workflow workflow;
 
 	@OneToMany
@@ -73,13 +75,14 @@ public class State implements Serializable {
 		super();
 	}
 
-	public State(String name, String description, Workflow workflow, State parent) {
+	public State(String name, String description, State parent) {
 		this.name = name;
 		this.description = description;
-		this.workflow = workflow;
-		this.workflow.add(this);
+		this.workflow = null;
 		this.historyEntries = new HashSet<>();
 		this.files = new ArrayList<>();
+		this.nextStates = new HashMap<>();
+		this.children = new ArrayList<>();
 		if (parent != null) {
 			this.parent = parent;
 			this.parent.addChild(this);
@@ -175,17 +178,14 @@ public class State implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 0;
-		hash = 31 * hash + id.hashCode();
-		hash = 31 * hash + name.hashCode();
-		hash = 31 * hash + description.hashCode();
-		hash = 31 * hash + workflow.hashCode();
-		hash = 31 * hash + historyEntries.hashCode();
-		return hash;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "State [id=" + id + ", name=" + name + ", workflow=" + workflow.getId() + ", parent=" + parent.getId() + "]";
+		return "State [id=" + id + ", name=" + name + "]";
 	}
 }

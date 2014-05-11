@@ -1,0 +1,24 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div>
+		<h:form>
+	   		<h3>Add State</h3>
+			<h:panelGrid columns="1" cellspacing="1" cellpadding="2">
+			    <h:outputText value='Name:'/>
+			    <h:inputText size="15" value="#{stateManager.name}" validator='#{ stateManager.validateName }'/>
+			    <h:outputText value='Description:'/>
+			    <h:inputTextarea size="50" value="#{stateManager.description}" validator='#{ stateManager.validateDescription }'/>
+			    <h:commandButton id="add_button" value="Add State" 
+			               action="#{stateManager.addState}">
+			    	<f:param name="workflowId" value="#{param.workflowId}"/>
+			    </h:commandButton>
+		     	</h:panelGrid>
+	   	</h:form>
+	</div>
+	
+   	
+</ui:composition>

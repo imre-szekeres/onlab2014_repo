@@ -5,6 +5,7 @@ package hu.bme.aut.tomeesample.service;
 
 import hu.bme.aut.tomeesample.model.State;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +44,12 @@ public class StateService {
 		em.merge(state);
 	}
 
+	public void updateAll(Collection<State> states) {
+		for (State state : states) {
+			em.merge(state);
+		}
+	}
+
 	public void remove(State state) {
 		em.remove(state);
 	}
@@ -65,11 +72,11 @@ public class StateService {
 		}
 	}
 
-	public State findByWorkflowId(Long workflowId) {
+	public List<State> findByWorkflowId(Long workflowId) {
 		try {
 			TypedQuery<State> select = em.createNamedQuery("State.findByWorkflowId", State.class);
 			select.setParameter("workflowId", workflowId);
-			return select.getSingleResult();
+			return select.getResultList();
 		} catch (Exception e) {
 			return null;
 		}

@@ -1,6 +1,8 @@
 package hu.bme.aut.tomeesample.web;
 
+import hu.bme.aut.tomeesample.model.State;
 import hu.bme.aut.tomeesample.model.Workflow;
+import hu.bme.aut.tomeesample.service.StateService;
 import hu.bme.aut.tomeesample.service.WorkflowService;
 
 import java.util.List;
@@ -26,6 +28,8 @@ public class WorkflowManager {
 
 	@Inject
 	private WorkflowService workflowService;
+	@Inject
+	private StateService stateService;
 	private List<Workflow> workflowList;
 	private Workflow workflow;
 
@@ -52,12 +56,24 @@ public class WorkflowManager {
 	 */
 	public String addWorkflow() {
 		try {
+			// Create new workflow
 			Workflow newWorkflow = new Workflow(name, description);
 			workflowService.create(newWorkflow);
 			logger.debug("New workflow created: " + newWorkflow.toString());
+			// Add basic states
+			List<State> basicStates = Workflow.getBasicStates(newWorkflow);
+			for (State state : basicStates) {
+				stateService.create(state);
+				logger.debug("Basic state created: '" + state.getName() + "' with id: " + state.getId());
+			}
+			newWorkflow.addAllStates(basicStates);
+			workflowService.update(newWorkflow);
+			stateService.updateAll(basicStates);
+			logger.debug("New workflow's states: " + newWorkflow.getStates());
 		} catch (Exception e) {
 			logger.debug("Error while creating workflow");
 			logger.debug(e.getMessage());
+			e.printStackTrace();
 		}
 		return "workflows";
 	}
@@ -84,7 +100,7 @@ public class WorkflowManager {
 		logger.debug("validating: " + value.toString());
 		logger.debug("in validateName - workflowService: " + workflowService == null ? "null" : workflowService.toString());
 		if (!workflowService.validateName(((String) value).trim()))
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "workflowService name already exists", "workflowService name already exists"));
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "workflowService name validating error", "workflowService name validating error"));
 	}
 
 	public void validateDescription(FacesContext context, UIComponent component, Object value)
@@ -92,7 +108,7 @@ public class WorkflowManager {
 		logger.debug("validating: " + value.toString());
 		logger.debug("in validateName - workflowService: " + workflowService == null ? "null" : workflowService.toString());
 		if (!workflowService.validateDescription(((String) value).trim()))
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "workflowService description already exists", "workflowService description already exists"));
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "workflowService description validating error", "workflowService description validating error"));
 	}
 
 	public String getName() {

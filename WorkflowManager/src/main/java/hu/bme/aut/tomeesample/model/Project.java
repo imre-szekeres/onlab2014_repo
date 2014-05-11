@@ -5,13 +5,21 @@
  * */
 package hu.bme.aut.tomeesample.model;
 
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.*;
-
-import java.util.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Project
@@ -21,13 +29,13 @@ import java.util.*;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Project.findAll", query="SELECT p FROM Project p"),
-	@NamedQuery(name="Project.findById", query="SELECT p FROM Project p "
-											  +"WHERE p.id=:id"),
-	@NamedQuery(name="Project.findByName", query="SELECT p FROM Project p "
-											    +"WHERE p.name=:name"),
-	@NamedQuery(name="Project.findAllByWorkflowName", query="SELECT p FROM Project p "
-												        +"WHERE p.workflow.name=:name")
+		@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p"),
+		@NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p "
+				+ "WHERE p.id=:id"),
+		@NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p "
+				+ "WHERE p.name=:name"),
+		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p "
+				+ "WHERE p.workflow.name=:name")
 })
 public class Project implements Serializable {
 
@@ -64,7 +72,7 @@ public class Project implements Serializable {
 		this.name = name;
 		this.description = description;
 		this.workflow = workflow;
-		this.workflow.add(this);
+		this.workflow.addProject(this);
 		this.currentState = this.workflow.getInitialState();
 		this.projectAssignments = new ArrayList<>();
 		this.historyEntries = new ArrayList<>();

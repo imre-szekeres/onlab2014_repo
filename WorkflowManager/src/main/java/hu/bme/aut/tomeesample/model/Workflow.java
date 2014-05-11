@@ -1,17 +1,25 @@
 /**
  * Workflow.java
- * 
+ *
  * @author Imre Szekeres
  * */
 package hu.bme.aut.tomeesample.model;
 
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-import javax.persistence.*;
-
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Workflow
@@ -21,11 +29,11 @@ import java.util.*;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Workflow.findAll", query="SELECT w FROM Workflow w"),
-	@NamedQuery(name="Workflow.findById", query="SELECT w FROM Workflow w "
-											   +"WHERE w.id=:id"),
-	@NamedQuery(name="Workflow.findByName", query="SELECT w FROM Workflow w "
-											     +"WHERE w.name=:name")
+		@NamedQuery(name = "Workflow.findAll", query = "SELECT w FROM Workflow w"),
+		@NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w "
+				+ "WHERE w.id=:id"),
+		@NamedQuery(name = "Workflow.findByName", query = "SELECT w FROM Workflow w "
+				+ "WHERE w.name=:name")
 })
 public class Workflow implements Serializable {
 
@@ -40,15 +48,13 @@ public class Workflow implements Serializable {
 	@NotNull
 	@Size(min=16, max=512)
 	private String description;
-	
-	@NotNull
-	@OneToMany(mappedBy="workflow")
-	private Set<State> states;
-	
-	@OneToMany(mappedBy="workflow")
-	private List<Project> projects;
-	
-	
+
+	@OneToMany(mappedBy = "workflow", cascade = CascadeType.MERGE)
+	private List<State> states = new ArrayList<State>();
+
+	@OneToMany(mappedBy = "workflow")
+	private List<Project> projects = new ArrayList<Project>();
+
 	public Workflow() {
 		super();
 	}
@@ -56,9 +62,6 @@ public class Workflow implements Serializable {
 	public Workflow(String name, String description){
 		this.name = name;
 		this.description = description;
-		this.states = new HashSet<>();
-		this.states.addAll(Workflow.getBasicStates());
-		this.projects = new ArrayList<>();
 	}
 	
 	public Long getId() {
@@ -72,13 +75,20 @@ public class Workflow implements Serializable {
 	public String getDescription() {
 		return description;
 	}
-	
-	//TODO:
-	public State getInitialState(){
-		return null; //states.get(State.initial);
+
+	// TODO:
+	public State getInitialState() {
+		// Search the root of the state hierarchy
+		for (State state : states) {
+			if (state.getParent() == null) {
+				return state;
+			}
+		}
+		// Should never happen
+		throw new IllegalArgumentException("There is not intial state for workflow: " + this.id);
 	}
-	
-	public Set<State> getStates() {
+
+	public List<State> getStates() {
 		return states;
 	}
 	
@@ -86,6 +96,14 @@ public class Workflow implements Serializable {
 		return projects;
 	}
 	
+	public void setStates(List<State> states) {
+		this.states = states;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -93,38 +111,57 @@ public class Workflow implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public void add(State state){
-		states.add(state);
+
+	public void addState(State state) {
+		if (getStates() == null) {
+			System.out.println(getStates());
+			setStates(new ArrayList<State>());
+			System.out.println(getStates());
+		}
+		if (state != null && !getStates().contains(state)) {
+			getStates().add(state);
+			state.setWorkflow(this);
+		}
+
 	}
-	
-	public void add(Project project){
+
+	public void addProject(Project project) {
 		projects.add(project);
 	}
-	
-	public void addAll(Collection<State> states){
-		states.addAll(states);
+
+	public void addAllStates(Collection<State> states) {
+		// if (states == null) {
+		// states = new ArrayList<>();
+		// }
+		for (State state : states) {
+			if (state != null && !getStates().contains(state)) {
+				getStates().add(state);
+				state.setWorkflow(this);
+			}
+		}
 	}
-	
-	public boolean remove(State state){
+
+	public boolean removeState(State state) {
 		return states.remove(state);
 	}
-	
-	public boolean removeAll(Collection<State> states){
+
+	public boolean removeAllStates(Collection<State> states) {
 		return states.removeAll(states);
 	}
-	
-	public boolean remove(Project project){
+
+	public boolean removeProject(Project project) {
 		return projects.remove(project);
 	}
-	
+
 	/**
 	 * Checks if this workflow contains all the states given as argument.
 	 * 
-	 * @param states that are checked if they are contained already by this <code>Workflow</code>
+	 * @param states
+	 *            that are checked if they are contained already by this
+	 *            <code>Workflow</code>
 	 * @return true if and only if all the states are contained
 	 * */
-	public boolean containsAll(Collection<State> states){
+	public boolean containsAll(Collection<State> states) {
 		return this.states.containsAll(states);
 	}
 
@@ -134,12 +171,17 @@ public class Workflow implements Serializable {
 	 * 
 	 * @return basic states that every <code>Workflow</code> has by default.
 	 * */
-	public static List<State> getBasicStates(){
-		//TODO: something more sophisticated :D 
-		return new java.util.ArrayList<State>();
+	public static List<State> getBasicStates(Workflow workflow) {
+		// The initialState has no parent state -> null
+		State initialState = new State("Initial state",
+				"This is the first state, when a project is created.", null);
+		// Create the basic states list
+		List<State> basicStates = new ArrayList<>();
+		basicStates.add(initialState);
+		return basicStates;
 	}
-	
-	/** 
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -150,7 +192,7 @@ public class Workflow implements Serializable {
 		return result;
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -174,4 +216,10 @@ public class Workflow implements Serializable {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Workflow [id=" + id + ", name=" + name + "]";
+	}
+
 }
