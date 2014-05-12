@@ -13,8 +13,11 @@
 	       </ui:define>
 			<ui:define name="content">
                 <ui:include src="/user_form.xhtml" />
+				
 				<br />
-				<ui:include src="/users.xhtml" />
+				<c:if test="#{ (sessionScope.subject ne null) and sessionScope.subject.hasRole( 'administrator' ) }">
+				    <ui:include src="/users.xhtml" />
+				</c:if>
 				
 			</ui:define>
 	</ui:composition>

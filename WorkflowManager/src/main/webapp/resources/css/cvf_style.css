@@ -1,93 +1,92 @@
-#header_div {
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 200;
+    src: url('http://themes.googleusercontent.com/static/fonts/opensans/v5/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff') format('woff');
+}
+
+#header-div {
     position: absolute;
     top: 0px;
     left: 0px;
-    background-color: #800000;
+    background-color: black;
     width: 100%;
-    height: 60px;
+    height: 50px;
+    box-shadow: 3px 3px 2px #D0D0D0;
+    border-radius: 3px 3px 3px 3px;
 }
 
-.home_link {
+.home-link {
     position: relative;
     text-decoration: none;
+    display: inline-block;
     color: white;
-    top: -3px;
     left: 13px;
     font-size: 25px;
+    line-height: 50px;
+    vertical-align: middle;
+    top: -18px;
+    font-family: 'Open Sans';
 }
 
-#brand_span {
+#brand-span {
     position: absolute;
     top: 0px;
     width: 270px;
-    height: 55px;
-    border-right: black 2px ridge;
-}
-
-#unavbar_div {
-    position: absolute;
-    top: 60px;
-    left: 0px;
-    width: 100%;
-    height: 30px;
+    height: 50px;
 }
 
 #unavbar {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    position: relative;
-    display: block;
-    height: 21px;
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: bold;
-    /*background: transparent url('off.gif') repeat-x top left;*/
-    font-family: Helvetica, Arial, Verdana, sans-serif;
-    border-bottom: 4px solid #555555;
-    border-top: 1px solid #919191;
-}
-
-#unavbar li {
-    display: block;
-    float: left;
-    margin: 0;
-    padding: 0;
-}
-
-#unavbar li a {
-    position: relative;
-    top: -7px;
-    display: block;
-    float: left;
-    color: rgb( 128,0,0 );
-    text-decoration: none;
-    font-weight: bold;
-    padding: 12px 20px 0px 20px;
-    height: 21px;
-    /*background: transparent url('divider.gif') no-repeat top right;*/
-}
-
-#unavbar li a:hover {
-    /*background: transparent url("hover.gif") no-repeat top right;*/
-    color: #8c3a3a;
-}
-
-#content_container {
     position: absolute;
-    top: 103px;
+    top: 0px;
+    left: 350px;
+    width: 80%;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+}
+
+.menu-item {
+    position: relative;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+}
+
+.menu-item A {
+    display: inline-block;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.menu-item A:hover {
+    background: -webkit-linear-gradient(rgb( 128,0,0 ), black);
+    background: -o-linear-gradient(rgb( 128,0,0 ), black); 
+    background: -moz-linear-gradient(rgb( 128,0,0 ), black);
+    background: linear-gradient(rgb( 128,0,0 ), black);
+}
+
+/*.lseparated {
+    border-left: white 1px solid;
+}*/
+
+#content-container {
+    position: absolute;
+    top: 90px;
     left: 50%;
     width: 800px;
     height: 618px;
 }
 
-#content_title_div {
+#ctitle-div {
     position: relative;
     left: -400px;
 }
 
-#content_title_div H3 {
+#ctitle-div H3 {
     position: absolute;
     text-align: center;
     top: -21px;
@@ -98,7 +97,7 @@
     border: gray 1px dotted;
 }
 
-#content_div {
+#content-div {
     left: -400px;
     position: absolute;
     top: 38px;
@@ -108,7 +107,7 @@
     border: gray 1px dotted;
 }
 
-#footer_div {
+#footer-div {
     position: absolute;
     top: 943px;
     left: 0px;
@@ -324,3 +323,52 @@
 .usrstable_th {
 
 }
+
+/*
+#unavbar_div {
+    position: absolute;
+    top: 60px;
+    left: 0px;
+    width: 100%;
+    height: 30px;
+}
+
+#unavbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    position: relative;
+    display: block;
+    height: 21px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    border-bottom: 4px solid #555555;
+    border-top: 1px solid #919191;
+}
+
+#unavbar li {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+#unavbar li a {
+    position: relative;
+    top: -7px;
+    display: block;
+    float: left;
+    color: rgb( 128,0,0 );
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px 20px 0px 20px;
+    height: 21px;
+}
+
+#unavbar li a:hover {
+    color: #8c3a3a;
+}
+*/

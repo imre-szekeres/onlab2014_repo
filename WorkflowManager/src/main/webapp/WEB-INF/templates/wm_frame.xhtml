@@ -15,61 +15,60 @@
     </h:head>
     
     <h:body>
-        <div id='header_div' class='container'>
-            <span id='brand_span'>
+        <div id='header-div' >
+            <span id='brand-span'>
                 <h:form>
                 <h3>
-                    <h:commandLink styleClass="home_link" action='index' value="WorkflowManager" />
+                    <h:commandLink styleClass="home-link" action='index' value="WorkflowManager" />
                 </h3>
                 </h:form>
             </span>
-        </div>
-        
-        <div id='unavbar_div' class='container'>
+            <span id='brand-img-span'></span>
+            <span id='unavbar' >
             <h:form>
-                <ul id='unavbar'>
                     <c:choose>
                         <c:when test='#{ sessionScope.subject eq null }'>
-                            <li>
+                            <span class='menu-item'>
                                 <h:commandLink styleClass='menu-item' action='login'><span>Sign In</span></h:commandLink>
-                            </li>
-                            <li>
+                            </span>
+                            <span class='menu-item lseparated'>
                                 <h:commandLink styleClass='menu-item' action='add_user'><span>Register</span></h:commandLink>
-                            </li>
+                            </span>
                         </c:when>
                     
                         <c:otherwise>
-                            <li>
-	                            <h:commandLink styleClass='menu-item' action='profile'><span>Profile</span></h:commandLink>
-	                        </li>
-	                        <li>
-	                            <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
-	                        </li>
+                            <span class='menu-item'>
+                                <h:commandLink styleClass='menu-item' action='profile'><span>Profile</span></h:commandLink>
+                            </span>                            
+                            <span class='menu-item lseparated'>
+                                <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
+                            </span>
                         </c:otherwise>                       
                     </c:choose>
+                    
                     <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'administrator' ) }">
-                        <li>
+                        <span class='menu-item lseparated'>
                             <h:commandLink styleClass='menu-item' action='add_user'><span>Users</span></h:commandLink>
-                        </li>
-                        <li>
+                        </span>
+                        <span class='menu-item lseparated'>
                             <h:commandLink styleClass='menu-item' action='add_role'><span>Roles</span></h:commandLink>
-                        </li>
-                        <li>
+                        </span>
+                        <span class='menu-item lseparated'>
                             <h:commandLink styleClass='menu-item' action='workflows'><span>Workflows</span></h:commandLink>
-                        </li>
+                        </span>
                     </c:if>
-                </ul>
             </h:form>
+            </span>
         </div>
         
-        <div id='content_container' class='container'>
-            <div id='content_title_div'>
+        <div id='content-container' >
+            <div id='ctitle-div'>
                 <h3>
                     <ui:insert name='content_title'>Welcome!</ui:insert>
                 </h3>
             </div>
             
-            <div id='content_div'>
+            <div id='content-div'>
                 
                 <c:if test='#{ not empty facesContext.messageList }' >
 	                <div id='global-messages-container'>
@@ -85,7 +84,7 @@
             </div>
         </div>
         
-        <div id='footer_div' class='container'>
+        <div id='footer-div' >
             <div>
                  <h5>
                     <span id='footer_span_r' class='footer_span'>

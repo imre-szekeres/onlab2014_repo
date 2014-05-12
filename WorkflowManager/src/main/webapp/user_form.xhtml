@@ -35,7 +35,7 @@
                       
                       <h:outputText value='Role: ' />
                       <h:inputText id='role_in' name='rolename' value='#{ loginManager.role }' />
-                      <h:commandButton action="#{ loginManager.register }" value="#{ button_text }" id="adduser_btn" />
+                      <h:commandButton action="#{ loginManager.register }" value="#{ sessionScope.subject ne null ? 'Create User' : 'Register' }" id="adduser_btn" />
                     </h:panelGrid>
                 </h:form>
                 </div>

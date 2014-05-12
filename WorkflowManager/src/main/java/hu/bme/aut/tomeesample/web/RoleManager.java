@@ -113,8 +113,9 @@ public class RoleManager {
 	 *         <code>Role</code>
 	 * */
 	public List<User> listUsers() {
-		return new ArrayList<User>(roleService.findUsersBy(newRole.getId()));
-		// new ArrayList<User>(roleService.findUsersBy(role.getId()));
+		return (newRole == null || newRole.getId() == null) ?
+				new ArrayList<User>() :
+				new ArrayList<User>(roleService.findUsersBy(newRole.getId()));
 	}
 
 	/**
@@ -125,11 +126,7 @@ public class RoleManager {
 	public String addFor(User user, Role role) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			// user.add(role);
-			role.add(user);
-
-			// userService.update(user);
-			roleService.update(role);
+			userService.addRoleFor(user, role);
 
 			String message = "role " + role + " was added to " + user;
 			FacesMessageUtils.infoMessage(context, message);
@@ -148,25 +145,16 @@ public class RoleManager {
 	 * @param role
 	 *            to be removed permanently
 	 * */
-	public String removeFrom(User user, String roleName) {
+	public String removeFrom(User user, Role role) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			System.out.println("user: " + user);
-			System.out.println("role: " + roleName);
+			userService.removeRoleFrom(user, role);
 
-			logPropsOf(user);
-
-			newRole = roleService.findByName(roleName);
-			// user.remove(role);
-			newRole.remove(user);
-			// userService.update(user);
-			roleService.update(newRole);
-
-			String message = "role " + newRole + " was removed from " + user;
+			String message = "role " + role + " was removed from " + user;
 			FacesMessageUtils.infoMessage(context, message);
 			logger.debug(message);
 		} catch (Exception e) {
-			FacesMessageUtils.errorMessage(context, "failed to remove " + newRole);
+			FacesMessageUtils.errorMessage(context, "failed to remove " + role);
 			logger.error("ERROR in removeFrom: ", e);
 		}
 		return "add_role";

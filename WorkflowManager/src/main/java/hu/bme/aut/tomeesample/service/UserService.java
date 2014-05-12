@@ -194,8 +194,24 @@ public class UserService implements Serializable {
 	 * @throws Exception
 	 * */
 	public void addRoleFor(User user, Role role) throws Exception {
-		user.add(role);
-		em.merge(user);
+		User managed = em.merge(user);
+		managed.add(role);
+		em.merge(role);
+	}
+
+	/**
+	 * Adds the given <code>Role</code> to the specified <code>User</code>.
+	 *
+	 * @param user
+	 *            to acquire the new role
+	 * @param role
+	 *            to be added to the given user
+	 *
+	 * @throws Exception
+	 * */
+	public void removeRoleFrom(User user, Role role) throws Exception {
+		User managed = em.merge(user);
+		managed.remove(role);
 		em.merge(role);
 	}
 }
