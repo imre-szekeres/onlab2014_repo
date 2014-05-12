@@ -16,7 +16,7 @@
 	           <h:panelGrid columns='1' cellspacing='1' cellpadding='1' >
 	               <h:message for='rolename_in' styleClass='error-message' />
 	               <h:outputText value='Role Name:' />
-	               <h:inputText id='rolename_in' name='name' value='#{ roleManager.newRole.name }' 
+	               <h:inputText id='rolename_in' name='name' value='#{ roleManager.role.name }' 
 	                            validator='#{ roleManager.validateName }'/>
 	               <h:commandButton id='addrole_btn' action='#{ roleManager.create }' value='Create' />
 	           </h:panelGrid>

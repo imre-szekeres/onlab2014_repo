@@ -6,7 +6,7 @@
 
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml">
 	   <ui:define name='content_title'>
-	       #{ roleManager.newRole.name } Details
+	       #{ roleManager.role.name } Details
 	   </ui:define>
 	   
 	   <ui:define name='content'>
@@ -15,15 +15,15 @@
 	       
 	           <h:panelGrid columns='2'>
 	               <h:outputText value='Role Name: ' />
-	               <h:outputText value='#{ roleManager.newRole.name }' />
+	               <h:outputText value='#{ roleManager.role.name }' />
 	               
 	               <h:outputText value='Role ID: ' />
-	               <h:outputText value='#{ roleManager.newRole.id }' />
+	               <h:outputText value='#{ roleManager.role.name}' />
 	           </h:panelGrid>
 	           <br />
 	           
 	           <h:form>
-	           <h:dataTable value='#{ roleManager.listUsers() }' var='user' >
+	           <h:dataTable value='#{roleManager.listUsers()}' var='user' >
                    <h:column>
                        <f:facet name='header'>
                           Username
@@ -35,7 +35,7 @@
                        <f:facet name='header'>
                            Remove
                        </f:facet>
-                       <h:commandButton action='#{roleManager.removeFrom( user,roleManager.newRole )}' value='Remove' />
+                       <h:commandButton action='#{roleManager.removeFrom( user )}' value='Remove' />
                    </h:column>
                </h:dataTable>
 	           </h:form>

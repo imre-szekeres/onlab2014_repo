@@ -220,3 +220,4 @@ Caused by: org.apache.geronimo.transaction.manager.SetRollbackOnlyException: set
 	... 60 more
 2014-05-11/21:04:57.280/CESTDEBUGin delte: manager removed
 2014-05-11/21:05:04.448/CESTDEBUGcreated new role: manager
+2014-05-12/22:20:11.215/CESTDEBUGrole manager was removed from hu.bme.aut.tomeesample.model.User@2a
