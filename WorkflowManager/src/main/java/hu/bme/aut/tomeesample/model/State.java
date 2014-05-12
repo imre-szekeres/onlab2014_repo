@@ -170,18 +170,56 @@ public class State implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof State))
-			return false;
-		return ((State) o).id.equals(this.id);
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((children == null) ? 0 : children.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((files == null) ? 0 : files.hashCode());
+		result = prime * result + ((historyEntries == null) ? 0 : historyEntries.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((nextStates == null) ? 0 : nextStates.hashCode());
+		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+		result = prime * result + ((workflow == null) ? 0 : workflow.hashCode());
 		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		State other = (State) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (nextStates == null) {
+			if (other.nextStates != null)
+				return false;
+		} else if (!nextStates.equals(other.nextStates))
+			return false;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
+		if (workflow == null) {
+			if (other.workflow != null)
+				return false;
+		} else if (!workflow.equals(other.workflow))
+			return false;
+		return true;
 	}
 
 	@Override
