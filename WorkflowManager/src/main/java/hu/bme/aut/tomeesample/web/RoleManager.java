@@ -6,9 +6,11 @@ package hu.bme.aut.tomeesample.web;
 import hu.bme.aut.tomeesample.model.Role;
 import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.service.RoleService;
+import hu.bme.aut.tomeesample.service.UserService;
+import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -34,6 +36,8 @@ public class RoleManager {
 
 	@Inject
 	private RoleService roleService;
+	@Inject
+	private UserService userService;
 	private Role newRole;
 
 	@PostConstruct
@@ -69,10 +73,14 @@ public class RoleManager {
 	 * @return the view id to navigate to.
 	 * */
 	public String create() {
+		FacesContext context = FacesContext.getCurrentInstance();
 		try {
 			roleService.create(newRole);
-			logger.debug("created new role: " + newRole.toString());
+			String message = "created new role: " + newRole.toString();
+			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(message);
 		} catch (Exception e) {
+			FacesMessageUtils.errorMessage(context, "failed to create " + newRole);
 			logger.error("in RoleManager.create: ", e);
 		}
 		return "add_role";
@@ -104,8 +112,84 @@ public class RoleManager {
 	 * @return a list of <code>User</code> assigned to the given
 	 *         <code>Role</code>
 	 * */
-	public Set<User> listUsersFor(Role role) {
-		return roleService.findUsersBy(role.getId());
+	public List<User> listUsers() {
+		return new ArrayList<User>(roleService.findUsersBy(newRole.getId()));
+		// new ArrayList<User>(roleService.findUsersBy(role.getId()));
+	}
+
+	/**
+	 * Adds a new role to the user specified by user name.
+	 *
+	 * @return the string representation of the page to navigate to
+	 * */
+	public String addFor(User user, Role role) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			// user.add(role);
+			role.add(user);
+
+			// userService.update(user);
+			roleService.update(role);
+
+			String message = "role " + role + " was added to " + user;
+			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(message);
+			return "users";
+		} catch (Exception e) {
+			FacesMessageUtils.infoMessage(context, "failed to add " + role);
+			logger.error("in addRoleFor: ", e);
+			return "add_role";
+		}
+	}
+
+	/**
+	 * Removes the specified <code>Role</code> from the application.
+	 * 
+	 * @param role
+	 *            to be removed permanently
+	 * */
+	public String removeFrom(User user, String roleName) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			System.out.println("user: " + user);
+			System.out.println("role: " + roleName);
+
+			logPropsOf(user);
+
+			newRole = roleService.findByName(roleName);
+			// user.remove(role);
+			newRole.remove(user);
+			// userService.update(user);
+			roleService.update(newRole);
+
+			String message = "role " + newRole + " was removed from " + user;
+			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(message);
+		} catch (Exception e) {
+			FacesMessageUtils.errorMessage(context, "failed to remove " + newRole);
+			logger.error("ERROR in removeFrom: ", e);
+		}
+		return "add_role";
+	}
+
+	// TODO: delete
+	private void logPropsOf(User user) {
+		try {
+			logger.debug("\nloginManager: " + this.toString());
+			logger.debug("user: " + user.toString());
+			logger.debug("props:"
+					+ "\nUsername: " + user.getUsername()
+					+ "\nPassword: " + user.getPassword()
+					+ "\nEmail: " + user.getEmail()
+					+ "\nDescription: " + user.getDescription()
+					+ "\nRoles: " + user.getRoles()
+					+ "\nComments: " + user.getComments()
+					+ "\nProjectAssignments: " + user.getProjectAssignments() + "\n");
+		} catch (Exception e) {
+			logger.error("ERROR in logProps ~ " + e.getClass() + ": " + e.getMessage());
+			logger.error(e, e);
+		}
+
 	}
 
 	/**
@@ -115,10 +199,15 @@ public class RoleManager {
 	 *            to be removed permanently
 	 * */
 	public String delete(Role role) {
+		FacesContext context = FacesContext.getCurrentInstance();
 		try {
 			roleService.removeDetached(role);
-			logger.debug("in delte: " + role.toString() + " removed");
+
+			String message = "role " + role + " was removed";
+			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(message);
 		} catch (Exception e) {
+			FacesMessageUtils.errorMessage(context, "failed to remove " + role);
 			logger.error("ERROR in delete: ", e);
 		}
 		return "add_role";

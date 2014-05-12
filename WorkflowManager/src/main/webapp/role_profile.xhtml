@@ -22,21 +22,23 @@
 	           </h:panelGrid>
 	           <br />
 	           
-	           <h:dataTable value='#{roleManager.listUsersFor( roleManager.newRole )}' var='user' >
-	               <h:column>
-	                   <f:facet name='header'>
+	           <h:form>
+	           <h:dataTable value='#{ roleManager.listUsers() }' var='user' >
+                   <h:column>
+                       <f:facet name='header'>
                           Username
                        </f:facet>
                        <h:outputText value='#{ user.username }' />
-	               </h:column>
-	               
-	               <h:column>
-	                   <f:facet name='header'>
-	                       Remove
-	                   </f:facet>
-	                   <h:outputText value='TODO: make it a commandButton ;)' />
-	               </h:column>
-	           </h:dataTable>
+                   </h:column>
+                   
+                   <h:column>
+                       <f:facet name='header'>
+                           Remove
+                       </f:facet>
+                       <h:commandButton action='#{roleManager.removeFrom( user,roleManager.newRole.name )}' value='Remove' disabled='true' />
+                   </h:column>
+               </h:dataTable>
+	           </h:form>
 	       
 	       </h:panelGrid>
 	       

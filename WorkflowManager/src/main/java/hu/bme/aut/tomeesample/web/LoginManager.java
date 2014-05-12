@@ -9,6 +9,7 @@ import hu.bme.aut.tomeesample.model.Role;
 import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.service.RoleService;
 import hu.bme.aut.tomeesample.service.UserService;
+import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
 import java.util.List;
@@ -81,32 +82,13 @@ public class LoginManager {
 	}
 
 	/**
-	 * Adds a new role to the user specified by user name.
-	 *
-	 * @return the string representation of the page to navigate to
-	 * */
-	public String addRoleFor() {
-		try {
-			User user = userService.findByName(subject.getUsername());
-			Role uRole = roleService.findByName(role);
-			userService.addRoleFor(user, uRole);
-			logger.debug("user " + user.toString() + " and role " + uRole.toString() + " are created..");
-			return "users";
-		} catch (Exception e) {
-			logger.error("in addRoleFor: ", e);
-			return "add_role";
-		}
-	}
-
-	/**
 	 * Registers a new user with the previously set parameters then logs it in.
 	 *
 	 * @return the string representation of the page to navigate to
 	 * */
 	public String register() {
 		try {
-			// TODO: check whether the user added to the role is persisted!
-			Role uRole = roleService.findByName(role == null ? "visitor" : role);
+			Role uRole = roleService.findByName(role);
 			subject.add(uRole);
 			userService.create(subject);
 			logger.debug("user " + subject.getUsername() + " is created");
@@ -134,35 +116,13 @@ public class LoginManager {
 			logger.debug("user " + subject.getUsername() + " is logged in");
 			logPropsOf(subject);
 
-			infoMessage(context, "welcome, " + subject.getUsername());
+			FacesMessageUtils.infoMessage(context, "welcome, " + subject.getUsername());
 			return "index";
 		} catch (Exception e) {
 			logger.error("in login: ", e);
-			errorMessage(context, "invalid parameters");
+			FacesMessageUtils.errorMessage(context, "invalid parameters");
 			return "login";
 		}
-	}
-
-	/**
-	 * Adds a new <code>FacesMessages.SEVERITY_INFO</code> message to the
-	 * specified <code>FacesContext</code>.
-	 * 
-	 * @param context
-	 * @param message
-	 * */
-	private void infoMessage(FacesContext context, String message) {
-		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, message));
-	}
-
-	/**
-	 * Adds a new <code>FacesMessages.SEVERITY_ERROR</code> message to the
-	 * specified <code>FacesContext</code>.
-	 * 
-	 * @param context
-	 * @param message
-	 * */
-	private void errorMessage(FacesContext context, String message) {
-		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
 
 	/**
@@ -456,10 +416,10 @@ public class LoginManager {
 		try {
 			userService.removeDetached(user);
 			logger.debug("in delte: " + user.toString() + " removed");
-			infoMessage(ctx, "user " + user.getUsername() + " deleted!");
+			FacesMessageUtils.infoMessage(ctx, "user " + user.getUsername() + " deleted!");
 		} catch (Exception e) {
 			logger.error("ERROR in delete: ", e);
-			errorMessage(ctx, "error while attempting delete!");
+			FacesMessageUtils.errorMessage(ctx, "error while attempting delete!");
 		}
 		return "add_user";
 	}
