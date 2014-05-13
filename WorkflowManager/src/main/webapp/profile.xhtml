@@ -73,7 +73,7 @@
 	           var modif_pnl  = $("#modif-panel");
 	       
 	           function onCancel( event ) {
-	               $("input[type!='button'][type!='submit'],textarea").prop( 'disabled',true );
+	               //$("input[type!='button'][type!='submit'],textarea").prop( 'disabled',true );
 	               chpass_pnl.hide();
                    submit_pnl.hide();
                    modif_pnl.show();
@@ -92,11 +92,13 @@
 	               submit_pnl.show();
 	           }
 	       
-	           onCancel();
-	           $("#modify-btn").click( startModify );
-	           $("#chpass-btn").click( startPassChange );
-	           $("#cancel-btn").click( onCancel );
-	           $('#subject-in').hide();
+	           $(function(){
+	               onCancel();
+	               $("#modify-btn").click( startModify );
+	               $("#chpass-btn").click( startPassChange );
+	               $("#cancel-btn").click( onCancel );
+	               $('#subject-in').hide();
+	           });
 	       </h:outputScript>
 	   </ui:define>
 	   

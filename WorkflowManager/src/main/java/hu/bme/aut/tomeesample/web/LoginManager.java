@@ -581,7 +581,6 @@ public class LoginManager {
 
 	@Override
 	public String toString() {
-		String reps = super.toString();
-		return reps.substring(reps.indexOf("LoginManager"));
+		return ManagingUtils.fetchFrom(super.toString(), "LoginManager");
 	}
 }

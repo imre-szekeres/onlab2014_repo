@@ -5,14 +5,12 @@ package hu.bme.aut.tomeesample.filters;
 
 import java.io.IOException;
 
-import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -21,19 +19,18 @@ import javax.servlet.http.HttpServletRequest;
  * @author Imre Szekeres
  * @version "%I%. %G%"
  */
-@WebFilter(dispatcherTypes = {
-		DispatcherType.REQUEST,
-		DispatcherType.FORWARD,
-		DispatcherType.INCLUDE
-}
-		, urlPatterns = { "/*" })
+// @WebFilter(dispatcherTypes = {
+// DispatcherType.REQUEST,
+// DispatcherType.FORWARD,
+// DispatcherType.INCLUDE
+// }
+// , urlPatterns = { "/*" })
 public class AccessFilter implements Filter {
 
 	/**
 	 * Default constructor.
 	 */
 	public AccessFilter() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -41,7 +38,6 @@ public class AccessFilter implements Filter {
 	 */
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -60,7 +56,6 @@ public class AccessFilter implements Filter {
 	 */
 	@Override
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
 	}
 
 }

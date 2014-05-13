@@ -19,7 +19,7 @@
             <span id='brand-span'>
                 <h:form>
                 <h3>
-                    <h:commandLink styleClass="home-link" action='index' value="WorkflowManager" />
+                    <h:commandLink styleClass="home-link" action='#{ navigationManager.home() }' value="WorkflowManager" />
                 </h3>
                 </h:form>
             </span>
@@ -29,16 +29,16 @@
                     <c:choose>
                         <c:when test='#{ sessionScope.subject eq null }'>
                             <span class='menu-item'>
-                                <h:commandLink styleClass='menu-item' action='login'><span>Sign In</span></h:commandLink>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.signIn() }'><span>Sign In</span></h:commandLink>
                             </span>
                             <span class='menu-item lseparated'>
-                                <h:commandLink styleClass='menu-item' action='add_user'><span>Register</span></h:commandLink>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Register</span></h:commandLink>
                             </span>
                         </c:when>
                     
                         <c:otherwise>
                             <span class='menu-item'>
-                                <h:commandLink styleClass='menu-item' action='profile'><span>Profile</span></h:commandLink>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>Profile</span></h:commandLink>
                             </span>                            
                             <span class='menu-item lseparated'>
                                 <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
@@ -48,13 +48,13 @@
                     
                     <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'administrator' ) }">
                         <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='add_user'><span>Users</span></h:commandLink>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
                         </span>
                         <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='add_role'><span>Roles</span></h:commandLink>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
                         </span>
                         <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='workflows'><span>Workflows</span></h:commandLink>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
                         </span>
                     </c:if>
             </h:form>

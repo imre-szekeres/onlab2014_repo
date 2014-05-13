@@ -14,6 +14,21 @@ import java.util.Collection;
 public class ManagingUtils {
 
 	/**
+	 * Slices down the characters from before the first occurrence of the given
+	 * 'from' indicator.
+	 * 
+	 * @param whole
+	 *            the <code>String</code> to slice
+	 * @param from
+	 *            the substring
+	 * 
+	 * @return a sub<code>String</code> from 'from'
+	 * */
+	public static String fetchFrom(String whole, String from) {
+		return whole.substring(whole.indexOf(from));
+	}
+
+	/**
 	 * 
 	 * 
 	 * @param value
