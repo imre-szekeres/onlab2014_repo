@@ -178,6 +178,11 @@ public class ProfileManager implements Serializable {
 	public String modify() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
+			if (oldPassword != null && !oldPassword.isEmpty()) {
+				user.setPassword(newPassword);
+				logger.debug(" password <" + newPassword + "> was set to " + ManagingUtils.fetchFrom(user.toString(), "User"));
+			}
+
 			userService.update(user);
 			conversation.end();
 
@@ -248,7 +253,6 @@ public class ProfileManager implements Serializable {
 	 */
 	public void setOldPassword(String oldPassword) {
 		this.oldPassword = oldPassword;
-		logger.debug(" old pass was set to <" + oldPassword + ">");
 	}
 
 	/**
@@ -264,7 +268,6 @@ public class ProfileManager implements Serializable {
 	 */
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
-		logger.debug(" new pass was set to <" + newPassword + ">");
 	}
 
 	@Override
