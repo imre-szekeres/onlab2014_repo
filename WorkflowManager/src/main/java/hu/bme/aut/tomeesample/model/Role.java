@@ -115,6 +115,21 @@ public class Role implements Serializable {
 	}
 
 	/**
+	 * @return the actionTypes
+	 */
+	public Set<ActionType> getActionTypes() {
+		return actionTypes;
+	}
+
+	/**
+	 * @param actionTypes
+	 *            the actionTypes to set
+	 */
+	public void setActionTypes(Set<ActionType> actionTypes) {
+		this.actionTypes = actionTypes;
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.tomeesample.web;
 
+import hu.bme.aut.tomeesample.model.ActionType;
 import hu.bme.aut.tomeesample.model.Role;
 import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.service.RoleService;
@@ -116,13 +117,25 @@ public class RoleManager implements Serializable {
 	/**
 	 * 
 	 * 
-	 * @return a list of <code>User</code> assigned to the given
+	 * @return a list of <code>User</code>s assigned to the given
 	 *         <code>Role</code>
 	 * */
 	public List<User> listUsers() {
 		return (this.role == null || this.role.getId() == null) ?
 				new ArrayList<User>() :
 				new ArrayList<User>(roleService.findUsersBy(this.role.getId()));
+	}
+
+	/**
+	 * 
+	 * 
+	 * @return a list of <code>ActionType</code>s assigned to the given
+	 *         <code>Role</code>
+	 * */
+	public List<ActionType> listActions() {
+		return (this.role == null || this.role.getId() == null) ?
+				new ArrayList<ActionType>() :
+				new ArrayList<ActionType>(this.role.getActionTypes());
 	}
 
 	/**

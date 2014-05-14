@@ -58,17 +58,10 @@
                             <span class='menu-item lseparated'>
                                 <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
                             </span>
-                        </c:if>
-                        
-                        <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
-                        </span>
-                        <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
-                        </span>
-                        <span class='menu-item lseparated'>
+                            <span class='menu-item lseparated'>
                             <h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
                         </span>
+                        </c:if>
                     </c:if>
             </h:form>
             </span>
@@ -100,10 +93,10 @@
         <div id='footer-div' >
             <div>
                  <h5>
-                    <span id='footer_span_r' class='footer_span'>
+                    <span id='footer-spanr' class='footer-span'>
                         (R) WorkflowManager
                     </span>
-                    <span id='footer_span_c' class='footer_span'>
+                    <span id='footer-spanc' class='footer-span'>
                         Contact: vagege@gmail.com | icloudred@gmail.com
                     </span>
                  </h5>    

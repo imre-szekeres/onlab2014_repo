@@ -116,7 +116,7 @@
     height: 35px;
 }
 
-#footer_div H5 {
+#footer-div H5 {
     float: right;
     position: relative;
     top: -21px;
@@ -125,7 +125,7 @@
     vertical-align: middle;
 }
 
-#footer_span_r {
+#footer-spanr {
     position: relative;
     left: -35px;
 }
@@ -321,7 +321,12 @@
 }
 
 .usrstable_th {
+}
 
+#actions-table {
+    position:absolute;
+    top: 80px;
+    left: 200px;   
 }
 
 /*

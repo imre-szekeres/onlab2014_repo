@@ -22,8 +22,11 @@
 	           </h:panelGrid>
 	           <br />
 	           
-	           <h:form>
-	           <h:dataTable value='#{roleManager.listUsers()}' var='user' >
+	           <h:form prependId='false'>
+	           <h:dataTable value='#{roleManager.listUsers()}' var='user' id='usrs-table' >
+                   <f:facet name='header'>
+                       <h:outputText value='Assigned Users' />
+                   </f:facet>
                    <h:column>
                        <f:facet name='header'>
                           Username
@@ -39,6 +42,20 @@
                    </h:column>
                </h:dataTable>
 	           </h:form>
+	           
+	           <h:form prependId='false'>
+               <h:dataTable value='#{roleManager.listActions()}' var='action' id='actions-table'>
+                   <f:facet name='header'>
+                       <h:outputText value='Allowed Actions' />
+                   </f:facet>
+                   <h:column>
+                       <f:facet name='header'>
+                          Action Name
+                       </f:facet>
+                       <h:outputText value='#{ action.actionTypeName }' />
+                   </h:column>
+               </h:dataTable>
+               </h:form>
 	       
 	       </h:panelGrid>
 	       
