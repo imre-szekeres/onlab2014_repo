@@ -56,6 +56,9 @@
                         <span class='menu-item lseparated'>
                             <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
                         </span>
+                        <span class='menu-item lseparated'>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
+                        </span>
                     </c:if>
             </h:form>
             </span>
@@ -104,5 +107,18 @@
                 $_gmsgs.fadeOut("slow");
             }).hide().slideDown(1600);
         </h:outputScript>
+        
+        <!-- script for show/hide buttons -->
+        <h:outputScript>
+	      function showOrHide(id) {
+	        var element = document.getElementById(id);
+	        console.log(id);
+	        if(element.style.display == 'block') {
+	          element.style.display = 'none';
+	        } else {
+	          element.style.display = 'block'
+	        }
+	      }
+	    </h:outputScript>
     </h:body>
 </html>

@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +18,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: ActionType
@@ -35,13 +35,18 @@ public class ActionType implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Size(min = 2, max = 20)
 	@Column(unique = true)
 	private String actionTypeName;
 
-	@NotNull
-	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes")
+	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes", fetch = FetchType.EAGER)
 	private Set<Role> roles;
+
+	public ActionType() {
+	}
+
+	public ActionType(String actionTypeName) {
+		this.actionTypeName = actionTypeName;
+	}
 
 	public String getActionTypeName() {
 		return actionTypeName;
@@ -59,8 +64,13 @@ public class ActionType implements Serializable {
 		this.roles = roles;
 	}
 
-	public void add(Role role) {
-		this.roles.add(role);
+	public void addRole(Role role) {
+		roles.add(role);
+		role.addActionType(this);
+	}
+
+	public void remove(Role role) {
+		roles.remove(role);
 	}
 
 	public Long getId() {
@@ -82,6 +92,11 @@ public class ActionType implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((id == null) ? 0 : roles.hashCode());
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "ActionType [id=" + id + ", actionTypeName=" + actionTypeName + "]";
 	}
 
 }

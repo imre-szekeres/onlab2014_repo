@@ -107,6 +107,21 @@ public class NavigationManager {
 	 * and <code>Role</code>s of the <code>User</code> referred as subject, and
 	 * unauthorised access outcomes in a different pageID that was requested.
 	 * 
+	 * @return index or actionTypes page
+	 * */
+	public String actionTypes() {
+		String pageID = "actionTypes"; // subject == null ? "login" :
+										// (subject.hasRole("administrator") ?
+										// "workflows" : "index")
+		logger.debug("actionTypes() was requested with result: " + pageID);
+		return pageID;
+	}
+
+	/**
+	 * Results the pageID to navigate to after the call, considers the status
+	 * and <code>Role</code>s of the <code>User</code> referred as subject, and
+	 * unauthorised access outcomes in a different pageID that was requested.
+	 * 
 	 * @return login or profile page
 	 * */
 	public String profile() {

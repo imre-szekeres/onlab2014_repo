@@ -97,6 +97,24 @@ public class Role implements Serializable {
 	}
 
 	/**
+	 * @param actionType
+	 *            the actionType to add
+	 * @return true if the actionType is added
+	 */
+	public boolean addActionType(ActionType actionType) {
+		return actionTypes.add(actionType);
+	}
+
+	/**
+	 * @param actionType
+	 *            the actionType to remove
+	 * @return true if the actionType is removed
+	 */
+	public boolean removeActionType(ActionType actionType) {
+		return actionTypes.remove(actionType);
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

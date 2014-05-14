@@ -1,0 +1,21 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div>
+		<h:form>
+	   		<h3>Add ActionType</h3>
+			<h:panelGrid columns="1" cellspacing="1" cellpadding="2">
+			    <h:outputText value='Name:'/>
+			    <h:inputText size="15" value="#{actionTypeManager.actionTypeName}"/>
+			    <h:commandButton id="add_button" value="Add action type" 
+			               action="#{actionTypeManager.addActionType}">
+			    </h:commandButton>
+		     </h:panelGrid>
+	   	</h:form>
+	</div>
+	
+   	
+</ui:composition>

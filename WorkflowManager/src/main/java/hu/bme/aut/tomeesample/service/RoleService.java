@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.tomeesample.service;
 
+import hu.bme.aut.tomeesample.model.ActionType;
 import hu.bme.aut.tomeesample.model.Role;
 import hu.bme.aut.tomeesample.model.User;
 
@@ -115,6 +116,36 @@ public class RoleService implements Serializable {
 			TypedQuery<Role> selectOne = em.createQuery("SELECT r FROM Role r WHERE r.name=:name", Role.class);
 			selectOne.setParameter("name", name);
 			return selectOne.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * */
+	public Role findById(Long id) {
+		try {
+			TypedQuery<Role> selectOne = em.createQuery("SELECT r FROM Role r WHERE r.id=:id", Role.class);
+			selectOne.setParameter("id", id);
+			return selectOne.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @param actionType
+	 * @return
+	 * */
+	public List<Role> findByActionType(ActionType actionType) {
+		try {
+			TypedQuery<Role> selectOne = em.createQuery("SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes", Role.class);
+			selectOne.setParameter("actionType", actionType);
+			return selectOne.getResultList();
 		} catch (Exception e) {
 			return null;
 		}
