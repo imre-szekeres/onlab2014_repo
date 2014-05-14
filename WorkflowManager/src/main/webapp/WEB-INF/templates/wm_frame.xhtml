@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c='http://java.sun.com/jsp/jstl/core'>
+
+    <h:head>
+        <title>
+            <ui:insert name='title'>WorkflowManager</ui:insert>
+        </title>
+        <h:outputStylesheet library='css' name='cvf_style.css'></h:outputStylesheet>
+        <h:outputScript     library='js'  name='jquery-1.11.0.min.js'></h:outputScript>
+        <h:outputScript     library='js'  name='jquery-ui-1.10.4.js' ></h:outputScript>
+    </h:head>
+    
+    <h:body>
+        <div id='header-div' >
+            <span id='brand-span'>
+                <h:form>
+                <h3>
+                    <h:commandLink styleClass="home-link" action='#{ navigationManager.home() }' value="WorkflowManager" />
+                </h3>
+                </h:form>
+            </span>
+            <span id='brand-img-span'></span>
+            <span id='unavbar' >
+            <h:form>
+                    <c:choose>
+                        <c:when test='#{ sessionScope.subject eq null }'>
+                            <span class='menu-item'>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.signIn() }'><span>Sign In</span></h:commandLink>
+                            </span>
+                            <span class='menu-item lseparated'>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Register</span></h:commandLink>
+                            </span>
+                        </c:when>
+                    
+                        <c:otherwise>
+                            <span class='menu-item'>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>Profile</span></h:commandLink>
+                            </span>                            
+                            <span class='menu-item lseparated'>
+                                <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
+                            </span>
+                        </c:otherwise>                       
+                    </c:choose>
+                    
+                    <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
+                        <span class='menu-item lseparated'>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
+                        </span>
+                        
+                        <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
+                            <span class='menu-item lseparated'>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
+                            </span>
+                            <span class='menu-item lseparated'>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
+                            </span>
+                        </c:if>
+                        
+                        <span class='menu-item lseparated'>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
+                        </span>
+                        <span class='menu-item lseparated'>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
+                        </span>
+                        <span class='menu-item lseparated'>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
+                        </span>
+                    </c:if>
+            </h:form>
+            </span>
+        </div>
+        
+        <div id='content-container' >
+            <div id='ctitle-div'>
+                <h3>
+                    <ui:insert name='content_title'>Welcome!</ui:insert>
+                </h3>
+            </div>
+            
+            <div id='content-div'>
+                
+                <c:if test='#{ not empty facesContext.messageList }' >
+                    <div id='global-messages-container'>
+                        <h:messages id='global-messages' globalOnly='true' ></h:messages>
+                    </div>
+                </c:if>
+                
+                <ui:insert name='content'>
+                    <p>
+                        Welcome to WorkflowManager!
+                    </p>
+                </ui:insert>
+            </div>
+        </div>
+        
+        <div id='footer-div' >
+            <div>
+                 <h5>
+                    <span id='footer_span_r' class='footer_span'>
+                        (R) WorkflowManager
+                    </span>
+                    <span id='footer_span_c' class='footer_span'>
+                        Contact: vagege@gmail.com | icloudred@gmail.com
+                    </span>
+                 </h5>    
+            </div>
+        </div>
+        
+        <h:outputScript>
+            var $_gmsgs = $("#global-messages-container");
+            
+            $_gmsgs.click(function() {
+                $_gmsgs.fadeOut("slow");
+            }).hide().slideDown(1600);
+        </h:outputScript>
+        
+        <!-- script for show/hide buttons -->
+        <h:outputScript>
+          function showOrHide(id) {
+            var element = document.getElementById(id);
+            console.log(id);
+            if(element.style.display == 'block') {
+              element.style.display = 'none';
+            } else {
+              element.style.display = 'block'
+            }
+          }
+        </h:outputScript>
+    </h:body>
+</html>
