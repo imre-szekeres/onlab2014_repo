@@ -1293,3 +1293,117 @@ ProjectAssignments: null
 2014-05-14/20:33:03.261/CESTDEBUG user <hu.bme.aut.tomeesample.model.User@29> was found
 2014-05-14/20:33:03.429/CESTDEBUG password <sudoer7> equals to the users
 2014-05-14/20:33:03.438/CESTDEBUG user sudoer was logged in
+2014-05-14/21:00:56.573/CESTDEBUG in init with loginManager: LoginManager@4cc6a19b
+2014-05-14/21:00:56.613/CESTDEBUG	and session.user as null
+2014-05-14/21:00:56.615/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:00:59.458/CESTDEBUG in init with loginManager: LoginManager@73101fc9
+2014-05-14/21:00:59.461/CESTDEBUG	and session.user as null
+2014-05-14/21:00:59.462/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:01:05.955/CESTDEBUG in init with loginManager: LoginManager@219fb5a4
+2014-05-14/21:01:05.956/CESTDEBUG	and session.user as null
+2014-05-14/21:01:05.956/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:01:06.073/CESTDEBUG user <hu.bme.aut.tomeesample.model.User@29> was found
+2014-05-14/21:01:06.487/CESTDEBUG password <sudoer7> equals to the users
+2014-05-14/21:01:06.501/CESTDEBUG user sudoer was logged in
+2014-05-14/21:01:10.975/CESTDEBUG in init with loginManager: LoginManager@3aaad9d
+2014-05-14/21:01:10.976/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:01:10.976/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:01:19.508/CESTDEBUG in init with loginManager: LoginManager@9946258
+2014-05-14/21:01:19.509/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:01:19.509/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:16:16.388/CESTDEBUG in init with loginManager: LoginManager@1bef2f3b
+2014-05-14/21:16:16.423/CESTDEBUG	and session.user as null
+2014-05-14/21:16:16.424/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:16:19.759/CESTDEBUG in init with loginManager: LoginManager@75cdc28b
+2014-05-14/21:16:19.760/CESTDEBUG	and session.user as null
+2014-05-14/21:16:19.760/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:16:38.852/CESTDEBUG in init with loginManager: LoginManager@24c99f09
+2014-05-14/21:16:38.853/CESTDEBUG	and session.user as null
+2014-05-14/21:16:38.853/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:16:38.983/CESTDEBUG user <hu.bme.aut.tomeesample.model.User@29> was found
+2014-05-14/21:16:39.234/CESTDEBUG password <sudoer7> equals to the users
+2014-05-14/21:16:39.240/CESTDEBUG user sudoer was logged in
+2014-05-14/21:16:44.830/CESTDEBUG in init with loginManager: LoginManager@89bde9e
+2014-05-14/21:16:44.831/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:16:44.831/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:16:48.484/CESTDEBUG in init with loginManager: LoginManager@76d63ca5
+2014-05-14/21:16:48.492/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:16:48.492/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:17:16.719/CESTDEBUG in init with loginManager: LoginManager@6e8ada2f
+2014-05-14/21:17:16.720/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:17:16.745/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:17:20.499/CESTDEBUG in init with loginManager: LoginManager@483c1dae
+2014-05-14/21:17:20.502/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:17:20.503/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:27:36.343/CESTDEBUG in init with loginManager: LoginManager@75ba2e4d
+2014-05-14/21:27:36.415/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:27:36.416/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:27:40.470/CESTDEBUG in init with loginManager: LoginManager@752f4dff
+2014-05-14/21:27:40.473/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:27:40.473/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:27:56.112/CESTDEBUG in init with loginManager: LoginManager@5c2eda46
+2014-05-14/21:27:56.114/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:27:56.115/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:28:54.833/CESTDEBUG in init with loginManager: LoginManager@57baf17f
+2014-05-14/21:28:54.833/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:28:54.834/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:29:06.460/CESTDEBUG in init with loginManager: LoginManager@723e0a37
+2014-05-14/21:29:06.472/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:29:06.472/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:29:08.162/CESTDEBUG in init with loginManager: LoginManager@108364f9
+2014-05-14/21:29:08.163/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:29:08.164/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:29:45.469/CESTDEBUG in init with loginManager: LoginManager@79023996
+2014-05-14/21:29:45.470/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/21:29:45.471/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:29:46.750/CESTDEBUG in init with loginManager: LoginManager@561acfc2
+2014-05-14/21:29:46.751/CESTDEBUG	and session.user as null
+2014-05-14/21:29:46.751/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:29:51.918/CESTDEBUG in init with loginManager: LoginManager@3614fc05
+2014-05-14/21:29:51.919/CESTDEBUG	and session.user as null
+2014-05-14/21:29:51.919/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/21:29:51.953/CESTDEBUG user <hu.bme.aut.tomeesample.model.User@29> was found
+2014-05-14/21:29:51.962/CESTDEBUG password <sudoer7> equals to the users
+2014-05-14/21:29:51.973/CESTDEBUG user sudoer was logged in
+2014-05-14/22:31:21.204/CESTDEBUG in init with loginManager: LoginManager@1d6b750a
+2014-05-14/22:31:21.224/CESTDEBUG	and session.user as null
+2014-05-14/22:31:21.225/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:31:29.453/CESTDEBUG in init with loginManager: LoginManager@29d615de
+2014-05-14/22:31:29.455/CESTDEBUG	and session.user as null
+2014-05-14/22:31:29.455/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:31:29.527/CESTDEBUG user <hu.bme.aut.tomeesample.model.User@29> was found
+2014-05-14/22:31:29.659/CESTDEBUG password <sudoer7> equals to the users
+2014-05-14/22:31:29.673/CESTDEBUG user sudoer was logged in
+2014-05-14/22:31:40.965/CESTDEBUG in init with loginManager: LoginManager@2d4412f
+2014-05-14/22:31:40.972/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:31:40.973/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:31:44.504/CESTDEBUG in init with loginManager: LoginManager@37214ff4
+2014-05-14/22:31:44.505/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:31:44.506/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:31:46.041/CESTDEBUG in init with loginManager: LoginManager@67b4da29
+2014-05-14/22:31:46.046/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:31:46.046/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:32:37.399/CESTDEBUG in init with loginManager: LoginManager@3ddfc0d3
+2014-05-14/22:32:37.400/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:32:37.400/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:32:42.471/CESTDEBUG in init with loginManager: LoginManager@4b4a2e35
+2014-05-14/22:32:42.472/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:32:42.473/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:32:46.049/CESTDEBUG in init with loginManager: LoginManager@2afe96ca
+2014-05-14/22:32:46.053/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:32:46.053/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:32:50.061/CESTDEBUG in init with loginManager: LoginManager@7cf59a60
+2014-05-14/22:32:50.062/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:32:50.063/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:34:08.798/CESTDEBUG in init with loginManager: LoginManager@36b108ac
+2014-05-14/22:34:08.799/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:34:08.808/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:34:16.576/CESTDEBUG in init with loginManager: LoginManager@60e53d65
+2014-05-14/22:34:16.577/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:34:16.577/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:34:20.214/CESTDEBUG in init with loginManager: LoginManager@1b6f2dc7
+2014-05-14/22:34:20.215/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:34:20.215/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-14/22:34:42.451/CESTDEBUG in init with loginManager: LoginManager@44794610
+2014-05-14/22:34:42.452/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-14/22:34:42.453/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f

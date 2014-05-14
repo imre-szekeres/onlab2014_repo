@@ -61,6 +61,7 @@ public class ProfileManager implements Serializable {
 	public String profileOf(User user) {
 		this.user = user;
 		isEditable = false;
+
 		// TODO:
 		// conversation.end();
 		return "profile";
@@ -205,8 +206,11 @@ public class ProfileManager implements Serializable {
 	public String addRole() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			Role nRole = roleService.findByName(role);
-			userService.addRoleFor(user, nRole);
+			Role r = roleService.findByName(role);
+			userService.addRoleFor(user, r);
+
+			logger.debug(" user is: " + user.getUsername());
+			logger.debug(" role is: " + role);
 			// TODO: am a RoleManager-ben is van ilyen method...
 			conversation.end();
 
