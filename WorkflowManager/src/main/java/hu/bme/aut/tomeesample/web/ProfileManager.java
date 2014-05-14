@@ -5,6 +5,7 @@ package hu.bme.aut.tomeesample.web;
 
 import hu.bme.aut.tomeesample.model.Role;
 import hu.bme.aut.tomeesample.model.User;
+import hu.bme.aut.tomeesample.service.RoleService;
 import hu.bme.aut.tomeesample.service.UserService;
 import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 import hu.bme.aut.tomeesample.utils.ManagingUtils;
@@ -41,11 +42,14 @@ public class ProfileManager implements Serializable {
 
 	@Inject
 	private UserService userService;
+	@Inject
+	private RoleService roleService;
 
 	private User user;
 	private String oldPassword;
 	private String newPassword;
 	private boolean isEditable;
+	private String role;
 
 	@PostConstruct
 	public void init() {
@@ -57,7 +61,8 @@ public class ProfileManager implements Serializable {
 	public String profileOf(User user) {
 		this.user = user;
 		isEditable = false;
-		conversation.end();
+		// TODO:
+		// conversation.end();
 		return "profile";
 	}
 
@@ -195,6 +200,27 @@ public class ProfileManager implements Serializable {
 	}
 
 	/**
+	 * 
+	 * */
+	public String addRole() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			Role nRole = roleService.findByName(role);
+			userService.addRoleFor(user, nRole);
+			// TODO: am a RoleManager-ben is van ilyen method...
+			conversation.end();
+
+			String message = "role " + role + " was added to " + user.getUsername();
+			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + message);
+		} catch (Exception e) {
+			FacesMessageUtils.errorMessage(context, "failed to add role " + role);
+			logger.debug(" ERROR in addRole: ", e);
+		}
+		return "add_user";
+	}
+
+	/**
 	 * Indicates the beginning of a conversation session, thus the beginning of
 	 * the LifeCycle of this bean.
 	 * */
@@ -268,6 +294,21 @@ public class ProfileManager implements Serializable {
 	 */
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	/**
+	 * @return the role
+	 */
+	public String getRole() {
+		return role;
+	}
+
+	/**
+	 * @param role
+	 *            the role to set
+	 */
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	@Override

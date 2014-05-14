@@ -12,6 +12,7 @@ import hu.bme.aut.tomeesample.service.UserService;
 import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -67,18 +68,25 @@ public class LoginManager {
 	}
 
 	/**
+	 * Lists the available <code>Role</code> names in the system.
+	 * 
+	 * @return a list containing the names
+	 * */
+	public List<String> listRoleNames() {
+		return Arrays.asList(roleService.findRoleNames());
+	}
+
+	/**
 	 * Registers a new user with the previously set parameters then logs it in.
 	 *
 	 * @return the string representation of the page to navigate to
 	 * */
 	public String register() {
 		try {
-			Role uRole = roleService.findByName(role);
+			Role uRole = roleService.findByName(role == null ? "visitor" : role);
 			subject.add(uRole);
 			userService.create(subject);
 			logger.debug(" user " + subject.getUsername() + " was created");
-
-			logPropsOf(subject);
 
 			if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject") == null)
 				return login();
@@ -99,7 +107,6 @@ public class LoginManager {
 		try {
 			context.getExternalContext().getSessionMap().put("subject", subject);
 			logger.debug(" user " + subject.getUsername() + " was logged in");
-			logPropsOf(subject);
 
 			FacesMessageUtils.infoMessage(context, "welcome, " + subject.getUsername());
 			return "index";
@@ -297,26 +304,6 @@ public class LoginManager {
 		logger.debug(" description <" + value + "> is valid");
 	}
 
-	// TODO: delete
-	private void logPropsOf(User user) {
-		try {
-			logger.debug("\n loginManager: " + this.toString());
-			logger.debug(" user: " + user.toString());
-			logger.debug(" props:"
-					+ "\n Username: " + user.getUsername()
-					+ "\n Password: " + user.getPassword()
-					+ "\n Email: " + user.getEmail()
-					+ "\n Description: " + user.getDescription()
-					+ "\n Roles: " + user.getRoles()
-					+ "\n Comments: " + user.getComments()
-					+ "\n ProjectAssignments: " + user.getProjectAssignments() + "\n");
-		} catch (Exception e) {
-			logger.error(" ERROR in logProps ~ " + e.getClass() + ": " + e.getMessage());
-			logger.error(e, e);
-		}
-
-	}
-
 	/**
 	 * Removes the specified <code>User</code> from the application.
 	 * 
@@ -349,34 +336,7 @@ public class LoginManager {
 	 */
 	public void setSubject(User subject) {
 		logger.debug(" setting subject to: " + subject.toString());
-		logPropsOf(subject);
 		this.subject = subject;
-	}
-
-	/**
-	 * Returns the id of the current subject.
-	 * 
-	 * @return id of the subject currently wrapped by <code>LoginManager</code>
-	 * */
-	public Long getSubjectId() {
-		return subject.getId();
-	}
-
-	/**
-	 * Sets the id of the current subject by fetching it from the database if
-	 * necessary.
-	 * 
-	 * @param id
-	 *            to look for
-	 * */
-	public void setSubjectId(Long id) {
-		logger.debug(" set subjectId was called..");
-		logger.debug(" subject is <" + subject + ">");
-		if (subject.getId() == null) {
-			User user = userService.findById(id);
-			subject = ManagingUtils.nullThenDefault(user, subject);
-			logger.debug(" subject was set to <" + subject + ">");
-		}
 	}
 
 	public String getUsername() {

@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml">
 	
@@ -20,39 +21,75 @@
 	                   <h:outputText value='#{ profileManager.user.username }' name='username' id='username' />
 		           </h:panelGrid>
 		           
-		           <h:message for='old_password' styleClass='error-message profile-grid' />
-		           <h:message for='new_password' styleClass='error-message profile-grid' />
-		           <h:panelGrid columns='2' id='chpass-panel' styleClass='profile-grid' >
-		               <h:outputText value='Old Password: ' />
-	                   <h:inputSecret value='#{ profileManager.oldPassword }' name='old_password' id='old_password' 
-	                            validator='#{ profileManager.validateOldPassword }'  />
-		               
-		               <h:outputText value='New Password: ' />
-	                   <h:inputSecret value='#{ profileManager.newPassword }' name='new_password' id='new_password' 
-	                            validator='#{   profileManager.validateNewPassword }'  />   
-		           </h:panelGrid>
+		           <c:choose>
+		              <c:when test='#{ profileManager.editable }'>
+		                  <h:message for='old_password' styleClass='error-message profile-grid' />
+	                       <h:message for='new_password' styleClass='error-message profile-grid' />
+	                       <h:panelGrid columns='2' id='chpass-panel' styleClass='profile-grid' >
+	                           <h:outputText value='Old Password: ' />
+	                           <h:inputSecret value='#{ profileManager.oldPassword }' name='old_password' id='old_password' 
+	                                    validator='#{ profileManager.validateOldPassword }'  />
+	                           
+	                           <h:outputText value='New Password: ' />
+	                           <h:inputSecret value='#{ profileManager.newPassword }' name='new_password' id='new_password' 
+	                                    validator='#{   profileManager.validateNewPassword }'  />   
+	                       </h:panelGrid>
+	                       
+	                       <h:message for='email'       styleClass='error-message profile-grid' />
+	                       <h:message for='description' styleClass='error-message profile-grid' />
+	                       <h:panelGrid columns='2' styleClass='profile-grid'>
+	                           <h:outputText value='Email: ' />
+	                           <h:inputText value='#{ profileManager.user.email }' name='email' id='email' 
+	                                        validator='#{ profileManager.validateEmailIn }'/>
+	                           
+	                           <h:outputText value='Description: ' />
+	                           <h:inputTextarea value='#{ profileManager.user.description }' name='description' id='description' 
+	                                            validator='#{ profileManager.validateDescriptionIn }' size='100' />
+	                       </h:panelGrid>
+	                       
+	                       <h:panelGrid columns='2' id='submit-panel' styleClass='profile-grid'>
+	                           <h:commandButton type='submit' value='Submit' id='submit-btn' action='#{ profileManager.modify }' />
+	                           <h:commandButton type='button' value='Cancel' id='cancel-btn' />
+	                       </h:panelGrid>
+	                       
+	                       <h:panelGrid columns='2' id='modif-panel' styleClass='profile-grid'>
+	                           <h:commandButton type='submit' value='Submit' id='msubmit-btn' action='#{ profileManager.modify }' />
+	                           <h:commandButton type='button' id='chpass-btn' styleClass='cvf-btn' style='width:100%;' value='Change Password'></h:commandButton>               
+	                       </h:panelGrid>
+		              </c:when>
+		              
+		              <c:otherwise>
+		                  
+		                  <h:panelGrid columns='2'>
+		                  
+		                      <h:outputText value='Username' />
+		                      <h:outputText value='#{ profileManager.user.username }' />
+		                      
+		                      <h:outputText value='Email' />
+		                      <h:outputText value='#{ profileManager.user.email }' />
+		                  
+		                      <h:outputText value='Description' />
+		                      <h:inputTextarea value='#{ profileManager.user.description }' readonly='true' />
+		                  </h:panelGrid>
+		                  
+		                  <h:form prependId='false'>
+		                  <h:panelGrid columns='1'>
+		                      <h:panelGrid id='role-panel' columns='2'>
+		                          <h:selectOneMenu id='selectone-role' value='#{ profileManager.role }' >
+		                              <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
+		                                  <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
+		                              </c:forEach>
+		                          </h:selectOneMenu>
+		                          <h:commandButton value='Add' action='#{ profileManager.addRole() }' /> 
+		                      </h:panelGrid>
+		                      <h:commandButton type='button' value='Add Role' id='add-role-btn' />
+		                  </h:panelGrid>
+		                  </h:form>
+		                  
+		              </c:otherwise>
+		           </c:choose>
+			           
 		           
-		           <h:message for='email'       styleClass='error-message profile-grid' />
-		           <h:message for='description' styleClass='error-message profile-grid' />
-		           <h:panelGrid columns='2' styleClass='profile-grid'>
-		               <h:outputText value='Email: ' />
-		               <h:inputText value='#{ profileManager.user.email }' name='email' id='email' 
-		                            validator='#{ profileManager.validateEmailIn }'/>
-		               
-		               <h:outputText value='Description: ' />
-		               <h:inputTextarea value='#{ profileManager.user.description }' name='description' id='description' 
-	                                    validator='#{ profileManager.validateDescriptionIn }' size='100' />
-		           </h:panelGrid>
-		           
-	               <h:panelGrid columns='2' id='submit-panel' styleClass='profile-grid'>
-	                   <h:commandButton type='submit' value='Submit' id='submit-btn' action='#{ profileManager.modify }' />
-	                   <h:commandButton type='button' value='Cancel' id='cancel-btn' />
-	               </h:panelGrid>
-	               
-	               <h:panelGrid columns='2' id='modif-panel' styleClass='profile-grid'>
-		               <h:commandButton type='submit' value='Submit' id='msubmit-btn' action='#{ profileManager.modify }' />
-		               <h:commandButton type='button' id='chpass-btn' styleClass='cvf-btn' style='width:100%;' value='Change Password'></h:commandButton>               
-	               </h:panelGrid>
 	               
 		       </h:panelGrid>
 		       
@@ -68,6 +105,7 @@
 	           var submit_pnl = $("#submit-panel");
 	           var chpass_pnl = $("#chpass-panel");
 	           var modif_pnl  = $("#modif-panel");
+	           var role_pnl   = $("#role-panel");
 	       
 	           function onCancel( event ) {
 	               //$("input[type!='button'][type!='submit'],textarea").prop( 'disabled',true );
@@ -88,12 +126,19 @@
 	               modif_pnl.hide();
 	               submit_pnl.show();
 	           }
+	           
+	           function addRole( event ) {
+	               $(this).hide();
+	               role_pnl.show();
+	           }
 	       
 	           $(function(){
 	               onCancel();
 	               $("#chpass-btn").click( startPassChange );
 	               $("#cancel-btn").click( onCancel );
+	               $('#add-role-btn').click( addRole );
 	               $('#subject-in').hide();
+	               role_pnl.hide();
 	           });
 	       </h:outputScript>
 	   </ui:define>

@@ -33,8 +33,15 @@
                       <h:inputTextarea size='50' id='desc_in' name="description" value="#{ loginManager.subject.description }" 
                                        validator='#{ loginManager.validateDescriptionIn }'/>
                       
-                      <h:outputText value='Role: ' />
-                      <h:inputText id='role_in' name='rolename' value='#{ loginManager.role }' />
+                      <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole('administrator') }">
+                          <h:outputText value='Role: ' />
+                          <h:selectOneMenu id='selectone-role' value='#{ loginManager.role }' >
+                              <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
+                                  <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
+                              </c:forEach>
+                          </h:selectOneMenu>
+                      </c:if>
+                      
                       <h:commandButton action="#{ loginManager.register }" value="#{ sessionScope.subject ne null ? 'Create User' : 'Register' }" id="adduser_btn" />
                     </h:panelGrid>
                 </h:form>

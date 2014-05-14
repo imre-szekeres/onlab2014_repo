@@ -15,7 +15,7 @@
                 <ui:include src="/user_form.xhtml" />
 				
 				<br />
-				<c:if test="#{ (sessionScope.subject ne null) and sessionScope.subject.hasRole( 'administrator' ) }">
+				<c:if test="#{ (sessionScope.subject ne null) and (sessionScope.subject.hasRole( 'administrator' ) or sessionScope.subject.hasRole( 'manager' )) }">
 				    <ui:include src="/users.xhtml" />
 				</c:if>
 				
