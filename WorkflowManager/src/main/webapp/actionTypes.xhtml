@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!--
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
+		<ui:define name="content">
+			<h3>List of Action Types</h3>
+		      	<ui:repeat var="at" value="#{actionTypeManager.actionTypeList}" varStatus="status">
+ 					<div class="actionTypePanel">
+	 					<h:form>
+	 						<span class = "actionTypePanel-name">
+	 							<h:outputText value="#{at.actionTypeName}"/>
+	 						</span>
+	 						<span>
+	 							<h:commandButton value="Delete" action="#{actionTypeManager.deleteActionType(at)}"/>
+	 						</span>
+	 						<span>
+	 							<h:commandButton value="Show/Hide" onclick="showOrHide('roles_block'); return false;" >
+	 							</h:commandButton>
+	 						</span>
+ 						</h:form>
+ 					</div>
+ 					<h:panelGroup id="roles_block" layout="block" styleClass="actionTypePanel-hiddenContent">
+ 						<span>Roles for: #{at.actionTypeName}</span>
+ 						<ui:repeat var="role" value="#{actionTypeManager.getRoleList(at)}" varStatus="status">
+ 							<div>
+ 								<h:form>
+		 							<span class = "actionTypePanel-name">
+		 								<h:outputText value="#{role.name}"/>
+	 								</span>
+	 								<span>
+	 									<h:commandButton value="Delete" action="#{actionTypeManager.deleteRoleFromActionType(role, at)}"/>
+	 								</span>
+ 								</h:form>
+ 							</div>
+ 						</ui:repeat>
+ 						<h:form>
+							<h:selectOneMenu value="#{actionTypeManager.selectedRoleId}">
+						   <f:selectItems value="#{roleManager.listRoles()}" var="_role" itemValue="#{_role.id}" 
+						   				itemLabel="#{_role.name}" valueChangeListener="#{actionTypeManager.selectedRoleChanged}"
+						   				onchange="submit()"/>	   							
+						</h:selectOneMenu>
+						<h:commandButton value="Add role" action="#{actionTypeManager.addRoleToActionType(at)}"/>
+						</h:form>
+ 					</h:panelGroup>
+   				</ui:repeat>
+		   	<ui:include src="add_actionType.xhtml" />
+		</ui:define>
+	</ui:composition>
+	
+</html>

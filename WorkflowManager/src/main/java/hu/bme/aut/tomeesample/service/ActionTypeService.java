@@ -35,6 +35,11 @@ public class ActionTypeService {
 		em.remove(actionType);
 	}
 
+	public void removeDetached(ActionType actionType) {
+		Object managed = em.merge(actionType);
+		em.remove(managed);
+	}
+
 	public List<ActionType> findAll() {
 		return em.createNamedQuery("ActionType.findAll", ActionType.class).getResultList();
 	}
