@@ -147,7 +147,7 @@ public class LoginManager {
 			throws ValidatorException {
 		User user = userService.findByName((String) value);
 		if (user == null) {
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username", "invalid username"));
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username or password", "pasword or username is invalid"));
 		}
 		subject = user;
 		logger.debug(" user <" + user.toString() + "> was found");
@@ -170,10 +170,12 @@ public class LoginManager {
 	 * */
 	public void validatePassword(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
+		if (!FacesContext.getCurrentInstance().getMessageList().isEmpty())
+			return;
 		if (subject != null) {
 			checkPassword((String) value);
+			logger.debug(" password <" + value + "> equals to the users");
 		}
-		logger.debug(" password <" + value + "> equals to the users");
 	}
 
 	/**
@@ -188,9 +190,9 @@ public class LoginManager {
 	private void checkPassword(String password) throws ValidatorException {
 		try {
 			if (!subject.getPassword().equals(password))
-				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password", "invalid password"));
+				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username or password", "pasword or username is invalid"));
 		} catch (Exception e) {
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password", "invalid password"), e);
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username or password", "pasword or username is invalid"), e);
 		}
 	}
 

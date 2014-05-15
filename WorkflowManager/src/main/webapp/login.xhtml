@@ -28,8 +28,11 @@
             <div id='form-div'>
                 <h:form id='signin-form' method='POST'>
                     <h:panelGrid id='signin-panel' columns='1' cellspacing='2' cellpadding='0'>
+                        <!--
                         <h:message for='username' styleClass='singin-error error-message' />
                         <h:message for='password' styleClass='singin-error error-message'  />
+                         -->
+                        <h:messages styleClass='signin-error error-message' />
                         <h:inputText   styleClass="user-input" id='username' name="username" value='#{ loginManager.subject.username }' 
                                        validator='#{ loginManager.validateUsername }'></h:inputText>
                         <h:inputSecret styleClass="user-input" id='password' name="password" value='#{ loginManager.subject.password }' 
