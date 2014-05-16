@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+
+    <h:form>
+        <h:panelGroup columns='1' id='projects-panel'>
+		    <div id='projectspanel-hdr'>
+		      <span class='pp-hdr-item'> Name </span>
+		      <span class='pp-hdr-item'> Description </span>
+		      <span class='pp-hdr-item'> Current State </span>
+		      <span class='pp-hdr-item'> Workflow </span>
+		      <span class='pp-hdr-item'> History </span>
+		      <span class='pp-hdr-item'> Assigned Users </span>
+		    </div>
+		    <div id='projects-wrapper'>
+			    <h:dataTable value='#{ projectManager.listProjects() }' var='project' >
+			        
+			        <h:column>
+			           <h:commandLink value='#{ project.name }' action='#{ projectManager.profileOf( project ) }' />
+			        </h:column>
+			        <h:column>
+			           <h:inputTextarea readonly='true' value='#{ project.description }' />
+			        </h:column>
+			        <h:column>
+			           <h:outputText value='#{ project.currentState.name }' />
+			        </h:column>
+			        <h:column>
+			           <h:outputText value='#{ project.workflow.name }' />
+			        </h:column>
+			        
+			        <!-- TODO: add link or drop-down table to/for historyEntries and Users... -->
+			        
+			    </h:dataTable>
+		    </div>
+		</h:panelGroup>
+    </h:form>
+</ui:composition>

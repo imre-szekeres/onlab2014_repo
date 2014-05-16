@@ -50,13 +50,16 @@
                         <span class='menu-item lseparated'>
                             <h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
                         </span>
+                        <span class='menu-item lseparated'>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
+                        </span>
+                        <span class='menu-item lseparated'>
+                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.addProject() }'><span>Projects</span></h:commandLink>
+                        </span>                        
                         
                         <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
                             <span class='menu-item lseparated'>
                                 <h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
-                            </span>
-                            <span class='menu-item lseparated'>
-                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
                             </span>
                             <span class='menu-item lseparated'>
                             <h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>

@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Project
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -40,35 +41,38 @@ import javax.validation.constraints.Size;
 public class Project implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull
-	@Size(min=5, max=16)
-	@Column(unique=true)
+	@Size(min = 5, max = 16)
+	@Column(unique = true)
 	private String name;
-	
-	@Size(min=13, max=512)
+
+	@Size(min = 13, max = 512)
 	private String description;
-	
+
 	@NotNull
 	private State currentState;
-	
+
 	@NotNull
 	@ManyToOne
 	private Workflow workflow;
-	
-	@OneToMany(mappedBy="project")
+
+	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
-	
-	@OneToMany(mappedBy="project")
+
+	@OneToMany(mappedBy = "project")
 	private List<ProjectAssignment> projectAssignments;
-	
+
+	@OneToMany(mappedBy = "project")
+	private List<Comment> comments;
+
 	public Project() {
 		super();
 	}
-	
-	public Project(String name, String description, Workflow workflow){
+
+	public Project(String name, String description, Workflow workflow) {
 		this.name = name;
 		this.description = description;
 		this.workflow = workflow;
@@ -77,68 +81,107 @@ public class Project implements Serializable {
 		this.projectAssignments = new ArrayList<>();
 		this.historyEntries = new ArrayList<>();
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public State getCurrentState() {
 		return currentState;
 	}
-	
+
 	public Workflow getWorkflow() {
 		return workflow;
 	}
-	
+
 	public List<HistoryEntry> getHistoryEntries() {
 		return historyEntries;
 	}
-	
+
+	/**
+	 * @param historyEntries
+	 *            the historyEntries to set
+	 */
+	public void setHistoryEntries(List<HistoryEntry> historyEntries) {
+		this.historyEntries = historyEntries;
+	}
+
 	public List<ProjectAssignment> getProjectAssignments() {
 		return projectAssignments;
 	}
-	
+
+	/**
+	 * @param projectAssignments
+	 *            the projectAssignments to set
+	 */
+	public void setProjectAssignments(List<ProjectAssignment> projectAssignments) {
+		this.projectAssignments = projectAssignments;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public void setCurrentState(State currentState) {
 		this.currentState = currentState;
 	}
-	
+
 	public void setWorkflow(Workflow workflow) {
 		this.workflow = workflow;
 	}
-	
-	public void add(HistoryEntry entry){
+
+	public void add(HistoryEntry entry) {
 		historyEntries.add(entry);
 	}
-	
-	public void add(ProjectAssignment assignment){
+
+	public void add(ProjectAssignment assignment) {
 		projectAssignments.add(assignment);
 	}
-	
-	public boolean remove(HistoryEntry entry){
+
+	public boolean remove(HistoryEntry entry) {
 		return historyEntries.remove(entry);
 	}
-	
-	public boolean remove(ProjectAssignment assignment){
+
+	public boolean remove(ProjectAssignment assignment) {
 		return projectAssignments.remove(assignment);
 	}
 
-	/** 
+	/**
+	 * @return the comments
+	 */
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	/**
+	 * @param comments
+	 *            the comments to set
+	 */
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public void add(Comment comment) {
+		comments.add(comment);
+	}
+
+	public void remove(Comment comment) {
+		comments.remove(comment);
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

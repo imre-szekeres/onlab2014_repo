@@ -101,11 +101,42 @@
 	           </h:dataTable>
 	       </h:form>
 	       
+	       <h:form prependId='false'>
+	       
+	           <h:panelGroup columns='1' id='commentpanel-wrapper'>
+	               <div>
+	                   <h:commandButton type='button' styleClass='cvf-button' value='Show Comments' id='comment-btn' ></h:commandButton>
+	               </div>	               
+	               
+	               <div>
+	               <h:panelGroup columns='1' id='comment-panel'>
+	                   <h:outputText value='Comments' id='comments-hdr'></h:outputText>
+	                   
+	                   <div id='comments-wrapper'>
+	                       <h:dataTable id='comment-table' value='#{ commentManager.listCommentsFor( profileManager.user ) }' 
+	                                    var='comment'>
+	                           <h:column>
+	                               <h:outputText value='Commented on' />
+	                           </h:column>
+	                           <h:column>
+	                               <h:commandLink value='#{ comment.project.name }' action='#{ projectManager.profileOf( comment.project ) }' />
+	                           </h:column>
+	                       </h:dataTable>
+	                   </div>
+	                   
+	               </h:panelGroup>
+	               </div>
+	           </h:panelGroup>
+	       
+	       </h:form>
+	       
 	       <h:outputScript>
-	           var submit_pnl = $("#submit-panel");
-	           var chpass_pnl = $("#chpass-panel");
-	           var modif_pnl  = $("#modif-panel");
-	           var role_pnl   = $("#role-panel");
+	           var submit_pnl  = $("#submit-panel");
+	           var chpass_pnl  = $("#chpass-panel");
+	           var modif_pnl   = $("#modif-panel");
+	           var role_pnl    = $("#role-panel");
+	           var comment_pnl = $('#comment-panel');
+	           var comment_btn = $('#comment-btn');
 	       
 	           function onCancel( event ) {
 	               //$("input[type!='button'][type!='submit'],textarea").prop( 'disabled',true );
@@ -131,6 +162,11 @@
 	               $(this).hide();
 	               role_pnl.show();
 	           }
+	           
+	           function toggleComments( event ) {
+	               comment_pnl.slideToggle(1200);
+	               comment_btn.val( comment_btn.val() == 'Show Comments' ? 'Hide Comments' : 'Show Comments' );
+	           }
 	       
 	           $(function(){
 	               onCancel();
@@ -138,6 +174,9 @@
 	               $("#cancel-btn").click( onCancel );
 	               $('#add-role-btn').click( addRole );
 	               $('#subject-in').hide();
+	               comment_pnl.hide();
+	               comment_btn.click( toggleComments );
+	               
 	               role_pnl.hide();
 	           });
 	       </h:outputScript>

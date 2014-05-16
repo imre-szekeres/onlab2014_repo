@@ -147,10 +147,10 @@
 }
 
 #brand-div IMG {
-    border-top: black 4px solid;
-    border-bottom: black 4px solid;
-    border-left: #D8D8D8 2px solid;
-    border-right: #D8D8D8 2px solid;
+    border-top: black 2px solid;
+    border-bottom: black 2px solid;
+    border-left: #D8D8D8 1px solid;
+    border-right: #D8D8D8 1px solid;
     border-radius: 5px 5px 5px 5px;
 }
 
@@ -320,4 +320,26 @@
     position: absolute;
     top: 80px;
     left: 200px;
+}
+
+/* Comments Space */
+
+#comments-wrapper {
+    overflow-x: auto;
+}
+
+#commentpanel-wrapper {
+}
+
+#commentpanel-wrapper {
+}
+
+#comment-panel {
+    position: relative;
+    top: 20px;
+    width: 300px;
+    height: 150px;
+    background-color: #66CCFF;
+    opacity: 0.8;
+    border: gray 1px dotted;
 }

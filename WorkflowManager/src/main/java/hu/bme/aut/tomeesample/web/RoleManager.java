@@ -143,6 +143,7 @@ public class RoleManager implements Serializable {
 	 *
 	 * @return the string representation of the page to navigate to
 	 * */
+	// TODO: remove
 	public String addFor(User user) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {

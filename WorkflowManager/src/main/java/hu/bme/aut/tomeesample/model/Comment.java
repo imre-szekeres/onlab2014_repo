@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 /**
  * Entity implementation class for Entity: Comment
  * 
+ * @author Gergely Várkonyi
  */
 @SuppressWarnings("serial")
 @Entity
@@ -41,7 +42,18 @@ public class Comment implements Serializable {
 	private User user;
 
 	@NotNull
+	@ManyToOne
 	private Project project;
+
+	public Comment() {
+		super();
+	}
+
+	public Comment(User user, Project project, String description) {
+		this.user = user;
+		this.project = project;
+		this.description = description;
+	}
 
 	public String getDescription() {
 		return description;
