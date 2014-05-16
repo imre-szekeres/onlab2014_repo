@@ -4,15 +4,19 @@
 package hu.bme.aut.tomeesample.web;
 
 import hu.bme.aut.tomeesample.model.Comment;
+import hu.bme.aut.tomeesample.model.Project;
 import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.service.CommentService;
+import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -35,7 +39,7 @@ public class CommentManager {
 
 	@PostConstruct
 	public void init() {
-
+		comment = new Comment();
 	}
 
 	/**
@@ -48,6 +52,30 @@ public class CommentManager {
 		return (user == null || user.getId() == null) ?
 				new ArrayList<Comment>() :
 				user.getComments();
+	}
+
+	/**
+	 * @param project
+	 * @param subject
+	 * @return the pageID to navigate to
+	 * */
+	public String createFor(Project project, User subject) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+
+			comment.setProject(project);
+			comment.setUser(subject);
+			comment.setPostDate(new Date());
+			commentService.create(comment);
+
+			String message = subject.getUsername() + "commented on " + project.getName();
+			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + message);
+		} catch (Exception e) {
+			FacesMessageUtils.errorMessage(context, "failed to comment on " + project.getName());
+			logger.error(" " + subject.getUsername() + " failed to comment on " + project.getName(), e);
+		}
+		return null;
 	}
 
 	/**

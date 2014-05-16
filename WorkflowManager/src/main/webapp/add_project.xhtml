@@ -10,10 +10,20 @@
 	<h:form prependId='false' id='project-form'>
 	   <h:panelGrid columns='2' id='project-panel'>
 	   
+           <f:facet name='errors'>
+              <h:panelGroup>
+                  <h:message for='project-name' styleClass='error-message'/>
+              </h:panelGroup>
+           </f:facet>  
 	       <h:outputText value='Project Name: '></h:outputText>
 	       <h:inputText  value='#{ projectManager.project.name }' name='project_name' id='project-name' 
 	                     validator='#{ projectManager.validateName }' />
 	       
+	       <f:facet name='errors'>
+              <h:panelGroup>
+                  <h:message for='project-description' styleClass='error-message'/>
+              </h:panelGroup>
+           </f:facet>
 	       <h:outputText value='Description: ' ></h:outputText>
 	       <h:inputTextarea value='#{ projectManager.project.description }' name='project_description' id='project-description' 
 	                        validator='#{ projectManager.validateDescription }'/>

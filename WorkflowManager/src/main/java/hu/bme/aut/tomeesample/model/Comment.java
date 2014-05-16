@@ -6,6 +6,7 @@
 package hu.bme.aut.tomeesample.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,6 +46,9 @@ public class Comment implements Serializable {
 	@ManyToOne
 	private Project project;
 
+	@NotNull
+	private Date postDate;
+
 	public Comment() {
 		super();
 	}
@@ -53,6 +57,7 @@ public class Comment implements Serializable {
 		this.user = user;
 		this.project = project;
 		this.description = description;
+		this.postDate = new Date();
 	}
 
 	public String getDescription() {
@@ -81,6 +86,21 @@ public class Comment implements Serializable {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	/**
+	 * @return the postDate
+	 */
+	public Date getPostDate() {
+		return postDate;
+	}
+
+	/**
+	 * @param postDate
+	 *            the postDate to set
+	 */
+	public void setPostDate(Date postDate) {
+		this.postDate = postDate;
 	}
 
 	@Override
