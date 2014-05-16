@@ -14,7 +14,7 @@
         <div id='signin-bodiv'>
         <div id='brand-div'>
             <h:panelGrid columns='1' cellpadding='2' cellspacing='2'>
-                <h:graphicImage name='images/wm_logo.png' style='width: 350px;height:80px;' />
+                <h:graphicImage value="#{ resource['css/images/wm_logo.png'] }" style='width: 350px;height:80px;' />
                 <p>
                     Please <strong>Sign in</strong> to access more content in <strong>(R) WorkflowManager</strong>!
                 </p>
@@ -26,13 +26,14 @@
                 <h:graphicImage value="#{ resource['css/images/usr_02.jpg'] }" style='width : 150px; height : 150px;' />
             </div>
             <div id='form-div'>
-                <h:form id='signin-form' method='POST'>
+                <h:form id='signin-form' method='POST' prependId='false'>
                     <h:panelGrid id='signin-panel' columns='1' cellspacing='2' cellpadding='0'>
-                        <!--
-                        <h:message for='username' styleClass='singin-error error-message' />
-                        <h:message for='password' styleClass='singin-error error-message'  />
-                         -->
-                        <h:messages styleClass='signin-error error-message' />
+                        
+                        <ul id='signin-errorbox' class='signin-error error-message' >
+                            <li>
+                                #{ facesContext.messageList[0].summary }
+                            </li>
+                        </ul>
                         <h:inputText   styleClass="user-input" id='username' name="username" value='#{ loginManager.subject.username }' 
                                        validator='#{ loginManager.validateUsername }'></h:inputText>
                         <h:inputSecret styleClass="user-input" id='password' name="password" value='#{ loginManager.subject.password }' 
@@ -44,11 +45,8 @@
         </div>
         </div>
         
-        <div id='signin-error-msgs-log' hidden='true'>
-            <h:panelGrid columns='1' cellspacing='2' cellpadding='2'>
-                <h:outputLabel style='color:rgb( 128,0,0 );' value='Error Log'></h:outputLabel>
-                <h:inputTextarea styleClass='error-area' cols='21' rows='13' readonly='true' ><h:messages styleClass='error-message' /></h:inputTextarea>
-            </h:panelGrid>
+        <div hidden='true'>
+            <h:messages />
         </div>
     </h:body> 
 </html>

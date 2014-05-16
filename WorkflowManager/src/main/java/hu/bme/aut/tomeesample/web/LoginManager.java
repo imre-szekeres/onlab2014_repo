@@ -170,8 +170,6 @@ public class LoginManager {
 	 * */
 	public void validatePassword(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!FacesContext.getCurrentInstance().getMessageList().isEmpty())
-			return;
 		if (subject != null) {
 			checkPassword((String) value);
 			logger.debug(" password <" + value + "> equals to the users");
