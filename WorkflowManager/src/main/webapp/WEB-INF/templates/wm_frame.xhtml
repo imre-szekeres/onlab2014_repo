@@ -113,15 +113,15 @@
         
         <!-- script for show/hide buttons -->
         <h:outputScript>
-          function showOrHide(id) {
-            var element = document.getElementById(id);
-            console.log(id);
-            if(element.style.display == 'block') {
-              element.style.display = 'none';
-            } else {
-              element.style.display = 'block'
-            }
-          }
+		function showOrHide(id) {
+			var element = $("."+id);
+			console.log(id);
+			if (element.is(":visible")) {
+				element.hide();
+			} else {
+				element.show();
+			}
+		};
         </h:outputScript>
     </h:body>
 </html>

@@ -14,8 +14,9 @@
 		<ui:define name="content">
 			<h3>List of Action Types</h3>
 		      	<ui:repeat var="at" value="#{actionTypeManager.actionTypeList}" varStatus="status">
+ 					<div>
  					<div class="actionTypePanel">
-	 					<h:form>
+	 					<h:form id="form">
 	 						<span class = "actionTypePanel-name">
 	 							<h:outputText value="#{at.actionTypeName}"/>
 	 						</span>
@@ -23,12 +24,12 @@
 	 							<h:commandButton value="Delete" action="#{actionTypeManager.deleteActionType(at)}"/>
 	 						</span>
 	 						<span>
-	 							<h:commandButton value="Show/Hide" onclick="showOrHide('roles_block'); return false;" >
+	 							<h:commandButton id="show_hide" value="Show/Hide" onclick='showOrHide("roles_block_#{at.id}"); return false;' >
 	 							</h:commandButton>
 	 						</span>
  						</h:form>
  					</div>
- 					<h:panelGroup id="roles_block" layout="block" styleClass="actionTypePanel-hiddenContent">
+ 					<h:panelGroup id="roles_block" layout="block" styleClass="actionTypePanel-hiddenContent roles_block_#{at.id}">
  						<span>Roles for: #{at.actionTypeName}</span>
  						<ui:repeat var="role" value="#{actionTypeManager.getRoleList(at)}" varStatus="status">
  							<div>
@@ -48,9 +49,10 @@
 							   				itemLabel="#{_role.name}" valueChangeListener="#{actionTypeManager.selectedRoleChanged}"
 							   				onchange="submit()"/>	   							
 							</h:selectOneMenu>
-						<h:commandButton value="Add role" action="#{actionTypeManager.addRoleToActionType(at)}"/>
+						<h:commandButton class="add_button" value="Add role" action="#{actionTypeManager.addRoleToActionType(at)}"/>
 						</h:form>
  					</h:panelGroup>
+ 					</div>
    				</ui:repeat>
 		   	<ui:include src="add_actionType.xhtml" />
 		</ui:define>
