@@ -120,6 +120,7 @@ public class StateManager {
 		} catch (Exception e) {
 			logger.debug("Error while deleting actionType");
 			logger.debug(e.getMessage());
+			e.printStackTrace();
 		}
 		return createReturnString();
 	}
@@ -133,6 +134,7 @@ public class StateManager {
 		} catch (Exception e) {
 			logger.debug("Error while deleting actionType from state");
 			logger.debug(e.getMessage());
+			e.printStackTrace();
 		}
 		return createReturnString();
 	}
@@ -151,6 +153,7 @@ public class StateManager {
 		} catch (Exception e) {
 			logger.debug("Error while adding actionType for state");
 			logger.debug(e.getMessage());
+			e.printStackTrace();
 		}
 		return createReturnString();
 	}
