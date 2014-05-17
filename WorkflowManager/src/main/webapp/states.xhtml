@@ -11,6 +11,10 @@
 		with actual data.
 	 -->
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
+		<ui:define name="content_title">
+			<h:outputText value="#{stateManager.getTitle()}"/>
+		</ui:define>
+	
 		<ui:define name="content">
 			<h3>List of states</h3>
 			<h:form>
@@ -20,16 +24,28 @@
 		         		rowClasses="stateTableOddRow,stateTableEvenRow">
 		        	<h:column>
 		            	<f:facet name="header">Name</f:facet>    				
-		           		<h:outputText value="#{state.name}"></h:outputText>
+		           		<h:link outcome="states" value="#{state.name}">
+        					<f:param name="parentId" value="#{state.id}" />
+        					<f:param name="workflowId" value="#{param.workflowId}" />
+					    </h:link> 
 		         	</h:column>
 		         	<h:column>
 		            	<f:facet name="header">Description</f:facet>
-		            	<h:outputText value="#{state.description}"></h:outputText>
+		            	<h:outputText value="#{state.description}"/>
 		         	</h:column>
 		         	<!-- TODO Has role -->
-		         	<!--<h:column>
+		         	<h:column>
 		         		<f:facet name="header">Delete</f:facet>
-		                <h:commandButton value="Delete" action="#{stateManager.deleteWorkflow(workflow)}"/> 
+		                <h:commandButton value="Delete" action="#{stateManager.deleteState(state)}">
+		                	<f:param name="workflowId" value="#{param.workflowId}"/>
+			    			<f:param name="parentId" value="#{param.parentId}"/>
+		                </h:commandButton> 
+		            </h:column>
+		            <!--<h:column>
+		         		<f:facet name="header"> substate</f:facet>
+		                <h:commandButton value="Delete" action="#{stateManager.setParent(state)}"> 
+		                	<f:param name="parentId" value="#{state.id}" />
+		                </h:commandButton>
 		            </h:column>-->
 		      	</h:dataTable>
 		   	</h:form>

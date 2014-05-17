@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -114,9 +115,7 @@ public class Workflow implements Serializable {
 
 	public void addState(State state) {
 		if (getStates() == null) {
-			System.out.println(getStates());
 			setStates(new ArrayList<State>());
-			System.out.println(getStates());
 		}
 		if (state != null && !getStates().contains(state)) {
 			getStates().add(state);
@@ -174,7 +173,7 @@ public class Workflow implements Serializable {
 	public static List<State> getBasicStates(Workflow workflow) {
 		// The initialState has no parent state -> null
 		State initialState = new State("Initial state",
-				"This is the first state, when a project is created.", null);
+				"This is the first state, when a project is created.", true);
 		// Create the basic states list
 		List<State> basicStates = new ArrayList<>();
 		basicStates.add(initialState);

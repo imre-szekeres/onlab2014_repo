@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.tomeesample.service;
 
+import hu.bme.aut.tomeesample.model.State;
 import hu.bme.aut.tomeesample.model.Workflow;
 
 import java.util.List;
@@ -57,6 +58,11 @@ public class WorkflowService {
 	public void removeDetached(Workflow workflow) {
 		Object managed = em.merge(workflow);
 		em.remove(managed);
+	}
+
+	public void setWorkflowToState(Workflow workflow, State state) {
+		workflow.addState(state);
+		em.merge(workflow);
 	}
 
 	public List<Workflow> findAll() {
