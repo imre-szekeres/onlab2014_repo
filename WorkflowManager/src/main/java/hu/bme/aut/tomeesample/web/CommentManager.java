@@ -76,7 +76,7 @@ public class CommentManager {
 
 			commentService.createFor(project, subject, comment);
 
-			String message = subject.getUsername() + "commented on " + project.getName();
+			String message = subject.getUsername() + " commented on " + project.getName();
 			FacesMessageUtils.infoMessage(context, message);
 			logger.debug(" " + message);
 		} catch (Exception e) {
