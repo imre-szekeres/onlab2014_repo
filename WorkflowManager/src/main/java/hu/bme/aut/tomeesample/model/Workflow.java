@@ -24,6 +24,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Workflow
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -39,15 +40,15 @@ import javax.validation.constraints.Size;
 public class Workflow implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
-	@Size(min=5, max=32)
+	@Size(min = 5, max = 32)
 	private String name;
-	
+
 	@NotNull
-	@Size(min=16, max=512)
+	@Size(min = 16, max = 512)
 	private String description;
 
 	@OneToMany(mappedBy = "workflow", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
@@ -59,29 +60,28 @@ public class Workflow implements Serializable {
 	public Workflow() {
 		super();
 	}
-   
-	public Workflow(String name, String description){
+
+	public Workflow(String name, String description) {
 		this.name = name;
 		this.description = description;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
 
-	// TODO:
 	public State getInitialState() {
 		// Search the root of the state hierarchy
 		for (State state : states) {
-			if (state.getParent() == null) {
+			if (state.getParent() == null && state.isInitial()) {
 				return state;
 			}
 		}
@@ -92,11 +92,11 @@ public class Workflow implements Serializable {
 	public List<State> getStates() {
 		return states;
 	}
-	
+
 	public List<Project> getProjects() {
 		return projects;
 	}
-	
+
 	public void setStates(List<State> states) {
 		this.states = states;
 	}
@@ -108,7 +108,7 @@ public class Workflow implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}

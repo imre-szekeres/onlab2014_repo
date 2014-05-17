@@ -249,6 +249,6 @@ public class State implements Serializable {
 
 	@Override
 	public String toString() {
-		return "State [id=" + id + ", name=" + name + "]";
+		return "State [id=" + id + ", name=" + name + ", initial=" + initial + "]";
 	}
 }

@@ -56,6 +56,7 @@ public class StateManager {
 			}
 		}
 		logger.debug("States listed: " + stateList.size());
+		logger.debug(stateList);
 		return stateList;
 	}
 
@@ -188,6 +189,30 @@ public class StateManager {
 
 	public boolean isInitial(State state) {
 		return state.isInitial();
+	}
+
+	public String setInitial(State newInitState) {
+		Long workflowId = getIdParam("workflowId");
+
+		try {
+			logger.debug("Try to get workflow with ID: " + workflowId);
+			Workflow workflow = workflowService.findById(workflowId);
+			State oldInitState = workflow.getInitialState();
+			oldInitState.setInitial(false);
+			stateService.update(oldInitState);
+			newInitState.setInitial(true);
+			stateService.update(newInitState);
+			logger.debug("Initial state setting ended.");
+		} catch (IllegalArgumentException illExc) {
+			logger.warn("There was no initial state.");
+			newInitState.setInitial(true);
+			stateService.update(newInitState);
+		} catch (Exception e) {
+			logger.debug("Error while setting initial state");
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		}
+		return createReturnString();
 	}
 
 	public String createReturnString() {

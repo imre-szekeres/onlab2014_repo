@@ -19,6 +19,7 @@
 			<h3>List of states</h3>
 				<div>
 					<div class="state_list_header">
+						<span class="state_isinitial">Initial</span>
 						<span class="state_name">Name</span>
 						<span class="state_dexc">Description</span>
 						<span class="state_delete">Delete</span>
@@ -26,6 +27,14 @@
 			      	<ui:repeat var="state" value="#{stateManager.stateList}" varStatus="status">
 					<h:form>
 			        	<div class="state_list_body">
+			        		<span class="state_isinitial">
+						       	<h:graphicImage value="#{ resource['css/images/star.jpg'] }" style='width : 10px; height : 10px;' rendered="#{state.initial}" />
+								<h:commandLink action="#{stateManager.setInitial(state)}" rendered="#{!state.initial}">
+									<h:graphicImage value="#{ resource['css/images/star_empty.jpg'] }" style='width : 10px; height : 10px;' rendered="#{!state.initial}" />
+									<f:param name="workflowId" value="#{param.workflowId}"/>
+	    							<f:param name="parentId" value="#{param.parentId}"/>
+								</h:commandLink>
+			        		</span>
 				        	<span class="state_name"> 			
 				           		<h:link outcome="states" value="#{state.name}">
 		        					<f:param name="parentId" value="#{state.id}" />
