@@ -1,7 +1,9 @@
 package hu.bme.aut.tomeesample.web;
 
+import hu.bme.aut.tomeesample.model.ActionType;
 import hu.bme.aut.tomeesample.model.State;
 import hu.bme.aut.tomeesample.model.Workflow;
+import hu.bme.aut.tomeesample.service.ActionTypeService;
 import hu.bme.aut.tomeesample.service.StateService;
 import hu.bme.aut.tomeesample.service.WorkflowService;
 
@@ -11,6 +13,7 @@ import java.util.Map;
 
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -29,10 +32,15 @@ public class StateManager {
 	StateService stateService;
 	@Inject
 	WorkflowService workflowService;
+	@Inject
+	ActionTypeService actionTypeService;
 	private List<State> stateList;
 
 	private String name;
 	private String description;
+
+	private Long selectedActionTypeId;
+	private Long selectedNextStateId;
 
 	/**
 	 * @return All state
@@ -106,35 +114,63 @@ public class StateManager {
 	 *            State to delete
 	 */
 	public String deleteState(State state) {
-		stateService.removeDetached(state);
+		try {
+			logger.debug("Deleting actionType: " + state.toString());
+			stateService.removeDetached(state);
+		} catch (Exception e) {
+			logger.debug("Error while deleting actionType");
+			logger.debug(e.getMessage());
+		}
 		return createReturnString();
 	}
 
-	// public void validateName(FacesContext context, UIComponent component,
-	// Object value)
-	// throws ValidatorException {
-	// logger.debug("validating: " + value.toString());
-	// logger.debug("in validateName - stateService: " + stateService == null ?
-	// "null" : stateService.toString());
-	// if (!stateService.validateName(((String) value).trim()))
-	// throw new ValidatorException(new
-	// FacesMessage(FacesMessage.SEVERITY_ERROR,
-	// "stateService name validating error",
-	// "stateService name validating error"));
-	// }
-	//
-	// public void validateDescription(FacesContext context, UIComponent
-	// component, Object value)
-	// throws ValidatorException {
-	// logger.debug("validating: " + value.toString());
-	// logger.debug("in validateName - stateService: " + stateService == null ?
-	// "null" : stateService.toString());
-	// if (!stateService.validateDescription(((String) value).trim()))
-	// throw new ValidatorException(new
-	// FacesMessage(FacesMessage.SEVERITY_ERROR,
-	// "stateService description validating error",
-	// "stateService description validating error"));
-	// }
+	public String deleteActionTypeFromState(ActionType actionType, State state) {
+		try {
+			// remove actionType
+			state.removeNexState(actionType);
+			// save changes
+			stateService.update(state);
+		} catch (Exception e) {
+			logger.debug("Error while deleting actionType from state");
+			logger.debug(e.getMessage());
+		}
+		return createReturnString();
+	}
+
+	public String addActionTypeToState(State state) {
+		try {
+			// Get selected actionType and state
+			if (selectedActionTypeId != null && selectedNextStateId != null) {
+				ActionType actionType = actionTypeService.findById(selectedActionTypeId);
+				State nextState = stateService.findById(selectedNextStateId);
+				// add them to the current state
+				state.addNextState(actionType, nextState);
+				// save changes
+				stateService.update(state);
+			}
+		} catch (Exception e) {
+			logger.debug("Error while adding actionType for state");
+			logger.debug(e.getMessage());
+		}
+		return createReturnString();
+	}
+
+	public void selectedActionTypeChanged(ValueChangeEvent e) {
+		selectedActionTypeId = (Long) e.getNewValue();
+	}
+
+	public void selectedNextStateChanged(ValueChangeEvent e) {
+		selectedNextStateId = (Long) e.getNewValue();
+	}
+
+	public List<ActionType> getActionTypeList(State state) {
+		ArrayList<ActionType> actionTypes = new ArrayList<>();
+		Map<ActionType, State> stateMap = state.getNextStates();
+		if (stateMap != null) {
+			actionTypes.addAll(state.getNextStates().keySet());
+		}
+		return actionTypes;
+	}
 
 	public Long getIdParam(String paramName) {
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -180,12 +216,14 @@ public class StateManager {
 		return parentsName;
 	}
 
-	// public void setInitial(ValueChangeEvent event) {
-	// State intialState = stateService.findInitial();
-	// intialState.setInitial(false);
-	// stateService.update(intialState);
-	//
-	// }
+	public List<State> getStateForWorkflow() {
+		if (getIdParam("workflowId") != null) {
+			stateList = stateService.findRootStatesByWorkflowId(getIdParam("workflowId"));
+		} else {
+			stateList = new ArrayList<>();
+		}
+		return stateList;
+	}
 
 	public String getName() {
 		return name;
@@ -193,6 +231,22 @@ public class StateManager {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public Long getSelectedActionTypeId() {
+		return selectedActionTypeId;
+	}
+
+	public void setSelectedActionTypeId(Long selectedActionTypeId) {
+		this.selectedActionTypeId = selectedActionTypeId;
+	}
+
+	public Long getSelectedNextStateId() {
+		return selectedNextStateId;
+	}
+
+	public void setSelectedNextStateId(Long selectedNextStateId) {
+		this.selectedNextStateId = selectedNextStateId;
 	}
 
 	public void setName(String name) {

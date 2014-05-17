@@ -60,14 +60,14 @@ public class State implements Serializable {
 	@JoinColumn
 	private Workflow workflow;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@MapKeyJoinColumn
 	private Map<ActionType, State> nextStates;
 
-	@OneToMany(mappedBy = "state")
+	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<HistoryEntry> historyEntries;
 
-	@OneToMany(mappedBy = "state")
+	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private List<BlobFile> files;
 
 	@ManyToOne
@@ -170,6 +170,14 @@ public class State implements Serializable {
 
 	public boolean removeHistoryEntry(HistoryEntry entry) {
 		return historyEntries.remove(entry);
+	}
+
+	public void removeNexState(ActionType actionType) {
+		nextStates.remove(actionType);
+	}
+
+	public void addNextState(ActionType actionType, State nextState) {
+		nextStates.put(actionType, nextState);
 	}
 
 	public void addChild(State child) {

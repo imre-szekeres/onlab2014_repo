@@ -50,7 +50,7 @@ public class Workflow implements Serializable {
 	@Size(min=16, max=512)
 	private String description;
 
-	@OneToMany(mappedBy = "workflow", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "workflow", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private List<State> states = new ArrayList<State>();
 
 	@OneToMany(mappedBy = "workflow")
