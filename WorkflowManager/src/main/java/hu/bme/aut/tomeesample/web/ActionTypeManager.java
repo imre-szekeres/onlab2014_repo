@@ -5,9 +5,11 @@ import hu.bme.aut.tomeesample.model.Role;
 import hu.bme.aut.tomeesample.service.ActionTypeService;
 import hu.bme.aut.tomeesample.service.RoleService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.RequestScoped;
@@ -86,6 +88,7 @@ public class ActionTypeManager {
 		} catch (Exception e) {
 			logger.debug("Error while deleting actionType");
 			logger.debug(e.getMessage());
+			e.printStackTrace();
 		}
 		return "actionTypes";
 	}
@@ -101,13 +104,19 @@ public class ActionTypeManager {
 
 	public String deleteRoleFromActionType(Role role, ActionType actionType) {
 		try {
-			// Get selected role
+			// Remove role
 			actionType.remove(role);
+			logger.debug("Role: " + role + " was removed from " + actionType + ".");
+			logger.debug(role.getActionTypes());
+			logger.debug(actionType.getRoles());
 			// save changes
 			actionTypeService.update(actionType);
+			roleService.update(role);
+			logger.debug("Deleting was persisted.");
 		} catch (Exception e) {
-			logger.debug("Error while adding role for actionType");
+			logger.debug("Error while deleting role from actionType");
 			logger.debug(e.getMessage());
+			e.printStackTrace();
 		}
 		return "actionTypes";
 	}
@@ -126,16 +135,22 @@ public class ActionTypeManager {
 		} catch (Exception e) {
 			logger.debug("Error while adding role for actionType");
 			logger.debug(e.getMessage());
+			e.printStackTrace();
 		}
 		return "actionTypes";
 	}
 
-	public void localeChanged(ValueChangeEvent e) {
+	public void selectedRoleChanged(ValueChangeEvent e) {
 		selectedRoleId = (Long) e.getNewValue();
 	}
 
 	public List<Role> getRoleList(ActionType actionType) {
-		return roleService.findByActionType(actionType);
+		ArrayList<Role> roles = new ArrayList<>();
+		Set<Role> roleSet = actionType.getRoles();
+		if (roleSet != null) {
+			roles.addAll(roleSet);
+		}
+		return roles;
 	}
 
 	public String getActionTypeName() {

@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +26,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: State
@@ -36,7 +37,9 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
 		@NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
 		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId"),
-		@NamedQuery(name = "State.findChildrenByParentId", query = "SELECT s FROM State s WHERE s.parent.id=:parentId")
+		@NamedQuery(name = "State.findChildrenByParentId", query = "SELECT s FROM State s WHERE s.parent.id=:parentId"),
+		@NamedQuery(name = "State.findByInitial", query = "SELECT s FROM State s WHERE s.initial=:initial"),
+		@NamedQuery(name = "State.findRootStatesByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId and s.parent IS NULL")
 })
 public class State implements Serializable {
 
@@ -45,48 +48,48 @@ public class State implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Size(min = 4, max = 25)
+	// @Size(min = 4, max = 25)
 	private String name;
 
-	@Size(min = 0, max = 512)
+	// @Size(min = 0, max = 512)
 	private String description;
+
+	private boolean initial;
 
 	@ManyToOne
 	@JoinColumn
 	private Workflow workflow;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@MapKeyJoinColumn
 	private Map<ActionType, State> nextStates;
 
-	@OneToMany(mappedBy = "state")
+	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<HistoryEntry> historyEntries;
 
-	@OneToMany(mappedBy = "state")
+	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private List<BlobFile> files;
 
 	@ManyToOne
+	@JoinColumn
 	private State parent;
 
-	@OneToMany(mappedBy = "parent")
+	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private List<State> children;
 
 	public State() {
 		super();
 	}
 
-	public State(String name, String description, State parent) {
+	public State(String name, String description, boolean initial) {
 		this.name = name;
 		this.description = description;
 		this.workflow = null;
+		this.initial = initial;
 		this.historyEntries = new HashSet<>();
 		this.files = new ArrayList<>();
 		this.nextStates = new HashMap<>();
 		this.children = new ArrayList<>();
-		if (parent != null) {
-			this.parent = parent;
-			this.parent.addChild(this);
-		}
 	}
 
 	public Long getId() {
@@ -115,6 +118,14 @@ public class State implements Serializable {
 
 	public State getParent() {
 		return parent;
+	}
+
+	public boolean isInitial() {
+		return initial;
+	}
+
+	public void setInitial(boolean initial) {
+		this.initial = initial;
 	}
 
 	public void setParent(State parent) {
@@ -161,8 +172,22 @@ public class State implements Serializable {
 		return historyEntries.remove(entry);
 	}
 
+	public void removeNexState(ActionType actionType) {
+		nextStates.remove(actionType);
+	}
+
+	public void addNextState(ActionType actionType, State nextState) {
+		nextStates.put(actionType, nextState);
+	}
+
 	public void addChild(State child) {
-		children.add(child);
+		if (getChildren() == null) {
+			setChildren(new ArrayList<State>());
+		}
+		if (child != null && !getChildren().contains(child)) {
+			getChildren().add(child);
+			child.setParent(this);
+		}
 	}
 
 	public boolean removeChild(State child) {
@@ -224,6 +249,6 @@ public class State implements Serializable {
 
 	@Override
 	public String toString() {
-		return "State [id=" + id + ", name=" + name + "]";
+		return "State [id=" + id + ", name=" + name + ", initial=" + initial + "]";
 	}
 }
