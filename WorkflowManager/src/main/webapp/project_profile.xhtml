@@ -5,5 +5,19 @@
       xmlns:h="http://java.sun.com/jsf/html">
 
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml">
+	   <ui:define name='content_title'>
+	       Project #{ projectManager.project.name }
+	   </ui:define>
+	   
+	   <ui:define name='content'>
+	       
+	       <h:panelGrid columns='2' >
+                <h:outputText value='Name: ' />
+                <h:outputText value='#{ proectManager.project.name }' />
+                
+                <h:outputText value='' />
+	       </h:panelGrid>
+	       
+	   </ui:define>
 	</ui:composition>
 </html>

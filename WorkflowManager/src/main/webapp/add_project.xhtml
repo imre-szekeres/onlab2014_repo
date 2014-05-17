@@ -34,7 +34,7 @@
 	                                validator='#{ projectManager.validateDescription }'/>
 	               
 	               <h:outputText value='Workflow: ' ></h:outputText>
-	               <h:selectOneMenu value="#{ projectManager.workflow }" >
+	               <h:selectOneMenu value="#{ projectManager.workflowName }" >
 	                   <c:forEach items='#{ workflowManager.workflowList }' var='workflow' >
 	                       <f:selectItem itemValue='#{ workflow.name }' itemLabel='#{ workflow.name }' />
 	                   </c:forEach>

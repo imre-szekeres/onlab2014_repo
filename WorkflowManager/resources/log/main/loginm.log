@@ -1860,3 +1860,15 @@ ProjectAssignments: null
 2014-05-16/21:48:03.535/CESTDEBUG user <hu.bme.aut.tomeesample.model.User@29> was found
 2014-05-16/21:48:03.752/CESTDEBUG password <sudoer7> equals to the users
 2014-05-16/21:48:03.761/CESTDEBUG user sudoer was logged in
+2014-05-17/16:49:30.307/CESTDEBUG in init with loginManager: LoginManager@1a73cdbc
+2014-05-17/16:49:30.322/CESTDEBUG	and session.user as null
+2014-05-17/16:49:30.339/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-17/16:49:37.257/CESTDEBUG in init with loginManager: LoginManager@44ca6717
+2014-05-17/16:49:37.259/CESTDEBUG	and session.user as null
+2014-05-17/16:49:37.260/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
+2014-05-17/16:49:37.416/CESTDEBUG user <hu.bme.aut.tomeesample.model.User@29> was found
+2014-05-17/16:49:37.630/CESTDEBUG password <sudoer7> equals to the users
+2014-05-17/16:49:37.641/CESTDEBUG user sudoer was logged in
+2014-05-17/17:06:42.496/CESTDEBUG in init with loginManager: LoginManager@3b4667aa
+2014-05-17/17:06:42.516/CESTDEBUG	and session.user as hu.bme.aut.tomeesample.model.User@29
+2014-05-17/17:06:42.517/CESTDEBUG	created new loginManager.subject as hu.bme.aut.tomeesample.model.User@1f
