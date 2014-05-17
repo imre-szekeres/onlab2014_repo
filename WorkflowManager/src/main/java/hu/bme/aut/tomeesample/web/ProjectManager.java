@@ -6,6 +6,7 @@ package hu.bme.aut.tomeesample.web;
 import hu.bme.aut.tomeesample.model.Project;
 import hu.bme.aut.tomeesample.model.Workflow;
 import hu.bme.aut.tomeesample.service.ProjectService;
+import hu.bme.aut.tomeesample.service.WorkflowService;
 import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
@@ -40,8 +41,10 @@ public class ProjectManager implements Serializable {
 
 	@Inject
 	private ProjectService projectService;
+	@Inject
+	private WorkflowService workflowService;
 	private Project project = new Project();
-	private Workflow workflow;
+	private String workflowName;
 
 	/**
 	 * Fetches the <code>Project</code>s already created in the application.
@@ -95,6 +98,7 @@ public class ProjectManager implements Serializable {
 		// TODO: check
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
+			Workflow workflow = workflowService.findByName(workflowName);
 			project.setWorkflow(workflow);
 			project.setCurrentState(workflow.getInitialState());
 			projectService.create(project);
@@ -125,18 +129,18 @@ public class ProjectManager implements Serializable {
 	}
 
 	/**
-	 * @return the workflow
+	 * @return the workflowName
 	 */
-	public Workflow getWorkflow() {
-		return workflow;
+	public String getWorkflowName() {
+		return workflowName;
 	}
 
 	/**
 	 * @param workflowName
-	 *            the workflow to set
+	 *            the workflowName to set
 	 */
-	public void setWorkflow(Workflow workflow) {
-		this.workflow = workflow;
+	public void setWorkflowName(String workflowName) {
+		this.workflowName = workflowName;
 	}
 
 	@Override
