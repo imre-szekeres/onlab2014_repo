@@ -11,7 +11,6 @@ import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -48,10 +47,22 @@ public class CommentManager {
 	 *
 	 * @return a list of all the found comments
 	 * */
-	public List<Comment> listCommentsFor(User user) {
+	public List<Comment> listCommentsOf(User user) {
 		return (user == null || user.getId() == null) ?
 				new ArrayList<Comment>() :
-				user.getComments();
+				commentService.findByUserName(user.getUsername());
+	}
+
+	/**
+	 * Fetches the <code>Comment</code>s already posted to the given
+	 * <code>Project</code>.
+	 *
+	 * @return a list of all the found comments
+	 * */
+	public List<Comment> listCommentsFor(Project project) {
+		return (project == null || project.getId() == null) ?
+				new ArrayList<Comment>() :
+				commentService.findByProjectName(project.getName());
 	}
 
 	/**
@@ -63,10 +74,7 @@ public class CommentManager {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
 
-			comment.setProject(project);
-			comment.setUser(subject);
-			comment.setPostDate(new Date());
-			commentService.create(comment);
+			commentService.createFor(project, subject, comment);
 
 			String message = subject.getUsername() + "commented on " + project.getName();
 			FacesMessageUtils.infoMessage(context, message);
@@ -75,7 +83,7 @@ public class CommentManager {
 			FacesMessageUtils.errorMessage(context, "failed to comment on " + project.getName());
 			logger.error(" " + subject.getUsername() + " failed to comment on " + project.getName(), e);
 		}
-		return null;
+		return "project_profile";
 	}
 
 	/**

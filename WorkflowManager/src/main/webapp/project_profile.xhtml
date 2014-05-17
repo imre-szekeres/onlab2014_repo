@@ -13,10 +13,40 @@
 	       
 	       <h:panelGrid columns='2' >
                 <h:outputText value='Name: ' />
-                <h:outputText value='#{ proectManager.project.name }' />
+                <h:outputText value='#{ projectManager.project.name }' />
                 
-                <h:outputText value='' />
+                <h:outputText value='Workflow: ' />
+                <h:outputText value='#{ projectManager.project.workflow.name }' />
+                
+                <h:outputText value='Description: ' />
+                <h:inputTextarea readonly='true' value='#{ projectManager.project.description }' />
 	       </h:panelGrid>
+	       
+	       <!-- TODO: view comments -->
+	       <h:form >
+	           <h:panelGrid columns='1'>
+	           
+	               <h:dataTable value='#{ commentManager.listCommentsFor( projectManager.project ) }' var='comment' >
+	                   <h:column>
+	                       <h:commandLink action='#{ profileManager.profileOf( comment.user ) }' value='#{ comment.user.username }' ></h:commandLink>
+	                   </h:column>
+	                   <h:column>
+	                       <h:outputText value='at #{ comment.postDate }' />
+	                   </h:column>
+	                   <h:column>
+	                       <h:inputTextarea readonly='true' value='#{ comment.description }' />
+	                   </h:column>	               
+	               </h:dataTable>
+	           
+	               <f:facet name='footer'>
+	                   <h:panelGroup>
+	                       <h:outputText value='#{ sessionScope.subject.username }:' />
+	                       <h:inputText value='#{ commentManager.comment.description }' />
+	                       <h:commandButton value='Comment' action='#{ commentManager.createFor( projectManager.project, sessionScope.subject ) }' styleClass='cvf-btn' />
+	                   </h:panelGroup>
+	               </f:facet>
+	           </h:panelGrid>
+	       </h:form>
 	       
 	   </ui:define>
 	</ui:composition>

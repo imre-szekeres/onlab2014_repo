@@ -5,6 +5,8 @@
  * */
 package hu.bme.aut.tomeesample.model;
 
+import hu.bme.aut.tomeesample.utils.ManagingUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +82,7 @@ public class Project implements Serializable {
 		this.currentState = this.workflow.getInitialState();
 		this.projectAssignments = new ArrayList<>();
 		this.historyEntries = new ArrayList<>();
+		this.comments = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -143,10 +146,14 @@ public class Project implements Serializable {
 	}
 
 	public void add(HistoryEntry entry) {
+		if (historyEntries == null)
+			historyEntries = new ArrayList<HistoryEntry>();
 		historyEntries.add(entry);
 	}
 
 	public void add(ProjectAssignment assignment) {
+		if (projectAssignments == null)
+			projectAssignments = new ArrayList<ProjectAssignment>();
 		projectAssignments.add(assignment);
 	}
 
@@ -174,6 +181,8 @@ public class Project implements Serializable {
 	}
 
 	public void add(Comment comment) {
+		if (comments == null)
+			comments = new ArrayList<Comment>();
 		comments.add(comment);
 	}
 
@@ -215,5 +224,10 @@ public class Project implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return ManagingUtils.fetchFrom(super.toString(), "Project");
 	}
 }

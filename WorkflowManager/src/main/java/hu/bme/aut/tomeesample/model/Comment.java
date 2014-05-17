@@ -28,14 +28,15 @@ import javax.validation.constraints.Size;
 @NamedQueries({
 		@NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
 		@NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c " + "WHERE c.id=:id"),
-		@NamedQuery(name = "Comment.findByUser", query = "SELECT c FROM Comment c " + "WHERE c.user.username=:username") })
+		@NamedQuery(name = "Comment.findByUser", query = "SELECT c FROM Comment c " + "WHERE c.user.username=:userName"),
+		@NamedQuery(name = "Comment.findByProject", query = "SELECT c FROM Comment c " + "WHERE c.project.name=:name") })
 public class Comment implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(min = 10, max = 512)
+	@Size(min = 1, max = 512)
 	private String description;
 
 	@NotNull
@@ -54,8 +55,8 @@ public class Comment implements Serializable {
 	}
 
 	public Comment(User user, Project project, String description) {
-		this.user = user;
-		this.project = project;
+		this.setUser(user);
+		this.setProject(project);
 		this.description = description;
 		this.postDate = new Date();
 	}
@@ -78,6 +79,7 @@ public class Comment implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+		this.user.add(this);
 	}
 
 	public Project getProject() {
@@ -86,6 +88,7 @@ public class Comment implements Serializable {
 
 	public void setProject(Project project) {
 		this.project = project;
+		this.project.add(this);
 	}
 
 	/**

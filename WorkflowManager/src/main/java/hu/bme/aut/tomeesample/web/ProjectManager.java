@@ -57,6 +57,8 @@ public class ProjectManager implements Serializable {
 
 	public String profileOf(Project project) {
 		this.project = project;
+		if (conversation.isTransient())
+			conversation.begin();
 		return "project_profile";
 	}
 
@@ -102,6 +104,9 @@ public class ProjectManager implements Serializable {
 			project.setWorkflow(workflow);
 			project.setCurrentState(workflow.getInitialState());
 			projectService.create(project);
+
+			if (!conversation.isTransient())
+				conversation.end();
 
 			String message = "project " + project.getName() + " created";
 			FacesMessageUtils.infoMessage(context, message);

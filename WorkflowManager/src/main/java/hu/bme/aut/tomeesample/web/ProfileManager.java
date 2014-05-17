@@ -62,8 +62,9 @@ public class ProfileManager implements Serializable {
 		this.user = user;
 		isEditable = false;
 
-		// TODO:
-		// conversation.end();
+		// TODO: check
+		if (!conversation.isTransient())
+			conversation.end();
 		return "profile";
 	}
 

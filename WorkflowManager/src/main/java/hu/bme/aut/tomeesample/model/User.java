@@ -5,6 +5,8 @@
  * */
 package hu.bme.aut.tomeesample.model;
 
+import hu.bme.aut.tomeesample.utils.ManagingUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -158,6 +160,8 @@ public class User implements Serializable {
 	}
 
 	public void add(Comment comment) {
+		if (comments == null)
+			comments = new ArrayList<Comment>();
 		this.comments.add(comment);
 	}
 
@@ -166,6 +170,8 @@ public class User implements Serializable {
 	}
 
 	public void add(ProjectAssignment assignment) {
+		if (projectAssignments == null)
+			projectAssignments = new HashSet<ProjectAssignment>();
 		this.projectAssignments.add(assignment);
 	}
 
@@ -247,5 +253,10 @@ public class User implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return ManagingUtils.fetchFrom(super.toString(), "User");
 	}
 }
