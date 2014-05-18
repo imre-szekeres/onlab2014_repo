@@ -38,7 +38,7 @@
                     
                         <c:otherwise>
                             <span class='menu-item'>
-                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>Profile</span></h:commandLink>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>#{ sessionScope.subject.username }</span></h:commandLink>
                             </span>                            
                             <span class='menu-item lseparated'>
                                 <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
