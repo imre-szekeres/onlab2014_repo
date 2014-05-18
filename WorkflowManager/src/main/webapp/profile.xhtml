@@ -70,27 +70,25 @@
 		                  
 		                      <h:outputText value='Description: ' />
 		                      <h:inputTextarea value='#{ profileManager.user.description }' readonly='true' />
-		                  </h:panelGrid>
-		                  
-		                  <h:form prependId='false'>
-		                  <h:panelGrid columns='1'>
-		                      <h:panelGrid id='role-panel' columns='2'>
-		                          <h:selectOneMenu id='selectone-role' value='#{ profileManager.role }' >
-		                              <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
-		                                  <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
-		                              </c:forEach>
-		                          </h:selectOneMenu>
-		                          <h:commandButton value='Add' action='#{ profileManager.addRole() }' /> 
-		                      </h:panelGrid>
-		                      <h:commandButton type='button' value='Add Role' id='add-role-btn' />
-		                  </h:panelGrid>
-		                  </h:form>
-		                  
+		                  </h:panelGrid>		                  
 		              </c:otherwise>
 		           </c:choose>
-			           
 		           
-	               
+		           <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
+		           <h:form prependId='false'>
+                   <h:panelGrid columns='1'>
+                       <h:panelGrid id='role-panel' columns='2'>
+                           <h:selectOneMenu id='selectone-role' value='#{ profileManager.role }' >
+                               <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
+                                   <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
+                               </c:forEach>
+                           </h:selectOneMenu>
+                           <h:commandButton value='Add' action='#{ profileManager.addRole() }' /> 
+                       </h:panelGrid>
+                       <h:commandButton type='button' value='Add Role' id='add-role-btn' />
+                   </h:panelGrid>
+                   </h:form>
+                   </c:if>
 		       </h:panelGrid>
 		       
 		       <h:dataTable value="#{ profileManager.listRoles() }" var='role' title='Roles for #{ profileManager.user.username }'>

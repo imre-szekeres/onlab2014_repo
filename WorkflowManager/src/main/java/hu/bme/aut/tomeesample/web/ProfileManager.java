@@ -53,18 +53,16 @@ public class ProfileManager implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		conversation.begin();
+		if (conversation.isTransient())
+			conversation.begin();
 		user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject");
 		isEditable = true;
 	}
 
 	public String profileOf(User user) {
 		this.user = user;
-		isEditable = false;
-
-		// TODO: check
-		if (!conversation.isTransient())
-			conversation.end();
+		if (!FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject").equals(user))
+			isEditable = false;
 		return "profile";
 	}
 
@@ -208,7 +206,8 @@ public class ProfileManager implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
 			Role r = roleService.findByName(role);
-			userService.addRoleFor(user, r);
+			user.add(r);
+			user = userService.update(user);
 
 			logger.debug(" user is: " + user.getUsername());
 			logger.debug(" role is: " + role);

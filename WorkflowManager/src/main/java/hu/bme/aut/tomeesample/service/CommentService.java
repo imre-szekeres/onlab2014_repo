@@ -30,13 +30,14 @@ public class CommentService {
 		em.persist(comment);
 	}
 
-	public void createFor(Project project, User user, Comment comment) throws Exception {
+	public User createFor(Project project, User user, Comment comment) throws Exception {
 		Project managedp = em.merge(project);
 		User managedu = em.merge(user);
 		comment.setPostDate(new Date());
 		comment.setProject(managedp);
 		comment.setUser(managedu);
 		em.persist(comment);
+		return managedu;
 	}
 
 	public void update(Comment comment) {
@@ -47,13 +48,14 @@ public class CommentService {
 		em.remove(comment);
 	}
 
-	public void removeFrom(Project project, User user, Comment comment) throws Exception {
+	public User removeFrom(Project project, User user, Comment comment) throws Exception {
 		Project managedp = em.merge(project);
 		User managedu = em.merge(user);
 		Comment managedc = em.merge(comment);
 		managedp.remove(managedc);
 		managedu.remove(managedc);
 		em.remove(managedc);
+		return managedu;
 	}
 
 	public List<Comment> findAll() {

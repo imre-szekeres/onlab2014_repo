@@ -49,7 +49,8 @@ public class RoleManager implements Serializable {
 	@PostConstruct
 	public void init() {
 		this.role = new Role();
-		this.conversation.begin();
+		if (conversation.isTransient())
+			conversation.begin();
 	}
 
 	/**
@@ -147,9 +148,11 @@ public class RoleManager implements Serializable {
 	public String addFor(User user) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			userService.addRoleFor(user, this.role);
 
-			String message = "role " + this.role.toString() + " was added to " + user.toString();
+			User managed = userService.addRoleFor(user, this.role);
+			LoginManager.refreshSessionFor(managed);
+
+			String message = "role " + this.role.toString() + " was added to " + managed.toString();
 			FacesMessageUtils.infoMessage(context, message);
 			logger.debug(message);
 
@@ -171,7 +174,8 @@ public class RoleManager implements Serializable {
 	public String removeFrom(User user) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			userService.removeRoleFrom(user, this.role);
+			user.remove(this.role);
+			user = userService.update(user);
 
 			String message = "role " + this.role.toString() + " was removed from " + user.toString();
 			FacesMessageUtils.infoMessage(context, message);

@@ -59,6 +59,25 @@ public class LoginManager {
 	}
 
 	/**
+	 * Refreshes the current <code>User</code> in session to the given
+	 * <code>User</code>, if the instance given is identical to the one
+	 * travelling in session.
+	 * 
+	 * @param user
+	 * @return the refreshed, current <code>User</code> instance in session
+	 * */
+	public static User refreshSessionFor(User user) {
+		User subject = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject");
+		logger.debug(" userID: " + user == null ? "user is null" : user.getId());
+		logger.debug(" subjectID: " + subject == null ? "subject is null" : subject.getId());
+		if (user != null && (subject == null || user.getId().equals(subject.getId()))) {
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("subject", user);
+			logger.debug(" subejct is set in LoginManager.refreshSessionFor");
+		}
+		return user;
+	}
+
+	/**
 	 * Fetches the users already registered/created into/in the application.
 	 *
 	 * @return a list of all the found users

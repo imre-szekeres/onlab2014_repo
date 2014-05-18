@@ -212,8 +212,10 @@ public class User implements Serializable {
 	 * @return true only if any of the roles has a name like the passed argument
 	 * */
 	public boolean hasRole(String name) {
+		if (name == null)
+			return true;
 		for (Role role : roles) {
-			if (role.getName().equals(name) || role.getName().equals("administrator"))
+			if (name.equals(role.getName()) || "administrator".equals(role.getName()))
 				return true;
 		}
 		return false;

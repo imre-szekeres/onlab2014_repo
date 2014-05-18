@@ -191,12 +191,14 @@ public class UserService implements Serializable {
 	 * @param role
 	 *            to be added to the given user
 	 *
+	 * @return the managed instance of the given <code>User</code>
 	 * @throws Exception
 	 * */
-	public void addRoleFor(User user, Role role) throws Exception {
+	public User addRoleFor(User user, Role role) throws Exception {
 		User managed = em.merge(user);
 		managed.add(role);
 		em.merge(role);
+		return managed;
 	}
 
 	/**
@@ -206,12 +208,14 @@ public class UserService implements Serializable {
 	 *            to acquire the new role
 	 * @param role
 	 *            to be added to the given user
-	 *
+	 * 
+	 * @return the managed instance of the given <code>User</code>
 	 * @throws Exception
 	 * */
-	public void removeRoleFrom(User user, Role role) throws Exception {
+	public User removeRoleFrom(User user, Role role) throws Exception {
 		User managed = em.merge(user);
 		managed.remove(role);
 		em.merge(role);
+		return managed;
 	}
 }
