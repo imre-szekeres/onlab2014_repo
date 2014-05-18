@@ -170,8 +170,8 @@ public class User implements Serializable {
 	}
 
 	public void add(ProjectAssignment assignment) {
-		if (projectAssignments == null)
-			projectAssignments = new HashSet<ProjectAssignment>();
+		if (this.getProjectAssignments() == null)
+			this.setProjectAssignments(new HashSet<ProjectAssignment>());
 		this.projectAssignments.add(assignment);
 	}
 
