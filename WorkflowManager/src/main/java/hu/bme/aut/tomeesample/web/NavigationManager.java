@@ -43,9 +43,23 @@ public class NavigationManager {
 	 * 
 	 * @return index or register page
 	 * */
+	public String register() {
+		clearConversation();
+		String pageID = "/register.xhtml";
+		logger.debug("register() was requested with result: " + pageID);
+		return pageID;
+	}
+
+	/**
+	 * Results the pageID to navigate to after the call, considers the status
+	 * and <code>Role</code>s of the <code>User</code> referred as subject, and
+	 * unauthorised access outcomes in a different pageID that was requested.
+	 * 
+	 * @return index or register page
+	 * */
 	public String home() {
 		clearConversation();
-		String pageID = "index"; // subject == null ? "add_user" : "index";
+		String pageID = "/auth/index.xhtml";
 		logger.debug("home() was requested with result: " + pageID);
 		return pageID;
 	}
@@ -59,7 +73,7 @@ public class NavigationManager {
 	 * */
 	public String signIn() {
 		clearConversation();
-		String pageID = "login";
+		String pageID = "/login.xhtml";
 		logger.debug("signIn() was requested with result: " + pageID);
 		return pageID;
 	}
@@ -73,9 +87,7 @@ public class NavigationManager {
 	 * */
 	public String addUser() {
 		clearConversation();
-		String pageID = "add_user"; // (subject == null ||
-									// subject.hasRole("administrator")) ?
-									// "add_user" : "index";
+		String pageID = "/auth/man/add_user.xhtml";
 		logger.debug("addUser() was requested with result: " + pageID);
 		return pageID;
 	}
@@ -89,9 +101,7 @@ public class NavigationManager {
 	 * */
 	public String addRole() {
 		clearConversation();
-		String pageID = "add_role"; // subject == null ? "login" :
-									// (subject.hasRole("administrator") ?
-									// "add_role" : "index")
+		String pageID = "/auth/admin/add_role.xhtml";
 		logger.debug("addRole() was requested with result: " + pageID);
 		return pageID;
 	}
@@ -105,9 +115,7 @@ public class NavigationManager {
 	 * */
 	public String workflows() {
 		clearConversation();
-		String pageID = "workflows"; // subject == null ? "login" :
-										// (subject.hasRole("administrator") ?
-										// "workflows" : "index")
+		String pageID = "/auth/workflows.xhtml";
 		logger.debug("workflows() was requested with result: " + pageID);
 		return pageID;
 	}
@@ -121,9 +129,7 @@ public class NavigationManager {
 	 * */
 	public String addProject() {
 		clearConversation();
-		String pageID = "add_project"; // subject == null ? "login" :
-										// (subject.hasRole("administrator") ?
-										// "workflows" : "index")
+		String pageID = "/auth/add_project.xhtml";
 		logger.debug("addProject() was requested with result: " + pageID);
 		return pageID;
 	}
@@ -137,9 +143,7 @@ public class NavigationManager {
 	 * */
 	public String actionTypes() {
 		clearConversation();
-		String pageID = "actionTypes"; // subject == null ? "login" :
-										// (subject.hasRole("administrator") ?
-										// "workflows" : "index")
+		String pageID = "/auth/man/actionTypes.xhtml";
 		logger.debug("actionTypes() was requested with result: " + pageID);
 		return pageID;
 	}
@@ -153,7 +157,7 @@ public class NavigationManager {
 	 * */
 	public String profile() {
 		clearConversation();
-		String pageID = "profile"; // subject == null ? "login" : "profile";
+		String pageID = "/auth/profile.xhtml";
 		logger.debug("profile() was requested with result: " + pageID);
 		return pageID;
 	}

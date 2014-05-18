@@ -26,35 +26,17 @@
             <span id='brand-img-span'></span>
             <span id='unavbar' >
             <h:form>
-                    <c:choose>
-                        <c:when test='#{ sessionScope.subject eq null }'>
-                            <span class='menu-item'>
-                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.signIn() }'><span>Sign In</span></h:commandLink>
-                            </span>
-                            <span class='menu-item lseparated'>
-                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Register</span></h:commandLink>
-                            </span>
-                        </c:when>
                     
-                        <c:otherwise>
-                            <span class='menu-item'>
-                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>#{ sessionScope.subject.username }</span></h:commandLink>
-                            </span>                            
-                            <span class='menu-item lseparated'>
-                                <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
-                            </span>
-                        </c:otherwise>                       
-                    </c:choose>
+                    <span class='menu-item lseparated'>
+                        <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
+                    </span>
+                    <span class='menu-item lseparated'>
+                        <h:commandLink styleClass='menu-item' action='#{ navigationManager.addProject() }'><span>Projects</span></h:commandLink>
+                    </span>
                     
                     <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
                         <span class='menu-item lseparated'>
                             <h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
-                        </span>
-                        <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
-                        </span>
-                        <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.addProject() }'><span>Projects</span></h:commandLink>
                         </span>                        
                         
                         <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
@@ -62,10 +44,17 @@
                                 <h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
                             </span>
                             <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
-                        </span>
+                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
+                            </span>
                         </c:if>
                     </c:if>
+                    
+                    <span class='menu-item'>
+                        <h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>#{ sessionScope.subject.username }</span></h:commandLink>
+                    </span>                            
+                    <span class='menu-item lseparated'>
+                        <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
+                    </span>
             </h:form>
             </span>
         </div>

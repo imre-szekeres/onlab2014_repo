@@ -75,7 +75,7 @@ public class WorkflowManager {
 			logger.debug(e.getMessage());
 			e.printStackTrace();
 		}
-		return "workflows";
+		return "/auth/workflows.xhtml";
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class WorkflowManager {
 			logger.debug("Error while deleting workflow");
 			logger.debug(e.getMessage());
 		}
-		return "workflows";
+		return "/auth/workflows.xhtml";
 	}
 
 	public void validateName(FacesContext context, UIComponent component, Object value)

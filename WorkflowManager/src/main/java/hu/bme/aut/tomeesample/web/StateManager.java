@@ -211,7 +211,7 @@ public class StateManager {
 	}
 
 	public String createReturnString() {
-		String returnString = "states?workflowId=" + getIdParam("workflowId");
+		String returnString = "/auth/man/states.xhtml?workflowId=" + getIdParam("workflowId");
 		Long parentId = getIdParam("parentId");
 		if (parentId != null) {
 			returnString += "&parentId=" + parentId;

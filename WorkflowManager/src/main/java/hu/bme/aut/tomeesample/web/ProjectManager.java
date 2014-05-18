@@ -81,7 +81,7 @@ public class ProjectManager implements Serializable {
 		this.project = project;
 		if (conversation.isTransient())
 			conversation.begin();
-		return "project_profile";
+		return "/auth/man/project_profile.xhtml";
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class ProjectManager implements Serializable {
 			FacesMessageUtils.errorMessage(context, "failed to create " + project.getName());
 			logger.error(" in projectManager.create", e);
 		}
-		return "add_projects";
+		return "/auth/add_project.xhtml";
 	}
 
 	/***/
@@ -172,7 +172,7 @@ public class ProjectManager implements Serializable {
 			logger.debug(" failed to create assignment to " + project.getName() + " due to ", e);
 		}
 
-		return "project_profile";
+		return "/auth/project_profile.xhtml";
 	}
 
 	/**

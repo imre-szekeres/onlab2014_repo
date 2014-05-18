@@ -87,7 +87,7 @@ public class CommentManager {
 			FacesMessageUtils.errorMessage(context, "failed to comment on " + project.getName());
 			logger.error(" " + subject.getUsername() + " failed to comment on " + project.getName(), e);
 		}
-		return "project_profile";
+		return "/auth/project_profile.xhtml";
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class CommentManager {
 			FacesMessageUtils.errorMessage(context, "failed to remove comment ");
 			logger.error(" failed to remove comment: " + comment.toString(), e);
 		}
-		return "project_profile";
+		return "/auth/project_profile.xhtml";
 	}
 
 	/**

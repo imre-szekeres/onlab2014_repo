@@ -3,6 +3,8 @@
  * */
 package hu.bme.aut.tomeesample.filters;
 
+import hu.bme.aut.tomeesample.model.User;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -12,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class AccessFilter
@@ -45,10 +48,26 @@ public class AccessFilter implements Filter {
 	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO: if user is not authorised to access several pages then redirect
-		// to login.xhtml
-		System.out.println(((HttpServletRequest) request).getRequestURI());
+		HttpServletRequest hreq = ((HttpServletRequest) request);
+		String uri = hreq.getRequestURI();
+		System.out.println(uri);
 		chain.doFilter(request, response);
+
+		HttpSession session = hreq.getSession();
+		try {
+			// TODO: check..
+			if (uri.contains("/faces/fragments/")) {
+				String target = session.getAttribute("subject") == null ? "/faces/login.xhtml?faces-redirect=true" :
+						"/faces/auth/index.xhtml?faces-redirect=true";
+				hreq.getRequestDispatcher(target).forward(request, response);
+			}
+			if (session.getAttribute("subject") == null && uri.contains("/faces/auth/"))
+				hreq.getRequestDispatcher("/faces/login.xhtml?faces-redirect=true").forward(request, response);
+			else if ((uri.contains("/faces/auth/man/") && !((User) session.getAttribute("subject")).hasRole("manager")) ||
+					(uri.contains("/faces/auth/admin/") && !((User) session.getAttribute("subject")).hasRole("administrator")))
+				hreq.getRequestDispatcher("/faces/auth/index.xhtml?faces-redirect=true").forward(request, response);
+		} catch (Exception e) {
+		}
 	}
 
 	/**

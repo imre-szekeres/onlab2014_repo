@@ -68,7 +68,7 @@ public class ProfileManager implements Serializable {
 		this.user = user;
 		if (!FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject").equals(user))
 			isEditable = false;
-		return "profile";
+		return "/auth/profile.xhtml";
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class ProfileManager implements Serializable {
 			logger.debug(" " + message);
 		} catch (Exception e) {
 		}
-		return "profile";
+		return "/auth/profile.xhtml";
 	}
 
 	/**
@@ -237,7 +237,7 @@ public class ProfileManager implements Serializable {
 			FacesMessageUtils.errorMessage(context, "failed to add role " + role);
 			logger.debug(" ERROR in addRole: ", e);
 		}
-		return "add_user";
+		return "/auth/man/add_user.xhtml";
 	}
 
 	/**

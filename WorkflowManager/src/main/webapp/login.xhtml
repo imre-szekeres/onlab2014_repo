@@ -26,9 +26,10 @@
                 <h:graphicImage value="#{ resource['css/images/usr_02.jpg'] }" style='width : 150px; height : 150px;' />
             </div>
             <div id='form-div'>
-                <h:form id='signin-form' method='POST' prependId='false'>
+                
                     <h:panelGrid id='signin-panel' columns='1' cellspacing='2' cellpadding='0'>
                         
+                        <h:form id='signin-form' method='POST' prependId='false'>
                         <ul id='signin-errorbox' class='signin-error error-message' >
                             <li>
                                 #{ facesContext.messageList[0].summary }
@@ -39,14 +40,24 @@
                         <h:inputSecret styleClass="user-input" id='password' name="password" value='#{ loginManager.subject.password }' 
                                        validator='#{ loginManager.validatePassword }'></h:inputSecret>
                         <h:commandButton styleClass="user-input-button" action="#{ loginManager.login }" value="Sign In"></h:commandButton>
+                        </h:form>
+                        
+                        <div>
+                        <h:form prependId='false'>
+                            <h:commandLink value='Register' action='#{ navigationManager.register() }' style='flow:right; font-size:12px;text-align:right;' />
+                        </h:form>
+                        </div>
                     </h:panelGrid>
-                </h:form>
+                
             </div>
         </div>
         </div>
         
-        <div hidden='true'>
+        <div  hidden='true'>
             <h:messages />
+            <div hidden='true'>
+                <h:outputText value='#{ applicationManager.loggerName }'/>
+            </div> 
         </div>
     </h:body> 
 </html>

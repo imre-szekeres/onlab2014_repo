@@ -10,7 +10,7 @@
 		Replace path to template, title, header and body
 		with actual data.
 	 -->
-	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
+	<ui:composition template="../../WEB-INF/templates/wm_frame.xhtml" >
 		<ui:define name="content">
 			<h3>List of Action Types</h3>
 		      	<ui:repeat var="at" value="#{actionTypeManager.actionTypeList}" varStatus="status">
@@ -54,7 +54,7 @@
  					</h:panelGroup>
  					</div>
    				</ui:repeat>
-		   	<ui:include src="add_actionType.xhtml" />
+		   	<ui:include src="../../fragments/add_actionType.xhtml" />
 		</ui:define>
 	</ui:composition>
 	

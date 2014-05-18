@@ -10,7 +10,7 @@
 		Replace path to template, title, header and body
 		with actual data.
 	 -->
-	<ui:composition template="WEB-INF/templates/wm_frame.xhtml" >
+	<ui:composition template="../WEB-INF/templates/wm_frame.xhtml" >
 		<ui:define name="content">
 			<h3>List of workflows</h3>
 			<h:form>
@@ -20,24 +20,33 @@
 		         		rowClasses="workflowTableOddRow,workflowTableEvenRow">
 		        	<h:column>    				
 		            	<f:facet name="header">Name</f:facet>
-		  				<h:link outcome="states" value="#{workflow.name}">
-        					<f:param name="workflowId" value="#{workflow.id}" />
-		           			<!-- <h:outputText value="#{workflow.name}"></h:outputText>-->
-					    </h:link> 				
+		  				<c:choose>
+		  				    <c:when test="#{ sessionScope.subject.hasRole('manager') }">
+		  				        <h:link outcome="states" value="#{workflow.name}">
+	                                <f:param name="workflowId" value="#{workflow.id}" />
+	                                <!-- <h:outputText value="#{workflow.name}"></h:outputText>-->
+                                </h:link>
+		  				    </c:when>
+		  				    <c:otherwise>
+		  				        <h:outputText value='#{ workflow.name }' />
+		  				    </c:otherwise>
+		  				</c:choose> 				
 		         	</h:column>
 		         	<h:column>
 		            	<f:facet name="header">Description</f:facet>
 		            	<h:outputText value="#{workflow.description}"></h:outputText>
 		         	</h:column>
 		         	<!-- TODO Has role -->
-		         	<h:column>
+		         	<h:column rendered="#{ sessionScope.subject.hasRole('manager') }">
 		         		<f:facet name="header">Delete</f:facet>
 		               	<h:commandButton value="Delete" action="#{workflowManager.deleteWorkflow(workflow)}"/>
 		            </h:column>
 		      	</h:dataTable>
 		   	</h:form>
 		    <!-- TODO Has role -->
-		   	<ui:include src="add_workflow.xhtml" />
+		   	<c:if test="#{ sessionScope.subject.hasRole('manager') }">
+		   	  <ui:include src="../fragments/add_workflow.xhtml" />
+		   	</c:if>
 		</ui:define>
 	</ui:composition>
 </html>

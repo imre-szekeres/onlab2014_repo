@@ -4,7 +4,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<ui:composition template="WEB-INF/templates/wm_frame.xhtml">
+	<ui:composition template="../WEB-INF/templates/wm_frame.xhtml">
 	  <ui:define name='content_title'>
 	       Welcome to WorkflowManager
 	  </ui:define>
@@ -15,9 +15,6 @@
 	        revisioning workflows and projects corresponding to them.
 	      </p>
 	    </div>
-	    <div hidden='true'>
-	       <h:outputText value='#{ applicationManager.loggerName }'/>
-	    </div>    
 	  </ui:define>
 	</ui:composition>
 </html>

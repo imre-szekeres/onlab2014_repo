@@ -61,7 +61,7 @@ public class RoleManager implements Serializable {
 	 * */
 	public String profileOf(Role role) {
 		this.role = role;
-		return "role_profile";
+		return "/auth/admin/role_profile.xhtml";
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class RoleManager implements Serializable {
 			logger.error("in RoleManager.create: ", e);
 		}
 		conversation.end();
-		return "add_role";
+		return "/auth/admin/add_role.xhtml";
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class RoleManager implements Serializable {
 		} catch (Exception e) {
 			FacesMessageUtils.infoMessage(context, "failed to add " + role);
 			logger.error("in addRoleFor: ", e);
-			return "add_role";
+			return "/auth/admin/add_role.xhtml";
 		}
 	}
 
@@ -184,7 +184,7 @@ public class RoleManager implements Serializable {
 			FacesMessageUtils.errorMessage(context, "failed to remove " + this.role.toString());
 			logger.error("ERROR in removeFrom: ", e);
 		}
-		return "add_role";
+		return "/auth/admin/add_role.xhtml";
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class RoleManager implements Serializable {
 			FacesMessageUtils.errorMessage(context, "failed to remove " + role.toString());
 			logger.error("ERROR in delete: ", e);
 		}
-		return "add_role";
+		return "/auth/admin/add_role.xhtml";
 	}
 
 	/**

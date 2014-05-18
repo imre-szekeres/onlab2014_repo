@@ -74,7 +74,7 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user")
 	private List<Comment> comments;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private Set<ProjectAssignment> projectAssignments;
 
 	public User() {

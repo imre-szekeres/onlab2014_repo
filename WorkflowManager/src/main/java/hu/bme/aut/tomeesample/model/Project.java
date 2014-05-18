@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,7 +67,7 @@ public class Project implements Serializable {
 	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
 
-	@OneToMany(mappedBy = "project")
+	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
 	private Set<ProjectAssignment> projectAssignments;
 
 	@OneToMany(mappedBy = "project")

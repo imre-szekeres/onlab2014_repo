@@ -93,7 +93,7 @@ public class LoginManager {
 		} catch (Exception e) {
 			logger.error(" in register: ", e);
 		}
-		return "add_user";
+		return "/auth/man/add_user.xhtml";
 	}
 
 	/**
@@ -109,11 +109,11 @@ public class LoginManager {
 			logger.debug(" user " + subject.getUsername() + " was logged in");
 
 			FacesMessageUtils.infoMessage(context, "welcome, " + subject.getUsername());
-			return "index";
+			return "/auth/index.xhtml";
 		} catch (Exception e) {
 			logger.error(" in login: ", e);
 			FacesMessageUtils.errorMessage(context, "invalid parameters");
-			return "login";
+			return "/login.xhtml";
 		}
 	}
 
@@ -125,7 +125,7 @@ public class LoginManager {
 	 * */
 	public String logout() {
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("subject", null);
-		return "index";
+		return "/login.xhtml?faces-redirect=true";
 	}
 
 	/**
@@ -320,7 +320,7 @@ public class LoginManager {
 			logger.error(" ERROR in delete: ", e);
 			FacesMessageUtils.errorMessage(ctx, "error while attempting delete!");
 		}
-		return "add_user";
+		return "/auth/man/add_user.xhtml";
 	}
 
 	/**
