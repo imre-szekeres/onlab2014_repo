@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.tomeesample.service;
 
+import hu.bme.aut.tomeesample.model.ActionType;
 import hu.bme.aut.tomeesample.model.State;
 
 import java.util.Collection;
@@ -11,11 +12,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.validation.Validation;
 import javax.validation.Validator;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author Gergely Várkonyi
@@ -27,6 +31,10 @@ public class StateService {
 	@PersistenceContext
 	EntityManager em;
 	private Validator validator;
+	@Inject
+	ActionTypeService actionTypeService;
+
+	private static final Logger logger = Logger.getLogger(StateService.class);
 
 	/**
 	 * Initialises the <code>Validator</code> for future use.
@@ -60,21 +68,28 @@ public class StateService {
 	}
 
 	public void createWithParent(State parent, State child) {
-		try {
-			em.persist(child);
-		} catch (Exception e) {
-			System.out.println("persist child");
-		}
-		try {
-			parent.addChild(child);
-		} catch (Exception e) {
-			System.out.println("addchild");
-		}
-		try {
-			em.merge(parent);
-		} catch (Exception e) {
-			System.out.println("merge parent");
-		}
+		em.persist(child);
+		parent.addChild(child);
+		em.merge(parent);
+	}
+
+	public void addActionTypeToState(Long selectedActionTypeId, Long selectedNextStateId, State state) {
+		ActionType actionType = actionTypeService.findById(selectedActionTypeId);
+
+		logger.debug(actionType);
+
+		State nextState = findById(selectedNextStateId);
+
+		logger.debug(nextState);
+
+		State managedState = em.merge(state);
+		// add them to the current state
+		managedState.addNextState(actionType, nextState);
+
+		logger.debug(managedState);
+
+		// save changes
+		// em.merge(managedState);
 	}
 
 	public State getParent(State state) {

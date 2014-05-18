@@ -144,12 +144,7 @@ public class StateManager {
 		try {
 			// Get selected actionType and state
 			if (selectedActionTypeId != null && selectedNextStateId != null) {
-				ActionType actionType = actionTypeService.findById(selectedActionTypeId);
-				State nextState = stateService.findById(selectedNextStateId);
-				// add them to the current state
-				state.addNextState(actionType, nextState);
-				// save changes
-				stateService.update(state);
+				stateService.addActionTypeToState(selectedActionTypeId, selectedNextStateId, state);
 			}
 		} catch (Exception e) {
 			logger.debug("Error while adding actionType for state");
