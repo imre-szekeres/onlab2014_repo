@@ -1974,3 +1974,329 @@ ProjectAssignments: null
 2014-05-17/19:57:36.581/CESTDEBUG in init with loginManager: LoginManager@2c51e421
 2014-05-17/19:57:36.612/CESTDEBUG	and session.user as User@29
 2014-05-17/19:57:36.612/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/07:35:00.418/CESTDEBUG in init with loginManager: LoginManager@26ddae53
+2014-05-18/07:35:00.431/CESTDEBUG	and session.user as null
+2014-05-18/07:35:00.432/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/07:41:08.412/CESTDEBUG in init with loginManager: LoginManager@db8aace
+2014-05-18/07:41:08.420/CESTDEBUG	and session.user as null
+2014-05-18/07:41:08.421/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/07:41:08.520/CESTDEBUG user <User@29> was found
+2014-05-18/07:41:08.763/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/07:41:08.769/CESTDEBUG user sudoer was logged in
+2014-05-18/07:56:04.598/CESTDEBUG in init with loginManager: LoginManager@391a7671
+2014-05-18/07:56:04.615/CESTDEBUG	and session.user as null
+2014-05-18/07:56:04.615/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/07:56:09.820/CESTDEBUG in init with loginManager: LoginManager@451a2164
+2014-05-18/07:56:09.824/CESTDEBUG	and session.user as null
+2014-05-18/07:56:09.825/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/07:56:09.849/CESTDEBUG user <User@29> was found
+2014-05-18/07:56:10.040/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/07:56:10.047/CESTDEBUG user sudoer was logged in
+2014-05-18/08:08:12.124/CESTDEBUG in init with loginManager: LoginManager@aa48c58
+2014-05-18/08:08:12.161/CESTDEBUG	and session.user as null
+2014-05-18/08:08:12.162/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:08:13.672/CESTDEBUG in init with loginManager: LoginManager@54df7924
+2014-05-18/08:08:13.679/CESTDEBUG	and session.user as null
+2014-05-18/08:08:13.680/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:08:19.777/CESTDEBUG in init with loginManager: LoginManager@4f9f13b2
+2014-05-18/08:08:19.778/CESTDEBUG	and session.user as null
+2014-05-18/08:08:19.778/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:08:19.806/CESTDEBUG user <User@29> was found
+2014-05-18/08:08:19.944/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/08:08:19.953/CESTDEBUG user sudoer was logged in
+2014-05-18/08:26:07.248/CESTDEBUG in init with loginManager: LoginManager@2390e04f
+2014-05-18/08:26:07.261/CESTDEBUG	and session.user as null
+2014-05-18/08:26:07.262/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:26:13.671/CESTDEBUG in init with loginManager: LoginManager@437b7c42
+2014-05-18/08:26:13.672/CESTDEBUG	and session.user as null
+2014-05-18/08:26:13.672/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:26:13.742/CESTDEBUG user <User@29> was found
+2014-05-18/08:26:13.966/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/08:26:13.975/CESTDEBUG user sudoer was logged in
+2014-05-18/08:31:21.649/CESTDEBUG in init with loginManager: LoginManager@2319bf66
+2014-05-18/08:31:21.670/CESTDEBUG	and session.user as User@29
+2014-05-18/08:31:21.670/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:41:42.520/CESTDEBUG in init with loginManager: LoginManager@158f5190
+2014-05-18/08:41:42.537/CESTDEBUG	and session.user as null
+2014-05-18/08:41:42.537/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:41:47.710/CESTDEBUG in init with loginManager: LoginManager@790ec9c8
+2014-05-18/08:41:47.711/CESTDEBUG	and session.user as null
+2014-05-18/08:41:47.712/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:41:47.837/CESTDEBUG user <User@29> was found
+2014-05-18/08:41:53.112/CESTDEBUG in init with loginManager: LoginManager@33ea4a5f
+2014-05-18/08:41:53.112/CESTDEBUG	and session.user as null
+2014-05-18/08:41:53.113/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:41:53.164/CESTDEBUG user <User@29> was found
+2014-05-18/08:41:53.170/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/08:41:53.182/CESTDEBUG user sudoer was logged in
+2014-05-18/08:50:14.649/CESTDEBUG in init with loginManager: LoginManager@62b0664d
+2014-05-18/08:50:14.696/CESTDEBUG	and session.user as null
+2014-05-18/08:50:14.697/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:50:16.709/CESTDEBUG in init with loginManager: LoginManager@27815ac1
+2014-05-18/08:50:16.717/CESTDEBUG	and session.user as null
+2014-05-18/08:50:16.718/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:50:24.865/CESTDEBUG in init with loginManager: LoginManager@23e53894
+2014-05-18/08:50:24.879/CESTDEBUG	and session.user as null
+2014-05-18/08:50:24.879/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/08:50:25.005/CESTDEBUG user <User@29> was found
+2014-05-18/08:50:25.355/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/08:50:25.400/CESTDEBUG user sudoer was logged in
+2014-05-18/08:55:11.987/CESTDEBUG in init with loginManager: LoginManager@784ddae1
+2014-05-18/08:55:12.006/CESTDEBUG	and session.user as User@29
+2014-05-18/08:55:12.006/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:06:25.476/CESTDEBUG in init with loginManager: LoginManager@221881d9
+2014-05-18/09:06:25.491/CESTDEBUG	and session.user as null
+2014-05-18/09:06:25.493/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:06:31.679/CESTDEBUG in init with loginManager: LoginManager@432ec88
+2014-05-18/09:06:31.680/CESTDEBUG	and session.user as null
+2014-05-18/09:06:31.680/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:06:31.734/CESTDEBUG user <User@29> was found
+2014-05-18/09:06:31.880/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/09:06:31.892/CESTDEBUG user sudoer was logged in
+2014-05-18/09:07:27.551/CESTDEBUG in init with loginManager: LoginManager@168600e0
+2014-05-18/09:07:27.552/CESTDEBUG	and session.user as User@29
+2014-05-18/09:07:27.553/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:07:36.440/CESTDEBUG in init with loginManager: LoginManager@4ab49c54
+2014-05-18/09:07:36.441/CESTDEBUG	and session.user as User@29
+2014-05-18/09:07:36.443/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:08:04.624/CESTDEBUG in init with loginManager: LoginManager@38d045ba
+2014-05-18/09:08:04.627/CESTDEBUG	and session.user as User@29
+2014-05-18/09:08:04.628/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:08:12.951/CESTDEBUG in init with loginManager: LoginManager@3cbf1722
+2014-05-18/09:08:12.952/CESTDEBUG	and session.user as User@29
+2014-05-18/09:08:12.952/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:08:24.791/CESTDEBUG in init with loginManager: LoginManager@7bba60e8
+2014-05-18/09:08:24.791/CESTDEBUG	and session.user as User@29
+2014-05-18/09:08:24.792/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:08:31.427/CESTDEBUG in init with loginManager: LoginManager@27d8cc96
+2014-05-18/09:08:31.428/CESTDEBUG	and session.user as User@29
+2014-05-18/09:08:31.429/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:08:46.580/CESTDEBUG in init with loginManager: LoginManager@bc80180
+2014-05-18/09:08:46.581/CESTDEBUG	and session.user as User@29
+2014-05-18/09:08:46.581/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:08:48.561/CESTDEBUG in init with loginManager: LoginManager@2f91f2ce
+2014-05-18/09:08:48.562/CESTDEBUG	and session.user as null
+2014-05-18/09:08:48.562/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:08:54.315/CESTDEBUG in init with loginManager: LoginManager@8d35c06
+2014-05-18/09:08:54.315/CESTDEBUG	and session.user as null
+2014-05-18/09:08:54.316/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:08:54.341/CESTDEBUG user <User@2f> was found
+2014-05-18/09:08:54.347/CESTDEBUG password <visitorka1> equals to the users
+2014-05-18/09:08:54.351/CESTDEBUG user visitorpattern was logged in
+2014-05-18/09:09:05.810/CESTDEBUG in init with loginManager: LoginManager@4da6f9fd
+2014-05-18/09:09:05.815/CESTDEBUG	and session.user as User@2f
+2014-05-18/09:09:05.816/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:06.699/CESTDEBUG in init with loginManager: LoginManager@2d9853c1
+2014-05-18/09:09:06.700/CESTDEBUG	and session.user as null
+2014-05-18/09:09:06.700/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:11.843/CESTDEBUG in init with loginManager: LoginManager@3b89f173
+2014-05-18/09:09:11.844/CESTDEBUG	and session.user as null
+2014-05-18/09:09:11.844/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:11.864/CESTDEBUG user <User@29> was found
+2014-05-18/09:09:11.874/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/09:09:11.885/CESTDEBUG user sudoer was logged in
+2014-05-18/09:09:13.639/CESTDEBUG in init with loginManager: LoginManager@d6e791e
+2014-05-18/09:09:13.641/CESTDEBUG	and session.user as User@29
+2014-05-18/09:09:13.641/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:15.198/CESTDEBUG in init with loginManager: LoginManager@4fbf68fd
+2014-05-18/09:09:15.199/CESTDEBUG	and session.user as User@29
+2014-05-18/09:09:15.199/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:15.309/CESTDEBUG in init with loginManager: LoginManager@5c5c3c45
+2014-05-18/09:09:15.310/CESTDEBUG	and session.user as User@29
+2014-05-18/09:09:15.310/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:19.855/CESTDEBUG in init with loginManager: LoginManager@1ca23282
+2014-05-18/09:09:19.856/CESTDEBUG	and session.user as User@29
+2014-05-18/09:09:19.856/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:22.702/CESTDEBUG in init with loginManager: LoginManager@639c1341
+2014-05-18/09:09:22.703/CESTDEBUG	and session.user as User@29
+2014-05-18/09:09:22.703/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:24.119/CESTDEBUG in init with loginManager: LoginManager@46ea9ac1
+2014-05-18/09:09:24.126/CESTDEBUG	and session.user as null
+2014-05-18/09:09:24.126/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:27.744/CESTDEBUG in init with loginManager: LoginManager@585e31db
+2014-05-18/09:09:27.746/CESTDEBUG	and session.user as null
+2014-05-18/09:09:27.746/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:27.759/CESTDEBUG user <User@2e> was found
+2014-05-18/09:09:27.764/CESTDEBUG password <mvisitor> equals to the users
+2014-05-18/09:09:27.768/CESTDEBUG user mvisitor was logged in
+2014-05-18/09:09:40.840/CESTDEBUG in init with loginManager: LoginManager@2a5b0570
+2014-05-18/09:09:40.844/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:09:40.845/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:09:58.727/CESTDEBUG in init with loginManager: LoginManager@6a9f1b84
+2014-05-18/09:09:58.727/CESTDEBUG	and session.user as null
+2014-05-18/09:09:58.728/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:02.040/CESTDEBUG in init with loginManager: LoginManager@33b2ac74
+2014-05-18/09:10:02.041/CESTDEBUG	and session.user as null
+2014-05-18/09:10:02.041/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:02.058/CESTDEBUG user <User@2e> was found
+2014-05-18/09:10:02.071/CESTDEBUG password <mvisitor> equals to the users
+2014-05-18/09:10:02.076/CESTDEBUG user mvisitor was logged in
+2014-05-18/09:10:09.963/CESTDEBUG in init with loginManager: LoginManager@40566c50
+2014-05-18/09:10:09.964/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:09.964/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:12.630/CESTDEBUG in init with loginManager: LoginManager@34d9fe50
+2014-05-18/09:10:12.631/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:12.631/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:41.861/CESTDEBUG in init with loginManager: LoginManager@560ff226
+2014-05-18/09:10:41.862/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:41.867/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:44.598/CESTDEBUG in init with loginManager: LoginManager@200c3e93
+2014-05-18/09:10:44.599/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:44.599/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:48.461/CESTDEBUG in init with loginManager: LoginManager@5454e6cc
+2014-05-18/09:10:48.462/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:48.463/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:50.899/CESTDEBUG in init with loginManager: LoginManager@730f84f7
+2014-05-18/09:10:50.900/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:50.903/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:50.953/CESTDEBUG in init with loginManager: LoginManager@7363d30d
+2014-05-18/09:10:50.956/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:50.958/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:51.950/CESTDEBUG in init with loginManager: LoginManager@50f733dd
+2014-05-18/09:10:51.951/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:51.951/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:53.966/CESTDEBUG in init with loginManager: LoginManager@6fa9ea73
+2014-05-18/09:10:53.967/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:53.967/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:10:56.000/CESTDEBUG in init with loginManager: LoginManager@63586eec
+2014-05-18/09:10:56.001/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:10:56.002/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:11:02.794/CESTDEBUG in init with loginManager: LoginManager@670ec616
+2014-05-18/09:11:02.795/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:11:02.795/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:11:20.310/CESTDEBUG in init with loginManager: LoginManager@4b06651e
+2014-05-18/09:11:20.310/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:11:20.311/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:11:22.396/CESTDEBUG in init with loginManager: LoginManager@37f38da8
+2014-05-18/09:11:22.397/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:11:22.397/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:11:26.132/CESTDEBUG in init with loginManager: LoginManager@5a83b61
+2014-05-18/09:11:26.133/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:11:26.133/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:11:57.410/CESTDEBUG in init with loginManager: LoginManager@52edc201
+2014-05-18/09:11:57.440/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:11:57.441/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:12:01.080/CESTDEBUG in init with loginManager: LoginManager@3ec976bc
+2014-05-18/09:12:01.081/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:12:01.082/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:02.932/CESTDEBUG in init with loginManager: LoginManager@739c77c2
+2014-05-18/09:13:03.011/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:13:03.011/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:04.428/CESTDEBUG in init with loginManager: LoginManager@5665349e
+2014-05-18/09:13:04.428/CESTDEBUG	and session.user as null
+2014-05-18/09:13:04.428/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:09.927/CESTDEBUG in init with loginManager: LoginManager@6395c064
+2014-05-18/09:13:10.576/CESTDEBUG	and session.user as null
+2014-05-18/09:13:10.577/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:10.800/CESTDEBUG user <User@29> was found
+2014-05-18/09:13:10.825/CESTDEBUG password <sudoer7> equals to the users
+2014-05-18/09:13:10.831/CESTDEBUG user sudoer was logged in
+2014-05-18/09:13:17.736/CESTDEBUG in init with loginManager: LoginManager@2a7357d9
+2014-05-18/09:13:17.737/CESTDEBUG	and session.user as User@29
+2014-05-18/09:13:17.737/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:20.303/CESTDEBUG in init with loginManager: LoginManager@475e30f5
+2014-05-18/09:13:20.304/CESTDEBUG	and session.user as User@29
+2014-05-18/09:13:20.304/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:30.486/CESTDEBUG in init with loginManager: LoginManager@4fc47b50
+2014-05-18/09:13:30.518/CESTDEBUG	and session.user as User@29
+2014-05-18/09:13:30.519/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:34.064/CESTDEBUG in init with loginManager: LoginManager@2db949f8
+2014-05-18/09:13:34.065/CESTDEBUG	and session.user as User@29
+2014-05-18/09:13:34.065/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:36.093/CESTDEBUG in init with loginManager: LoginManager@7043dc3d
+2014-05-18/09:13:36.095/CESTDEBUG	and session.user as User@29
+2014-05-18/09:13:36.095/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:41.084/CESTDEBUG in init with loginManager: LoginManager@7a610e17
+2014-05-18/09:13:41.084/CESTDEBUG	and session.user as User@29
+2014-05-18/09:13:41.085/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:44.770/CESTDEBUG in init with loginManager: LoginManager@6f0490a6
+2014-05-18/09:13:44.852/CESTDEBUG	and session.user as User@29
+2014-05-18/09:13:44.852/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:13:52.798/CESTDEBUG in init with loginManager: LoginManager@2c172def
+2014-05-18/09:13:52.799/CESTDEBUG	and session.user as User@29
+2014-05-18/09:13:52.799/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:14:04.390/CESTDEBUG in init with loginManager: LoginManager@54b3c31a
+2014-05-18/09:14:04.390/CESTDEBUG	and session.user as User@29
+2014-05-18/09:14:04.390/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:14:06.754/CESTDEBUG in init with loginManager: LoginManager@32e29bf4
+2014-05-18/09:14:06.755/CESTDEBUG	and session.user as User@29
+2014-05-18/09:14:06.758/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:14:19.321/CESTDEBUG in init with loginManager: LoginManager@2f45db67
+2014-05-18/09:14:19.324/CESTDEBUG	and session.user as User@29
+2014-05-18/09:14:19.324/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:14:38.479/CESTDEBUG in init with loginManager: LoginManager@5bb1d30
+2014-05-18/09:14:38.479/CESTDEBUG	and session.user as User@29
+2014-05-18/09:14:38.480/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:14:39.868/CESTDEBUG in init with loginManager: LoginManager@6822d453
+2014-05-18/09:14:39.869/CESTDEBUG	and session.user as User@29
+2014-05-18/09:14:39.870/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:14:39.935/CESTDEBUG in init with loginManager: LoginManager@2155661f
+2014-05-18/09:14:39.938/CESTDEBUG	and session.user as User@29
+2014-05-18/09:14:39.938/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:14:52.898/CESTDEBUG in init with loginManager: LoginManager@6a2170ed
+2014-05-18/09:14:52.899/CESTDEBUG	and session.user as User@29
+2014-05-18/09:14:52.900/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:15:05.990/CESTDEBUG in init with loginManager: LoginManager@7826ae35
+2014-05-18/09:15:05.990/CESTDEBUG	and session.user as User@29
+2014-05-18/09:15:05.991/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:15:43.524/CESTDEBUG in init with loginManager: LoginManager@19653474
+2014-05-18/09:15:43.525/CESTDEBUG	and session.user as User@29
+2014-05-18/09:15:43.526/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:16:24.175/CESTDEBUG in init with loginManager: LoginManager@64dd65f6
+2014-05-18/09:16:24.176/CESTDEBUG	and session.user as User@29
+2014-05-18/09:16:24.176/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:18:03.749/CESTDEBUG in init with loginManager: LoginManager@e85bc75
+2014-05-18/09:18:03.749/CESTDEBUG	and session.user as null
+2014-05-18/09:18:03.749/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:18:10.034/CESTDEBUG in init with loginManager: LoginManager@2f8665e8
+2014-05-18/09:18:10.035/CESTDEBUG	and session.user as null
+2014-05-18/09:18:10.035/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:18:10.056/CESTDEBUG user <User@2e> was found
+2014-05-18/09:18:14.332/CESTDEBUG in init with loginManager: LoginManager@2adc8a6
+2014-05-18/09:18:14.333/CESTDEBUG	and session.user as null
+2014-05-18/09:18:14.345/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:18:14.352/CESTDEBUG user <User@2e> was found
+2014-05-18/09:18:14.359/CESTDEBUG password <mvisitor> equals to the users
+2014-05-18/09:18:14.364/CESTDEBUG user mvisitor was logged in
+2014-05-18/09:18:21.390/CESTDEBUG in init with loginManager: LoginManager@5877d332
+2014-05-18/09:18:21.391/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:18:21.391/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:18:22.148/CESTDEBUG in init with loginManager: LoginManager@41880201
+2014-05-18/09:18:22.149/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:18:22.151/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:18:30.290/CESTDEBUG in init with loginManager: LoginManager@3a838570
+2014-05-18/09:18:30.291/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:18:30.291/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:19:00.043/CESTDEBUG in init with loginManager: LoginManager@658ecd2c
+2014-05-18/09:19:00.044/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:19:00.044/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:19:00.061/CESTDEBUG username <smplmanager> is valid
+2014-05-18/09:19:00.065/CESTDEBUG password <smplmanager> is valid
+2014-05-18/09:19:00.071/CESTDEBUG email <smplmanager@smplmanager.com> is valid
+2014-05-18/09:19:00.075/CESTDEBUG description <smplmanagersmplmanagersmplmanager> is valid
+2014-05-18/09:19:00.084/CESTDEBUG role was set to <manager>
+2014-05-18/09:19:00.223/CESTDEBUG user smplmanager was created
+2014-05-18/09:20:48.528/CESTDEBUG in init with loginManager: LoginManager@2b296438
+2014-05-18/09:20:48.556/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:20:48.558/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:22:17.584/CESTDEBUG in init with loginManager: LoginManager@1dcae421
+2014-05-18/09:22:17.585/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:22:17.586/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:22:32.372/CESTDEBUG in init with loginManager: LoginManager@3bcc85ba
+2014-05-18/09:22:32.373/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:22:32.373/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:23:12.157/CESTDEBUG in init with loginManager: LoginManager@13e6768a
+2014-05-18/09:23:12.158/CESTDEBUG	and session.user as User@2e
+2014-05-18/09:23:12.158/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:23:13.485/CESTDEBUG in init with loginManager: LoginManager@ecdc745
+2014-05-18/09:23:13.487/CESTDEBUG	and session.user as null
+2014-05-18/09:23:13.487/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:23:18.032/CESTDEBUG in init with loginManager: LoginManager@3bb4763c
+2014-05-18/09:23:18.033/CESTDEBUG	and session.user as null
+2014-05-18/09:23:18.033/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-18/09:23:18.037/CESTDEBUG user <User@32> was found
+2014-05-18/09:23:18.205/CESTDEBUG password <smplmanager> equals to the users
+2014-05-18/09:23:18.230/CESTDEBUG user smplmanager was logged in
+2014-05-18/09:23:29.217/CESTDEBUG in init with loginManager: LoginManager@2b7a7640
+2014-05-18/09:23:29.217/CESTDEBUG	and session.user as User@32
+2014-05-18/09:23:29.217/CESTDEBUG	created new loginManager.subject as User@1f

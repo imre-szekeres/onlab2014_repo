@@ -47,6 +47,15 @@ public class CommentService {
 		em.remove(comment);
 	}
 
+	public void removeFrom(Project project, User user, Comment comment) throws Exception {
+		Project managedp = em.merge(project);
+		User managedu = em.merge(user);
+		Comment managedc = em.merge(comment);
+		managedp.remove(managedc);
+		managedu.remove(managedc);
+		em.remove(managedc);
+	}
+
 	public List<Comment> findAll() {
 		return em.createNamedQuery("Comment.findAll", Comment.class).getResultList();
 	}

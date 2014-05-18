@@ -74,14 +74,46 @@ public class CommentManager {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
 
-			commentService.createFor(project, subject, comment);
+			if (comment.getDescription().length() >= 1) {
+				commentService.createFor(project, subject, comment);
 
-			String message = subject.getUsername() + " commented on " + project.getName();
-			FacesMessageUtils.infoMessage(context, message);
-			logger.debug(" " + message);
+				String message = subject.getUsername() + " commented on " + project.getName();
+				FacesMessageUtils.infoMessage(context, message);
+				logger.debug(" " + message);
+
+				comment = new Comment();
+			}
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to comment on " + project.getName());
 			logger.error(" " + subject.getUsername() + " failed to comment on " + project.getName(), e);
+		}
+		return "project_profile";
+	}
+
+	/**
+	 * @param comment
+	 * @return the pageID to navigate to
+	 * */
+	public String remove(Comment comment) {
+		logger.debug(" in CommentManager.remove");
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+
+			Project project = comment.getProject();
+			User subject = comment.getUser();
+
+			logger.debug(" project: " + project.toString());
+			logger.debug(" user: " + subject.toString());
+			logger.debug(" comment: " + comment.toString());
+
+			commentService.removeFrom(project, subject, comment);
+
+			String message = "comment was removed";
+			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + message);
+		} catch (Exception e) {
+			FacesMessageUtils.errorMessage(context, "failed to remove comment ");
+			logger.error(" failed to remove comment: " + comment.toString(), e);
 		}
 		return "project_profile";
 	}

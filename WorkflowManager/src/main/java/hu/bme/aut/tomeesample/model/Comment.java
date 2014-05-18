@@ -5,6 +5,8 @@
  * */
 package hu.bme.aut.tomeesample.model;
 
+import hu.bme.aut.tomeesample.utils.ManagingUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -124,4 +126,8 @@ public class Comment implements Serializable {
 		return result;
 	}
 
+	@Override
+	public String toString() {
+		return ManagingUtils.fetchFrom(super.toString(), "Comment");
+	}
 }

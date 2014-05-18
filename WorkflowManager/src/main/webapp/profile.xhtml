@@ -13,17 +13,17 @@
 	   
 	   <ui:define name='content'>
 	       <h:form id='pro-form' prependId="false" >
-		       <h:panelGrid columns='1'  cellspacing='1' cellpadding='2' id='profile-grid'  >
-		           
-		           <h:message for='username' styleClass='error-message profile-grid' />
-		           <h:panelGrid columns='2' styleClass='profile-grid' >
-		               <h:outputText value='Username: ' />
-	                   <h:outputText value='#{ profileManager.user.username }' name='username' id='username' />
-		           </h:panelGrid>
-		           
+		       <h:panelGrid columns='1'  cellspacing='1' cellpadding='2' id='profile-grid'  >           
 		           <c:choose>
 		              <c:when test='#{ profileManager.editable }'>
-		                  <h:message for='old_password' styleClass='error-message profile-grid' />
+		                   
+		                   <h:message for='username' styleClass='error-message profile-grid' />
+                           <h:panelGrid columns='2' styleClass='profile-grid' >
+                               <h:outputText value='Username: ' />
+                               <h:outputText value='#{ profileManager.user.username }' name='username' id='username' />
+                           </h:panelGrid>
+		                   
+		                   <h:message for='old_password' styleClass='error-message profile-grid' />
 	                       <h:message for='new_password' styleClass='error-message profile-grid' />
 	                       <h:panelGrid columns='2' id='chpass-panel' styleClass='profile-grid' >
 	                           <h:outputText value='Old Password: ' />
@@ -62,13 +62,13 @@
 		                  
 		                  <h:panelGrid columns='2'>
 		                  
-		                      <h:outputText value='Username' />
+		                      <h:outputText value='Username: ' />
 		                      <h:outputText value='#{ profileManager.user.username }' />
 		                      
-		                      <h:outputText value='Email' />
+		                      <h:outputText value='Email: ' />
 		                      <h:outputText value='#{ profileManager.user.email }' />
 		                  
-		                      <h:outputText value='Description' />
+		                      <h:outputText value='Description: ' />
 		                      <h:inputTextarea value='#{ profileManager.user.description }' readonly='true' />
 		                  </h:panelGrid>
 		                  
@@ -120,6 +120,14 @@
 	                           </h:column>
 	                           <h:column>
 	                               <h:commandLink value='#{ comment.project.name }' action='#{ projectManager.profileOf( comment.project ) }' />
+	                           </h:column>
+	                           <h:column>
+	                               <h:outputText value=' at ' />
+	                           </h:column>
+	                           <h:column>
+	                               <h:outputText value='#{ comment.postDate }' >
+	                                   <f:convertDateTime pattern='yyyy.MM.dd HH:mm' />
+	                               </h:outputText>
 	                           </h:column>
 	                       </h:dataTable>
 	                   </div>

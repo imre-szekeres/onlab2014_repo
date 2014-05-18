@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c='http://java.sun.com/jsp/jstl/core'>
 
 	<ui:composition template="WEB-INF/templates/wm_frame.xhtml">
 	   <ui:define name='content_title'>
@@ -23,30 +24,42 @@
 	       </h:panelGrid>
 	       
 	       <!-- TODO: view comments -->
-	       <h:form >
 	           <h:panelGrid columns='1'>
 	           
 	               <h:dataTable value='#{ commentManager.listCommentsFor( projectManager.project ) }' var='comment' >
 	                   <h:column>
-	                       <h:commandLink action='#{ profileManager.profileOf( comment.user ) }' value='#{ comment.user.username }' ></h:commandLink>
+	                       <h:form prependId='false'>
+	                           <h:commandLink id='profileof-link' value='#{ comment.user.username }' action='#{ profileManager.profileOf( comment.user ) }' ></h:commandLink>
+	                       </h:form>
 	                   </h:column>
 	                   <h:column>
-	                       <h:outputText value='at #{ comment.postDate }' />
+	                       <h:outputText value=' commented on ' />
+	                   </h:column>
+	                   <h:column>
+	                       <h:outputText value='#{ comment.postDate }' >
+	                           <f:convertDateTime pattern='yyyy.MM.dd HH:mm' />
+	                       </h:outputText>
 	                   </h:column>
 	                   <h:column>
 	                       <h:inputTextarea readonly='true' value='#{ comment.description }' />
-	                   </h:column>	               
+	                   </h:column>
+                       <h:column rendered="#{ sessionScope.subject.hasRole('administrator') or sessionScope.subject.equals( comment.user ) }" >
+                           <h:form prependId='false' >
+                               <h:commandLink id='removec-link' value='Remove' action='#{commentManager.remove( comment )}' styleClass='cvf-link' />
+                           </h:form>
+                       </h:column>
 	               </h:dataTable>
 	           
 	               <f:facet name='footer'>
 	                   <h:panelGroup>
-	                       <h:outputText value='#{ sessionScope.subject.username }:' />
-	                       <h:inputText value='#{ commentManager.comment.description }' />
-	                       <h:commandButton value='Comment' action='#{ commentManager.createFor( projectManager.project, sessionScope.subject ) }' styleClass='cvf-btn' />
+	                       <h:form prependId='false'>
+	                           <h:outputText value='#{ sessionScope.subject.username }:' />
+	                           <h:inputText value='#{ commentManager.comment.description }' required='false'/>
+	                           <h:commandButton id='createc-btn' value='Comment' action='#{ commentManager.createFor( projectManager.project, sessionScope.subject ) }' styleClass='cvf-btn' />
+	                       </h:form>
 	                   </h:panelGroup>
 	               </f:facet>
 	           </h:panelGrid>
-	       </h:form>
 	       
 	   </ui:define>
 	</ui:composition>
