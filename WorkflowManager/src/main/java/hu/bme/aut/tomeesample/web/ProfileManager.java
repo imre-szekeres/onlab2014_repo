@@ -3,8 +3,10 @@
  */
 package hu.bme.aut.tomeesample.web;
 
+import hu.bme.aut.tomeesample.model.Project;
 import hu.bme.aut.tomeesample.model.Role;
 import hu.bme.aut.tomeesample.model.User;
+import hu.bme.aut.tomeesample.service.ProjectService;
 import hu.bme.aut.tomeesample.service.RoleService;
 import hu.bme.aut.tomeesample.service.UserService;
 import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
@@ -45,6 +47,9 @@ public class ProfileManager implements Serializable {
 	@Inject
 	private RoleService roleService;
 
+	@Inject
+	private ProjectService projectService;
+
 	private User user;
 	private String oldPassword;
 	private String newPassword;
@@ -76,6 +81,17 @@ public class ProfileManager implements Serializable {
 		return (user == null || user.getRoles() == null) ?
 				new ArrayList<Role>() :
 				new ArrayList<Role>(user.getRoles());
+	}
+
+	/**
+	 * Returns the <code>Role</code>s owned by the currently managed
+	 * <code>User</code>.
+	 * 
+	 * @return a list containing the roles
+	 * */
+	public List<Project> listProjectsFor() {
+		return user == null ? new ArrayList<Project>() :
+				projectService.findProjectsFor(user.getUsername());
 	}
 
 	/**

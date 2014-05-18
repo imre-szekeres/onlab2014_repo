@@ -23,6 +23,28 @@
                 <h:inputTextarea readonly='true' value='#{ projectManager.project.description }' />
 	       </h:panelGrid>
 	       
+	       <h:form prependId='false'>
+	       <h:panelGrid columns='2' id='assignment-panel'>
+	           <h:selectOneMenu value='#{ projectManager.userId }' >
+	               <c:forEach items='#{ loginManager.listUsers() }' var='user'>
+	                   <f:selectItem itemValue='#{ user.id }' itemLabel='#{ user.username }' />
+	               </c:forEach>
+	           </h:selectOneMenu>
+	           <h:commandButton id='assign-btn' styleClass='cvf-btn' value='Assign' action='#{ projectManager.assign() }' />
+	       </h:panelGrid>
+	       </h:form>
+	       
+	       <h:panelGrid columns='1' id='assignedusrs-panel'>
+	           <h:outputText value='Assigned Users' />
+	           <h:dataTable value='#{ projectManager.listAssignedUsers() }' var='user'>
+	               <h:column>
+	                   <h:form prependId='false'>
+	                       <h:commandLink value='#{ user.username }' action='#{ profileManager.profileOf( user ) }' />
+	                   </h:form>
+	               </h:column>
+	           </h:dataTable>
+	       </h:panelGrid>
+	       
 	       <!-- TODO: view comments -->
 	           <h:panelGrid columns='1'>
 	           

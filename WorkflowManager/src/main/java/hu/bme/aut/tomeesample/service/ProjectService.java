@@ -4,6 +4,7 @@
 package hu.bme.aut.tomeesample.service;
 
 import hu.bme.aut.tomeesample.model.Project;
+import hu.bme.aut.tomeesample.model.User;
 
 import java.util.List;
 
@@ -138,5 +139,27 @@ public class ProjectService {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	/**
+	 * @param projectID
+	 * @return a list of users assigned to the specified <code>Project</code>
+	 * */
+	public List<User> findUsersFor(Long projectID) {
+		TypedQuery<User> selectFor = em.createQuery("SELECT u FROM User u, ProjectAssignment pa "
+				+ "WHERE pa.user = u AND pa.project.id = :projectID", User.class);
+		selectFor.setParameter("projectID", projectID);
+		return selectFor.getResultList();
+	}
+
+	/**
+	 * @param username
+	 * @return a list of projects assigned to the specified <code>User</code>
+	 * */
+	public List<Project> findProjectsFor(String username) {
+		TypedQuery<Project> selectFor = em.createQuery("SELECT p FROM Project o, ProjectAssignment pa "
+				+ "WHERE pa.u.username = :username AND pa.project = p", Project.class);
+		selectFor.setParameter("username", username);
+		return selectFor.getResultList();
 	}
 }

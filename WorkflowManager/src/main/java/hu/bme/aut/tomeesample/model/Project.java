@@ -9,7 +9,9 @@ import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,7 +67,7 @@ public class Project implements Serializable {
 	private List<HistoryEntry> historyEntries;
 
 	@OneToMany(mappedBy = "project")
-	private List<ProjectAssignment> projectAssignments;
+	private Set<ProjectAssignment> projectAssignments;
 
 	@OneToMany(mappedBy = "project")
 	private List<Comment> comments;
@@ -80,7 +82,7 @@ public class Project implements Serializable {
 		this.workflow = workflow;
 		this.workflow.addProject(this);
 		this.currentState = this.workflow.getInitialState();
-		this.projectAssignments = new ArrayList<>();
+		this.projectAssignments = new HashSet<>();
 		this.historyEntries = new ArrayList<>();
 		this.comments = new ArrayList<>();
 	}
@@ -117,7 +119,7 @@ public class Project implements Serializable {
 		this.historyEntries = historyEntries;
 	}
 
-	public List<ProjectAssignment> getProjectAssignments() {
+	public Set<ProjectAssignment> getProjectAssignments() {
 		return projectAssignments;
 	}
 
@@ -125,7 +127,7 @@ public class Project implements Serializable {
 	 * @param projectAssignments
 	 *            the projectAssignments to set
 	 */
-	public void setProjectAssignments(List<ProjectAssignment> projectAssignments) {
+	public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
 		this.projectAssignments = projectAssignments;
 	}
 
@@ -153,7 +155,7 @@ public class Project implements Serializable {
 
 	public void add(ProjectAssignment assignment) {
 		if (projectAssignments == null)
-			projectAssignments = new ArrayList<ProjectAssignment>();
+			projectAssignments = new HashSet<ProjectAssignment>();
 		projectAssignments.add(assignment);
 	}
 

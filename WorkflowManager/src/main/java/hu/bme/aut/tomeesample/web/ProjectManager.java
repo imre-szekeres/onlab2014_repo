@@ -4,13 +4,17 @@
 package hu.bme.aut.tomeesample.web;
 
 import hu.bme.aut.tomeesample.model.Project;
+import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.model.Workflow;
+import hu.bme.aut.tomeesample.service.ProjectAssignmentService;
 import hu.bme.aut.tomeesample.service.ProjectService;
+import hu.bme.aut.tomeesample.service.UserService;
 import hu.bme.aut.tomeesample.service.WorkflowService;
 import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.Conversation;
@@ -42,9 +46,16 @@ public class ProjectManager implements Serializable {
 	@Inject
 	private ProjectService projectService;
 	@Inject
+	private ProjectAssignmentService assignmentService;
+
+	@Inject
+	private UserService userService;
+
+	@Inject
 	private WorkflowService workflowService;
 	private Project project = new Project();
 	private String workflowName;
+	private Long userID;
 
 	/**
 	 * Fetches the <code>Project</code>s already created in the application.
@@ -53,6 +64,17 @@ public class ProjectManager implements Serializable {
 	 * */
 	public List<Project> listProjects() {
 		return projectService.findAll();
+	}
+
+	/**
+	 * Fetches the <code>User</code>s already assigned to the specified
+	 * <code>Project</code>.
+	 *
+	 * @return a list of all the found projects
+	 * */
+	public List<User> listAssignedUsers() {
+		return project.getId() == null ? new ArrayList<User>() :
+				projectService.findUsersFor(project.getId());
 	}
 
 	public String profileOf(Project project) {
@@ -115,7 +137,42 @@ public class ProjectManager implements Serializable {
 			FacesMessageUtils.errorMessage(context, "failed to create " + project.getName());
 			logger.error(" in projectManager.create", e);
 		}
-		return "view_projects";
+		return "add_projects";
+	}
+
+	/***/
+	public String assign() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+
+			/*
+			 * User user = userService.findByName(username);
+			 * 
+			 * logger.debug(user); logger.debug(project);
+			 * 
+			 * logger.debug(" pas: " + user.getProjectAssignments());
+			 * user.setProjectAssignments(new HashSet<ProjectAssignment>());
+			 * logger.debug(" pas: " + user.getProjectAssignments());
+			 * 
+			 * ProjectAssignment pa = new ProjectAssignment(); logger.debug(pa);
+			 * 
+			 * pa.setUser(user); pa.setProject(project);
+			 * 
+			 * assignmentService.create(pa);
+			 */
+
+			// TODO:
+			assignmentService.createFor(userID, project.getId());
+
+			String message = "assignment to " + project.getName() + " was successful";
+			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + message);
+		} catch (Exception e) {
+			FacesMessageUtils.infoMessage(context, "failed to create assignment to " + project.getName());
+			logger.debug(" failed to create assignment to " + project.getName() + " due to ", e);
+		}
+
+		return "project_profile";
 	}
 
 	/**
@@ -146,6 +203,21 @@ public class ProjectManager implements Serializable {
 	 */
 	public void setWorkflowName(String workflowName) {
 		this.workflowName = workflowName;
+	}
+
+	/**
+	 * @return the userID
+	 */
+	public Long getUserId() {
+		return userID;
+	}
+
+	/**
+	 * @param username
+	 *            the userID to set
+	 */
+	public void setUserId(Long id) {
+		this.userID = id;
 	}
 
 	@Override

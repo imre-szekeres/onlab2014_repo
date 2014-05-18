@@ -27,49 +27,53 @@ import javax.validation.constraints.NotNull;
 public class ProjectAssignment implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	@ManyToOne
 	private User user;
-	
+
 	@NotNull
 	@ManyToOne
 	private Project project;
-	
-	
-	public ProjectAssignment(){
+
+	public ProjectAssignment() {
 		super();
 	}
-	
+
 	public ProjectAssignment(User user, Project project) {
 		super();
 		this.user = user;
 		this.project = project;
+
+		this.user.add(this);
+		this.project.add(this);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
-	
+
 	public void setUser(User user) {
 		this.user = user;
+		this.user.add(this);
 	}
-	
+
 	public Project getProject() {
 		return project;
 	}
-	
+
 	public void setProject(Project project) {
 		this.project = project;
+		this.project.add(this);
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -80,7 +84,7 @@ public class ProjectAssignment implements Serializable {
 		return result;
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

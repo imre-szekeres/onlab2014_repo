@@ -3,7 +3,11 @@
  */
 package hu.bme.aut.tomeesample.service;
 
+import hu.bme.aut.tomeesample.model.Project;
 import hu.bme.aut.tomeesample.model.ProjectAssignment;
+import hu.bme.aut.tomeesample.model.User;
+
+import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -43,23 +47,23 @@ public class ProjectAssignmentService {
 		}
 	}
 
-	public ProjectAssignment findByUserName(String userName) {
-		try {
-			TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findByUser", ProjectAssignment.class);
-			select.setParameter("userName", userName);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
+	public List<ProjectAssignment> findByUserName(String userName) {
+		TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findByUser", ProjectAssignment.class);
+		select.setParameter("userName", userName);
+		return select.getResultList();
 	}
 
-	public ProjectAssignment findByProjectId(Long projectId) {
-		try {
-			TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findByProjectId", ProjectAssignment.class);
-			select.setParameter("projectId", projectId);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
+	public List<ProjectAssignment> findByProjectId(Long projectId) {
+		TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findByProjectId", ProjectAssignment.class);
+		select.setParameter("projectId", projectId);
+		return select.getResultList();
+	}
+
+	public ProjectAssignment createFor(Long projectID, Long userID) {
+		User user = em.find(User.class, userID);
+		Project project = em.find(Project.class, projectID);
+		ProjectAssignment pa = new ProjectAssignment(user, project);
+		em.persist(pa);
+		return pa;
 	}
 }
