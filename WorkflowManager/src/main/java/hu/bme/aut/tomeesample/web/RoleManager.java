@@ -148,11 +148,10 @@ public class RoleManager implements Serializable {
 	public String addFor(User user) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
+			user.add(this.role);
+			user = userService.update(user);
 
-			User managed = userService.addRoleFor(user, this.role);
-			LoginManager.refreshSessionFor(managed);
-
-			String message = "role " + this.role.toString() + " was added to " + managed.toString();
+			String message = "role " + this.role.toString() + " was added to " + user.toString();
 			FacesMessageUtils.infoMessage(context, message);
 			logger.debug(message);
 
@@ -178,7 +177,6 @@ public class RoleManager implements Serializable {
 			user = userService.update(user);
 
 			String message = "role " + this.role.toString() + " was removed from " + user.toString();
-			FacesMessageUtils.infoMessage(context, message);
 			logger.debug(message);
 
 			conversation.end();

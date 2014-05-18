@@ -3,7 +3,6 @@
  */
 package hu.bme.aut.tomeesample.service;
 
-import hu.bme.aut.tomeesample.model.Role;
 import hu.bme.aut.tomeesample.model.User;
 
 import java.io.Serializable;
@@ -181,41 +180,5 @@ public class UserService implements Serializable {
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-	/**
-	 * Adds the given <code>Role</code> to the specified <code>User</code>.
-	 *
-	 * @param user
-	 *            to acquire the new role
-	 * @param role
-	 *            to be added to the given user
-	 *
-	 * @return the managed instance of the given <code>User</code>
-	 * @throws Exception
-	 * */
-	public User addRoleFor(User user, Role role) throws Exception {
-		User managed = em.merge(user);
-		managed.add(role);
-		em.merge(role);
-		return managed;
-	}
-
-	/**
-	 * Adds the given <code>Role</code> to the specified <code>User</code>.
-	 *
-	 * @param user
-	 *            to acquire the new role
-	 * @param role
-	 *            to be added to the given user
-	 * 
-	 * @return the managed instance of the given <code>User</code>
-	 * @throws Exception
-	 * */
-	public User removeRoleFrom(User user, Role role) throws Exception {
-		User managed = em.merge(user);
-		managed.remove(role);
-		em.merge(role);
-		return managed;
 	}
 }
