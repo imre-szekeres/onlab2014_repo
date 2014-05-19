@@ -151,6 +151,10 @@ public class StateManager {
 
 				StateNavigationEntry stateNavigationEntry = new
 						StateNavigationEntry(selectedActionType, selectedNextState, newState);
+
+				for (StateNavigationEntry _stateNavigationEntry : stateNavigationEntryService.findByParentId(state.getId())) {
+					_stateNavigationEntry.setParent(newState);
+				}
 				// newState.addNextState(stateNavigationEntry);
 				stateService.removeDetached(state);
 
@@ -175,10 +179,14 @@ public class StateManager {
 
 	public String getNextStateName(ActionType actionType, State state) {
 		try {
-			return stateNavigationEntryService.findByActionTypeId(actionType.getId(), state.getId()).getNextState().getName();
-
+			List<StateNavigationEntry> navEntries = stateNavigationEntryService.findByParentId(state.getId());
+			for (StateNavigationEntry stateNavigationEntry : navEntries) {
+				if (stateNavigationEntry.getActionType().getId() == actionType.getId()) {
+					return stateNavigationEntry.getNextState().getName();
+				}
+			}
 		} catch (Exception e) {
-			logger.debug("Error while get next state name");
+			logger.debug("Error while get next state name", e);
 			logger.debug(e.getMessage());
 		}
 		return "Next state not found :(";

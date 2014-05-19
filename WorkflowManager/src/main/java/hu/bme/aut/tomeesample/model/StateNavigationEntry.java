@@ -10,6 +10,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,12 +45,12 @@ public class StateNavigationEntry implements Serializable {
 	private State parent;
 
 	@Column
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@NotNull
 	private State nextState;
 
 	@Column
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@NotNull
 	private ActionType actionType;
 
