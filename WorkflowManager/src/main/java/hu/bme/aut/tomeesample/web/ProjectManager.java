@@ -81,7 +81,7 @@ public class ProjectManager implements Serializable {
 		this.project = project;
 		if (conversation.isTransient())
 			conversation.begin();
-		return "/auth/man/project_profile.xhtml";
+		return "/auth/project_profile.xhtml";
 	}
 
 	/**
