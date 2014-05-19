@@ -2806,3 +2806,12 @@ ProjectAssignments: null
 2014-05-18/12:57:53.335/CESTDEBUG in init with loginManager: LoginManager@32933e3a
 2014-05-18/12:57:53.344/CESTDEBUG	and session.user as User@29
 2014-05-18/12:57:53.344/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-19/13:33:12.337/CESTDEBUG in init with loginManager: LoginManager@3623490a
+2014-05-19/13:33:12.339/CESTDEBUG	and session.user as null
+2014-05-19/13:33:12.339/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-19/13:33:32.407/CESTDEBUG in init with loginManager: LoginManager@2a84ac24
+2014-05-19/13:33:32.408/CESTDEBUG	and session.user as null
+2014-05-19/13:33:32.409/CESTDEBUG	created new loginManager.subject as User@1f
+2014-05-19/13:33:32.483/CESTDEBUG user <User@23> was found
+2014-05-19/13:33:32.547/CESTDEBUG password <sudoer7> equals to the users
+2014-05-19/13:33:32.554/CESTDEBUG user sudoer was logged in

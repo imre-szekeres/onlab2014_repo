@@ -48,7 +48,7 @@ public class Project implements Serializable {
 
 	@NotNull
 	@Size(min = 5, max = 16)
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String name;
 
 	@Size(min = 13, max = 512)

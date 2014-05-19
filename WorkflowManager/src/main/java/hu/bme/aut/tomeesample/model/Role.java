@@ -17,7 +17,7 @@ import javax.persistence.ManyToMany;
 
 /**
  * Entity implementation class for Entity: Role
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -29,7 +29,7 @@ public class Role implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String name;
 
 	@ManyToMany(targetEntity = ActionType.class, fetch = FetchType.EAGER)

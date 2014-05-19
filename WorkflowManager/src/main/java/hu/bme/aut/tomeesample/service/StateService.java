@@ -79,14 +79,16 @@ public class StateService {
 		logger.debug(actionType);
 
 		State nextState = findById(selectedNextStateId);
+		// nextState.setDescription("abcd");
 
-		logger.debug(nextState);
-
+		// logger.debug(nextState);
+		//
 		State managedState = em.merge(state);
-		// add them to the current state
+		// // add them to the current state
+		managedState.setDescription("asdf");
 		managedState.addNextState(actionType, nextState);
-
-		logger.debug(managedState);
+		//
+		// logger.debug(managedState);
 
 		// save changes
 		// em.merge(managedState);

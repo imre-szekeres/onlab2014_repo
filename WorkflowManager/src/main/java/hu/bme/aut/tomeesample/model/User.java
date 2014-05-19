@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: User
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -52,7 +52,7 @@ public class User implements Serializable {
 
 	@NotNull
 	@Size(min = 5, max = 16)
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String username;
 
 	@NotNull
@@ -207,7 +207,7 @@ public class User implements Serializable {
 	/**
 	 * Checks whether the <code>User</code> has any <code>Role</code> with the
 	 * given name.
-	 *
+	 * 
 	 * @param name
 	 * @return true only if any of the roles has a name like the passed argument
 	 * */

@@ -35,7 +35,7 @@ public class ActionType implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String actionTypeName;
 
 	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes", fetch = FetchType.EAGER)
