@@ -37,6 +37,11 @@ public class ProjectAssignmentService {
 		em.remove(projectAssignment);
 	}
 
+	public void removeDetached(ProjectAssignment projectAssignment) {
+		ProjectAssignment managed = em.merge(projectAssignment);
+		em.remove(managed);
+	}
+
 	public ProjectAssignment findById(Long id) {
 		try {
 			TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findById", ProjectAssignment.class);

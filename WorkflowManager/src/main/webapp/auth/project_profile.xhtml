@@ -40,7 +40,7 @@
 	       <h:form prependId='false'>
 	       <h:panelGrid columns='2' id='assignment-panel'>
 	           <h:selectOneMenu value='#{ projectManager.userId }' >
-	               <c:forEach items='#{ loginManager.listUsers() }' var='user'>
+	               <c:forEach items='#{ projectManager.filterAssigned( loginManager.listUsers() ) }' var='user'>
 	                   <f:selectItem itemValue='#{ user.id }' itemLabel='#{ user.username }' />
 	               </c:forEach>
 	           </h:selectOneMenu>
@@ -48,16 +48,21 @@
 	       </h:panelGrid>
 	       </h:form>
 	       
-	       <h:panelGrid columns='1' id='assignedusrs-panel'>
+	       <div id='assignedusrs-panel'>
 	           <h:outputText value='Assigned Users' />
-	           <h:dataTable value='#{ projectManager.listAssignedUsers() }' var='user'>
+	           <h:dataTable value='#{ projectManager.listAssignments() }' var='assignment'>
 	               <h:column>
 	                   <h:form prependId='false'>
-	                       <h:commandLink value='#{ user.username }' action='#{ profileManager.profileOf( user ) }' />
+	                       <h:commandLink value='#{ assignment.user.username }' action='#{ profileManager.profileOf( assignment.user ) }' />
 	                   </h:form>
 	               </h:column>
+	               <h:column>
+                       <h:form prependId='false'>
+                           <h:commandButton value='Remove' action='#{ projectManager.unassign(assignment.user, assignment) }' />
+                       </h:form>
+                   </h:column>
 	           </h:dataTable>
-	       </h:panelGrid>
+	       </div>
 	       
 	       <!-- TODO: view comments -->
 	           <h:panelGrid columns='1'>

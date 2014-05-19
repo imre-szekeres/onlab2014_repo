@@ -5,6 +5,7 @@ package hu.bme.aut.tomeesample.web;
 
 import hu.bme.aut.tomeesample.model.ActionType;
 import hu.bme.aut.tomeesample.model.Project;
+import hu.bme.aut.tomeesample.model.ProjectAssignment;
 import hu.bme.aut.tomeesample.model.State;
 import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.model.Workflow;
@@ -19,6 +20,7 @@ import hu.bme.aut.tomeesample.utils.ManagingUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
@@ -51,13 +53,13 @@ public class ProjectManager implements Serializable {
 	private ProjectService projectService;
 
 	@Inject
+	private UserService userService;
+
+	@Inject
 	private ProjectAssignmentService assignmentService;
 
 	@Inject
 	private StateNavigationEntryService stateNavigationEntryService;
-
-	@Inject
-	private UserService userService;
 
 	@Inject
 	private WorkflowService workflowService;
@@ -85,6 +87,49 @@ public class ProjectManager implements Serializable {
 	public List<User> listAssignedUsers() {
 		return project.getId() == null ? new ArrayList<User>() :
 				projectService.findUsersFor(project.getId());
+	}
+
+	/**
+	 * Fetches the <code>User</code>s already assigned to the specified
+	 * <code>Project</code>.
+	 * 
+	 * @return a list of all the found projects
+	 * */
+	public List<User> filterAssigned(List<User> users) {
+		if (project.getProjectAssignments() == null)
+			return users;
+		List<User> results = new ArrayList<User>();
+		for (User user : users) {
+			if (notAmong(user, project.getProjectAssignments()))
+				results.add(user);
+		}
+		return results;
+	}
+
+	/**
+	 * @param user
+	 * @param assignments
+	 * 
+	 * @return a list containing all the <code>User</code>s not bound by the
+	 *         given list of <code>ProjectAssignment</code>s.
+	 * */
+	private static boolean notAmong(User user, Set<ProjectAssignment> assignments) {
+		for (ProjectAssignment assignment : assignments) {
+			if (user.equals(assignment.getUser()))
+				return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Fetches the <code>ProjectAssignment</code>s already assigned to the
+	 * specified <code>Project</code>.
+	 * 
+	 * @return a list of all the found projects
+	 * */
+	public List<ProjectAssignment> listAssignments() {
+		return project.getId() == null ? new ArrayList<ProjectAssignment>() :
+				new ArrayList<ProjectAssignment>(project.getProjectAssignments());
 	}
 
 	public String profileOf(Project project) {
@@ -171,32 +216,45 @@ public class ProjectManager implements Serializable {
 		return "/auth/add_project.xhtml";
 	}
 
-	/***/
+	/**
+	 * Assigns a <code>User</code> to the specified <code>Project</code> by
+	 * creating a new <code>ProjectAssignment</code> that binds a specific
+	 * <code>User</code> to a specific <code>Project</code>.
+	 * 
+	 * @return the pageID to navigate to after the transaction
+	 * */
 	public String assign() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
+			User user = userService.findById(userID);
+			ProjectAssignment pa = new ProjectAssignment(user, project);
 
-			/*
-			 * User user = userService.findByName(username);
-			 * 
-			 * logger.debug(user); logger.debug(project);
-			 * 
-			 * logger.debug(" pas: " + user.getProjectAssignments());
-			 * user.setProjectAssignments(new HashSet<ProjectAssignment>());
-			 * logger.debug(" pas: " + user.getProjectAssignments());
-			 * 
-			 * ProjectAssignment pa = new ProjectAssignment(); logger.debug(pa);
-			 * 
-			 * pa.setUser(user); pa.setProject(project);
-			 * 
-			 * assignmentService.create(pa);
-			 */
+			assignmentService.create(pa);
 
-			// TODO:
-			assignmentService.createFor(userID, project.getId());
+			String message = "assignment to " + project.getName() + " was successful";
+			FacesMessageUtils.infoMessage(context, message);
+		} catch (Exception e) {
+			FacesMessageUtils.infoMessage(context, "failed to create assignment to " + project.getName());
+			logger.debug(" failed to create assignment to " + project.getName() + " due to ", e);
+		}
 
-			if (!conversation.isTransient())
-				conversation.end();
+		return "/auth/project_profile.xhtml";
+	}
+
+	/**
+	 * Unassigns a <code>User</code> from the specified <code>Project</code> by
+	 * removing the <code>ProjectAssignment</code> that binds a specific
+	 * <code>User</code> to a specific <code>Project</code>.
+	 * 
+	 * @return the pageID to navigate to after the transaction
+	 * */
+	public String unassign(User user, ProjectAssignment assignment) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			project.remove(assignment);
+			user.remove(assignment);
+
+			assignmentService.removeDetached(assignment);
 
 			String message = "assignment to " + project.getName() + " was successful";
 			FacesMessageUtils.infoMessage(context, message);

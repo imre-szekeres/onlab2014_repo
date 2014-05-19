@@ -46,10 +46,10 @@ public class ApplicationManager implements java.io.Serializable {
 			admin = new Role("administrator");
 			tryCreate(admin);
 		}
-		if (roleService.findByName("visitor") == null) {
-			Role role = new Role("visitor");
-			tryCreate(role);
-		}
+		if (roleService.findByName("manager") == null)
+			tryCreate(new Role("manager"));
+		if (roleService.findByName("visitor") == null)
+			tryCreate(new Role("visitor"));
 		if (userService.findByName("sudoer") == null) {
 			User sudoer = new User("sudoer", "sudoer7", "sudoer@cvf.wm.com", admin,
 					"A humble administrator for the (R) WorkflowManager application! "

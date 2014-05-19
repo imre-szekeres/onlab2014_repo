@@ -212,7 +212,9 @@ public class ProfileManager implements Serializable {
 	}
 
 	/**
+	 * Adds a choosen <code>Role</code> to the sepcified <code>User</code>.
 	 * 
+	 * @return the pageID to navigate to
 	 * */
 	public String addRole() {
 		FacesContext context = FacesContext.getCurrentInstance();

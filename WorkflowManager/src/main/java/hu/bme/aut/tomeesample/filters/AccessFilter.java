@@ -55,22 +55,16 @@ public class AccessFilter implements Filter {
 
 		HttpSession session = hreq.getSession();
 		try {
-			// TODO: check..
 			if (uri.contains("/faces/fragments/")) {
 				String target = session.getAttribute("subject") == null ? "/faces/login.xhtml?faces-redirect=true" :
 						"/faces/auth/index.xhtml?faces-redirect=true";
-
-				System.out.println(session.getAttribute("subject") + " was redirected from fragments..");
 				hreq.getRequestDispatcher(target).forward(request, response);
 			}
 			if (session.getAttribute("subject") == null && uri.contains("/faces/auth/"))
 				hreq.getRequestDispatcher("/faces/login.xhtml?faces-redirect=true").forward(request, response);
 			else if ((uri.contains("/faces/auth/man/") && !((User) session.getAttribute("subject")).hasRole("manager")) ||
-					(uri.contains("/faces/auth/admin/") && !((User) session.getAttribute("subject")).hasRole("administrator"))) {
-
-				System.out.println(session.getAttribute("subject") + " was redirected from " + uri);
+					(uri.contains("/faces/auth/admin/") && !((User) session.getAttribute("subject")).hasRole("administrator")))
 				hreq.getRequestDispatcher("/faces/auth/index.xhtml?faces-redirect=true").forward(request, response);
-			}
 		} catch (Exception e) {
 		}
 	}

@@ -3,12 +3,8 @@
  */
 package hu.bme.aut.tomeesample.web;
 
-import hu.bme.aut.tomeesample.model.User;
-
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -24,17 +20,9 @@ import org.apache.log4j.Logger;
 public class NavigationManager {
 
 	private static final Logger logger = Logger.getLogger(NavigationManager.class);
-	private User subject;
 
 	@Inject
 	private Conversation conversation;
-
-	@PostConstruct
-	public void init() {
-		subject =
-				(User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject");
-		logger.debug(" subject is " + (subject == null ? null : subject.toString()) + " in " + this.toString());
-	}
 
 	/**
 	 * Results the pageID to navigate to after the call, considers the status

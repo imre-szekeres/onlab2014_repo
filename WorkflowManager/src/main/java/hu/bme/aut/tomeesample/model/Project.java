@@ -70,7 +70,7 @@ public class Project implements Serializable {
 	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
 
-	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Set<ProjectAssignment> projectAssignments;
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
