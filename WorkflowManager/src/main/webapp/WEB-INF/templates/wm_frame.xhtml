@@ -16,81 +16,91 @@
     
     <h:body>
         <div id='header-div' >
-            <span id='brand-span'>
+            <div id='brand-span'>
                 <h:form>
                 <h3>
                     <h:commandLink styleClass="home-link" action='#{ navigationManager.home() }' value="WorkflowManager" />
                 </h3>
                 </h:form>
-            </span>
+            </div>
             <span id='brand-img-span'></span>
-            <span id='unavbar' >
-            <h:form>
-                <div id='unavmenu-wrapper'>     
-                    <span class='menu-item'>
-                        <h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>#{ sessionScope.subject.username }</span></h:commandLink>
-                    </span>                            
-                    <span class='menu-item lseparated'>
-                        <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
-                    </span>
-                 </div>
-            </h:form>
-            </span>
-        </div>
-        
-        
-        
-        <div id='rnavbar'>
-            <div id='rnavmenu-wrapper'>
-                <h:form prpendId='false'>
-                <ul id='rnavmenu' >
-                    <li class='rmenu-item'>
-                        <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
-                    </li>
-                    <li class='rmenu-item'>
-                        <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.addProject() }'><span>Projects</span></h:commandLink>
-                    </li>
-                    
-                    <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
-                        <li class='rmenu-item'>
-                            <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
-                        </li>
-                        
-                        <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
-                            <li class='rmenu-item'>
-                                <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
-                            </li>
-                            <li class='rmenu-item'>
-                                <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
-                            </li>
-                        </c:if>
-                    </c:if>    
-                </ul>
-                </h:form>
+            <div id='unavbar' >
+            	<h:form>
+					<div id='unavmenu-wrapper'>     
+						<ul id='menu' >
+							<li class='menu-item'>
+								<h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>#{ sessionScope.subject.username }</span></h:commandLink>
+							</li>                            
+							<li class='menu-item lseparated'>
+								<h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
+							</li>
+							<li class='menu-item'>
+								<span styleClass='menu-item'>Manage</span>
+								<ul id='submenu'>
+									<li class='submenu-item'>
+										<h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
+									</li>
+									<li class='submenu-item'>
+										<h:commandLink styleClass='menu-item' action='#{ navigationManager.addProject() }'><span>Projects</span></h:commandLink>
+									</li>
+									
+									<c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
+										<li class='submenu-item'>
+											<h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
+										</li>
+									
+										<c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
+											<li class='submenu-item'>
+												<h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
+											</li>
+											<li class='submenu-item'>
+												<h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
+											</li>
+										</c:if>
+									</c:if> 
+								</ul>
+							</li>
+						</ul>
+					</div>
+            	</h:form>
             </div>
         </div>
         
-        <div id='content-container' >
-            <div id='ctitle-div'>
-                <h3>
-                    <ui:insert name='content_title'>Welcome!</ui:insert>
-                </h3>
-            </div>
-            
-            <div id='content-div'>
-                
-                <c:if test='#{ not empty facesContext.messageList }' >
-                    <div id='global-messages-container'>
-                        <h:messages id='global-messages' globalOnly='true' ></h:messages>
-                    </div>
-                </c:if>
-                
-                <ui:insert name='content'>
-                    <p>
-                        Welcome to WorkflowManager!
-                    </p>
-                </ui:insert>
-            </div>
+        
+        
+        
+<!-- 	        <div id='rnavbar'> -->
+<!-- 	            <div id='rnavmenu-wrapper'> -->
+<!-- 	                <h:form prpendId='false'> -->
+	                
+<!-- 	                </h:form> -->
+<!-- 	            </div> -->
+<!-- 	        </div> -->
+		
+		<div id="body_container">    
+	        <div id='content-container' >
+	            <div id='ctitle-div'>
+	                <h3>
+	                    <ui:insert name='content_title'>Welcome!</ui:insert>
+	                </h3>
+	            </div>
+	            
+	            <div id='content-div'>
+	                
+	                <c:if test='#{ not empty facesContext.messageList }' >
+	                    <div id='global-messages-container'>
+	                        <h:messages id='global-messages' globalOnly='true' ></h:messages>
+	                    </div>
+	                </c:if>
+	                
+	                <ui:insert name='content'>
+	                    <p>
+	                        Welcome to WorkflowManager!
+	                    </p>
+	                </ui:insert>
+	            </div>
+	        </div>
+        
         </div>
         
         <div id='footer-div' >
