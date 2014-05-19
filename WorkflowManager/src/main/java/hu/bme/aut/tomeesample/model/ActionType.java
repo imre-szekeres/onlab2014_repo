@@ -97,7 +97,8 @@ public class ActionType implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ActionType [id=" + id + ", actionTypeName=" + actionTypeName + "]";
+		// do not remove | around id, it is used to get the id in converter
+		return "ActionType [id=|" + id + "|, actionTypeName=" + actionTypeName + "]";
 	}
 
 }

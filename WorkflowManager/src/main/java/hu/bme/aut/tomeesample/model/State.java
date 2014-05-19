@@ -7,10 +7,8 @@ package hu.bme.aut.tomeesample.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,7 +19,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -60,9 +57,12 @@ public class State implements Serializable {
 	@JoinColumn
 	private Workflow workflow;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@MapKeyJoinColumn
-	private Map<ActionType, State> nextStates;
+	// @ManyToMany(fetch = FetchType.EAGER)
+	// @MapKeyJoinColumn
+	// private Map<ActionType, State> nextStates;
+
+	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	private List<StateNavigationEntry> nextStates;
 
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<HistoryEntry> historyEntries;
@@ -74,7 +74,7 @@ public class State implements Serializable {
 	@JoinColumn
 	private State parent;
 
-	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
 	private List<State> children;
 
 	public State() {
@@ -88,7 +88,7 @@ public class State implements Serializable {
 		this.initial = initial;
 		this.historyEntries = new HashSet<>();
 		this.files = new ArrayList<>();
-		this.nextStates = new HashMap<>();
+		// this.nextStates = new HashMap<>();
 		this.children = new ArrayList<>();
 	}
 
@@ -112,7 +112,7 @@ public class State implements Serializable {
 		return historyEntries;
 	}
 
-	public Map<ActionType, State> getNextStates() {
+	public List<StateNavigationEntry> getNextStates() {
 		return nextStates;
 	}
 
@@ -140,7 +140,7 @@ public class State implements Serializable {
 		this.children = children;
 	}
 
-	public void setNextStates(Map<ActionType, State> nextStates) {
+	public void setNextStates(List<StateNavigationEntry> nextStates) {
 		this.nextStates = nextStates;
 	}
 
@@ -154,6 +154,10 @@ public class State implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public void setDescription(String description) {
@@ -172,12 +176,13 @@ public class State implements Serializable {
 		return historyEntries.remove(entry);
 	}
 
-	public void removeNexState(ActionType actionType) {
-		nextStates.remove(actionType);
+	public void removeNexState(StateNavigationEntry stateNavigationEntry) {
+		nextStates.remove(stateNavigationEntry);
 	}
 
-	public void addNextState(ActionType actionType, State nextState) {
-		nextStates.put(actionType, nextState);
+	public void addNextState(StateNavigationEntry stateNavigationEntry) {
+		getNextStates().add(stateNavigationEntry);
+		stateNavigationEntry.setParent(this);
 	}
 
 	public void addChild(State child) {
@@ -198,14 +203,11 @@ public class State implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((children == null) ? 0 : children.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((files == null) ? 0 : files.hashCode());
 		result = prime * result + ((historyEntries == null) ? 0 : historyEntries.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((nextStates == null) ? 0 : nextStates.hashCode());
-		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
 		result = prime * result + ((workflow == null) ? 0 : workflow.hashCode());
 		return result;
 	}
@@ -229,11 +231,11 @@ public class State implements Serializable {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (nextStates == null) {
-			if (other.nextStates != null)
-				return false;
-		} else if (!nextStates.equals(other.nextStates))
-			return false;
+		// if (nextStates == null) {
+		// if (other.nextStates != null)
+		// return false;
+		// } else if (!nextStates.equals(other.nextStates))
+		// return false;
 		if (parent == null) {
 			if (other.parent != null)
 				return false;
@@ -249,6 +251,13 @@ public class State implements Serializable {
 
 	@Override
 	public String toString() {
-		return "State [id=" + id + ", name=" + name + ", initial=" + initial + "]";
+		return "State [id=|" + id + "|, name=" + name + ", initial=" + initial + "]";
+	}
+
+	public State copy() {
+		State copy = new State(name, description, initial);
+		copy.setNextStates(nextStates);
+		copy.setWorkflow(workflow);
+		return copy;
 	}
 }

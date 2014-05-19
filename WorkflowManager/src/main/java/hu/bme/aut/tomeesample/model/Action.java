@@ -1,73 +1,80 @@
 /**
-  * Action.java
-  * 
-  * @author Imre Szekeres
-  * */
+ * Action.java
+ * 
+ * @author Imre Szekeres
+ * */
 package hu.bme.aut.tomeesample.model;
-
-import javax.validation.constraints.*;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Action
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Action.findAll", query="SELECT a FROM Action a"),
-	@NamedQuery(name="Action.findById", query="SELECT a FROM Action a "
-											 +"WHERE a.id=:id"),
-	@NamedQuery(name="Action.findByType", query="SELECT a FROM Action a "
-											   +"WHERE a.actionType.id=:typeId")
+		@NamedQuery(name = "Action.findAll", query = "SELECT a FROM Action a"),
+		@NamedQuery(name = "Action.findById", query = "SELECT a FROM Action a "
+				+ "WHERE a.id=:id"),
+		@NamedQuery(name = "Action.findByType", query = "SELECT a FROM Action a "
+				+ "WHERE a.actionType.id=:typeId")
 })
 public class Action implements Serializable {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	@ManyToOne
 	private ActionType actionType;
-	
-	@Size(min=10, max=512)
+
+	@Size(min = 10, max = 512)
 	private String description;
-	
+
 	public Action() {
 		super();
 	}
-	
-	public Action(ActionType actionType, String description){
-		this.actionType  = actionType;
+
+	public Action(ActionType actionType, String description) {
+		this.actionType = actionType;
 		this.description = description;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public ActionType getActionType() {
 		return actionType;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setActionType(ActionType actionType) {
 		this.actionType = actionType;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -78,7 +85,7 @@ public class Action implements Serializable {
 		return result;
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

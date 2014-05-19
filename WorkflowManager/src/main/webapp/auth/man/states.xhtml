@@ -62,7 +62,7 @@
 			 								<h:outputText value="#{at.actionTypeName}"/>
 		 								</span>
 		 								<span class = "nextStatePanel-name">
-			 								<h:outputText value="#{state.nextStates[at].name}"/>
+			 								<h:outputText value="#{stateManager.getNextStateName(at,state)}"/>
 		 								</span>
 		 								<span>
 		 									<h:commandButton value="Delete" action="#{stateManager.deleteActionTypeFromState(at, state)}">
@@ -74,13 +74,15 @@
 	 							</div>
 	 						</ui:repeat>
 	 						<h:form>
-								<h:selectOneMenu value="#{stateManager.selectedActionTypeId}">
-								   	<f:selectItems value="#{actionTypeManager.actionTypeList}" var="_at" itemValue="#{_at.id}" 
+								<h:selectOneMenu value="#{stateManager.selectedActionType}" converter="#{actionTypeConverter}">
+									<f:converter binding="#{actionTypeConverter}" />
+								   	<f:selectItems value="#{actionTypeManager.actionTypeList}" var="_at" itemValue="#{_at}" 
 								   				itemLabel="#{_at.actionTypeName}" valueChangeListener="#{stateManager.selectedActionTypeChanged}"
-								   				onchange="submit()"/>
+								   				onchange="submit()" converter="#{actionTypeConverter}"/>
 								</h:selectOneMenu>
-								<h:selectOneMenu value="#{stateManager.selectedNextStateId}">
-					   				<f:selectItems value="#{stateManager.getStateForWorkflow()}" var="_state" itemValue="#{_state.id}" 
+								<h:selectOneMenu value="#{stateManager.selectedNextState}">
+									<f:converter binding="#{stateConverter}" />
+					   				<f:selectItems value="#{stateManager.getStateForWorkflow()}" var="_state" itemValue="#{_state}" 
 								   				itemLabel="#{_state.name}" valueChangeListener="#{stateManager.selectedNextStateChanged}"
 								   				onchange="submit()"/>   					
 							   	</h:selectOneMenu>		
