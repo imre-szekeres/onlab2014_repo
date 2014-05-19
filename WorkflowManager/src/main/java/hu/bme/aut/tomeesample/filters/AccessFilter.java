@@ -7,12 +7,14 @@ import hu.bme.aut.tomeesample.model.User;
 
 import java.io.IOException;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,12 +24,11 @@ import javax.servlet.http.HttpSession;
  * @author Imre Szekeres
  * @version "%I%. %G%"
  */
-// @WebFilter(dispatcherTypes = {
-// DispatcherType.REQUEST,
-// DispatcherType.FORWARD,
-// DispatcherType.INCLUDE
-// }
-// , urlPatterns = { "/*" })
+@WebFilter(dispatcherTypes = {
+		DispatcherType.REQUEST,
+		DispatcherType.FORWARD,
+		DispatcherType.INCLUDE
+}, urlPatterns = { "/*" })
 public class AccessFilter implements Filter {
 
 	/**
@@ -50,7 +51,6 @@ public class AccessFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest hreq = ((HttpServletRequest) request);
 		String uri = hreq.getRequestURI();
-		System.out.println(uri);
 		chain.doFilter(request, response);
 
 		HttpSession session = hreq.getSession();
@@ -59,13 +59,18 @@ public class AccessFilter implements Filter {
 			if (uri.contains("/faces/fragments/")) {
 				String target = session.getAttribute("subject") == null ? "/faces/login.xhtml?faces-redirect=true" :
 						"/faces/auth/index.xhtml?faces-redirect=true";
+
+				System.out.println(session.getAttribute("subject") + " was redirected from fragments..");
 				hreq.getRequestDispatcher(target).forward(request, response);
 			}
 			if (session.getAttribute("subject") == null && uri.contains("/faces/auth/"))
 				hreq.getRequestDispatcher("/faces/login.xhtml?faces-redirect=true").forward(request, response);
 			else if ((uri.contains("/faces/auth/man/") && !((User) session.getAttribute("subject")).hasRole("manager")) ||
-					(uri.contains("/faces/auth/admin/") && !((User) session.getAttribute("subject")).hasRole("administrator")))
+					(uri.contains("/faces/auth/admin/") && !((User) session.getAttribute("subject")).hasRole("administrator"))) {
+
+				System.out.println(session.getAttribute("subject") + " was redirected from " + uri);
 				hreq.getRequestDispatcher("/faces/auth/index.xhtml?faces-redirect=true").forward(request, response);
+			}
 		} catch (Exception e) {
 		}
 	}

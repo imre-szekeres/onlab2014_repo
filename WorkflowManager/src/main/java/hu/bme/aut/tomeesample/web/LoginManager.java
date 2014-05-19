@@ -49,11 +49,9 @@ public class LoginManager {
 
 	@PostConstruct
 	public void init() {
-		logger.debug(" in init with loginManager: " + this.toString());
 		logger.debug("\tand session.user as " + FacesContext.getCurrentInstance().getExternalContext()
 				.getSessionMap().get("subject"));
 		subject = new User();
-		logger.debug("\tcreated new loginManager.subject as " + subject.toString());
 		this.subject.setUsername("Username");
 		this.subject.setDescription("Default description!");
 	}
@@ -150,7 +148,6 @@ public class LoginManager {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username or password", "pasword or username is invalid"));
 		}
 		subject = user;
-		logger.debug(" user <" + user.toString() + "> was found");
 	}
 
 	/**
@@ -170,10 +167,8 @@ public class LoginManager {
 	 * */
 	public void validatePassword(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (subject != null) {
+		if (subject != null)
 			checkPassword((String) value);
-			logger.debug(" password <" + value + "> equals to the users");
-		}
 	}
 
 	/**
@@ -212,7 +207,6 @@ public class LoginManager {
 			throws ValidatorException {
 		if (!userService.validateUsername((String) value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "username must be between 7 and 32 characters or already exists!", "username must be between 7 and 32 characters or already exists!"));
-		logger.debug(" username <" + value + "> is valid");
 	}
 
 	/**
@@ -234,7 +228,6 @@ public class LoginManager {
 		if (!userService.validatePassword((String) value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password!", "invalid password!"));
 		this.subject.setPassword((String) value);
-		logger.debug(" password <" + value + "> is valid");
 	}
 
 	/**
@@ -256,7 +249,6 @@ public class LoginManager {
 			throws ValidatorException {
 		if (!userService.validatePasswords(this.subject.getPassword(), (String) value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "passwords do not match!", "passwords do not match!"));
-		logger.debug(" password again <" + value + "> matches prev password <" + subject.getPassword() + ">");
 	}
 
 	/**
@@ -277,7 +269,6 @@ public class LoginManager {
 			throws ValidatorException {
 		if (!userService.validateEmail((String) value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid email format!", "invalid email format!"));
-		logger.debug(" email <" + value + "> is valid");
 	}
 
 	/**
@@ -301,7 +292,6 @@ public class LoginManager {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"description length must be between 0 and 1024 characters!",
 					"description length must be between 0 and 1024 characters!"));
-		logger.debug(" description <" + value + "> is valid");
 	}
 
 	/**
@@ -314,7 +304,6 @@ public class LoginManager {
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		try {
 			userService.removeDetached(user);
-			logger.debug(" in delte: " + user.toString() + " removed");
 			FacesMessageUtils.infoMessage(ctx, "user " + user.getUsername() + " deleted!");
 		} catch (Exception e) {
 			logger.error(" ERROR in delete: ", e);
@@ -335,7 +324,6 @@ public class LoginManager {
 	 *            the subject to set
 	 */
 	public void setSubject(User subject) {
-		logger.debug(" setting subject to: " + subject.toString());
 		this.subject = subject;
 	}
 
@@ -360,12 +348,10 @@ public class LoginManager {
 	}
 
 	public void setUsername(String username) {
-		logger.debug(" username was set to <" + username + ">");
 		this.subject.setUsername(username);
 	}
 
 	public void setPassword(String password) {
-		logger.debug(" password was set to <" + password + ">");
 		this.subject.setPassword(password);
 	}
 
@@ -374,7 +360,6 @@ public class LoginManager {
 	}
 
 	public void setEmail(String email) {
-		logger.debug(" email was set to <" + email + ">");
 		this.subject.setEmail(email);
 	}
 
@@ -383,9 +368,7 @@ public class LoginManager {
 	}
 
 	public void setDescription(String description) {
-		logger.debug(" description was set to <" + description + ">");
 		this.subject.setDescription(description);
-		;
 	}
 
 	/**
@@ -416,7 +399,6 @@ public class LoginManager {
 	 */
 	public void setRole(String role) {
 		this.role = role;
-		logger.debug(" role was set to <" + role + ">");
 	}
 
 	@Override

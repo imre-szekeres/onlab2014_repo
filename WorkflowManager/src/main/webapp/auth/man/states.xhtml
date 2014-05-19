@@ -11,8 +11,7 @@
 		with actual data.
 	 -->
 	<ui:composition template="../../WEB-INF/templates/wm_frame.xhtml" >
-	    <c:if test="#{ sessionScope.subject.hasRole('manager') }">
-		<ui:define name="content_title">
+	    <ui:define name="content_title">
 			<h:outputText value="#{stateManager.getTitle()}"/>
 		</ui:define>
 	
@@ -97,6 +96,5 @@
 		    <!-- TODO Has role -->
 		   	<ui:include src="../../fragments/add_state.xhtml" />
 		</ui:define>
-		</c:if>
 	</ui:composition>
 </html>

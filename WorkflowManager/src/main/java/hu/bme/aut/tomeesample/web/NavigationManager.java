@@ -45,9 +45,7 @@ public class NavigationManager {
 	 * */
 	public String register() {
 		clearConversation();
-		String pageID = "/register.xhtml";
-		logger.debug("register() was requested with result: " + pageID);
-		return pageID;
+		return "/register.xhtml";
 	}
 
 	/**
@@ -59,9 +57,7 @@ public class NavigationManager {
 	 * */
 	public String home() {
 		clearConversation();
-		String pageID = "/auth/index.xhtml";
-		logger.debug("home() was requested with result: " + pageID);
-		return pageID;
+		return "/auth/index.xhtml";
 	}
 
 	/**
@@ -73,9 +69,7 @@ public class NavigationManager {
 	 * */
 	public String signIn() {
 		clearConversation();
-		String pageID = "/login.xhtml";
-		logger.debug("signIn() was requested with result: " + pageID);
-		return pageID;
+		return "/login.xhtml";
 	}
 
 	/**
@@ -87,9 +81,7 @@ public class NavigationManager {
 	 * */
 	public String addUser() {
 		clearConversation();
-		String pageID = "/auth/man/add_user.xhtml";
-		logger.debug("addUser() was requested with result: " + pageID);
-		return pageID;
+		return "/auth/man/add_user.xhtml";
 	}
 
 	/**
@@ -101,9 +93,7 @@ public class NavigationManager {
 	 * */
 	public String addRole() {
 		clearConversation();
-		String pageID = "/auth/admin/add_role.xhtml";
-		logger.debug("addRole() was requested with result: " + pageID);
-		return pageID;
+		return "/auth/admin/add_role.xhtml";
 	}
 
 	/**
@@ -115,9 +105,7 @@ public class NavigationManager {
 	 * */
 	public String workflows() {
 		clearConversation();
-		String pageID = "/auth/workflows.xhtml";
-		logger.debug("workflows() was requested with result: " + pageID);
-		return pageID;
+		return "/auth/workflows.xhtml";
 	}
 
 	/**
@@ -129,9 +117,7 @@ public class NavigationManager {
 	 * */
 	public String addProject() {
 		clearConversation();
-		String pageID = "/auth/add_project.xhtml";
-		logger.debug("addProject() was requested with result: " + pageID);
-		return pageID;
+		return "/auth/add_project.xhtml";
 	}
 
 	/**
@@ -143,9 +129,7 @@ public class NavigationManager {
 	 * */
 	public String actionTypes() {
 		clearConversation();
-		String pageID = "/auth/admin/actionTypes.xhtml";
-		logger.debug("actionTypes() was requested with result: " + pageID);
-		return pageID;
+		return "/auth/admin/actionTypes.xhtml";
 	}
 
 	/**
@@ -157,9 +141,7 @@ public class NavigationManager {
 	 * */
 	public String profile() {
 		clearConversation();
-		String pageID = "/auth/profile.xhtml";
-		logger.debug("profile() was requested with result: " + pageID);
-		return pageID;
+		return "/auth/profile.xhtml";
 	}
 
 	private void clearConversation() {
