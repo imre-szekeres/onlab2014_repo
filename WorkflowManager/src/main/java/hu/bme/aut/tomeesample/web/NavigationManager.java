@@ -8,8 +8,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.log4j.Logger;
-
 /**
  * 
  * @author Imre Szekeres
@@ -18,8 +16,6 @@ import org.apache.log4j.Logger;
 @Named
 @RequestScoped
 public class NavigationManager {
-
-	private static final Logger logger = Logger.getLogger(NavigationManager.class);
 
 	@Inject
 	private Conversation conversation;

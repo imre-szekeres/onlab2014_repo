@@ -12,7 +12,10 @@
 	   </ui:define>
 	   
 	   <ui:define name='content'>
+	   
+	       <div style='margin:21px; '>
 	       <h:form id='pro-form' prependId="false" >
+	           <div id='usrprofile-div'>
 		       <h:panelGrid columns='1'  cellspacing='1' cellpadding='2' id='profile-grid'  >           
 		           <c:choose>
 		              <c:when test='#{ profileManager.editable }'>
@@ -74,39 +77,52 @@
 		              </c:otherwise>
 		           </c:choose>
 		           
-		           <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
-		           <h:form prependId='false'>
-                   <h:panelGrid columns='1'>
-                       <h:panelGrid id='role-panel' columns='2'>
-                           <h:selectOneMenu id='selectone-role' value='#{ profileManager.role }' >
-                               <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
-                                   <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
-                               </c:forEach>
-                           </h:selectOneMenu>
-                           <h:commandButton value='Add' action='#{ profileManager.addRole() }' /> 
-                       </h:panelGrid>
-                       <h:commandButton type='button' value='Add Role' id='add-role-btn' />
-                   </h:panelGrid>
-                   </h:form>
-                   </c:if>
 		       </h:panelGrid>
+		       </div>
 		       
-		       <h:dataTable value="#{ profileManager.listRoles() }" var='role' title='Roles for #{ profileManager.user.username }'>
-	               <h:column>
-	                   <f:facet name='header'>Role</f:facet>
-	                   <h:outputText value='#{ role.name }' />
-	               </h:column>
-	           </h:dataTable>
+		       <div id='manageroles-div'>
+		       <div id='usrroles-panel'>
+			       <div id='usrroles-header'>
+			           <h:outputText value='Roles'></h:outputText>
+			       </div>
+			       <div id='usrrolestable-wrapper'>
+			           <h:dataTable value="#{ profileManager.listRoles() }" var='role' title='Roles for #{ profileManager.user.username }'
+			                        id='usrroles-table'>
+                           <h:column>
+                               <h:outputText value='#{ role.name }' />
+                           </h:column>
+                       </h:dataTable>
+			       </div>
+	           </div>
+	           
+	           <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
+                   <div id='addrole-panel'>
+                       <h:panelGrid columns='1'>
+	                       <h:panelGrid id='role-panel' columns='2'>
+	                           <h:selectOneMenu id='selectone-role' value='#{ profileManager.role }' >
+	                               <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
+	                                   <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
+	                               </c:forEach>
+	                           </h:selectOneMenu>
+	                           <h:commandButton value='Add' action='#{ profileManager.addRole() }' /> 
+	                       </h:panelGrid>
+	                       <h:commandButton type='button' value='Add Role' id='add-role-btn' />
+	                   </h:panelGrid>
+                   </div>
+               </c:if>
+               </div>
+	           
 	       </h:form>
 	       
 	       <h:form prependId='false'>
-	       
+	           <div id='commentpanel-div'>
+	               <hr />
 	               <div>
 	                   <h:commandButton type='button' styleClass='cvf-button' value='Show Comments' id='comment-btn' ></h:commandButton>
 	               </div>	               
 	               
 	               <div id='comment-panel'>
-	                   <div id='commentshdr-div'>
+	                   <div id='comments-header'>
 	                       <h:outputText value='Comments' id='comments-hdr'></h:outputText>
                        </div>
                        
@@ -130,8 +146,9 @@
                            </h:dataTable>
                        </div>
 	               </div>
-	       
+	           </div>
 	       </h:form>
+	       </div>
 	       
 	       <h:outputScript>
 	           var submit_pnl  = $("#submit-panel");
@@ -167,7 +184,7 @@
 	           }
 	           
 	           function toggleComments( event ) {
-	               comment_pnl.slideToggle(1200);
+	               comment_pnl.slideToggle(1000);
 	               comment_btn.val( comment_btn.val() == 'Show Comments' ? 'Hide Comments' : 'Show Comments' );
 	           }
 	       

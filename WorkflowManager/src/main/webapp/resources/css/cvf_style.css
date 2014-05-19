@@ -14,8 +14,8 @@
     top: 100px;
     left: 100px;
     padding: 21px;
-    width: 350px;
-    height: 450px;
+    width: 700px;
+    height: 350px;
     background-color: #F8F8F8;
     border-right: #006699 2px solid;
     border-bottom: #006699 2px solid;
@@ -344,6 +344,15 @@
 
 /* Users Space */
 
+#usrprofile-div {
+    width: 50%;
+    height: 210px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+    padding-top: 7px;
+    overflow: auto;
+}
+
 #usrstable-div {
     position: relative;
     width: 700px;
@@ -375,6 +384,22 @@
     text-align: center;
 }
 
+.usrstable-col {
+    width: 135px;
+    text-align: center;
+}
+
+#usrstable-body {
+    position: relative;
+    height: 250px;
+    max-height: 250px;
+    overflow-x: auto;
+}
+
+#usrstable-body TABLE {
+/* set background-color of the usrstable body.. */
+}
+
 #usrname-span {
     width: 110px;
     left: 5px;
@@ -399,18 +424,54 @@
     left: 145px;
 }
 
-.usrstable-col {
-    width: 135px;
+
+
+/* UsrRole Space */
+
+#manageroles-div {
+    position: relative;
+    top: -220px;
+    left: 500px;
+    width: 213px;
+    height: 230px;
+}
+
+#usrroles-panel {
+    width: 100%;
+    height: 190px;
+}
+
+#usrroles-header {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 24px;
+    color: #006699;
+}
+
+#usrrolestable-wrapper {
+    width:  100%;
+    height: 160px;
+    overflow: auto;
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#usrroles-table{
+    width: 100%;
     text-align: center;
 }
 
-#usrstable-body {
-    position: relative;
-    height: 250px;
-    max-height: 250px;
-    overflow-x: auto;
+#usrroles-table TR{
+    width: 100%;
+    text-align: center;
 }
 
+#usrroles-table TD{
+    width: 100%;
+    text-align: center;
+}
 
 /* Projects Space */
 #projectstable-div {
@@ -499,18 +560,11 @@
 
 /* Comments Space */
 
-#comments-wrapper {
-    width: 450px;
-    max-height: 210px;
-    overflow-x: auto;
-    border: #006699 1px solid;
-    border-radius: 7px 7px 7px 7px;
-}
-
-#commentpanel-wrapper {
-    left: 13px;
-    width: 450px;
-    height: 230px;
+#commentpanel-div {
+    position: relative;
+    top: -200px;
+    width: 100%;
+    height: 350px;
 }
 
 #comment-panel {
@@ -519,6 +573,21 @@
     width: 450px;
     height: 300px;
     opacity: 0.8;
+}
+
+#comments-header {
+    height: 30px;
+    font-size: 24px;
+    color: #006699;
+}
+
+#comments-wrapper {
+    width: 450px;
+    height: 260px;
+    max-height: 260px;
+    overflow-x: auto;
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
 }
 
 .actionTypePanel {
