@@ -5,6 +5,7 @@ package hu.bme.aut.tomeesample.service;
 
 import hu.bme.aut.tomeesample.model.ActionType;
 import hu.bme.aut.tomeesample.model.State;
+import hu.bme.aut.tomeesample.model.StateNavigationEntry;
 
 import java.util.Collection;
 import java.util.List;
@@ -48,8 +49,8 @@ public class StateService {
 		em.persist(state);
 	}
 
-	public void update(State state) {
-		em.merge(state);
+	public State update(State state) {
+		return em.merge(state);
 	}
 
 	public void updateAll(Collection<State> states) {
@@ -69,27 +70,27 @@ public class StateService {
 
 	public void createWithParent(State parent, State child) {
 		em.persist(child);
-		parent.addChild(child);
-		em.merge(parent);
+
+		State managed = em.merge(parent);
+		managed.getChildren();
+		managed.addChild(child);
 	}
 
-	public void addActionTypeToState(Long selectedActionTypeId, Long selectedNextStateId, State state) {
-		ActionType actionType = actionTypeService.findById(selectedActionTypeId);
+	public void addActionTypeToState(ActionType actionType, State nextState, State state) {
 
-		logger.debug(actionType);
+		// Create state navigation entry
+		StateNavigationEntry stateNavigationEntry = new
+				StateNavigationEntry(actionType, nextState, state);
 
-		State nextState = findById(selectedNextStateId);
+		em.persist(stateNavigationEntry);
 
-		logger.debug(nextState);
-
-		State managedState = em.merge(state);
 		// add them to the current state
-		managedState.addNextState(actionType, nextState);
+		state.addNextState(stateNavigationEntry);
 
-		logger.debug(managedState);
+		logger.debug(state.getNextStates());
 
 		// save changes
-		// em.merge(managedState);
+		em.persist(state);
 	}
 
 	public State getParent(State state) {

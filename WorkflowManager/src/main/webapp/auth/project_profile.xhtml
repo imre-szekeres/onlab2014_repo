@@ -21,6 +21,9 @@
                 
                 <h:outputText value='Description: ' />
                 <h:inputTextarea readonly='true' value='#{ projectManager.project.description }' />
+                
+                <h:outputText value='State: ' />
+                <h:outputText value='#{ projectManager.project.currentState}' />
 	       </h:panelGrid>
 	       
 	       <h:form prependId='false'>
