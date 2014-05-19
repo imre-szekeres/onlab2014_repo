@@ -12,61 +12,77 @@
 	   
 	   <ui:define name='content'>
 	       
-	       <h:panelGrid columns='2' >
+	       <div id='projectprofile-div'>
+	       <h:panelGrid columns='3' >
                 <h:outputText value='Name: ' />
                 <h:outputText value='#{ projectManager.project.name }' />
+                <span></span>
                 
                 <h:outputText value='Workflow: ' />
                 <h:outputText value='#{ projectManager.project.workflow.name }' />
+                <span></span>
                 
                 <h:outputText value='Description: ' />
                 <h:inputTextarea readonly='true' value='#{ projectManager.project.description }' />
+                <span></span>
                 
                 <h:outputText value='State: ' />
                 <h:outputText value='#{ projectManager.project.currentState.name}' />
+                <span></span>
                 
-                <h:form>
-                	<h:outputText value="Action"/>
-                	<h:selectOneMenu value="#{projectManager.selectedActionType}" converter="#{actionTypeConverter}">
-						<f:converter binding="#{actionTypeConverter}" />
-					   	<f:selectItems value="#{stateManager.getActionTypeList(projectManager.project.currentState)}" var="_at" itemValue="#{_at}" 
-					   				itemLabel="#{_at.actionTypeName}" valueChangeListener="#{profileManager.selectedActionTypeChanged}"
-					   				onchange="submit()" converter="#{actionTypeConverter}"/>
+                <h:outputText value="Action"/>
+                <h:form prependId='false'>
+	                <h:selectOneMenu value="#{projectManager.selectedActionType}" converter="#{actionTypeConverter}">
+							<f:converter binding="#{actionTypeConverter}" />
+					        <f:selectItems value="#{stateManager.getActionTypeList(projectManager.project.currentState)}" var="_at" itemValue="#{_at}" 
+						   				itemLabel="#{_at.actionTypeName}" valueChangeListener="#{profileManager.selectedActionTypeChanged}"
+						   				onchange="submit()" converter="#{actionTypeConverter}"/>
 					</h:selectOneMenu>
 					<h:commandButton value="Add action type" action="#{projectManager.doAction()}"/>
                 </h:form>
 	       </h:panelGrid>
-	       
-	       <h:form prependId='false'>
-	       <h:panelGrid columns='2' id='assignment-panel'>
-	           <h:selectOneMenu value='#{ projectManager.userId }' >
-	               <c:forEach items='#{ projectManager.filterAssigned( loginManager.listUsers() ) }' var='user'>
-	                   <f:selectItem itemValue='#{ user.id }' itemLabel='#{ user.username }' />
-	               </c:forEach>
-	           </h:selectOneMenu>
-	           <h:commandButton id='assign-btn' styleClass='cvf-btn' value='Assign' action='#{ projectManager.assign() }' />
-	       </h:panelGrid>
-	       </h:form>
-	       
-	       <div id='assignedusrs-panel'>
-	           <h:outputText value='Assigned Users' />
-	           <h:dataTable value='#{ projectManager.listAssignments() }' var='assignment'>
-	               <h:column>
-	                   <h:form prependId='false'>
-	                       <h:commandLink value='#{ assignment.user.username }' action='#{ profileManager.profileOf( assignment.user ) }' />
-	                   </h:form>
-	               </h:column>
-	               <h:column>
-                       <h:form prependId='false'>
-                           <h:commandButton value='Remove' action='#{ projectManager.unassign(assignment.user, assignment) }' />
-                       </h:form>
-                   </h:column>
-	           </h:dataTable>
 	       </div>
 	       
+	       <div id='assignmentdiv-wrapper'>		       
+		       <div id='assignedusrs-panel'>
+		           <div id='assignedusrs-header'>
+		              <h:outputText value='Assigned Users' />
+		           </div>
+		           <div id='assignedusrs-table'>
+			           <h:dataTable value='#{ projectManager.listAssignments() }' var='assignment'>
+			               <h:column>
+			                   <h:form prependId='false'>
+			                       <h:commandLink value='#{ assignment.user.username }' action='#{ profileManager.profileOf( assignment.user ) }' />
+			                   </h:form>
+			               </h:column>
+			               <h:column>
+		                       <h:form prependId='false'>
+		                           <h:commandButton value='Remove' action='#{ projectManager.unassign(assignment.user, assignment) }' />
+		                       </h:form>
+		                   </h:column>
+			           </h:dataTable>
+			       </div>
+		       </div>
+		       
+		       <div id='assignment-div'>
+               <h:form prependId='false'>
+               <h:panelGrid columns='2' id='assignment-panel'>
+                   <h:selectOneMenu value='#{ projectManager.userId }' >
+                       <c:forEach items='#{ projectManager.filterAssigned( loginManager.listUsers() ) }' var='user'>
+                           <f:selectItem itemValue='#{ user.id }' itemLabel='#{ user.username }' />
+                       </c:forEach>
+                   </h:selectOneMenu>
+                   <h:commandButton id='assign-btn' styleClass='cvf-btn' value='Assign' action='#{ projectManager.assign() }' />
+               </h:panelGrid>
+               </h:form>
+               </div>
+	       </div>
+	       
+	       <div id='projectcomments-div'>
 	       <!-- TODO: view comments -->
-	           <h:panelGrid columns='1'>
+	           <div id='projectcomments-panel'>
 	           
+	               <div id='projectcomments-body'>
 	               <h:dataTable value='#{ commentManager.listCommentsFor( projectManager.project ) }' var='comment' >
 	                   <h:column>
 	                       <h:form prependId='false'>
@@ -90,18 +106,16 @@
                            </h:form>
                        </h:column>
 	               </h:dataTable>
-	           
-	               <f:facet name='footer'>
-	                   <h:panelGroup>
-	                       <h:form prependId='false'>
-	                           <h:outputText value='#{ sessionScope.subject.username }:' />
-	                           <h:inputText value='#{ commentManager.comment.description }' required='false'/>
-	                           <h:commandButton id='createc-btn' value='Comment' action='#{ commentManager.createFor( projectManager.project, sessionScope.subject ) }' styleClass='cvf-btn' />
-	                       </h:form>
-	                   </h:panelGroup>
-	               </f:facet>
-	           </h:panelGrid>
-	       
+                   </div>
+	               <div id='newcomment-div'>
+	                   <h:form prependId='false'>
+	                       <h:outputText value='#{ sessionScope.subject.username }: ' />
+	                       <h:inputText value='#{ commentManager.comment.description }' required='false'/>
+	                       <h:commandButton id='createc-btn' value='Comment' action='#{ commentManager.createFor( projectManager.project, sessionScope.subject ) }' styleClass='cvf-btn' />
+	                   </h:form>
+	               </div>
+	           </div>
+	       </div>
 	   </ui:define>
 	</ui:composition>
 </html>

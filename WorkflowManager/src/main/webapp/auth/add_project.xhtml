@@ -21,6 +21,8 @@
            
            <c:if test="#{sessionScope.subject.hasRole( 'manager' )}">
            <h:form prependId='false' id='project-form'>
+
+	           <div id='createproject-div'>
 	           <h:panelGrid columns='2' id='project-panel'>
 	           
 	               <f:facet name='errors'>
@@ -54,6 +56,8 @@
 	                   </h:panelGroup>
 	               </f:facet>
 	           </h:panelGrid>
+	           </div>
+	           
 	        </h:form>
 	        </c:if>
         
