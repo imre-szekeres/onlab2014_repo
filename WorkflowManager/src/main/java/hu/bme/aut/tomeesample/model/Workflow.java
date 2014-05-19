@@ -81,7 +81,7 @@ public class Workflow implements Serializable {
 	public State getInitialState() {
 		// Search the root of the state hierarchy
 		for (State state : states) {
-			if (state.getParent() == null && state.isInitial()) {
+			if (state.isInitial()) {
 				return state;
 			}
 		}

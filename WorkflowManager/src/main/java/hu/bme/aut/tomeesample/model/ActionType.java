@@ -79,10 +79,30 @@ public class ActionType implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof ActionType))
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		return (((ActionType) o).id).equals(this.id);
+		if (getClass() != obj.getClass())
+			return false;
+		ActionType other = (ActionType) obj;
+		if (actionTypeName == null) {
+			if (other.actionTypeName != null)
+				return false;
+		} else if (!actionTypeName.equals(other.actionTypeName))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -91,7 +111,7 @@ public class ActionType implements Serializable {
 		int result = 1;
 		result = prime * result + ((actionTypeName == null) ? 0 : actionTypeName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((id == null) ? 0 : roles.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		return result;
 	}
 

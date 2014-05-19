@@ -197,6 +197,9 @@ public class StateManager {
 		// List<StateNavigationEntry> stateMap = state.getNextStates();
 		// logger.debug(stateService.findById(state.getId()).getNextStates());
 		// logger.debug(state.getNextStates().size());
+		if (state == null) {
+			return actionTypes;
+		}
 		for (StateNavigationEntry stateNavigationEntry : stateNavigationEntryService.findByParentId(state.getId())) {
 			actionTypes.add(stateNavigationEntry.getActionType());
 		}

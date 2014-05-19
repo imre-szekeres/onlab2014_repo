@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -58,6 +59,7 @@ public class Project implements Serializable {
 	private String description;
 
 	@NotNull
+	@OneToOne(fetch = FetchType.EAGER)
 	private State currentState;
 
 	@NotNull
