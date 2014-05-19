@@ -14,7 +14,7 @@
                     </div>
                     
                     <div id='usrstable-body'>
-                    <h:form id='usrstable-form'>          
+                    <h:form id='usrstable-form' prependId='false'>          
                         <h:dataTable value='#{ loginManager.listUsers() }' var='user' 
                                      columnClasses=" usrstable-col ">
                             <h:column>

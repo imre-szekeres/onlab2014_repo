@@ -129,7 +129,6 @@ public class ProjectManager implements Serializable {
 	 * @return the pageID to navigate to after the transaction
 	 * */
 	public String create() {
-		// TODO: check
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
 			Workflow workflow = workflowService.findByName(workflowName);
@@ -142,9 +141,31 @@ public class ProjectManager implements Serializable {
 
 			String message = "project " + project.getName() + " created";
 			FacesMessageUtils.infoMessage(context, message);
-			logger.debug(" " + message);
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to create " + project.getName());
+			logger.error(" in projectManager.create", e);
+		}
+		return "/auth/add_project.xhtml";
+	}
+
+	/**
+	 * Creates a brand new <code>Project</code> with the specified
+	 * <code>Workflow</code> as a template.
+	 * 
+	 * @return the pageID to navigate to after the transaction
+	 * */
+	public String remove(Project project) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+
+			projectService.removeDetached(project);
+			if (!conversation.isTransient())
+				conversation.end();
+
+			String message = "project " + project.getName() + " was removed";
+			FacesMessageUtils.infoMessage(context, message);
+		} catch (Exception e) {
+			FacesMessageUtils.errorMessage(context, "failed to remove " + project.getName());
 			logger.error(" in projectManager.create", e);
 		}
 		return "/auth/add_project.xhtml";
@@ -174,9 +195,11 @@ public class ProjectManager implements Serializable {
 			// TODO:
 			assignmentService.createFor(userID, project.getId());
 
+			if (!conversation.isTransient())
+				conversation.end();
+
 			String message = "assignment to " + project.getName() + " was successful";
 			FacesMessageUtils.infoMessage(context, message);
-			logger.debug(" " + message);
 		} catch (Exception e) {
 			FacesMessageUtils.infoMessage(context, "failed to create assignment to " + project.getName());
 			logger.debug(" failed to create assignment to " + project.getName() + " due to ", e);

@@ -65,9 +65,12 @@ public class ProfileManager implements Serializable {
 	}
 
 	public String profileOf(User user) {
+		if (!conversation.isTransient())
+			conversation.end();
 		this.user = user;
 		if (!FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject").equals(user))
 			isEditable = false;
+		conversation.begin();
 		return "/auth/profile.xhtml";
 	}
 
@@ -118,7 +121,6 @@ public class ProfileManager implements Serializable {
 		User subject = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject");
 		if (!subject.getPassword().equals(value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid old password was given", "old password was invalid"));
-		logger.debug(" old password <" + value + "> is valid");
 	}
 
 	/**
@@ -142,7 +144,6 @@ public class ProfileManager implements Serializable {
 			return;
 		if (!userService.validatePassword((String) value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password!", "invalid password!"));
-		logger.debug(" password <" + value + "> is valid");
 	}
 
 	/**
@@ -163,7 +164,6 @@ public class ProfileManager implements Serializable {
 			throws ValidatorException {
 		if (!userService.validateEmail((String) value))
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid email format!", "invalid email format!"));
-		logger.debug(" email <" + value + "> is valid");
 	}
 
 	/**
@@ -187,7 +187,6 @@ public class ProfileManager implements Serializable {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"description length must be between 0 and 1024 characters!",
 					"description length must be between 0 and 1024 characters!"));
-		logger.debug(" description <" + value + "> is valid");
 	}
 
 	/**
@@ -209,7 +208,6 @@ public class ProfileManager implements Serializable {
 
 			String message = "user " + user.getUsername() + " was updated";
 			FacesMessageUtils.infoMessage(context, message);
-			logger.debug(" " + message);
 		} catch (Exception e) {
 		}
 		return "/auth/profile.xhtml";
@@ -225,14 +223,9 @@ public class ProfileManager implements Serializable {
 			user.add(r);
 			user = userService.update(user);
 
-			logger.debug(" user is: " + user.getUsername());
-			logger.debug(" role is: " + role);
-			// TODO: am a RoleManager-ben is van ilyen method...
 			conversation.end();
-
 			String message = "role " + role + " was added to " + user.getUsername();
 			FacesMessageUtils.infoMessage(context, message);
-			logger.debug(" " + message);
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to add role " + role);
 			logger.debug(" ERROR in addRole: ", e);

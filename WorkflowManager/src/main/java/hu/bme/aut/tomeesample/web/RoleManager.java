@@ -60,7 +60,10 @@ public class RoleManager implements Serializable {
 	 * @return the page id of the profile page
 	 * */
 	public String profileOf(Role role) {
+		if (!conversation.isTransient())
+			conversation.end();
 		this.role = role;
+		conversation.begin();
 		return "/auth/admin/role_profile.xhtml";
 	}
 
@@ -86,7 +89,6 @@ public class RoleManager implements Serializable {
 			roleService.create(this.role);
 			String message = "created new role: " + this.role.toString();
 			FacesMessageUtils.infoMessage(context, message);
-			logger.debug(message);
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to create " + this.role);
 			logger.error("in RoleManager.create: ", e);
@@ -140,31 +142,6 @@ public class RoleManager implements Serializable {
 	}
 
 	/**
-	 * Adds a new role to the user specified by user name.
-	 *
-	 * @return the string representation of the page to navigate to
-	 * */
-	// TODO: remove
-	public String addFor(User user) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		try {
-			user.add(this.role);
-			user = userService.update(user);
-
-			String message = "role " + this.role.toString() + " was added to " + user.toString();
-			FacesMessageUtils.infoMessage(context, message);
-			logger.debug(message);
-
-			conversation.end();
-			return "users";
-		} catch (Exception e) {
-			FacesMessageUtils.infoMessage(context, "failed to add " + role);
-			logger.error("in addRoleFor: ", e);
-			return "/auth/admin/add_role.xhtml";
-		}
-	}
-
-	/**
 	 * Removes the specified <code>Role</code> from the application.
 	 * 
 	 * @param role
@@ -177,8 +154,7 @@ public class RoleManager implements Serializable {
 			user = userService.update(user);
 
 			String message = "role " + this.role.toString() + " was removed from " + user.toString();
-			logger.debug(message);
-
+			FacesMessageUtils.infoMessage(context, message);
 			conversation.end();
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to remove " + this.role.toString());
@@ -200,7 +176,6 @@ public class RoleManager implements Serializable {
 
 			String message = "role " + role.toString() + " was removed";
 			FacesMessageUtils.infoMessage(context, message);
-			logger.debug(message);
 			conversation.end();
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to remove " + role.toString());

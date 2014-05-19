@@ -4,18 +4,22 @@
       xmlns:h="http://java.sun.com/jsf/html">
 
 
-    <h:form>
-        <h:panelGroup columns='1' id='projects-panel'>
-		    <div id='projectspanel-hdr'>
-		      <span class='pp-hdr-item'> Name </span>
-		      <span class='pp-hdr-item'> Description </span>
-		      <span class='pp-hdr-item'> Current State </span>
-		      <span class='pp-hdr-item'> Workflow </span>
-		      <span class='pp-hdr-item'> History </span>
-		      <span class='pp-hdr-item'> Assigned Users </span>
+    <h:form prependId='false'>
+        <div id='projectstable-di'>
+        
+		    <div id='projectstable-header'>
+		      <span class='projectstable-th' id='projname-span'> Name </span>
+		      <span class='projectstable-th' id='projdesc-span'> Description </span>
+		      <span class='projectstable-th' id='projstate-span'> Current State </span>
+		      <span class='projectstable-th' id='projwf-span'> Workflow </span>
+		      <span class='projectstable-th' id='projhist-span'> History </span>
+		      <span class='projectstable-th' id='projusrs-span'> Assigned Users </span>
+		      <span class='projectstable-th' id='projrem-span'> Remove </span>
 		    </div>
-		    <div id='projects-wrapper'>
-			    <h:dataTable value='#{ projectManager.listProjects() }' var='project' >
+		    
+		    <div id='projectstable-body'>
+			    <h:dataTable value='#{ projectManager.listProjects() }' var='project' id='projects-table'
+			                 columnClasses=" projectstable-col ">
 			        
 			        <h:column>
 			           <h:commandLink value='#{ project.name }' action='#{ projectManager.profileOf( project ) }' />
@@ -29,11 +33,14 @@
 			        <h:column>
 			           <h:outputText value='#{ project.workflow.name }' />
 			        </h:column>
+			        <h:column>
+                       <h:commandButton value='Remove' action='#{projectManager.remove( project )}'/>
+                    </h:column>
 			        
 			        <!-- TODO: add link or drop-down table to/for historyEntries and Users... -->
 			        
 			    </h:dataTable>
 		    </div>
-		</h:panelGroup>
+		</div>
     </h:form>
 </ui:composition>

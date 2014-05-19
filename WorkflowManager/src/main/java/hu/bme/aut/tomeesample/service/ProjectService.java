@@ -94,6 +94,16 @@ public class ProjectService {
 
 	/**
 	 *
+	 * @param project
+	 * @throws
+	 * */
+	public void removeDetached(Project project) throws Exception {
+		Project managed = em.merge(project);
+		em.remove(managed);
+	}
+
+	/**
+	 *
 	 * @return
 	 * */
 	public List<Project> findAll() {
