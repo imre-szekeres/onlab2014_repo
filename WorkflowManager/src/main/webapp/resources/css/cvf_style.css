@@ -13,17 +13,15 @@
     position: absolute;
     top: 100px;
     left: 100px;
-    
     padding: 21px;
-    
     width: 350px;
     height: 450px;
     background-color: #F8F8F8;
     border-right: rgb( 128,0,0 ) 2px solid;
     border-bottom: rgb( 128,0,0 ) 2px solid;
-    border-left: #F0F0F0  1px solid;
-    border-top: #F0F0F0  1px solid;
-    border-radius: 7px 7px 7px 7px; 
+    border-left: #F0F0F0 1px solid;
+    border-top: #F0F0F0 1px solid;
+    border-radius: 7px 7px 7px 7px;
 }
 
 #header-div {
@@ -32,6 +30,7 @@
     left: 0px;
     background-color: black;
     width: 100%;
+    min-width: 1140px;
     height: 50px;
     box-shadow: 3px 3px 2px #D0D0D0;
     border-radius: 3px 3px 3px 3px;
@@ -84,38 +83,77 @@
 }
 
 .menu-item A:hover {
-    background: -webkit-linear-gradient(rgb( 128,0,0 ), black);
+   /* background: -webkit-linear-gradient(rgb( 128,0,0 ), black);
     background: -o-linear-gradient(rgb( 128,0,0 ), black);
     background: -moz-linear-gradient(rgb( 128,0,0 ), black);
-    background: linear-gradient(rgb( 128,0,0 ), black);
+    background: linear-gradient(rgb( 128,0,0 ), black); */
+    background: -webkit-linear-gradient(#003399, black);
+    background: -o-linear-gradient(#003399, black);
+    background: -moz-linear-gradient(#003399, black);
+    background: linear-gradient(#003399, black);   
 }
-
 
 #rnavbar {
     position: absolute;
     top: 90px;
-    left: 930px;
+    left: 890px;
     width: 250px;
     height: 400px;
+    
+    background-color: black;
+    
     border-right: #003366 2px solid;
     border-bottom: #003366 2px solid;
     border-left: #003366 1px solid;
     border-top: #003366 1px solid;
     border-radius: 7px 7px 7px 7px;
-    box-shadow: 3px 3px 2px #D8D8D8; 
+    box-shadow: 3px 3px 2px #D8D8D8;
+}
+
+#rnavmenu {
+    list-style: none;
+}
+
+.rmenu-item {
+    position: relative;
+    left: -31px;
+    display: inline-block;
+    margin: 5px;
+    line-height: 30px;
+    width: 160px;
+    vertical-align: middle;
+    text-decoration: none;
+    color: white;
+    padding-left: 31px;
+}
+
+.rmenu-item A {
+    display: inline-block;
+    line-height: 30px;
+    width: 160px;
+    vertical-align: middle;
+    padding-left: 31px;
+}
+
+.rmenu-item A:hover {
+    background: -webkit-linear-gradient(#003399, black);
+    background: -o-linear-gradient(#003399, black);
+    background: -moz-linear-gradient(#003399, black);
+    background: linear-gradient(#003399, black);
+    color: white;
 }
 
 #content-container {
     position: absolute;
     top: 90px;
-    left: 25%;
+    left: 42px;
     width: 800px;
     height: 618px;
 }
 
 #ctitle-div {
     position: relative;
-    left: -250px;
+    /*left: -250px;*/
 }
 
 #ctitle-div H3 {
@@ -130,7 +168,7 @@
 }
 
 #content-div {
-    left: -250px;
+    /*left: -250px;*/
     position: absolute;
     top: 38px;
     width: 100%;

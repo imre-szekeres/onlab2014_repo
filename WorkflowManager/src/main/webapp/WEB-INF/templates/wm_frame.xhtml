@@ -26,40 +26,48 @@
             <span id='brand-img-span'></span>
             <span id='unavbar' >
             <h:form>
-                    
-                    <span class='menu-item lseparated'>
-                        <h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
-                    </span>
-                    <span class='menu-item lseparated'>
-                        <h:commandLink styleClass='menu-item' action='#{ navigationManager.addProject() }'><span>Projects</span></h:commandLink>
-                    </span>
-                    
-                    <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
-                        <span class='menu-item lseparated'>
-                            <h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
-                        </span>                        
-                        
-                        <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
-                            <span class='menu-item lseparated'>
-                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
-                            </span>
-                            <span class='menu-item lseparated'>
-                                <h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
-                            </span>
-                        </c:if>
-                    </c:if>
-                    
+                <div id='unavmenu-wrapper'>                
                     <span class='menu-item'>
                         <h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>#{ sessionScope.subject.username }</span></h:commandLink>
                     </span>                            
                     <span class='menu-item lseparated'>
                         <h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
                     </span>
+                 </div>
             </h:form>
             </span>
         </div>
         
+        
+        
         <div id='rnavbar'>
+            <div id='rnavmenu-wrapper'>
+                <h:form prpendId='false'>
+                <ul id='rnavmenu' >
+                    <li class='rmenu-item'>
+                        <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
+                    </li>
+                    <li class='rmenu-item'>
+                        <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.addProject() }'><span>Projects</span></h:commandLink>
+                    </li>
+                    
+                    <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
+                        <li class='rmenu-item'>
+                            <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
+                        </li>
+                        
+                        <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
+                            <li class='rmenu-item'>
+                                <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
+                            </li>
+                            <li class='rmenu-item'>
+                                <h:commandLink styleClass='rmenu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
+                            </li>
+                        </c:if>
+                    </c:if>    
+                </ul>
+                </h:form>
+            </div>
         </div>
         
         <div id='content-container' >

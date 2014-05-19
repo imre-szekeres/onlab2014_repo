@@ -143,7 +143,7 @@ public class NavigationManager {
 	 * */
 	public String actionTypes() {
 		clearConversation();
-		String pageID = "/auth/man/actionTypes.xhtml";
+		String pageID = "/auth/admin/actionTypes.xhtml";
 		logger.debug("actionTypes() was requested with result: " + pageID);
 		return pageID;
 	}

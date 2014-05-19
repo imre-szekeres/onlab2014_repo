@@ -72,7 +72,7 @@ public class ActionTypeManager {
 			logger.debug(e.getMessage());
 			e.printStackTrace();
 		}
-		return "/auth/man/actionTypes.xhtml";
+		return "/auth/admin/actionTypes.xhtml";
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class ActionTypeManager {
 			logger.debug(e.getMessage());
 			e.printStackTrace();
 		}
-		return "/auth/man/actionTypes.xhtml";
+		return "/auth/admin/actionTypes.xhtml";
 	}
 
 	public String showOrHide(Long actionTypeID) {
@@ -118,7 +118,7 @@ public class ActionTypeManager {
 			logger.debug(e.getMessage());
 			e.printStackTrace();
 		}
-		return "/auth/man/actionTypes.xhtml";
+		return "/auth/admin/actionTypes.xhtml";
 	}
 
 	public String addRoleToActionType(ActionType actionType) {
@@ -137,7 +137,7 @@ public class ActionTypeManager {
 			logger.debug(e.getMessage());
 			e.printStackTrace();
 		}
-		return "/auth/man/actionTypes.xhtml";
+		return "/auth/admin/actionTypes.xhtml";
 	}
 
 	public void selectedRoleChanged(ValueChangeEvent e) {
