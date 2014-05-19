@@ -29,14 +29,14 @@
 			        	<div class="state_list_body">
 			        		<span class="state_isinitial">
 						       	<h:graphicImage value="#{ resource['css/images/star.jpg'] }" style='width : 10px; height : 10px;' rendered="#{state.initial}" />
-								<h:commandLink action="#{stateManager.setInitial(state)}" rendered="#{!state.initial}">
+								<h:commandLink  action="#{stateManager.setInitial(state)}" rendered="#{!state.initial}">
 									<h:graphicImage value="#{ resource['css/images/star_empty.jpg'] }" style='width : 10px; height : 10px;' rendered="#{!state.initial}" />
 									<f:param name="workflowId" value="#{param.workflowId}"/>
 	    							<f:param name="parentId" value="#{param.parentId}"/>
 								</h:commandLink>
 			        		</span>
 				        	<span class="state_name"> 			
-				           		<h:link outcome="states" value="#{state.name}">
+				           		<h:link outcome="states" value="#{state.name}" styleClass='link-on-name'>
 		        					<f:param name="parentId" value="#{state.id}" />
 		        					<f:param name="workflowId" value="#{param.workflowId}" />
 							    </h:link>
@@ -46,7 +46,7 @@
 			            	</span>
 				         	<!-- TODO Has role -->
 				         	<span class="state_delete">
-				                <h:commandButton value="Delete" action="#{stateManager.deleteState(state)}">
+				                <h:commandButton value="Delete" action="#{stateManager.deleteState(state)}" styleClass="btn">
 				                	<f:param name="workflowId" value="#{param.workflowId}"/>
 					    			<f:param name="parentId" value="#{param.parentId}"/>
 				                </h:commandButton> 
@@ -64,7 +64,7 @@
 			 								<h:outputText value="#{stateManager.getNextStateName(at,state)}"/>
 		 								</span>
 		 								<span>
-		 									<h:commandButton value="Delete" action="#{stateManager.deleteActionTypeFromState(at, state)}">
+		 									<h:commandButton styleClass="btn" value="Delete" action="#{stateManager.deleteActionTypeFromState(at, state)}">
 		 										<f:param name="workflowId" value="#{param.workflowId}"/>
 					    						<f:param name="parentId" value="#{param.parentId}"/>
 		 									</h:commandButton>
@@ -73,19 +73,19 @@
 	 							</div>
 	 						</ui:repeat>
 	 						<h:form>
-								<h:selectOneMenu value="#{stateManager.selectedActionType}" converter="#{actionTypeConverter}">
+								<h:selectOneMenu styleClass='selectMenu' value="#{stateManager.selectedActionType}" converter="#{actionTypeConverter}">
 									<f:converter binding="#{actionTypeConverter}" />
 								   	<f:selectItems value="#{actionTypeManager.actionTypeList}" var="_at" itemValue="#{_at}" 
 								   				itemLabel="#{_at.actionTypeName}" valueChangeListener="#{stateManager.selectedActionTypeChanged}"
 								   				onchange="submit()" converter="#{actionTypeConverter}"/>
 								</h:selectOneMenu>
-								<h:selectOneMenu value="#{stateManager.selectedNextState}">
+								<h:selectOneMenu styleClass='selectMenu' value="#{stateManager.selectedNextState}">
 									<f:converter binding="#{stateConverter}" />
 					   				<f:selectItems value="#{stateManager.getStateForWorkflow()}" var="_state" itemValue="#{_state}" 
 								   				itemLabel="#{_state.name}" valueChangeListener="#{stateManager.selectedNextStateChanged}"
 								   				onchange="submit()"/>   					
 							   	</h:selectOneMenu>		
-								<h:commandButton value="Add action type" action="#{stateManager.addActionTypeToState(state)}">
+								<h:commandButton styleClass="btn" value="Add action type" action="#{stateManager.addActionTypeToState(state)}">
 									<f:param name="workflowId" value="#{param.workflowId}"/>
 					    			<f:param name="parentId" value="#{param.parentId}"/>
 								</h:commandButton>

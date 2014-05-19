@@ -32,7 +32,7 @@
 	               </f:facet>  
 	               <h:outputText value='Project Name: '></h:outputText>
 	               <h:inputText  value='#{ projectManager.project.name }' name='project_name' id='project-name' 
-	                             validator='#{ projectManager.validateName }' />
+	                             validator='#{ projectManager.validateName }' styleClass='inputTextClass'/>
 	               
 	               <f:facet name='errors'>
 	                  <h:panelGroup>
@@ -41,10 +41,10 @@
 	               </f:facet>
 	               <h:outputText value='Description: ' ></h:outputText>
 	               <h:inputTextarea value='#{ projectManager.project.description }' name='project_description' id='project-description' 
-	                                validator='#{ projectManager.validateDescription }'/>
+	                                validator='#{ projectManager.validateDescription }' styleClass='inputTextAreaClass'/>
 	               
 	               <h:outputText value='Workflow: ' ></h:outputText>
-	               <h:selectOneMenu value="#{ projectManager.workflowName }" >
+	               <h:selectOneMenu value="#{ projectManager.workflowName }" styleClass='selectMenu'>
 	                   <c:forEach items='#{ workflowManager.workflowList }' var='workflow' >
 	                       <f:selectItem itemValue='#{ workflow.name }' itemLabel='#{ workflow.name }' />
 	                   </c:forEach>
@@ -52,7 +52,7 @@
 	               
 	               <f:facet name='footer'>
 	                   <h:panelGroup>
-	                       <h:commandButton value='Create' action='#{ projectManager.create() }' id='submit-btn' styleClass='cvf-btn' ></h:commandButton>
+	                       <h:commandButton value='Create' action='#{ projectManager.create() }' id='submit-btn' styleClass='cvf-btn btn' ></h:commandButton>
 	                   </h:panelGroup>
 	               </f:facet>
 	           </h:panelGrid>

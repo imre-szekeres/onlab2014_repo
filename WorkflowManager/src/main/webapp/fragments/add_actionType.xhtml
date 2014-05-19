@@ -9,9 +9,9 @@
 	   		<h3>Add ActionType</h3>
 			<h:panelGrid columns="1" cellspacing="1" cellpadding="2">
 			    <h:outputText value='Name:'/>
-			    <h:inputText size="15" value="#{actionTypeManager.actionTypeName}"/>
+			    <h:inputText size="15" value="#{actionTypeManager.actionTypeName}" styleClass='inputTextClass'/>
 			    <h:commandButton id="add_button" value="Add action type" 
-			               action="#{actionTypeManager.addActionType}">
+			               action="#{actionTypeManager.addActionType}" styleClass='btn'>
 			    </h:commandButton>
 		     </h:panelGrid>
 	   	</h:form>

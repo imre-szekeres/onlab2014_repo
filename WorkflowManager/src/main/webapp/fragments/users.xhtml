@@ -18,7 +18,7 @@
                         <h:dataTable value='#{ loginManager.listUsers() }' var='user' 
                                      columnClasses=" usrstable-col ">
                             <h:column>
-                                <h:commandLink value='#{ user.username }' action='#{ profileManager.profileOf( user ) }'/>
+                                <h:commandLink value='#{ user.username }' action='#{ profileManager.profileOf( user ) }' styleClass='link-on-name'/>
                             </h:column>
                             <h:column>
                                 <h:outputText value='#{ user.password }' />
@@ -27,10 +27,10 @@
                                 <h:outputText value='#{ user.email }' />
                             </h:column>
                             <h:column>
-                                <h:inputTextarea value='#{ user.description }' readonly='true' />
+                                <h:inputTextarea value='#{ user.description }' readonly='true' styleClass='inputTextAreaClass'/>
                             </h:column>
                             <h:column>
-                                <h:commandButton value='Delete' action='#{ loginManager.delete(user) }' />
+                                <h:commandButton value='Delete' action='#{ loginManager.delete(user) }' styleClass='btn' />
                             </h:column>
                         </h:dataTable>
                     </h:form>

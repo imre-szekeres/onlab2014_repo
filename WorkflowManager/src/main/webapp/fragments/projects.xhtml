@@ -22,10 +22,10 @@
 			                 columnClasses=" projectstable-col ">
 			        
 			        <h:column>
-			           <h:commandLink value='#{ project.name }' action='#{ projectManager.profileOf( project ) }' />
+			           <h:commandLink value='#{ project.name }' action='#{ projectManager.profileOf( project ) }' styleClass='link-on-name' />
 			        </h:column>
 			        <h:column>
-			           <h:inputTextarea readonly='true' value='#{ project.description }' />
+			           <h:inputTextarea readonly='true' value='#{ project.description }' styleClass='inputTextAreaClass'/>
 			        </h:column>
 			        <h:column>
 			           <h:outputText value='#{ project.currentState.name }' />
@@ -34,7 +34,7 @@
 			           <h:outputText value='#{ project.workflow.name }' />
 			        </h:column>
 			        <h:column>
-                       <h:commandButton value='Remove' action='#{projectManager.remove( project )}'/>
+                       <h:commandButton value='Remove' action='#{projectManager.remove( project )}' styleClass='btn'/>
                     </h:column>
 			        
 			        <!-- TODO: add link or drop-down table to/for historyEntries and Users... -->

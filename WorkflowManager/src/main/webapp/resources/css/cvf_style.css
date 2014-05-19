@@ -760,4 +760,73 @@
 
 .actionTypePanel-name {
 	width: 10em;
+
+
+.btn {
+	background: white; 
+	border:1px solid  #006699; 
+}
+
+.btn:HOVER {
+	background: -webkit-radial-gradient(white,white,white,  #B2E4FF ); /* Safari 5.1 to 6.0 */
+	background: -o-radial-gradient(white,white,white,  #B2E4FF ); /* For Opera 11.6 to 12.0 */
+	background: -moz-radial-gradient(white,white,white,  #B2E4FF ); /* For Firefox 3.6 to 15 */
+	background: radial-gradient(white,white,white,  #B2E4FF ); /* Standard syntax */
+	border:1px solid  #006699; 
+}
+
+.btn:ACTIVE {
+	background: -webkit-radial-gradient(#B2E4FF,#B2E4FF,white,  white ); /* Safari 5.1 to 6.0 */
+	background: -o-radial-gradient(#B2E4FF,#B2E4FF,white,  white ); /* For Opera 11.6 to 12.0 */
+	background: -moz-radial-gradient(#B2E4FF,#B2E4FF,white,  white ); /* For Firefox 3.6 to 15 */
+	background: radial-gradient(#B2E4FF,#B2E4FF,white,  white ); /* Standard syntax */
+	border:1px solid  #006699; 
+}
+
+.inputTextClass {
+	border:1px dotted black;
+	padding: 3px;
+}
+
+.inputTextClass:HOVER {
+	border:1px solid #006699;
+}
+
+.inputTextClass:FOCUS {
+	border:1px solid #006699;
+}
+
+.inputTextAreaClass {
+	border:1px dotted black;
+	padding: 3px;
+}
+
+.inputTextAreaClass:HOVER {
+	border:1px solid #006699; 
+}
+
+.inputTextAreaClass:FOCUS {
+	border:1px solid #006699; 
+}
+
+.selectMenu{
+	border:1px dotted black;
+}
+
+.selectMenu:HOVER{
+	border:1px solid #006699;
+}
+
+.link-on-name{
+	color: #0093E4;
+	text-decoration: none;
+}
+
+.link-on-name:HOVER{
+	border-bottom: 1px solid #0093E4;
+}
+
+.link-on-name:VISITED{
+	color: #0093E4;
+	 text-decoration: none;
 }

@@ -31,11 +31,11 @@
 	                       <h:panelGrid columns='2' id='chpass-panel' styleClass='profile-grid' >
 	                           <h:outputText value='Old Password: ' />
 	                           <h:inputSecret value='#{ profileManager.oldPassword }' name='old_password' id='old_password' 
-	                                    validator='#{ profileManager.validateOldPassword }'  />
+	                                    validator='#{ profileManager.validateOldPassword }' styleClass='inputTextClass' />
 	                           
 	                           <h:outputText value='New Password: ' />
 	                           <h:inputSecret value='#{ profileManager.newPassword }' name='new_password' id='new_password' 
-	                                    validator='#{   profileManager.validateNewPassword }'  />   
+	                                    validator='#{   profileManager.validateNewPassword }' styleClass='inputTextClass' />   
 	                       </h:panelGrid>
 	                       
 	                       <h:message for='email'       styleClass='error-message profile-grid' />
@@ -43,21 +43,21 @@
 	                       <h:panelGrid columns='2' styleClass='profile-grid'>
 	                           <h:outputText value='Email: ' />
 	                           <h:inputText value='#{ profileManager.user.email }' name='email' id='email' 
-	                                        validator='#{ profileManager.validateEmailIn }'/>
+	                                        validator='#{ profileManager.validateEmailIn }' styleClass='inputTextClass'/>
 	                           
 	                           <h:outputText value='Description: ' />
 	                           <h:inputTextarea value='#{ profileManager.user.description }' name='description' id='description' 
-	                                            validator='#{ profileManager.validateDescriptionIn }' size='100' />
+	                                            validator='#{ profileManager.validateDescriptionIn }' size='100' styleClass='inputTextAreaClass'/>
 	                       </h:panelGrid>
 	                       
 	                       <h:panelGrid columns='2' id='submit-panel' styleClass='profile-grid'>
-	                           <h:commandButton type='submit' value='Submit' id='submit-btn' action='#{ profileManager.modify }' />
-	                           <h:commandButton type='button' value='Cancel' id='cancel-btn' />
+	                           <h:commandButton type='submit' value='Submit' id='submit-btn' action='#{ profileManager.modify }' styleClass='btn'/>
+	                           <h:commandButton type='button' value='Cancel' id='cancel-btn' styleClass='btn'/>
 	                       </h:panelGrid>
 	                       
 	                       <h:panelGrid columns='2' id='modif-panel' styleClass='profile-grid'>
-	                           <h:commandButton type='submit' value='Submit' id='msubmit-btn' action='#{ profileManager.modify }' />
-	                           <h:commandButton type='button' id='chpass-btn' styleClass='cvf-btn' style='width:100%;' value='Change Password'></h:commandButton>               
+	                           <h:commandButton type='submit' value='Submit' id='msubmit-btn' action='#{ profileManager.modify }' styleClass='btn'/>
+	                           <h:commandButton type='button' id='chpass-btn' styleClass='cvf-btn' style='width:100%;' value='Change Password' styleClass='btn'></h:commandButton>               
 	                       </h:panelGrid>
 		              </c:when>
 		              
@@ -72,7 +72,7 @@
 		                      <h:outputText value='#{ profileManager.user.email }' />
 		                  
 		                      <h:outputText value='Description: ' />
-		                      <h:inputTextarea value='#{ profileManager.user.description }' readonly='true' />
+		                      <h:inputTextarea value='#{ profileManager.user.description }' readonly='true' styleClass='inputTextAreaClass'/>
 		                  </h:panelGrid>		                  
 		              </c:otherwise>
 		           </c:choose>
@@ -99,14 +99,14 @@
                    <div id='addrole-panel'>
                        <h:panelGrid columns='1'>
 	                       <h:panelGrid id='role-panel' columns='2'>
-	                           <h:selectOneMenu id='selectone-role' value='#{ profileManager.role }' >
+	                           <h:selectOneMenu id='selectone-role' value='#{ profileManager.role }' styleClass='selectMenu'>
 	                               <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
 	                                   <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
 	                               </c:forEach>
 	                           </h:selectOneMenu>
-	                           <h:commandButton value='Add' action='#{ profileManager.addRole() }' /> 
+	                           <h:commandButton value='Add' action='#{ profileManager.addRole() }' styleClass='btn'/> 
 	                       </h:panelGrid>
-	                       <h:commandButton type='button' value='Add Role' id='add-role-btn' />
+	                       <h:commandButton type='button' value='Add Role' id='add-role-btn' styleClass='btn'/>
 	                   </h:panelGrid>
                    </div>
                </c:if>
@@ -118,7 +118,7 @@
 	           <div id='commentpanel-div'>
 	               <hr />
 	               <div>
-	                   <h:commandButton type='button' styleClass='cvf-button' value='Show Comments' id='comment-btn' ></h:commandButton>
+	                   <h:commandButton type='button' styleClass='cvf-button btn' value='Show Comments' id='comment-btn' ></h:commandButton>
 	               </div>	               
 	               
 	               <div id='comment-panel'>

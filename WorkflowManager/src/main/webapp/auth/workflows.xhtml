@@ -11,6 +11,9 @@
 		with actual data.
 	 -->
 	<ui:composition template="../WEB-INF/templates/wm_frame.xhtml" >
+		<ui:define name="content_title">
+			Workflows
+		</ui:define>
 		<ui:define name="content">
 			<h3>List of workflows</h3>
 			<h:form>
@@ -22,7 +25,7 @@
 		            	<f:facet name="header">Name</f:facet>
 		  				<c:choose>
 		  				    <c:when test="#{ sessionScope.subject.hasRole('manager') }">
-		  				        <h:link outcome="/auth/man/states" value="#{workflow.name}">
+		  				        <h:link outcome="/auth/man/states" value="#{workflow.name}" styleClass='link-on-name'>
 	                                <f:param name="workflowId" value="#{workflow.id}" />
                                 </h:link>
 		  				    </c:when>
@@ -38,7 +41,7 @@
 		         	<!-- TODO Has role -->
 		         	<h:column rendered="#{ sessionScope.subject.hasRole('manager') }">
 		         		<f:facet name="header">Delete</f:facet>
-		               	<h:commandButton value="Delete" action="#{workflowManager.deleteWorkflow(workflow)}"/>
+		               	<h:commandButton value="Delete" action="#{workflowManager.deleteWorkflow(workflow)}" styleClass='btn'/>
 		            </h:column>
 		      	</h:dataTable>
 		   	</h:form>

@@ -9,11 +9,11 @@
 	   		<h3>Add State</h3>
 			<h:panelGrid columns="1" cellspacing="1" cellpadding="2">
 			    <h:outputText value='Name:'/>
-			    <h:inputText size="15" value="#{stateManager.name}" />
+			    <h:inputText size="15" value="#{stateManager.name}" styleClass='inputTextClass'/>
 			    <h:outputText value='Description:'/>
-			    <h:inputTextarea size="50" value="#{stateManager.description}" />
+			    <h:inputTextarea size="50" value="#{stateManager.description}" styleClass='inputTextAreaClass'/>
 			    <h:commandButton id="add_button" value="Add State" 
-			               action="#{stateManager.addState}">
+			               action="#{stateManager.addState}" styleClass='btn'>
 			    	<f:param name="workflowId" value="#{param.workflowId}"/>
 			    	<f:param name="parentId" value="#{param.parentId}"/>
 			    </h:commandButton>

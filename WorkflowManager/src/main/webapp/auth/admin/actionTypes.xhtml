@@ -21,10 +21,10 @@
 	 							<h:outputText value="Name: #{at.actionTypeName}"/>
 	 						</span>
 	 						<span>
-	 							<h:commandButton value="Delete" action="#{actionTypeManager.deleteActionType(at)}"/>
+	 							<h:commandButton value="Delete" action="#{actionTypeManager.deleteActionType(at)}" styleClass='btn'/>
 	 						</span>
 	 						<span>
-	 							<h:commandButton id="show_hide" value="Show/Hide" onclick='showOrHide("roles_block_#{at.id}"); return false;' >
+	 							<h:commandButton id="show_hide" value="Show/Hide" onclick='showOrHide("roles_block_#{at.id}"); return false;' styleClass='btn'>
 	 							</h:commandButton>
 	 						</span>
  						</h:form>
@@ -38,18 +38,18 @@
 		 								<h:outputText value="#{role.name}"/>
 	 								</span>
 	 								<span>
-	 									<h:commandButton value="Delete" action="#{actionTypeManager.deleteRoleFromActionType(role, at)}"/>
+	 									<h:commandButton value="Delete" action="#{actionTypeManager.deleteRoleFromActionType(role, at)}" styleClass='btn'/>
 	 								</span>
  								</h:form>
  							</div>
  						</ui:repeat>
  						<h:form>
-							<h:selectOneMenu value="#{actionTypeManager.selectedRoleId}">
+							<h:selectOneMenu value="#{actionTypeManager.selectedRoleId}" styleClass='selectMenu'>
 							   	<f:selectItems value="#{roleManager.listRoles()}" var="_role" itemValue="#{_role.id}" 
 							   				itemLabel="#{_role.name}" valueChangeListener="#{actionTypeManager.selectedRoleChanged}"
 							   				onchange="submit()"/>	   							
 							</h:selectOneMenu>
-						<h:commandButton class="add_button" value="Add role" action="#{actionTypeManager.addRoleToActionType(at)}"/>
+						<h:commandButton class="add_button" value="Add role" action="#{actionTypeManager.addRoleToActionType(at)} " styleClass='btn'/>
 						</h:form>
  					</h:panelGroup>
  					</div>

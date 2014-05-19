@@ -17,8 +17,8 @@
 	               <h:message for='rolename_in' styleClass='error-message' />
 	               <h:outputText value='Role Name:' />
 	               <h:inputText id='rolename_in' name='name' value='#{ roleManager.role.name }' 
-	                            validator='#{ roleManager.validateName }'/>
-	               <h:commandButton id='addrole_btn' action='#{ roleManager.create }' value='Create' />
+	                            validator='#{ roleManager.validateName }' styleClass='inputTextClass'/>
+	               <h:commandButton id='addrole_btn' action='#{ roleManager.create }' value='Create' styleClass='btn'/>
 	           </h:panelGrid>
                </h:form>
                
