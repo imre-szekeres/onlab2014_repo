@@ -23,7 +23,18 @@
                 <h:inputTextarea readonly='true' value='#{ projectManager.project.description }' />
                 
                 <h:outputText value='State: ' />
-                <h:outputText value='#{ projectManager.project.currentState}' />
+                <h:outputText value='#{ projectManager.project.currentState.name}' />
+                
+                <h:form>
+                	<h:outputText value="Action"/>
+                	<h:selectOneMenu value="#{projectManager.selectedActionType}" converter="#{actionTypeConverter}">
+						<f:converter binding="#{actionTypeConverter}" />
+					   	<f:selectItems value="#{stateManager.getActionTypeList(projectManager.project.currentState)}" var="_at" itemValue="#{_at}" 
+					   				itemLabel="#{_at.actionTypeName}" valueChangeListener="#{profileManager.selectedActionTypeChanged}"
+					   				onchange="submit()" converter="#{actionTypeConverter}"/>
+					</h:selectOneMenu>
+					<h:commandButton value="Add action type" action="#{projectManager.doAction()}"/>
+                </h:form>
 	       </h:panelGrid>
 	       
 	       <h:form prependId='false'>

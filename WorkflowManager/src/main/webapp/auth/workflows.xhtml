@@ -22,9 +22,8 @@
 		            	<f:facet name="header">Name</f:facet>
 		  				<c:choose>
 		  				    <c:when test="#{ sessionScope.subject.hasRole('manager') }">
-		  				        <h:link outcome="states" value="#{workflow.name}">
+		  				        <h:link outcome="/auth/man/states" value="#{workflow.name}">
 	                                <f:param name="workflowId" value="#{workflow.id}" />
-	                                <!-- <h:outputText value="#{workflow.name}"></h:outputText>-->
                                 </h:link>
 		  				    </c:when>
 		  				    <c:otherwise>

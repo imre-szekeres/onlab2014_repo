@@ -3,11 +3,14 @@
  */
 package hu.bme.aut.tomeesample.web;
 
+import hu.bme.aut.tomeesample.model.ActionType;
 import hu.bme.aut.tomeesample.model.Project;
+import hu.bme.aut.tomeesample.model.State;
 import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.model.Workflow;
 import hu.bme.aut.tomeesample.service.ProjectAssignmentService;
 import hu.bme.aut.tomeesample.service.ProjectService;
+import hu.bme.aut.tomeesample.service.StateNavigationEntryService;
 import hu.bme.aut.tomeesample.service.UserService;
 import hu.bme.aut.tomeesample.service.WorkflowService;
 import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
@@ -22,6 +25,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,21 +49,27 @@ public class ProjectManager implements Serializable {
 
 	@Inject
 	private ProjectService projectService;
+
 	@Inject
 	private ProjectAssignmentService assignmentService;
+
+	@Inject
+	private StateNavigationEntryService stateNavigationEntryService;
 
 	@Inject
 	private UserService userService;
 
 	@Inject
 	private WorkflowService workflowService;
+
+	private ActionType selectedActionType;
 	private Project project = new Project();
 	private String workflowName;
 	private Long userID;
 
 	/**
 	 * Fetches the <code>Project</code>s already created in the application.
-	 *
+	 * 
 	 * @return a list of all the found projects
 	 * */
 	public List<Project> listProjects() {
@@ -69,7 +79,7 @@ public class ProjectManager implements Serializable {
 	/**
 	 * Fetches the <code>User</code>s already assigned to the specified
 	 * <code>Project</code>.
-	 *
+	 * 
 	 * @return a list of all the found projects
 	 * */
 	public List<User> listAssignedUsers() {
@@ -87,7 +97,7 @@ public class ProjectManager implements Serializable {
 	/**
 	 * Validates the given project name against the constraints given in the
 	 * <code>Project</code> class.
-	 *
+	 * 
 	 * @param name
 	 *            of the project that will be validated
 	 * @return true only if the given project name corresponds to the
@@ -101,7 +111,7 @@ public class ProjectManager implements Serializable {
 	/**
 	 * Validates the given description against the constraints given in the
 	 * <code>Project</code> class.
-	 *
+	 * 
 	 * @param description
 	 *            that will be validated
 	 * @return true only if the given description corresponds to the constraints
@@ -175,6 +185,33 @@ public class ProjectManager implements Serializable {
 		return "/auth/project_profile.xhtml";
 	}
 
+	public String doAction() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			if (selectedActionType != null) {
+				State nextState = stateNavigationEntryService.findByActionTypeId(selectedActionType.getId(),
+						project.getCurrentState().getId()).getNextState();
+
+				if (nextState == null) {
+					FacesMessageUtils.infoMessage(context, "Next state was not found. :(");
+				}
+
+				project.setCurrentState(nextState);
+				projectService.update(project);
+				FacesMessageUtils.infoMessage(context, "Action done on " + project.getName());
+			}
+		} catch (Exception e) {
+			FacesMessageUtils.infoMessage(context, "failed to do action on " + project.getName());
+			logger.debug(" failed to do action on " + project.getName() + " due to ", e);
+		}
+
+		return "/auth/project_profile.xhtml";
+	}
+
+	public void selectedActionTypeChanged(ValueChangeEvent e) {
+		selectedActionType = (ActionType) e.getNewValue();
+	}
+
 	/**
 	 * @return the project
 	 */
@@ -218,6 +255,14 @@ public class ProjectManager implements Serializable {
 	 */
 	public void setUserId(Long id) {
 		this.userID = id;
+	}
+
+	public ActionType getSelectedActionType() {
+		return selectedActionType;
+	}
+
+	public void setSelectedActionType(ActionType selectedActionType) {
+		this.selectedActionType = selectedActionType;
 	}
 
 	@Override
