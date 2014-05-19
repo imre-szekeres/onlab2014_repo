@@ -150,6 +150,24 @@
 	       </h:form>
 	       </div>
 	       
+	       <div id='assignedprojects-div'>
+               <div id='assignedprojects-panel'>
+                   <div id='assignedprojects-header'>
+                       <h:outputText value='Assigned Projects' />
+                   </div>
+                   <div id='assignedprojects-wrapper'>
+                       <h:dataTable value="#{ profileManager.listAssignments() }" var='assignment'
+                                    id='assignedprojects-table'>
+                           <h:column>
+                               <h:form prependId='false'>
+                                   <h:commandLink value='#{ assignment.project.name }' action='#{ projectManager.profileOf( assignment.project ) }' />
+                               </h:form>
+                           </h:column>
+                       </h:dataTable>
+                   </div>
+               </div>
+           </div>
+	       
 	       <h:outputScript>
 	           var submit_pnl  = $("#submit-panel");
 	           var chpass_pnl  = $("#chpass-panel");
