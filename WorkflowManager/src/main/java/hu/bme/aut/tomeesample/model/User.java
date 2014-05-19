@@ -66,7 +66,6 @@ public class User implements Serializable {
 	@Size(min = 0, max = 1024)
 	private String description;
 
-	// TODO: refine the term ROLE ~ specify it in JAAS/Shiro
 	@NotNull
 	@ManyToMany(targetEntity = hu.bme.aut.tomeesample.model.Role.class, fetch = FetchType.EAGER)
 	private Set<Role> roles;
