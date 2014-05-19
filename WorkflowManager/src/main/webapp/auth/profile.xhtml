@@ -101,38 +101,35 @@
 	       
 	       <h:form prependId='false'>
 	       
-	           <h:panelGroup columns='1' id='commentpanel-wrapper'>
 	               <div>
 	                   <h:commandButton type='button' styleClass='cvf-button' value='Show Comments' id='comment-btn' ></h:commandButton>
 	               </div>	               
 	               
-	               <div>
-	               <h:panelGroup columns='1' id='comment-panel'>
-	                   <h:outputText value='Comments' id='comments-hdr'></h:outputText>
-	                   
-	                   <div id='comments-wrapper'>
-	                       <h:dataTable id='comment-table' value='#{ commentManager.listCommentsOf( profileManager.user ) }' 
-	                                    var='comment'>
-	                           <h:column>
-	                               <h:outputText value='Commented on' />
-	                           </h:column>
-	                           <h:column>
-	                               <h:commandLink value='#{ comment.project.name }' action='#{ projectManager.profileOf( comment.project ) }' />
-	                           </h:column>
-	                           <h:column>
-	                               <h:outputText value=' at ' />
-	                           </h:column>
-	                           <h:column>
-	                               <h:outputText value='#{ comment.postDate }' >
-	                                   <f:convertDateTime pattern='yyyy.MM.dd HH:mm' />
-	                               </h:outputText>
-	                           </h:column>
-	                       </h:dataTable>
-	                   </div>
-	                   
-	               </h:panelGroup>
+	               <div id='comment-panel'>
+	                   <div id='commentshdr-div'>
+	                       <h:outputText value='Comments' id='comments-hdr'></h:outputText>
+                       </div>
+                       
+                       <div id='comments-wrapper'>
+                           <h:dataTable id='comment-table' value='#{ commentManager.listCommentsOf( profileManager.user ) }' 
+                                        var='comment'>
+                               <h:column>
+                                   <h:outputText value='Commented on' />
+                               </h:column>
+                               <h:column>
+                                   <h:commandLink value='#{ comment.project.name }' action='#{ projectManager.profileOf( comment.project ) }' />
+                               </h:column>
+                               <h:column>
+                                   <h:outputText value=' at ' />
+                               </h:column>
+                               <h:column>
+                                   <h:outputText value='#{ comment.postDate }' >
+                                       <f:convertDateTime pattern='yyyy.MM.dd HH:mm' />
+                                   </h:outputText>
+                               </h:column>
+                           </h:dataTable>
+                       </div>
 	               </div>
-	           </h:panelGroup>
 	       
 	       </h:form>
 	       

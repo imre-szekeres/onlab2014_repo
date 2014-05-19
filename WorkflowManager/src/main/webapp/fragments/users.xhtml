@@ -5,39 +5,35 @@
                 xmlns:h="http://java.sun.com/jsf/html">
 
                 <div id='usrstable-div'>
-                <h:form id='usrstable-form'>          
-                    <h:dataTable value='#{ loginManager.listUsers() }' var='user' >
-                        <h:column>
-                            <f:facet name='header'>
-                                Username
-                            </f:facet>
-                            <h:commandLink value='#{ user.username }' action='#{ profileManager.profileOf( user ) }'/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name='header'>
-                                Password
-                            </f:facet>
-                            <h:outputText value='#{ user.password }' />
-                        </h:column>
-                        <h:column>
-                            <f:facet name='header'>
-                                Email
-                            </f:facet>
-                            <h:outputText value='#{ user.email }' />
-                        </h:column>
-                        <h:column>
-                            <f:facet name='header'>
-                                Description
-                            </f:facet>
-                            <h:inputTextarea value='#{ user.description }' readonly='true' />
-                        </h:column>
-                        <h:column>
-                            <f:facet name='header'>
-                                Delete
-                            </f:facet>
-                            <h:commandButton value='Delete' action='#{ loginManager.delete(user) }' />
-                        </h:column>
-                    </h:dataTable>
-                </h:form>
+                <div id='usrstable-header'>
+                       <span class='usrstable-th' id='usrname-span' >Username</span>
+                       <span class='usrstable-th' id='passwd-span'>Pasword</span>
+                       <span class='usrstable-th' id='email-span'>Email</span>
+                       <span class='usrstable-th' id='desc-span'>Description</span>
+                       <span class='usrstable-th' id='del-span'>Delete</span>
+                    </div>
+                    
+                    <div id='usrstable-body'>
+                    <h:form id='usrstable-form'>          
+                        <h:dataTable value='#{ loginManager.listUsers() }' var='user' 
+                                     columnClasses=" usrstable-col ">
+                            <h:column>
+                                <h:commandLink value='#{ user.username }' action='#{ profileManager.profileOf( user ) }'/>
+                            </h:column>
+                            <h:column>
+                                <h:outputText value='#{ user.password }' />
+                            </h:column>
+                            <h:column>
+                                <h:outputText value='#{ user.email }' />
+                            </h:column>
+                            <h:column>
+                                <h:inputTextarea value='#{ user.description }' readonly='true' />
+                            </h:column>
+                            <h:column>
+                                <h:commandButton value='Delete' action='#{ loginManager.delete(user) }' />
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                    </div>
                 </div>
 </ui:composition>
