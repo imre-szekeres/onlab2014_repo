@@ -6,12 +6,9 @@ import hu.bme.aut.tomeesample.service.ActionTypeService;
 import hu.bme.aut.tomeesample.service.RoleService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.RequestScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
@@ -33,28 +30,16 @@ public class ActionTypeManager {
 	@Inject
 	private RoleService roleService;
 	private List<ActionType> actionTypeList;
-	private Map<Long, Boolean> isVisible;
 
 	private String actionTypeName = "";
 	private Long selectedRoleId;
-
-	@PostConstruct
-	public void init() {
-		isVisible = new HashMap<Long, Boolean>();
-	}
 
 	/**
 	 * @return All actionType
 	 */
 	public List<ActionType> getActionTypeList() {
 		actionTypeList = actionTypeService.findAll();
-		if (!actionTypeList.isEmpty()) {
-			for (ActionType actionType : actionTypeList) {
-				isVisible.put(actionType.getId(), false);
-			}
-		}
 		logger.debug("ActionTypes listed: " + actionTypeList.size());
-		logger.debug("ActionTypes visibleMap: " + isVisible);
 		return actionTypeList;
 	}
 
@@ -89,15 +74,6 @@ public class ActionTypeManager {
 			logger.debug("Error while deleting actionType");
 			logger.debug(e.getMessage());
 			e.printStackTrace();
-		}
-		return "actionTypes";
-	}
-
-	public String showOrHide(Long actionTypeID) {
-		if (isVisible.get(actionTypeID)) {
-			isVisible.put(actionTypeID, false);
-		} else {
-			isVisible.put(actionTypeID, true);
 		}
 		return "actionTypes";
 	}
