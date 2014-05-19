@@ -515,3 +515,22 @@
     height: 300px;
     opacity: 0.8;
 }
+
+.actionTypePanel {
+    padding: 10px 5px;
+    margin: 5px 5px;
+}
+
+.actionTypePanel_hiddenContent {
+	border-color: black;
+	border-top-style: dotted;
+	border-top-width: 1px;
+	border-bottom: solid;
+	border-bottom-width: 1.5px;
+    padding: 10px 5px;
+    margin: 5px 5px;
+}
+
+.actionTypePanel-name {
+	width: 10em;
+}

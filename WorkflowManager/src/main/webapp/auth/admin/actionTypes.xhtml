@@ -17,8 +17,8 @@
  					<div>
  					<div class="actionTypePanel">
 	 					<h:form id="form">
-	 						<span class = "actionTypePanel-name">
-	 							<h:outputText value="#{at.actionTypeName}"/>
+	 						<span class = "actionTypePanel-name"> 
+	 							<h:outputText value="Name: #{at.actionTypeName}"/>
 	 						</span>
 	 						<span>
 	 							<h:commandButton value="Delete" action="#{actionTypeManager.deleteActionType(at)}"/>
@@ -29,7 +29,7 @@
 	 						</span>
  						</h:form>
  					</div>
- 					<h:panelGroup id="roles_block" layout="block" styleClass="actionTypePanel-hiddenContent roles_block_#{at.id}">
+ 					<h:panelGroup id="roles_block" layout="block" styleClass="actionTypePanel_hiddenContent roles_block_#{at.id}">
  						<span>Roles for: #{at.actionTypeName}</span>
  						<ui:repeat var="role" value="#{actionTypeManager.getRoleList(at)}" varStatus="status">
  							<div>
