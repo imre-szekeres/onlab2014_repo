@@ -198,10 +198,8 @@ public class ProfileManager implements Serializable {
 	public String modify() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			if (oldPassword != null && !oldPassword.isEmpty()) {
+			if (oldPassword != null && !oldPassword.isEmpty())
 				user.setPassword(newPassword);
-				logger.debug(" password <" + newPassword + "> was set to " + ManagingUtils.fetchFrom(user.toString(), "User"));
-			}
 
 			userService.update(user);
 			conversation.end();
