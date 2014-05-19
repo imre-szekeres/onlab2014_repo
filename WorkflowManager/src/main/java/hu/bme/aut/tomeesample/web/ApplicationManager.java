@@ -45,12 +45,10 @@ public class ApplicationManager implements java.io.Serializable {
 		if ((admin = roleService.findByName("administrator")) == null) {
 			admin = new Role("administrator");
 			tryCreate(admin);
-			logger.debug("role " + admin + " created");
 		}
 		if (roleService.findByName("visitor") == null) {
 			Role role = new Role("visitor");
 			tryCreate(role);
-			logger.debug("role " + role + " created");
 		}
 		if (userService.findByName("sudoer") == null) {
 			User sudoer = new User("sudoer", "sudoer7", "sudoer@cvf.wm.com", admin,
@@ -58,7 +56,6 @@ public class ApplicationManager implements java.io.Serializable {
 							+ "He represents all that is good in the maintenance staff of a thick client and "
 							+ "disributed around the world application.");
 			tryCreate(sudoer);
-			logger.debug("user " + sudoer + " created in " + admin + " role");
 		}
 	}
 

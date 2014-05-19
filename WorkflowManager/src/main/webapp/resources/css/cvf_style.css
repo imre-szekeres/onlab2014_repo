@@ -406,6 +406,7 @@
 
 #usrstable-body {
     position: relative;
+    height: 250px;
     max-height: 250px;
     overflow-x: auto;
 }
@@ -415,6 +416,7 @@
 #projectstable-div {
     position: relative;
     width: 700px;
+    top: 21px;
     left: 21px;    
     border: #006699 1px solid;
     border-radius: 7px 7px 7px 7px;
@@ -450,38 +452,41 @@
 
 #projectstable-body {
     position: relative;
+    height: 250px;
     max-height: 250px;
     overflow-x: auto;
 }
 
 
 #projname-span {
-    width: 110px;
-    left: 5px;
+    width: 90px;
+    left: 16px;
 }
 
 #projdesc-span {
-    width: 130px;
-    left: 150px;
+    width: 110px;
+    left: 70px;
+}
+
+#projstate-span {
+    width: 110px;
+    left: 100px;
 }
 
 #projwf-span {
-    left: -2px;
+    width: 100px;
+    left: 100px;
 }
 
 #projhist-span {
-    width: 130px;
-    left: 31px;
 }
 
 #projusrs-span {
-    width: 110px;
-    left: 145px;
 }
 
 #projrem-span {
-    width: 110px;
-    left: 145px;
+    width: 100px;
+    left: 100px;
 }
 
 
