@@ -17,8 +17,8 @@
     width: 350px;
     height: 450px;
     background-color: #F8F8F8;
-    border-right: rgb( 128,0,0 ) 2px solid;
-    border-bottom: rgb( 128,0,0 ) 2px solid;
+    border-right:  #006699 2px solid;
+    border-bottom: #006699 2px solid;
     border-left: #F0F0F0 1px solid;
     border-top: #F0F0F0 1px solid;
     border-radius: 7px 7px 7px 7px;
@@ -34,6 +34,7 @@
     height: 50px;
     box-shadow: 3px 3px 2px #D0D0D0;
     border-radius: 3px 3px 3px 3px;
+    border: #006699 2px solid;
 }
 
 .home-link {
@@ -83,27 +84,26 @@
 }
 
 .menu-item A:hover {
-    /* background: -webkit-linear-gradient(rgb( 128,0,0 ), black);
-     background: -o-linear-gradient(rgb( 128,0,0 ), black);
-     background: -moz-linear-gradient(rgb( 128,0,0 ), black);
-     background: linear-gradient(rgb( 128,0,0 ), black); */
     background: -webkit-linear-gradient(#006699, black);
     background: -o-linear-gradient(#006699, black);
     background: -moz-linear-gradient(#006699, black);
     background: linear-gradient(#006699, black);
+    
+    border: #006699 1px solid;
+    border-radius: 5px 5px 5px 5px;
+    
+    padding: 0;
+    margin:  0;
 }
 
 #rnavbar {
     position: absolute;
     top: 90px;
-    left: 890px;
-    width: 250px;
+    left: 918px;
+    width: 221px;
     height: 400px;
     background-color: black;
-    border-right: #003366 2px solid;
-    border-bottom: #003366 2px solid;
-    border-left: #003366 1px solid;
-    border-top: #003366 1px solid;
+    border: #006699 2px solid;
     border-radius: 7px 7px 7px 7px;
     box-shadow: 3px 3px 2px #D8D8D8;
 }
@@ -138,7 +138,9 @@
     background: -o-linear-gradient(#006699, black);
     background: -moz-linear-gradient(#006699, black);
     background: linear-gradient(#006699, black);
-    color: white;
+    
+    border: #006699 1px solid;
+    border-radius: 5px 5px 5px 5px;
 }
 
 #content-container {
@@ -249,8 +251,8 @@
     left: 100px;
     top: 30px;
     background-image: url('images/usr_03.jpg') no-repeat top right;
-    border: rgb( 128,0,0 ) 2px solid;
-    border-radius: 2px 2px 2px 2px;
+    border: #006699 2px solid;
+    border-radius: 7px 7px 7px 7px;
 }
 
 #signin-container {
@@ -286,8 +288,8 @@
 .user-input-button {
     width: 218px;
     height: 35px;
-    color: #800000;
-    border: rgb( 128,0,0 ) 2px solid;
+    color: #006699;
+    border: #006699 2px solid;
     border-radius: 7px 7px 7px 7px;
 }
 
@@ -295,15 +297,17 @@
 #global-messages-container {
     background-color: black;
     position: absolute;
-    top: -26px;
-    left: 600px;
+    top: -65px;
+    left: 670px;
     width: 250px;
     height: 40px;
     z-index: 5;
     display: inline-block;
     line-height: 40px;
     border-radius: 4px 4px 4px 4px;
-    box-shadow: 3px 3px 2px #C0C0C0;
+    /*box-shadow: 2px 2px 1px #C0C0C0;*/
+    border: #006699 1px solid;
+    
 }
 
 #global-messages {

@@ -39,7 +39,7 @@
                                        validator='#{ loginManager.validateUsername }'></h:inputText>
                         <h:inputSecret styleClass="user-input" id='password' name="password" value='#{ loginManager.subject.password }' 
                                        validator='#{ loginManager.validatePassword }'></h:inputSecret>
-                        <h:commandButton styleClass="user-input-button" action="#{ loginManager.login }" value="Sign In"></h:commandButton>
+                        <h:commandButton styleClass="user-input-button cvf-btn" action="#{ loginManager.login }" value="Sign In"></h:commandButton>
                         </h:form>
                         
                         <div>

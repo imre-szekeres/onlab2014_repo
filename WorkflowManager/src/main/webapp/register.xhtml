@@ -15,6 +15,12 @@
         <div id='reg-content'>
             <div id='reg-wrapper'>
             <ui:include src='./fragments/user_form.xhtml' />
+            
+            <div>
+            <h:form prependId='false'>
+                <h:commandLink value='Sign In' action='#{ navigationManager.signIn() }' style='flow:right; font-size:12px;text-align:right;' />
+            </h:form>
+            </div>
             </div>
         </div>
     </body> 
