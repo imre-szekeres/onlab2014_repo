@@ -21,11 +21,13 @@
                 
                 <c:if test="#{sessionScope.subject.hasRole( 'administrator' )}">
                     <div style='margin: 13px;'>
+                        <div id='userform-wrapper'>
                         <ui:include src="../../fragments/user_form.xhtml" />
+                        </div>
                     </div>
                     <br />    
                 </c:if>
-				<div style='margin-top: 21px;'>
+				<div style='margin-top: 21px;' id='include-usrs'>
 				    <ui:include src="../../fragments/users.xhtml" />
 				</div>
 				

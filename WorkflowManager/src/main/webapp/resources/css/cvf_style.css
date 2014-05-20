@@ -57,6 +57,15 @@
     height: 50px;
 }
 
+
+#userform-wrapper {
+    padding: 13px;
+    margin:  13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+
 /* Drop down manu bar */
 
 #unavbar {
@@ -724,7 +733,7 @@
     border-radius: 7px 7px 7px 7px;
 }
 
-/* TODO: lecserélni a table-s megoldásunkra */
+/* TODO: lecserï¿½lni a table-s megoldï¿½sunkra */
 #rolestable_div {
     margin: 13px;
     padding: 13px;
@@ -867,13 +876,6 @@
 #state_delete {
     width: 50px;
     left: 300px;
-}
-
-
-#actions-table {
-    position: absolute;
-    top: 80px;
-    left: 200px;
 }
 
 /* ActionType.xhtml */
@@ -1084,3 +1086,39 @@
 	color: #0093E4;
 	 text-decoration: none;
 }
+
+/* RoleProfile Space */
+
+#roleprofile-div {
+    margin: 13px;
+    padding: 13px;
+}
+
+#roleprofile-wrapper {
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#assignedusrs-wrapper {
+    width: 210px;
+    height: 300px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#assignedactions-wrapper {
+    position: relative;
+    top: -340px;
+    left: 300px;
+    width: 210px;
+    height: 300px;
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
