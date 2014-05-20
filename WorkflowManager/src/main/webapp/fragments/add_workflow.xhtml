@@ -6,8 +6,8 @@
     
     <div>
 		<h:form>
-	   		<h3>Add Workflow</h3>
-	   		<h:panelGrid columns="1" cellspacing="1" cellpadding="2">
+		 <div id='createworkflow-div'>
+	   		<h:panelGrid columns="2" cellspacing="1" cellpadding="2">
 	   			<h:outputText value='Name:'/>
 	   			<h:inputText size="15" value="#{workflowManager.name}" validator='#{ workflowManager.validateName }' styleClass='inputTextClass' />
 	   			<h:outputText value='Description:'/>
@@ -15,6 +15,7 @@
 	   			<h:commandButton id="add_button" value="Add Workflow" 
 	               action="#{workflowManager.addWorkflow}" styleClass='btn'/> 
 	        </h:panelGrid>
+	        </div>
 	   	</h:form>
    	</div>
    	

@@ -16,53 +16,52 @@
 		</ui:define>
 	
 		<ui:define name="content">
-			<h3>List of states</h3>
-				<div>
-					<div class="state_list_header">
-						<span class="state_isinitial">Initial</span>
-						<span class="state_name">Name</span>
-						<span class="state_dexc">Description</span>
-						<span class="state_delete">Delete</span>
+				<div id='state-div'>
+					<div id="state_list_header">
+						<span class='statetable-th' id="state_initial">Initial</span>
+						<span class='statetable-th' id="state_name">Name</span>
+						<span class='statetable-th' id="state_dexc">Description</span>
+						<span class='statetable-th' id="state_delete">Delete</span>
 					</div>
+			        	<div class="state_list_body">
 			      	<ui:repeat var="state" value="#{stateManager.stateList}" varStatus="status">
 					<h:form>
-			        	<div class="state_list_body">
-			        		<span class="state_isinitial">
+					<div class="one-state" >
+			        		<div id="stateinit-col">
 						       	<h:graphicImage value="#{ resource['css/images/star.jpg'] }" style='width : 10px; height : 10px;' rendered="#{state.initial}" />
 								<h:commandLink  action="#{stateManager.setInitial(state)}" rendered="#{!state.initial}">
 									<h:graphicImage value="#{ resource['css/images/star_empty.jpg'] }" style='width : 10px; height : 10px;' rendered="#{!state.initial}" />
 									<f:param name="workflowId" value="#{param.workflowId}"/>
 	    							<f:param name="parentId" value="#{param.parentId}"/>
 								</h:commandLink>
-			        		</span>
-				        	<span class="state_name"> 			
+			        		</div>
+				        	<div id="statename-col"> 			
 				           		<h:link outcome="states" value="#{state.name}" styleClass='link-on-name'>
 		        					<f:param name="parentId" value="#{state.id}" />
 		        					<f:param name="workflowId" value="#{param.workflowId}" />
 							    </h:link>
-							</span>
-							<span class="state_dexc">
+							</div>
+							<div id="statedexc-col">
 				            	<h:outputText value="#{state.description}"/>
-			            	</span>
-				         	<!-- TODO Has role -->
-				         	<span class="state_delete">
+			            	</div>
+				         	<div id="statedel-col">
 				                <h:commandButton value="Delete" action="#{stateManager.deleteState(state)}" styleClass="btn">
 				                	<f:param name="workflowId" value="#{param.workflowId}"/>
 					    			<f:param name="parentId" value="#{param.parentId}"/>
 				                </h:commandButton> 
-				            </span>
-			            </div>
+				            </div>
+				     </div>
 					</h:form>
-			            <div class="state_list_add_at">
+			            <div class="state_actionType_block">
 			            	<ui:repeat var="at" value="#{stateManager.getActionTypeList(state)}" varStatus="status">
-	 							<div>
+	 							<div class="state_actionType_list">
 	 								<h:form>
 			 							<span class = "actionTypePanel-name">
-			 								<h:outputText value="#{at.actionTypeName}"/>
+			 								On: <h:outputText value="#{at.actionTypeName}" styleClass="state_actionTypeName" />
 		 								</span>
 		 								<span class = "nextStatePanel-name">
-			 								<h:outputText value="#{stateManager.getNextStateName(at,state)}"/>
-		 								</span>
+			 								to <i><h:outputText value="#{stateManager.getNextStateName(at,state)}"/></i>
+		 								</span> 
 		 								<span>
 		 									<h:commandButton styleClass="btn" value="Delete" action="#{stateManager.deleteActionTypeFromState(at, state)}">
 		 										<f:param name="workflowId" value="#{param.workflowId}"/>
@@ -72,28 +71,31 @@
 	 								</h:form>
 	 							</div>
 	 						</ui:repeat>
-	 						<h:form>
-								<h:selectOneMenu styleClass='selectMenu' value="#{stateManager.selectedActionType}" converter="#{actionTypeConverter}">
-									<f:converter binding="#{actionTypeConverter}" />
-								   	<f:selectItems value="#{actionTypeManager.actionTypeList}" var="_at" itemValue="#{_at}" 
-								   				itemLabel="#{_at.actionTypeName}" valueChangeListener="#{stateManager.selectedActionTypeChanged}"
-								   				onchange="submit()" converter="#{actionTypeConverter}"/>
-								</h:selectOneMenu>
-								<h:selectOneMenu styleClass='selectMenu' value="#{stateManager.selectedNextState}">
-									<f:converter binding="#{stateConverter}" />
-					   				<f:selectItems value="#{stateManager.getStateForWorkflow()}" var="_state" itemValue="#{_state}" 
-								   				itemLabel="#{_state.name}" valueChangeListener="#{stateManager.selectedNextStateChanged}"
-								   				onchange="submit()"/>   					
-							   	</h:selectOneMenu>		
-								<h:commandButton styleClass="btn" value="Add action type" action="#{stateManager.addActionTypeToState(state)}">
-									<f:param name="workflowId" value="#{param.workflowId}"/>
-					    			<f:param name="parentId" value="#{param.parentId}"/>
-								</h:commandButton>
-							</h:form>
+	 						
+	 						<div class="state_add_actionType">
+		 						<h:form>
+									<h:selectOneMenu styleClass='selectMenu' value="#{stateManager.selectedActionType}" converter="#{actionTypeConverter}">
+										<f:converter binding="#{actionTypeConverter}" />
+									   	<f:selectItems value="#{actionTypeManager.actionTypeList}" var="_at" itemValue="#{_at}" 
+									   				itemLabel="#{_at.actionTypeName}" valueChangeListener="#{stateManager.selectedActionTypeChanged}"
+									   				onchange="submit()" converter="#{actionTypeConverter}"/>
+									</h:selectOneMenu>
+									<h:selectOneMenu styleClass='selectMenu' value="#{stateManager.selectedNextState}">
+										<f:converter binding="#{stateConverter}" />
+						   				<f:selectItems value="#{stateManager.getStateForWorkflow()}" var="_state" itemValue="#{_state}" 
+									   				itemLabel="#{_state.name}" valueChangeListener="#{stateManager.selectedNextStateChanged}"
+									   				onchange="submit()"/>   					
+								   	</h:selectOneMenu>		
+									<h:commandButton styleClass="btn add_action_btn" value="Add action type" action="#{stateManager.addActionTypeToState(state)}">
+										<f:param name="workflowId" value="#{param.workflowId}"/>
+						    			<f:param name="parentId" value="#{param.parentId}"/>
+									</h:commandButton>
+								</h:form>
+							</div>
 			            </div>
 			      	</ui:repeat>
+			            </div>
 		      	</div>
-		    <!-- TODO Has role -->
 		   	<ui:include src="../../fragments/add_state.xhtml" />
 		</ui:define>
 	</ui:composition>

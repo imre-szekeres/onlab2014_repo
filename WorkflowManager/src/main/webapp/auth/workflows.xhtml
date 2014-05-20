@@ -15,14 +15,22 @@
 			Workflows
 		</ui:define>
 		<ui:define name="content">
-			<h3>List of workflows</h3>
 			<h:form>
+				<div id='workflowstable-div'>
+        
+			    <div id='workflowstable-header'>
+			      <span class='workflowstable-th' id='workflowname-span'> Name </span>
+			      <span class='workflowstable-th' id='workflowdesc-span'> Description </span>
+			      <span class='workflowstable-th' id='workflowdel-span'> Delete </span>
+			    </div>
+			    
+			    <div id='workflowstable-body'>
 		      	<h:dataTable value="#{workflowManager.workflowList}" var="workflow"
 		         		styleClass="workflowTable"
 		         		headerClass="workflowTableHeader"
-		         		rowClasses="workflowTableOddRow,workflowTableEvenRow">
-		        	<h:column>    				
-		            	<f:facet name="header">Name</f:facet>
+		         		rowClasses="workflowTableOddRow,workflowTableEvenRow"
+		         		columnClasses="workflowname-col,workflowdesc-col,workflowdel-col">
+		        	<h:column styleClass='workflowname-col'>    				
 		  				<c:choose>
 		  				    <c:when test="#{ sessionScope.subject.hasRole('manager') }">
 		  				        <h:link outcome="/auth/man/states" value="#{workflow.name}" styleClass='link-on-name'>
@@ -34,16 +42,15 @@
 		  				    </c:otherwise>
 		  				</c:choose> 				
 		         	</h:column>
-		         	<h:column>
-		            	<f:facet name="header">Description</f:facet>
+		         	<h:column styleClass='workflowdesc-col'>
 		            	<h:outputText value="#{workflow.description}"></h:outputText>
 		         	</h:column>
-		         	<!-- TODO Has role -->
-		         	<h:column rendered="#{ sessionScope.subject.hasRole('manager') }">
-		         		<f:facet name="header">Delete</f:facet>
+		         	<h:column rendered="#{ sessionScope.subject.hasRole('manager') }" styleClass='workflowdel-col'>
 		               	<h:commandButton value="Delete" action="#{workflowManager.deleteWorkflow(workflow)}" styleClass='btn'/>
 		            </h:column>
 		      	</h:dataTable>
+		      	</div>
+		      	</div>
 		   	</h:form>
 		    <!-- TODO Has role -->
 		   	<c:if test="#{ sessionScope.subject.hasRole('manager') }">

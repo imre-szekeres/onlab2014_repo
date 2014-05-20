@@ -10,15 +10,15 @@
 	   </ui:define>
 	   
 	   <ui:define name='content'>
-	       <div>
+	       <div id="createrole-div">
 	           
 	           <h:form id='addrole_form' method='POST' >
-	           <h:panelGrid columns='1' cellspacing='1' cellpadding='1' >
-	               <h:message for='rolename_in' styleClass='error-message' />
+	           <h:panelGrid columns='2' cellspacing='1' cellpadding='1' >
 	               <h:outputText value='Role Name:' />
 	               <h:inputText id='rolename_in' name='name' value='#{ roleManager.role.name }' 
 	                            validator='#{ roleManager.validateName }' styleClass='inputTextClass'/>
 	               <h:commandButton id='addrole_btn' action='#{ roleManager.create }' value='Create' styleClass='btn'/>
+	               <h:message for='rolename_in' styleClass='error-message' />
 	           </h:panelGrid>
                </h:form>
                
