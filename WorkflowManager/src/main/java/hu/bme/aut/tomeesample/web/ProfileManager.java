@@ -64,9 +64,11 @@ public class ProfileManager implements Serializable {
 		if (!conversation.isTransient())
 			conversation.end();
 		this.user = user;
-		if (!FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject").equals(user))
+		User subject = ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance());
+		if (!subject.equals(user))
 			isEditable = false;
 		conversation.begin();
+		logger.debug(" profile of " + user.getUsername() + " was visited by " + subject.getUsername());
 		return "/auth/profile.xhtml";
 	}
 
@@ -202,6 +204,7 @@ public class ProfileManager implements Serializable {
 
 			String message = "user " + user.getUsername() + " was updated";
 			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + message);
 		} catch (Exception e) {
 		}
 		return "/auth/profile.xhtml";
@@ -214,6 +217,7 @@ public class ProfileManager implements Serializable {
 	 * */
 	public String addRole() {
 		FacesContext context = FacesContext.getCurrentInstance();
+		User subject = ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance());
 		try {
 			Role r = roleService.findByName(role);
 			user.add(r);
@@ -222,6 +226,7 @@ public class ProfileManager implements Serializable {
 			conversation.end();
 			String message = "role " + role + " was added to " + user.getUsername();
 			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + message + " by " + subject.getUsername());
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to add role " + role);
 			logger.debug(" ERROR in addRole: ", e);

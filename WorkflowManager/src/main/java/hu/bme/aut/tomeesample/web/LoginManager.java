@@ -80,11 +80,12 @@ public class LoginManager {
 	 * @return the string representation of the page to navigate to
 	 * */
 	public String register() {
+		User subject = ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance());
 		try {
 			Role uRole = roleService.findByName(role == null ? "visitor" : role);
 			subject.add(uRole);
 			userService.create(subject);
-			logger.debug(" user " + subject.getUsername() + " was created");
+			logger.debug(" user " + subject.getUsername() + " was created by " + subject == null ? null : subject.getUsername());
 
 			if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject") == null)
 				return login();
@@ -122,7 +123,10 @@ public class LoginManager {
 	 * @return the page id to navigate to after the operation
 	 * */
 	public String logout() {
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("subject", null);
+		FacesContext context = FacesContext.getCurrentInstance();
+		User subject = ManagingUtils.fetchSubjectFrom(context);
+		logger.debug(" " + subject.getUsername() + " logged out");
+		context.getExternalContext().getSessionMap().put("subject", null);
 		return "/login.xhtml?faces-redirect=true";
 	}
 
@@ -302,9 +306,11 @@ public class LoginManager {
 	 * */
 	public String delete(User user) {
 		FacesContext ctx = FacesContext.getCurrentInstance();
+		User subject = ManagingUtils.fetchSubjectFrom(ctx);
 		try {
 			userService.removeDetached(user);
 			FacesMessageUtils.infoMessage(ctx, "user " + user.getUsername() + " deleted!");
+			logger.debug(" user " + user.getUsername() + " was removed by " + subject.getUsername());
 		} catch (Exception e) {
 			logger.error(" ERROR in delete: ", e);
 			FacesMessageUtils.errorMessage(ctx, "error while attempting delete!");

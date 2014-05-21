@@ -3,7 +3,11 @@
  */
 package hu.bme.aut.tomeesample.utils;
 
+import hu.bme.aut.tomeesample.model.User;
+
 import java.util.Collection;
+
+import javax.faces.context.FacesContext;
 
 /**
  * 
@@ -12,6 +16,17 @@ import java.util.Collection;
  */
 @SuppressWarnings("unchecked")
 public class ManagingUtils {
+
+	/**
+	 * Fetches the currently logged in <code>User</code> from the given
+	 * <code>FacesContext</code>
+	 * 
+	 * @param context
+	 * @return the user travelling in the session
+	 * */
+	public static User fetchSubjectFrom(FacesContext context) {
+		return (User) context.getExternalContext().getSessionMap().get("subject");
+	}
 
 	/**
 	 * Slices down the characters from before the first occurrence of the given

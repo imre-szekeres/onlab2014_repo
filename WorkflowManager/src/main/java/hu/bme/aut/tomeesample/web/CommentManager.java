@@ -79,6 +79,7 @@ public class CommentManager {
 
 				String message = subject.getUsername() + " commented on " + project.getName();
 				FacesMessageUtils.infoMessage(context, message);
+				logger.debug(" " + message);
 				comment = new Comment();
 			}
 		} catch (Exception e) {
@@ -102,6 +103,7 @@ public class CommentManager {
 			commentService.removeFrom(project, subject, comment);
 			String message = "comment was removed";
 			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + comment.toString() + " was removed by" + ManagingUtils.fetchSubjectFrom(context).getUsername());
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to remove comment ");
 			logger.error(" failed to remove comment: " + comment.toString(), e);

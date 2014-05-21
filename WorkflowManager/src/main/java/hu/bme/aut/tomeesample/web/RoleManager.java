@@ -9,6 +9,7 @@ import hu.bme.aut.tomeesample.model.User;
 import hu.bme.aut.tomeesample.service.RoleService;
 import hu.bme.aut.tomeesample.service.UserService;
 import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
+import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -85,12 +86,14 @@ public class RoleManager implements Serializable {
 	 * */
 	public String create() {
 		FacesContext context = FacesContext.getCurrentInstance();
+		User subject = ManagingUtils.fetchSubjectFrom(context);
 		try {
 			roleService.create(this.role);
 			String message = "created new role: " + this.role.toString();
 			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + subject.getUsername() + message);
 		} catch (Exception e) {
-			FacesMessageUtils.errorMessage(context, "failed to create " + this.role);
+			FacesMessageUtils.errorMessage(context, subject.getUsername() + " failed to create " + this.role);
 			logger.error("in RoleManager.create: ", e);
 		}
 		conversation.end();
@@ -149,15 +152,17 @@ public class RoleManager implements Serializable {
 	 * */
 	public String removeFrom(User user) {
 		FacesContext context = FacesContext.getCurrentInstance();
+		User subject = ManagingUtils.fetchSubjectFrom(context);
 		try {
 			user.remove(this.role);
 			user = userService.update(user);
 
-			String message = "role " + this.role.toString() + " was removed from " + user.toString();
+			String message = "role " + this.role.toString() + " was removed from " + user.getUsername();
+			logger.debug(" " + message + " by " + subject.getUsername());
 			FacesMessageUtils.infoMessage(context, message);
 			conversation.end();
 		} catch (Exception e) {
-			FacesMessageUtils.errorMessage(context, "failed to remove " + this.role.toString());
+			FacesMessageUtils.errorMessage(context, "failed to remove " + this.role.toString() + " from " + user.getUsername());
 			logger.error("ERROR in removeFrom: ", e);
 		}
 		return "/auth/admin/add_role.xhtml";
@@ -171,11 +176,13 @@ public class RoleManager implements Serializable {
 	 * */
 	public String delete(Role role) {
 		FacesContext context = FacesContext.getCurrentInstance();
+		User subject = ManagingUtils.fetchSubjectFrom(context);
 		try {
 			roleService.removeDetached(role);
 
 			String message = "role " + role.toString() + " was removed";
 			FacesMessageUtils.infoMessage(context, message);
+			logger.debug(" " + message + " by " + subject.getUsername());
 			conversation.end();
 		} catch (Exception e) {
 			FacesMessageUtils.errorMessage(context, "failed to remove " + role.toString());

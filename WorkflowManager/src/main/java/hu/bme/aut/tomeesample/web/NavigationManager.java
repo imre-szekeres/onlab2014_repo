@@ -3,10 +3,15 @@
  */
 package hu.bme.aut.tomeesample.web;
 
+import hu.bme.aut.tomeesample.utils.ManagingUtils;
+
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -16,6 +21,8 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class NavigationManager {
+
+	private static final Logger logger = Logger.getLogger(NavigationManager.class);
 
 	@Inject
 	private Conversation conversation;
@@ -29,7 +36,9 @@ public class NavigationManager {
 	 * */
 	public String register() {
 		clearConversation();
-		return "/register.xhtml";
+		String pageID = "/register.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	/**
@@ -41,7 +50,9 @@ public class NavigationManager {
 	 * */
 	public String home() {
 		clearConversation();
-		return "/auth/index.xhtml";
+		String pageID = "/auth/index.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	/**
@@ -53,7 +64,9 @@ public class NavigationManager {
 	 * */
 	public String signIn() {
 		clearConversation();
-		return "/login.xhtml";
+		String pageID = "/login.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	/**
@@ -65,7 +78,9 @@ public class NavigationManager {
 	 * */
 	public String addUser() {
 		clearConversation();
-		return "/auth/man/add_user.xhtml";
+		String pageID = "/auth/man/add_user.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	/**
@@ -77,7 +92,9 @@ public class NavigationManager {
 	 * */
 	public String addRole() {
 		clearConversation();
-		return "/auth/admin/add_role.xhtml";
+		String pageID = "/auth/admin/add_role.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	/**
@@ -89,7 +106,9 @@ public class NavigationManager {
 	 * */
 	public String workflows() {
 		clearConversation();
-		return "/auth/workflows.xhtml";
+		String pageID = "/auth/workflows.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	/**
@@ -101,7 +120,9 @@ public class NavigationManager {
 	 * */
 	public String addProject() {
 		clearConversation();
-		return "/auth/add_project.xhtml";
+		String pageID = "/auth/add_project.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	/**
@@ -113,7 +134,9 @@ public class NavigationManager {
 	 * */
 	public String actionTypes() {
 		clearConversation();
-		return "/auth/admin/actionTypes.xhtml";
+		String pageID = "/auth/admin/actionTypes.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	/**
@@ -125,7 +148,9 @@ public class NavigationManager {
 	 * */
 	public String profile() {
 		clearConversation();
-		return "/auth/profile.xhtml";
+		String pageID = "/auth/profile.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
 	}
 
 	private void clearConversation() {
