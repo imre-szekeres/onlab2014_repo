@@ -53,17 +53,17 @@
 				     </div>
 					</h:form>
 			            <div class="state_actionType_block">
-			            	<ui:repeat var="at" value="#{stateManager.getActionTypeList(state)}" varStatus="status">
+			            	<ui:repeat var="navEntry" value="#{state.nextStates}" varStatus="status">
 	 							<div class="state_actionType_list">
 	 								<h:form>
 			 							<span class = "actionTypePanel-name">
-			 								On: <h:outputText value="#{at.actionTypeName}" styleClass="state_actionTypeName" />
+			 								On: <h:outputText value="#{navEntry.actionType.actionTypeName}" styleClass="state_actionTypeName" />
 		 								</span>
 		 								<span class = "nextStatePanel-name">
-			 								to <i><h:outputText value="#{stateManager.getNextStateName(at,state)}"/></i>
+			 								to <i><h:outputText value="#{navEntry.nextState.name}"/></i>
 		 								</span> 
 		 								<span>
-		 									<h:commandButton styleClass="btn" value="Delete" action="#{stateManager.deleteActionTypeFromState(at, state)}">
+		 									<h:commandButton styleClass="btn" value="Delete" action="#{stateManager.deleteActionTypeFromState(navEntry)}">
 		 										<f:param name="workflowId" value="#{param.workflowId}"/>
 					    						<f:param name="parentId" value="#{param.parentId}"/>
 		 									</h:commandButton>

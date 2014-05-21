@@ -126,13 +126,17 @@ public class StateManager {
 		return createReturnString();
 	}
 
-	public String deleteActionTypeFromState(ActionType actionType, State state) {
+	public String deleteActionTypeFromState(StateNavigationEntry stateNavigationEntry) {
 		try {
-			StateNavigationEntry stateNavigationEntry = stateNavigationEntryService.findByActionTypeId(actionType.getId(), state.getId());
+			// StateNavigationEntry stateNavigationEntry =
+			// stateNavigationEntryService.findByActionTypeId(actionType.getId(),
+			// state.getId());
 			// remove actionType
+			State state = stateNavigationEntry.getParent();
 			state.removeNexState(stateNavigationEntry);
 			// save changes
 			stateService.update(state);
+			stateNavigationEntryService.removeDetached(stateNavigationEntry);
 		} catch (Exception e) {
 			logger.debug("Error while deleting actionType from state");
 			logger.debug(e.getMessage());
@@ -146,23 +150,15 @@ public class StateManager {
 			// Get selected actionType and state
 			if (selectedActionType != null && selectedNextState != null) {
 
-				State newState = state.copy();
-				// stateService.create(newState);
-
 				StateNavigationEntry stateNavigationEntry = new
-						StateNavigationEntry(selectedActionType, selectedNextState, newState);
+						StateNavigationEntry(selectedActionType, selectedNextState, state);
 
-				for (StateNavigationEntry _stateNavigationEntry : stateNavigationEntryService.findByParentId(state.getId())) {
-					_stateNavigationEntry.setParent(newState);
-				}
-				// newState.addNextState(stateNavigationEntry);
-				stateService.removeDetached(state);
+				state.addNextState(stateNavigationEntry);
 
-				// stateNavigationEntry.setParent(newState);
 				stateNavigationEntryService.create(stateNavigationEntry);
 
-				logger.debug(stateNavigationEntry.getParent());
-				logger.debug(newState.getNextStates());
+				// logger.debug(stateNavigationEntry.getParent());
+				// logger.debug(newState.getNextStates());
 
 				// state.addNextState(stateNavigationEntry);
 
@@ -181,9 +177,22 @@ public class StateManager {
 		try {
 			List<StateNavigationEntry> navEntries = stateNavigationEntryService.findByParentId(state.getId());
 			for (StateNavigationEntry stateNavigationEntry : navEntries) {
-				if (stateNavigationEntry.getActionType().getId() == actionType.getId()) {
-					return stateNavigationEntry.getNextState().getName();
+				State nextState = stateNavigationEntry.getNextState();
+				State parent = stateNavigationEntry.getParent();
+
+				ActionType nav_at = stateNavigationEntry.getActionType();
+				Long nav_at_id = nav_at.getId();
+				Long actual_at_id = actionType.getId();
+
+				if (nav_at_id.equals(actual_at_id)) {
+					return nextState.getName();
 				}
+				// if (stateNavigationEntry.getActionType().getId() ==
+				// actionType.getId()) {
+				//
+				// return stateNavigationEntry.getNextState().getName();
+				// }
+
 			}
 		} catch (Exception e) {
 			logger.debug("Error while get next state name", e);
@@ -213,6 +222,11 @@ public class StateManager {
 		}
 		logger.debug(actionTypes);
 		return actionTypes;
+	}
+
+	public List<StateNavigationEntry> getNavStateEntries(State state) {
+		List<StateNavigationEntry> navEntries = stateNavigationEntryService.findByParentId(state.getId());
+		return navEntries;
 	}
 
 	public Long getIdParam(String paramName) {

@@ -35,6 +35,11 @@ public class StateNavigationEntryService {
 		em.remove(stateNavigationEntry);
 	}
 
+	public void removeDetached(StateNavigationEntry stateNavigationEntry) {
+		Object managed = em.merge(stateNavigationEntry);
+		em.remove(managed);
+	}
+
 	public List<StateNavigationEntry> findAll() {
 		return em.createNamedQuery("StateNavigationEntry.findAll", StateNavigationEntry.class).getResultList();
 	}
@@ -64,7 +69,8 @@ public class StateNavigationEntryService {
 			TypedQuery<StateNavigationEntry> select = em.createNamedQuery("StateNavigationEntry.findByActionType", StateNavigationEntry.class);
 			select.setParameter("typeId", typeId);
 			select.setParameter("parentId", parentId);
-			return select.getSingleResult();
+			StateNavigationEntry ret = select.getSingleResult();
+			return ret;
 		} catch (Exception e) {
 			return null;
 		}

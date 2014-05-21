@@ -178,6 +178,7 @@ public class State implements Serializable {
 
 	public void removeNexState(StateNavigationEntry stateNavigationEntry) {
 		nextStates.remove(stateNavigationEntry);
+		stateNavigationEntry.setParent(null);
 	}
 
 	public void addNextState(StateNavigationEntry stateNavigationEntry) {

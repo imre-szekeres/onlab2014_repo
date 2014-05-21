@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne "
 				+ "WHERE sne.parent.id=:parentId"),
 		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne "
-				+ "WHERE sne.actionType.id=:actionTypeId AND sne.parent.id=:parentId")
+				+ "WHERE sne.actionType.id=:typeId AND sne.parent.id=:parentId")
 })
 public class StateNavigationEntry implements Serializable {
 
@@ -40,7 +40,7 @@ public class StateNavigationEntry implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn
 	private State parent;
 
