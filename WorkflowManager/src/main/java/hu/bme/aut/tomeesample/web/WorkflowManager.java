@@ -36,10 +36,6 @@ public class WorkflowManager {
 	private String name = "Default Workflow";
 	private String description = "This is a default workflow.";
 
-	// public Workflow getNewWorkflow() {
-	// return newWorkflow;
-	// }
-
 	/**
 	 * @return All workflow
 	 */

@@ -100,11 +100,6 @@ public class StateManager {
 			e.printStackTrace();
 		}
 
-		// Create return string
-		// String returnString = "states?workflowId=" + workflowId;
-		// if (parentId != null) {
-		// returnString += "&parentId=" + parentId;
-		// }
 		return createReturnString();
 	}
 
@@ -128,9 +123,6 @@ public class StateManager {
 
 	public String deleteActionTypeFromState(StateNavigationEntry stateNavigationEntry) {
 		try {
-			// StateNavigationEntry stateNavigationEntry =
-			// stateNavigationEntryService.findByActionTypeId(actionType.getId(),
-			// state.getId());
 			// remove actionType
 			State state = stateNavigationEntry.getParent();
 			state.removeNexState(stateNavigationEntry);
@@ -156,14 +148,6 @@ public class StateManager {
 				state.addNextState(stateNavigationEntry);
 
 				stateNavigationEntryService.create(stateNavigationEntry);
-
-				// logger.debug(stateNavigationEntry.getParent());
-				// logger.debug(newState.getNextStates());
-
-				// state.addNextState(stateNavigationEntry);
-
-				// stateService.addActionTypeToState(selectedActionType,
-				// selectedNextState, newState);
 			}
 		} catch (Exception e) {
 			logger.debug("Error while adding actionType for state");
@@ -187,12 +171,6 @@ public class StateManager {
 				if (nav_at_id.equals(actual_at_id)) {
 					return nextState.getName();
 				}
-				// if (stateNavigationEntry.getActionType().getId() ==
-				// actionType.getId()) {
-				//
-				// return stateNavigationEntry.getNextState().getName();
-				// }
-
 			}
 		} catch (Exception e) {
 			logger.debug("Error while get next state name", e);
@@ -211,9 +189,6 @@ public class StateManager {
 
 	public List<ActionType> getActionTypeList(State state) {
 		ArrayList<ActionType> actionTypes = new ArrayList<>();
-		// List<StateNavigationEntry> stateMap = state.getNextStates();
-		// logger.debug(stateService.findById(state.getId()).getNextStates());
-		// logger.debug(state.getNextStates().size());
 		if (state == null) {
 			return actionTypes;
 		}
