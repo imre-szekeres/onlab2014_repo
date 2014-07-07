@@ -14,22 +14,12 @@ import javax.inject.Named;
 @Stateless
 @RequestScoped
 public class ActionTypeConverter implements Converter {
-	// private List<ActionType> actionTypes;
-
-	// public ActionTypeConverter() {
-	// this.actionTypes = MyController.getAllMyObjects();
-	// }
 
 	@Inject
 	private ActionTypeService actionTypeService;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-
-		// ActionType actionType =actionTypeService.findById(id);
-		// if (object instanceof ActionType) {
-		// return (ActionType) object;
-		// }
 
 		String idString = null;
 		Long id = null;
@@ -47,7 +37,6 @@ public class ActionTypeConverter implements Converter {
 		}
 		System.out.println(value);
 		return actionTypeService.findById(id);
-		// return value;
 	}
 
 	@Override
@@ -57,16 +46,4 @@ public class ActionTypeConverter implements Converter {
 		}
 		return value.toString();
 	}
-
-	// public MyObject getMyObject(String id) {
-	// Iterator<MyObject> iterator = this.objects.iterator();
-	// while (iterator.hasNext()) {
-	// MyObject object = iterator.next();
-	//
-	// if (object.getId() == Integer.valueOf(id).intValue()) {
-	// return object;
-	// }
-	// }
-	// return null;
-	// }
 }
