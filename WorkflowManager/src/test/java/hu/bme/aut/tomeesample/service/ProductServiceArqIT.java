@@ -1,26 +1,6 @@
 package hu.bme.aut.tomeesample.service;
 
-import static org.junit.Assert.assertEquals;
-import hu.bme.aut.tomeesample.model.Product;
-
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.UserTransaction;
-
-import org.apache.openejb.client.CommandParser.Category;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+//import hu.bme.aut.tomeesample.model.Product;
 //
 //@RunWith(Arquillian.class)
 //public class ProductManagerArqIT {
@@ -89,3 +69,4 @@ import org.junit.runner.RunWith;
 //	}
 //	
 //}
+
