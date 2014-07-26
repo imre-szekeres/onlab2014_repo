@@ -13,7 +13,17 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@SuppressWarnings("serial")
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Table(name = "FILE_STORAGE")
 @NamedQueries(
 {
@@ -23,86 +33,31 @@ import javax.validation.constraints.NotNull;
 })
 public class BlobFile implements Serializable
 {
-	private static final long serialVersionUID = -4796720242338042828L;
-
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Getter
+	@Setter
 	@NotNull
 	private String fileName;
 
+	@Getter
+	@Setter
 	@NotNull
 	@ManyToOne
 	private State state;
 
+	@Getter
+	@Setter
 	@Lob
 	private byte[] content;
-
-	public BlobFile()
-	{
-	}
 
 	public BlobFile(String fileName, byte[] content, State state)
 	{
 		this.fileName = fileName;
 		this.content = content;
 		this.state = state;
-	}
-
-	public Long getId()
-	{
-		return id;
-	}
-
-	public String getFileName()
-	{
-		return fileName;
-	}
-
-	public void setFileName(String fileName)
-	{
-		this.fileName = fileName;
-	}
-
-	public byte[] getContent()
-	{
-		return content;
-	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
-
-	public void setContent(byte[] content)
-	{
-		this.content = content;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 0;
-		hash += (id != null ? id.hashCode() : 0);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object object)
-	{
-		if (!(object instanceof BlobFile))
-		{
-			return false;
-		}
-		BlobFile other = (BlobFile) object;
-		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))
-		{
-			return false;
-		}
-		return true;
 	}
 }

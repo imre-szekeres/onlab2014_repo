@@ -19,49 +19,40 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * Entity implementation class for Entity: ActionType
  * 
  */
 @SuppressWarnings("serial")
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"),
-		@NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at " + "WHERE at.id=:id") })
+@EqualsAndHashCode
+@NoArgsConstructor
+@NamedQueries({ @NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"), @NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at " + "WHERE at.id=:id") })
 public class ActionType implements Serializable {
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Getter
+	@Setter
 	@NotNull
 	@Column(unique = true)
 	private String actionTypeName;
 
+	@Getter
+	@Setter
 	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes", fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
-	public ActionType() {
-	}
-
 	public ActionType(String actionTypeName) {
 		this.actionTypeName = actionTypeName;
-	}
-
-	public String getActionTypeName() {
-		return actionTypeName;
-	}
-
-	public void setActionTypeName(String actionTypeName) {
-		this.actionTypeName = actionTypeName;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
 	}
 
 	public void addRole(Role role) {
@@ -72,47 +63,6 @@ public class ActionType implements Serializable {
 	public void remove(Role role) {
 		role.removeActionType(this);
 		roles.remove(role);
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ActionType other = (ActionType) obj;
-		if (actionTypeName == null) {
-			if (other.actionTypeName != null)
-				return false;
-		} else if (!actionTypeName.equals(other.actionTypeName))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (roles == null) {
-			if (other.roles != null)
-				return false;
-		} else if (!roles.equals(other.roles))
-			return false;
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((actionTypeName == null) ? 0 : actionTypeName.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-		return result;
 	}
 
 	@Override

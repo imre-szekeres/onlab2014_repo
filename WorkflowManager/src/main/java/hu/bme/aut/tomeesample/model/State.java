@@ -24,12 +24,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * Entity implementation class for Entity: State
  * 
  */
 @SuppressWarnings("serial")
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode
 @NamedQueries({
 		@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
 		@NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
@@ -41,45 +48,54 @@ import javax.validation.constraints.NotNull;
 public class State implements Serializable {
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Getter
+	@Setter
 	@NotNull
-	// @Size(min = 4, max = 25)
 	private String name;
 
-	// @Size(min = 0, max = 512)
+	@Getter
+	@Setter
 	private String description;
 
+	@Getter
+	@Setter
 	private boolean initial;
 
+	@Getter
+	@Setter
 	@ManyToOne
 	@JoinColumn
 	private Workflow workflow;
 
-	// @ManyToMany(fetch = FetchType.EAGER)
-	// @MapKeyJoinColumn
-	// private Map<ActionType, State> nextStates;
-
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	private List<StateNavigationEntry> nextStates;
 
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<HistoryEntry> historyEntries;
 
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private List<BlobFile> files;
 
+	@Getter
+	@Setter
 	@ManyToOne
 	@JoinColumn
 	private State parent;
 
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
 	private List<State> children;
-
-	public State() {
-		super();
-	}
 
 	public State(String name, String description, boolean initial) {
 		this.name = name;
@@ -88,84 +104,7 @@ public class State implements Serializable {
 		this.initial = initial;
 		this.historyEntries = new HashSet<>();
 		this.files = new ArrayList<>();
-		// this.nextStates = new HashMap<>();
 		this.children = new ArrayList<>();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public Workflow getWorkflow() {
-		return workflow;
-	}
-
-	public Set<HistoryEntry> getHistoryEntries() {
-		return historyEntries;
-	}
-
-	public List<StateNavigationEntry> getNextStates() {
-		return nextStates;
-	}
-
-	public State getParent() {
-		return parent;
-	}
-
-	public boolean isInitial() {
-		return initial;
-	}
-
-	public void setInitial(boolean initial) {
-		this.initial = initial;
-	}
-
-	public void setParent(State parent) {
-		this.parent = parent;
-	}
-
-	public List<State> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<State> children) {
-		this.children = children;
-	}
-
-	public void setNextStates(List<StateNavigationEntry> nextStates) {
-		this.nextStates = nextStates;
-	}
-
-	public List<BlobFile> getFiles() {
-		return files;
-	}
-
-	public void setFiles(List<BlobFile> files) {
-		this.files = files;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setWorkflow(Workflow workflow) {
-		this.workflow = workflow;
 	}
 
 	public void addHistoryEntry(HistoryEntry entry) {
@@ -201,57 +140,8 @@ public class State implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((files == null) ? 0 : files.hashCode());
-		result = prime * result + ((historyEntries == null) ? 0 : historyEntries.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((workflow == null) ? 0 : workflow.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		State other = (State) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		// if (nextStates == null) {
-		// if (other.nextStates != null)
-		// return false;
-		// } else if (!nextStates.equals(other.nextStates))
-		// return false;
-		if (parent == null) {
-			if (other.parent != null)
-				return false;
-		} else if (!parent.equals(other.parent))
-			return false;
-		if (workflow == null) {
-			if (other.workflow != null)
-				return false;
-		} else if (!workflow.equals(other.workflow))
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
+		// do not remove | around id, it is used to get the id in converter
 		return "State [id=|" + id + "|, name=" + name + ", initial=" + initial + "]";
 	}
 

@@ -20,6 +20,11 @@ import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * Entity implementation class for Entity: Comment
  * 
@@ -27,6 +32,8 @@ import javax.validation.constraints.Size;
  */
 @SuppressWarnings("serial")
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode
 @NamedQueries({
 		@NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
 		@NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c " + "WHERE c.id=:id"),
@@ -35,26 +42,29 @@ import javax.validation.constraints.Size;
 public class Comment implements Serializable {
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Getter
+	@Setter
 	@Size(min = 1, max = 512)
 	private String description;
 
+	@Getter
 	@NotNull
 	@ManyToOne
 	private User user;
 
+	@Getter
 	@NotNull
 	@ManyToOne
 	private Project project;
 
+	@Getter
+	@Setter
 	@NotNull
 	private Date postDate;
-
-	public Comment() {
-		super();
-	}
 
 	public Comment(User user, Project project, String description) {
 		this.setUser(user);
@@ -63,67 +73,14 @@ public class Comment implements Serializable {
 		this.postDate = new Date();
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
 	public void setUser(User user) {
 		this.user = user;
 		this.user.add(this);
 	}
 
-	public Project getProject() {
-		return project;
-	}
-
 	public void setProject(Project project) {
 		this.project = project;
 		this.project.add(this);
-	}
-
-	/**
-	 * @return the postDate
-	 */
-	public Date getPostDate() {
-		return postDate;
-	}
-
-	/**
-	 * @param postDate
-	 *            the postDate to set
-	 */
-	public void setPostDate(Date postDate) {
-		this.postDate = postDate;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Comment))
-			return false;
-		return (((Comment) o).id).equals(this.id);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((project == null) ? 0 : project.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		return result;
 	}
 
 	@Override

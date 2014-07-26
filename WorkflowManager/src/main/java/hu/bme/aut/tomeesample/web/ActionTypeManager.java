@@ -17,16 +17,18 @@ import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 
 /**
  * @author Gergely Várkonyi
  */
 @Named
 @RequestScoped
+// TODO: check if logger works fine with this annotation
+@Log4j
 public class ActionTypeManager {
 
-	private static final Logger logger = Logger.getLogger(ActionTypeManager.class);
+	// private static final log log = log.getlog(ActionTypeManager.class);
 
 	@Inject
 	private ActionTypeService actionTypeService;
@@ -53,8 +55,8 @@ public class ActionTypeManager {
 				isVisible.put(actionType.getId(), false);
 			}
 		}
-		logger.debug("ActionTypes listed: " + actionTypeList.size());
-		logger.debug("ActionTypes visibleMap: " + isVisible);
+		log.debug("ActionTypes listed: " + actionTypeList.size());
+		log.debug("ActionTypes visibleMap: " + isVisible);
 		return actionTypeList;
 	}
 
@@ -65,11 +67,11 @@ public class ActionTypeManager {
 		try {
 			// Create new actionType
 			ActionType newActionType = new ActionType(actionTypeName);
-			logger.debug("Creating actionType: " + newActionType.getActionTypeName());
+			log.debug("Creating actionType: " + newActionType.getActionTypeName());
 			actionTypeService.create(newActionType);
 		} catch (Exception e) {
-			logger.debug("Error while creating actionType");
-			logger.debug(e.getMessage());
+			log.debug("Error while creating actionType");
+			log.debug(e.getMessage());
 		}
 		return "/auth/admin/actionTypes.xhtml";
 	}
@@ -83,19 +85,19 @@ public class ActionTypeManager {
 	public String deleteActionType(ActionType actionType) {
 		try {
 			actionTypeService.removeDetached(actionType);
-			logger.debug("Deleting actionType: " + actionType.toString());
+			log.debug("Deleting actionType: " + actionType.toString());
 		} catch (Exception e) {
-			logger.debug("Error while deleting actionType");
-			logger.debug(e.getMessage());
+			log.debug("Error while deleting actionType");
+			log.debug(e.getMessage());
 		}
 		return "/auth/admin/actionTypes.xhtml";
 	}
 
 	/**
-	 * Setting the given {@link ActionType}'s visibility 
+	 * Setting the given {@link ActionType}'s visibility
 	 * 
 	 * @param actionTypeID
-	 * 				Id of the actionType to hide or show
+	 *            Id of the actionType to hide or show
 	 */
 	public String showOrHide(Long actionTypeID) {
 		if (isVisible.get(actionTypeID)) {
@@ -113,10 +115,10 @@ public class ActionTypeManager {
 			// save changes
 			actionTypeService.update(actionType);
 			roleService.update(role);
-			logger.debug("Role: " + role + " was removed from " + actionType + ".");
+			log.debug("Role: " + role + " was removed from " + actionType + ".");
 		} catch (Exception e) {
-			logger.debug("Error while deleting role from actionType");
-			logger.debug(e.getMessage());
+			log.debug("Error while deleting role from actionType");
+			log.debug(e.getMessage());
 		}
 		return "/auth/admin/actionTypes.xhtml";
 	}
@@ -125,7 +127,7 @@ public class ActionTypeManager {
 	 * Adding {@link ActionType} to the selected {@link Role}
 	 * 
 	 * @param actionType
-	 * 		 to add to the {@link Role}
+	 *            to add to the {@link Role}
 	 */
 	public String addRoleToActionType(ActionType actionType) {
 		try {
@@ -137,11 +139,11 @@ public class ActionTypeManager {
 				// save changes
 				actionTypeService.update(actionType);
 				roleService.update(role);
-				logger.debug("Role: " + role + " was added to " + actionType + ".");
+				log.debug("Role: " + role + " was added to " + actionType + ".");
 			}
 		} catch (Exception e) {
-			logger.debug("Error while adding role for actionType");
-			logger.debug(e.getMessage());
+			log.debug("Error while adding role for actionType");
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
 		return "/auth/admin/actionTypes.xhtml";
@@ -160,7 +162,7 @@ public class ActionTypeManager {
 	 * Returns the list of {@link Role}s which connected with the given {@link ActionType}
 	 * 
 	 * @param actionType
-	 * 			related {@link ActionType}
+	 *            related {@link ActionType}
 	 * 
 	 * @return list of {@link Role}s
 	 */

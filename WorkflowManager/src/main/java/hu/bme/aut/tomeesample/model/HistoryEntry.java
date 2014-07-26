@@ -19,12 +19,21 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Entity implementation class for Entity: HistoryEntry
  * 
  */
 @SuppressWarnings("serial")
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @NamedQueries({
 		@NamedQuery(name = "HistoryEntry.findAll", query = "SELECT he FROM HistoryEntry he"),
 		@NamedQuery(name = "HistoryEntry.findById", query = "SELECT he FROM HistoryEntry he WHERE he.id=:id"),
@@ -34,98 +43,37 @@ import javax.validation.constraints.Size;
 public class HistoryEntry implements Serializable {
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Getter
+	@Setter
 	@Size(min = 10, max = 512)
 	private Date when;
 
+	@Getter
+	@Setter
 	@NotNull
 	@Size(min = 5, max = 16)
 	private String userName;
 
+	@Getter
+	@Setter
 	@NotNull
 	@ManyToOne
 	private State state;
 
+	@Getter
+	@Setter
 	@NotNull
 	@Size(min = 2, max = 20)
 	private String actionTypeName;
 
+	@Getter
+	@Setter
 	@NotNull
 	@OneToOne
 	private Project project;
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getUser() {
-		return userName;
-	}
-
-	public void setUser(String user) {
-		this.userName = user;
-	}
-
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
-
-	public Date getWhen() {
-		return when;
-	}
-
-	public void setWhen(Date when) {
-		this.when = when;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public State getStateName() {
-		return state;
-	}
-
-	public void setStateName(State state) {
-		this.state = state;
-	}
-
-	public String getActionTypeName() {
-		return actionTypeName;
-	}
-
-	public void setActionTypeName(String actionTypeName) {
-		this.actionTypeName = actionTypeName;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof HistoryEntry))
-			return false;
-		return (((HistoryEntry) o).id).equals(this.id);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((actionTypeName == null) ? 0 : actionTypeName.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((project == null) ? 0 : project.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-		result = prime * result + ((when == null) ? 0 : when.hashCode());
-		return result;
-	}
 
 }

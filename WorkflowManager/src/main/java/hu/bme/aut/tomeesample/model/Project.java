@@ -28,6 +28,11 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * Entity implementation class for Entity: Project
  * 
@@ -36,6 +41,8 @@ import javax.validation.constraints.Size;
  */
 @SuppressWarnings("serial")
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode
 @NamedQueries({
 		@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p"),
 		@NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p "
@@ -48,37 +55,48 @@ import javax.validation.constraints.Size;
 public class Project implements Serializable {
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Getter
+	@Setter
 	@NotNull
 	@Size(min = 5, max = 16)
 	@Column(unique = true)
 	private String name;
 
+	@Getter
+	@Setter
 	@Size(min = 13, max = 512)
 	private String description;
 
+	@Getter
+	@Setter
 	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
 	private State currentState;
 
+	@Getter
+	@Setter
 	@NotNull
 	@ManyToOne
 	private Workflow workflow;
 
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
 
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Set<ProjectAssignment> projectAssignments;
 
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
-
-	public Project() {
-		super();
-	}
 
 	public Project(String name, String description, Workflow workflow) {
 		this.name = name;
@@ -91,75 +109,17 @@ public class Project implements Serializable {
 		this.comments = new ArrayList<>();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public State getCurrentState() {
-		return currentState;
-	}
-
-	public Workflow getWorkflow() {
-		return workflow;
-	}
-
-	public List<HistoryEntry> getHistoryEntries() {
-		return historyEntries;
-	}
-
-	/**
-	 * @param historyEntries
-	 *            the historyEntries to set
-	 */
-	public void setHistoryEntries(List<HistoryEntry> historyEntries) {
-		this.historyEntries = historyEntries;
-	}
-
-	public Set<ProjectAssignment> getProjectAssignments() {
-		return projectAssignments;
-	}
-
-	/**
-	 * @param projectAssignments
-	 *            the projectAssignments to set
-	 */
-	public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
-		this.projectAssignments = projectAssignments;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setCurrentState(State currentState) {
-		this.currentState = currentState;
-	}
-
-	public void setWorkflow(Workflow workflow) {
-		this.workflow = workflow;
-	}
-
 	public void add(HistoryEntry entry) {
-		if (historyEntries == null)
+		if (historyEntries == null) {
 			historyEntries = new ArrayList<HistoryEntry>();
+		}
 		historyEntries.add(entry);
 	}
 
 	public void add(ProjectAssignment assignment) {
-		if (this.getProjectAssignments() == null)
+		if (this.getProjectAssignments() == null) {
 			this.setProjectAssignments(new HashSet<ProjectAssignment>());
+		}
 		projectAssignments.add(assignment);
 	}
 
@@ -171,65 +131,15 @@ public class Project implements Serializable {
 		return projectAssignments.remove(assignment);
 	}
 
-	/**
-	 * @return the comments
-	 */
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	/**
-	 * @param comments
-	 *            the comments to set
-	 */
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
 	public void add(Comment comment) {
-		if (comments == null)
+		if (comments == null) {
 			comments = new ArrayList<Comment>();
+		}
 		comments.add(comment);
 	}
 
 	public void remove(Comment comment) {
 		comments.remove(comment);
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Project)) {
-			return false;
-		}
-		Project other = (Project) obj;
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		return true;
 	}
 
 	@Override

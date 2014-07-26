@@ -15,68 +15,50 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Entity implementation class for Entity: Role
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @SuppressWarnings("serial")
 public class Role implements Serializable {
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Getter
+	@Setter
 	@Column(unique = true)
 	private String name;
 
+	@Getter
+	@Setter
 	@ManyToMany(targetEntity = ActionType.class, fetch = FetchType.EAGER)
-	private Set<ActionType> actionTypes;
+	private Set<ActionType> actionTypes = new HashSet<>();;
 
+	@Getter
 	@ManyToMany(targetEntity = hu.bme.aut.tomeesample.model.User.class, mappedBy = "roles")
-	private Set<User> users;
-
-	public Role() {
-		super();
-		this.users = new HashSet<>();
-		this.actionTypes = new HashSet<>();
-	}
+	private Set<User> users = new HashSet<>();;
 
 	public Role(String name) {
 		this();
 		this.name = name;
 	}
 
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the users
-	 */
-	public Set<User> getUsers() {
-		return users;
-	}
+	// TODO: check delegate in lombok for these methods:
 
 	/**
 	 * @param user
@@ -112,61 +94,5 @@ public class Role implements Serializable {
 	 */
 	public boolean removeActionType(ActionType actionType) {
 		return actionTypes.remove(actionType);
-	}
-
-	/**
-	 * @return the actionTypes
-	 */
-	public Set<ActionType> getActionTypes() {
-		return actionTypes;
-	}
-
-	/**
-	 * @param actionTypes
-	 *            the actionTypes to set
-	 */
-	public void setActionTypes(Set<ActionType> actionTypes) {
-		this.actionTypes = actionTypes;
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Role)) {
-			return false;
-		}
-		Role other = (Role) obj;
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return name;
 	}
 }

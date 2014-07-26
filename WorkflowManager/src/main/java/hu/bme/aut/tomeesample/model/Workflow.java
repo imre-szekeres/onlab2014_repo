@@ -22,6 +22,12 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Entity implementation class for Entity: Workflow
  * 
@@ -30,6 +36,9 @@ import javax.validation.constraints.Size;
  */
 @SuppressWarnings("serial")
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @NamedQueries({
 		@NamedQuery(name = "Workflow.findAll", query = "SELECT w FROM Workflow w"),
 		@NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w "
@@ -40,42 +49,35 @@ import javax.validation.constraints.Size;
 public class Workflow implements Serializable {
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Getter
+	@Setter
 	@NotNull
 	@Size(min = 5, max = 32)
 	private String name;
 
+	@Getter
+	@Setter
 	@NotNull
 	@Size(min = 16, max = 512)
 	private String description;
 
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "workflow", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private List<State> states = new ArrayList<State>();
 
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "workflow")
 	private List<Project> projects = new ArrayList<Project>();
-
-	public Workflow() {
-		super();
-	}
 
 	public Workflow(String name, String description) {
 		this.name = name;
 		this.description = description;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
 	}
 
 	public State getInitialState() {
@@ -87,30 +89,6 @@ public class Workflow implements Serializable {
 		}
 		// Should never happen
 		throw new IllegalArgumentException("There is not intial state for workflow: " + this.id);
-	}
-
-	public List<State> getStates() {
-		return states;
-	}
-
-	public List<Project> getProjects() {
-		return projects;
-	}
-
-	public void setStates(List<State> states) {
-		this.states = states;
-	}
-
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public void addState(State state) {
@@ -129,9 +107,6 @@ public class Workflow implements Serializable {
 	}
 
 	public void addAllStates(Collection<State> states) {
-		// if (states == null) {
-		// states = new ArrayList<>();
-		// }
 		for (State state : states) {
 			if (state != null && !getStates().contains(state)) {
 				getStates().add(state);
@@ -156,8 +131,7 @@ public class Workflow implements Serializable {
 	 * Checks if this workflow contains all the states given as argument.
 	 * 
 	 * @param states
-	 *            that are checked if they are contained already by this
-	 *            <code>Workflow</code>
+	 *            that are checked if they are contained already by this <code>Workflow</code>
 	 * @return true if and only if all the states are contained
 	 * */
 	public boolean containsAll(Collection<State> states) {
@@ -178,47 +152,6 @@ public class Workflow implements Serializable {
 		List<State> basicStates = new ArrayList<>();
 		basicStates.add(initialState);
 		return basicStates;
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Workflow)) {
-			return false;
-		}
-		Workflow other = (Workflow) obj;
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Workflow [id=" + id + ", name=" + name + "]";
 	}
 
 }
