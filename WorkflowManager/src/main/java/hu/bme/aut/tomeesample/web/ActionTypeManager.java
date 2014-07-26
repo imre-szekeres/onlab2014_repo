@@ -44,7 +44,7 @@ public class ActionTypeManager {
 	}
 
 	/**
-	 * @return All actionType
+	 * @return All {@link ActionType}
 	 */
 	public List<ActionType> getActionTypeList() {
 		actionTypeList = actionTypeService.findAll();
@@ -59,7 +59,7 @@ public class ActionTypeManager {
 	}
 
 	/**
-	 * Creates a actionType from the attributes and saves it.
+	 * Creates an {@link ActionType} from the attributes and saves it.
 	 */
 	public String addActionType() {
 		try {
@@ -70,29 +70,33 @@ public class ActionTypeManager {
 		} catch (Exception e) {
 			logger.debug("Error while creating actionType");
 			logger.debug(e.getMessage());
-			e.printStackTrace();
 		}
 		return "/auth/admin/actionTypes.xhtml";
 	}
 
 	/**
-	 * Deletes the given actionType
+	 * Deletes the given {@link ActionType}
 	 * 
 	 * @param actionType
 	 *            ActionType to delete
 	 */
 	public String deleteActionType(ActionType actionType) {
 		try {
-			logger.debug("Deleting actionType: " + actionType.toString());
 			actionTypeService.removeDetached(actionType);
+			logger.debug("Deleting actionType: " + actionType.toString());
 		} catch (Exception e) {
 			logger.debug("Error while deleting actionType");
 			logger.debug(e.getMessage());
-			e.printStackTrace();
 		}
 		return "/auth/admin/actionTypes.xhtml";
 	}
 
+	/**
+	 * Setting the given {@link ActionType}'s visibility 
+	 * 
+	 * @param actionTypeID
+	 * 				Id of the actionType to hide or show
+	 */
 	public String showOrHide(Long actionTypeID) {
 		if (isVisible.get(actionTypeID)) {
 			isVisible.put(actionTypeID, false);
@@ -106,21 +110,23 @@ public class ActionTypeManager {
 		try {
 			// Remove role
 			actionType.remove(role);
-			logger.debug("Role: " + role + " was removed from " + actionType + ".");
-			logger.debug(role.getActionTypes());
-			logger.debug(actionType.getRoles());
 			// save changes
 			actionTypeService.update(actionType);
 			roleService.update(role);
-			logger.debug("Deleting was persisted.");
+			logger.debug("Role: " + role + " was removed from " + actionType + ".");
 		} catch (Exception e) {
 			logger.debug("Error while deleting role from actionType");
 			logger.debug(e.getMessage());
-			e.printStackTrace();
 		}
 		return "/auth/admin/actionTypes.xhtml";
 	}
 
+	/**
+	 * Adding {@link ActionType} to the selected {@link Role}
+	 * 
+	 * @param actionType
+	 * 		 to add to the {@link Role}
+	 */
 	public String addRoleToActionType(ActionType actionType) {
 		try {
 			// Get selected role
@@ -131,6 +137,7 @@ public class ActionTypeManager {
 				// save changes
 				actionTypeService.update(actionType);
 				roleService.update(role);
+				logger.debug("Role: " + role + " was added to " + actionType + ".");
 			}
 		} catch (Exception e) {
 			logger.debug("Error while adding role for actionType");
@@ -140,10 +147,23 @@ public class ActionTypeManager {
 		return "/auth/admin/actionTypes.xhtml";
 	}
 
-	public void selectedRoleChanged(ValueChangeEvent e) {
-		selectedRoleId = (Long) e.getNewValue();
+	/**
+	 * Change the selected {@link Role}
+	 * 
+	 * @param event
+	 */
+	public void selectedRoleChanged(ValueChangeEvent event) {
+		selectedRoleId = (Long) event.getNewValue();
 	}
 
+	/**
+	 * Returns the list of {@link Role}s which connected with the given {@link ActionType}
+	 * 
+	 * @param actionType
+	 * 			related {@link ActionType}
+	 * 
+	 * @return list of {@link Role}s
+	 */
 	public List<Role> getRoleList(ActionType actionType) {
 		ArrayList<Role> roles = new ArrayList<>();
 		Set<Role> roleSet = actionType.getRoles();
