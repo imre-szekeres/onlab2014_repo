@@ -54,27 +54,29 @@ public class ProfileManager implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		if (conversation.isTransient())
+		if (conversation.isTransient()) {
 			conversation.begin();
+		}
 		user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject");
 		isEditable = true;
 	}
 
 	public String profileOf(User user) {
-		if (!conversation.isTransient())
+		if (!conversation.isTransient()) {
 			conversation.end();
+		}
 		this.user = user;
 		User subject = ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance());
-		if (!subject.equals(user))
+		if (!subject.equals(user)) {
 			isEditable = false;
+		}
 		conversation.begin();
 		logger.debug(" profile of " + user.getUsername() + " was visited by " + subject.getUsername());
 		return "/auth/profile.xhtml";
 	}
 
 	/**
-	 * Returns the <code>Role</code>s owned by the currently managed
-	 * <code>User</code>.
+	 * Returns the <code>Role</code>s owned by the currently managed <code>User</code>.
 	 * 
 	 * @return a list containing the roles
 	 * */
@@ -85,8 +87,7 @@ public class ProfileManager implements Serializable {
 	}
 
 	/**
-	 * Returns the <code>Role</code>s owned by the currently managed
-	 * <code>User</code>.
+	 * Returns the <code>Role</code>s owned by the currently managed <code>User</code>.
 	 * 
 	 * @return a list containing the roles
 	 * */
@@ -117,8 +118,9 @@ public class ProfileManager implements Serializable {
 			return;
 		}
 		User subject = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject");
-		if (!subject.getPassword().equals(value))
+		if (!subject.getPassword().equals(value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid old password was given", "old password was invalid"));
+		}
 	}
 
 	/**
@@ -138,10 +140,12 @@ public class ProfileManager implements Serializable {
 	 * */
 	public void validateNewPassword(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (oldPassword == null || (oldPassword != null && oldPassword.isEmpty()))
+		if (oldPassword == null || (oldPassword != null && oldPassword.isEmpty())) {
 			return;
-		if (!userService.validatePassword((String) value))
+		}
+		if (!userService.validatePassword((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password!", "invalid password!"));
+		}
 	}
 
 	/**
@@ -160,8 +164,9 @@ public class ProfileManager implements Serializable {
 	 * */
 	public void validateEmailIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateEmail((String) value))
+		if (!userService.validateEmail((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid email format!", "invalid email format!"));
+		}
 	}
 
 	/**
@@ -181,23 +186,24 @@ public class ProfileManager implements Serializable {
 	 * */
 	public void validateDescriptionIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateDescription(((String) value).trim()))
+		if (!userService.validateDescription(((String) value).trim())) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"description length must be between 0 and 1024 characters!",
 					"description length must be between 0 and 1024 characters!"));
+		}
 	}
 
 	/**
-	 * Modifies the current <code>User</code>, which is the currently logged in
-	 * <code>User</code> travelling in the session;
+	 * Modifies the current <code>User</code>, which is the currently logged in <code>User</code> travelling in the session;
 	 * 
 	 * @return the pageID to navigate to after the transaction
 	 * */
 	public String modify() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			if (oldPassword != null && !oldPassword.isEmpty())
+			if (oldPassword != null && !oldPassword.isEmpty()) {
 				user.setPassword(newPassword);
+			}
 
 			userService.update(user);
 			conversation.end();
@@ -220,7 +226,7 @@ public class ProfileManager implements Serializable {
 		User subject = ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance());
 		try {
 			Role r = roleService.findByName(role);
-			user.add(r);
+			user.addRole(r);
 			user = userService.update(user);
 
 			conversation.end();

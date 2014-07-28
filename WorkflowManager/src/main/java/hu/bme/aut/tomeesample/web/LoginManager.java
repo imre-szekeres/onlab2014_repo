@@ -83,12 +83,13 @@ public class LoginManager {
 		User subject = ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance());
 		try {
 			Role uRole = roleService.findByName(role == null ? "visitor" : role);
-			subject.add(uRole);
+			subject.addRole(uRole);
 			userService.create(subject);
 			logger.debug(" user " + subject.getUsername() + " was created by " + subject == null ? null : subject.getUsername());
 
-			if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject") == null)
+			if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject") == null) {
 				return login();
+			}
 		} catch (Exception e) {
 			logger.error(" in register: ", e);
 		}
@@ -171,8 +172,9 @@ public class LoginManager {
 	 * */
 	public void validatePassword(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (subject != null)
+		if (subject != null) {
 			checkPassword((String) value);
+		}
 	}
 
 	/**
@@ -186,8 +188,9 @@ public class LoginManager {
 	 * */
 	private void checkPassword(String password) throws ValidatorException {
 		try {
-			if (!subject.getPassword().equals(password))
+			if (!subject.getPassword().equals(password)) {
 				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username or password", "pasword or username is invalid"));
+			}
 		} catch (Exception e) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username or password", "pasword or username is invalid"), e);
 		}
@@ -209,8 +212,9 @@ public class LoginManager {
 	 * */
 	public void validateUsernameIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateUsername((String) value))
+		if (!userService.validateUsername((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "username must be between 7 and 32 characters or already exists!", "username must be between 7 and 32 characters or already exists!"));
+		}
 	}
 
 	/**
@@ -229,8 +233,9 @@ public class LoginManager {
 	 * */
 	public void validatePasswordIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validatePassword((String) value))
+		if (!userService.validatePassword((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password!", "invalid password!"));
+		}
 		this.subject.setPassword((String) value);
 	}
 
@@ -251,8 +256,9 @@ public class LoginManager {
 	 * */
 	public void validatePasswordAgainIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validatePasswords(this.subject.getPassword(), (String) value))
+		if (!userService.validatePasswords(this.subject.getPassword(), (String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "passwords do not match!", "passwords do not match!"));
+		}
 	}
 
 	/**
@@ -271,8 +277,9 @@ public class LoginManager {
 	 * */
 	public void validateEmailIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateEmail((String) value))
+		if (!userService.validateEmail((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid email format!", "invalid email format!"));
+		}
 	}
 
 	/**
@@ -292,10 +299,11 @@ public class LoginManager {
 	 * */
 	public void validateDescriptionIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateDescription(((String) value).trim()))
+		if (!userService.validateDescription(((String) value).trim())) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"description length must be between 0 and 1024 characters!",
 					"description length must be between 0 and 1024 characters!"));
+		}
 	}
 
 	/**

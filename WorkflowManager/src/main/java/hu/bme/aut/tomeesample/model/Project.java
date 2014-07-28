@@ -151,23 +151,25 @@ public class Project implements Serializable {
 		this.workflow = workflow;
 	}
 
-	public void add(HistoryEntry entry) {
-		if (historyEntries == null)
+	public void addHistoryEntry(HistoryEntry entry) {
+		if (historyEntries == null) {
 			historyEntries = new ArrayList<HistoryEntry>();
+		}
 		historyEntries.add(entry);
 	}
 
-	public void add(ProjectAssignment assignment) {
-		if (this.getProjectAssignments() == null)
+	public void addProjectAssignment(ProjectAssignment assignment) {
+		if (this.getProjectAssignments() == null) {
 			this.setProjectAssignments(new HashSet<ProjectAssignment>());
+		}
 		projectAssignments.add(assignment);
 	}
 
-	public boolean remove(HistoryEntry entry) {
+	public boolean removeHistoryEntry(HistoryEntry entry) {
 		return historyEntries.remove(entry);
 	}
 
-	public boolean remove(ProjectAssignment assignment) {
+	public boolean removeProjectAssignment(ProjectAssignment assignment) {
 		return projectAssignments.remove(assignment);
 	}
 
@@ -186,13 +188,14 @@ public class Project implements Serializable {
 		this.comments = comments;
 	}
 
-	public void add(Comment comment) {
-		if (comments == null)
+	public void addComment(Comment comment) {
+		if (comments == null) {
 			comments = new ArrayList<Comment>();
+		}
 		comments.add(comment);
 	}
 
-	public void remove(Comment comment) {
+	public void removeComment(Comment comment) {
 		comments.remove(comment);
 	}
 

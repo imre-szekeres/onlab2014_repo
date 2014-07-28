@@ -69,7 +69,7 @@ public class ActionType implements Serializable {
 		role.addActionType(this);
 	}
 
-	public void remove(Role role) {
+	public void removeRole(Role role) {
 		role.removeActionType(this);
 		roles.remove(role);
 	}

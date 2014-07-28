@@ -109,7 +109,7 @@ public class ActionTypeManager {
 	public String deleteRoleFromActionType(Role role, ActionType actionType) {
 		try {
 			// Remove role
-			actionType.remove(role);
+			actionType.removeRole(role);
 			// save changes
 			actionTypeService.update(actionType);
 			roleService.update(role);

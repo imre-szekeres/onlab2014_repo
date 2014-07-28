@@ -79,8 +79,7 @@ public class ProjectManager implements Serializable {
 	}
 
 	/**
-	 * Fetches the <code>User</code>s already assigned to the specified
-	 * <code>Project</code>.
+	 * Fetches the <code>User</code>s already assigned to the specified <code>Project</code>.
 	 * 
 	 * @return a list of all the found projects
 	 * */
@@ -90,18 +89,19 @@ public class ProjectManager implements Serializable {
 	}
 
 	/**
-	 * Fetches the <code>User</code>s already assigned to the specified
-	 * <code>Project</code>.
+	 * Fetches the <code>User</code>s already assigned to the specified <code>Project</code>.
 	 * 
 	 * @return a list of all the found projects
 	 * */
 	public List<User> filterAssigned(List<User> users) {
-		if (project.getProjectAssignments() == null)
+		if (project.getProjectAssignments() == null) {
 			return users;
+		}
 		List<User> results = new ArrayList<User>();
 		for (User user : users) {
-			if (notAmong(user, project.getProjectAssignments()))
+			if (notAmong(user, project.getProjectAssignments())) {
 				results.add(user);
+			}
 		}
 		return results;
 	}
@@ -115,8 +115,9 @@ public class ProjectManager implements Serializable {
 	 * */
 	private static boolean notAmong(User user, Set<ProjectAssignment> assignments) {
 		for (ProjectAssignment assignment : assignments) {
-			if (user.equals(assignment.getUser()))
+			if (user.equals(assignment.getUser())) {
 				return false;
+			}
 		}
 		return true;
 	}
@@ -134,14 +135,14 @@ public class ProjectManager implements Serializable {
 
 	public String profileOf(Project project) {
 		this.project = project;
-		if (conversation.isTransient())
+		if (conversation.isTransient()) {
 			conversation.begin();
+		}
 		return "/auth/project_profile.xhtml";
 	}
 
 	/**
-	 * Validates the given project name against the constraints given in the
-	 * <code>Project</code> class.
+	 * Validates the given project name against the constraints given in the <code>Project</code> class.
 	 * 
 	 * @param name
 	 *            of the project that will be validated
@@ -149,13 +150,13 @@ public class ProjectManager implements Serializable {
 	 *         constraints given in the class <code>Project</code>
 	 * */
 	public void validateName(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-		if (!projectService.validateName((String) value))
+		if (!projectService.validateName((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "must be between 5 and 16 characters long", "must be between 5 and 16 characters long"));
+		}
 	}
 
 	/**
-	 * Validates the given description against the constraints given in the
-	 * <code>Project</code> class.
+	 * Validates the given description against the constraints given in the <code>Project</code> class.
 	 * 
 	 * @param description
 	 *            that will be validated
@@ -163,13 +164,13 @@ public class ProjectManager implements Serializable {
 	 *         given in the class <code>Project</code>
 	 * */
 	public void validateDescription(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-		if (!projectService.validateDescription((String) value))
+		if (!projectService.validateDescription((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "must be between 13 and 512 characters long", "must be between 13 and 512 characters long"));
+		}
 	}
 
 	/**
-	 * Creates a brand new <code>Project</code> with the specified
-	 * <code>Workflow</code> as a template.
+	 * Creates a brand new <code>Project</code> with the specified <code>Workflow</code> as a template.
 	 * 
 	 * @return the pageID to navigate to after the transaction
 	 * */
@@ -181,8 +182,9 @@ public class ProjectManager implements Serializable {
 			project.setCurrentState(workflow.getInitialState());
 			projectService.create(project);
 
-			if (!conversation.isTransient())
+			if (!conversation.isTransient()) {
 				conversation.end();
+			}
 
 			String message = "project " + project.getName() + " created";
 			FacesMessageUtils.infoMessage(context, message);
@@ -194,8 +196,7 @@ public class ProjectManager implements Serializable {
 	}
 
 	/**
-	 * Creates a brand new <code>Project</code> with the specified
-	 * <code>Workflow</code> as a template.
+	 * Creates a brand new <code>Project</code> with the specified <code>Workflow</code> as a template.
 	 * 
 	 * @return the pageID to navigate to after the transaction
 	 * */
@@ -204,8 +205,9 @@ public class ProjectManager implements Serializable {
 		try {
 
 			projectService.removeDetached(project);
-			if (!conversation.isTransient())
+			if (!conversation.isTransient()) {
 				conversation.end();
+			}
 
 			String message = "project " + project.getName() + " was removed";
 			FacesMessageUtils.infoMessage(context, message);
@@ -218,8 +220,7 @@ public class ProjectManager implements Serializable {
 
 	/**
 	 * Assigns a <code>User</code> to the specified <code>Project</code> by
-	 * creating a new <code>ProjectAssignment</code> that binds a specific
-	 * <code>User</code> to a specific <code>Project</code>.
+	 * creating a new <code>ProjectAssignment</code> that binds a specific <code>User</code> to a specific <code>Project</code>.
 	 * 
 	 * @return the pageID to navigate to after the transaction
 	 * */
@@ -243,16 +244,15 @@ public class ProjectManager implements Serializable {
 
 	/**
 	 * Unassigns a <code>User</code> from the specified <code>Project</code> by
-	 * removing the <code>ProjectAssignment</code> that binds a specific
-	 * <code>User</code> to a specific <code>Project</code>.
+	 * removing the <code>ProjectAssignment</code> that binds a specific <code>User</code> to a specific <code>Project</code>.
 	 * 
 	 * @return the pageID to navigate to after the transaction
 	 * */
 	public String unassign(User user, ProjectAssignment assignment) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			project.remove(assignment);
-			user.remove(assignment);
+			project.removeProjectAssignment(assignment);
+			user.removeProjectAssignment(assignment);
 
 			assignmentService.removeDetached(assignment);
 

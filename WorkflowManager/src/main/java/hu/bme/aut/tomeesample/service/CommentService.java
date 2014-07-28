@@ -52,8 +52,8 @@ public class CommentService {
 		Project managedp = em.merge(project);
 		User managedu = em.merge(user);
 		Comment managedc = em.merge(comment);
-		managedp.remove(managedc);
-		managedu.remove(managedc);
+		managedp.removeComment(managedc);
+		managedu.removeComment(managedc);
 		em.remove(managedc);
 		return managedu;
 	}

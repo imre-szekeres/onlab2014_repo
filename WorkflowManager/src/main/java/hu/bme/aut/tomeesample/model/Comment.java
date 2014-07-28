@@ -81,7 +81,7 @@ public class Comment implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-		this.user.add(this);
+		this.user.addComment(this);
 	}
 
 	public Project getProject() {
@@ -90,7 +90,7 @@ public class Comment implements Serializable {
 
 	public void setProject(Project project) {
 		this.project = project;
-		this.project.add(this);
+		this.project.addComment(this);
 	}
 
 	/**
@@ -110,8 +110,9 @@ public class Comment implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Comment))
+		if (!(o instanceof Comment)) {
 			return false;
+		}
 		return (((Comment) o).id).equals(this.id);
 	}
 

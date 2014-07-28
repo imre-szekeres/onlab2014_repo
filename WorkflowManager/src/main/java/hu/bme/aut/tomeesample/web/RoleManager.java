@@ -50,8 +50,9 @@ public class RoleManager implements Serializable {
 	@PostConstruct
 	public void init() {
 		this.role = new Role();
-		if (conversation.isTransient())
+		if (conversation.isTransient()) {
 			conversation.begin();
+		}
 	}
 
 	/**
@@ -61,8 +62,9 @@ public class RoleManager implements Serializable {
 	 * @return the page id of the profile page
 	 * */
 	public String profileOf(Role role) {
-		if (!conversation.isTransient())
+		if (!conversation.isTransient()) {
 			conversation.end();
+		}
 		this.role = role;
 		conversation.begin();
 		return "/auth/admin/role_profile.xhtml";
@@ -116,15 +118,15 @@ public class RoleManager implements Serializable {
 	 * */
 	public void validateName(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!roleService.validateName(((String) value).trim()))
+		if (!roleService.validateName(((String) value).trim())) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "role name already exists", "role name already exists"));
+		}
 	}
 
 	/**
 	 * 
 	 * 
-	 * @return a list of <code>User</code>s assigned to the given
-	 *         <code>Role</code>
+	 * @return a list of <code>User</code>s assigned to the given <code>Role</code>
 	 * */
 	public List<User> listUsers() {
 		return (this.role == null || this.role.getId() == null) ?
@@ -135,8 +137,7 @@ public class RoleManager implements Serializable {
 	/**
 	 * 
 	 * 
-	 * @return a list of <code>ActionType</code>s assigned to the given
-	 *         <code>Role</code>
+	 * @return a list of <code>ActionType</code>s assigned to the given <code>Role</code>
 	 * */
 	public List<ActionType> listActions() {
 		return (this.role == null || this.role.getId() == null) ?
@@ -154,7 +155,7 @@ public class RoleManager implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		User subject = ManagingUtils.fetchSubjectFrom(context);
 		try {
-			user.remove(this.role);
+			user.removeRole(this.role);
 			user = userService.update(user);
 
 			String message = "role " + this.role.toString() + " was removed from " + user.getUsername();

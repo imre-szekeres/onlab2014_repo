@@ -83,7 +83,7 @@ public class Role implements Serializable {
 	 *            the user to add
 	 * @return true if the user is added
 	 */
-	public boolean add(User user) {
+	public boolean addUser(User user) {
 		return this.users.add(user);
 	}
 
@@ -92,7 +92,7 @@ public class Role implements Serializable {
 	 *            the user to remove
 	 * @return true if the user is removed
 	 */
-	public boolean remove(User user) {
+	public boolean removeUser(User user) {
 		return this.users.remove(user);
 	}
 

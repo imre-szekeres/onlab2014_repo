@@ -39,10 +39,8 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-		@NamedQuery(name = "User.findById", query = "SELECT u FROM User u "
-				+ "WHERE u.id=:id"),
-		@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u "
-				+ "WHERE u.username=:username"),
+		@NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id=:id"),
+		@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.username=:username"),
 })
 @Table(name = "WM_USER")
 public class User implements Serializable {
@@ -159,19 +157,21 @@ public class User implements Serializable {
 		this.description = description;
 	}
 
-	public void add(Comment comment) {
-		if (comments == null)
+	public void addComment(Comment comment) {
+		if (comments == null) {
 			comments = new ArrayList<Comment>();
+		}
 		this.comments.add(comment);
 	}
 
-	public void add(Role role) {
+	public void addRole(Role role) {
 		this.roles.add(role);
 	}
 
-	public void add(ProjectAssignment assignment) {
-		if (this.getProjectAssignments() == null)
+	public void addProjectAssignment(ProjectAssignment assignment) {
+		if (this.getProjectAssignments() == null) {
 			this.setProjectAssignments(new HashSet<ProjectAssignment>());
+		}
 		this.projectAssignments.add(assignment);
 	}
 
@@ -192,15 +192,15 @@ public class User implements Serializable {
 		this.comments = comments;
 	}
 
-	public boolean remove(Comment comment) {
+	public boolean removeComment(Comment comment) {
 		return comments.remove(comment);
 	}
 
-	public boolean remove(Role role) {
+	public boolean removeRole(Role role) {
 		return roles.remove(role);
 	}
 
-	public boolean remove(ProjectAssignment assignment) {
+	public boolean removeProjectAssignment(ProjectAssignment assignment) {
 		return projectAssignments.remove(assignment);
 	}
 
@@ -212,11 +212,13 @@ public class User implements Serializable {
 	 * @return true only if any of the roles has a name like the passed argument
 	 * */
 	public boolean hasRole(String name) {
-		if (name == null)
+		if (name == null) {
 			return true;
+		}
 		for (Role role : roles) {
-			if (name.equals(role.getName()) || "administrator".equals(role.getName()))
+			if (name.equals(role.getName()) || "administrator".equals(role.getName())) {
 				return true;
+			}
 		}
 		return false;
 	}

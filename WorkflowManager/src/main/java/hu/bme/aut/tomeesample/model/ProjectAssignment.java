@@ -47,8 +47,8 @@ public class ProjectAssignment implements Serializable {
 		this.user = user;
 		this.project = project;
 
-		this.user.add(this);
-		this.project.add(this);
+		this.user.addProjectAssignment(this);
+		this.project.addProjectAssignment(this);
 	}
 
 	public Long getId() {
@@ -61,7 +61,7 @@ public class ProjectAssignment implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-		this.user.add(this);
+		this.user.addProjectAssignment(this);
 	}
 
 	public Project getProject() {
@@ -70,7 +70,7 @@ public class ProjectAssignment implements Serializable {
 
 	public void setProject(Project project) {
 		this.project = project;
-		this.project.add(this);
+		this.project.addProjectAssignment(this);
 	}
 
 	/**
