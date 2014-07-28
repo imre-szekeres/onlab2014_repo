@@ -32,10 +32,8 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Workflow.findAll", query = "SELECT w FROM Workflow w"),
-		@NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w "
-				+ "WHERE w.id=:id"),
-		@NamedQuery(name = "Workflow.findByName", query = "SELECT w FROM Workflow w "
-				+ "WHERE w.name=:name")
+		@NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w WHERE w.id=:id"),
+		@NamedQuery(name = "Workflow.findByName", query = "SELECT w FROM Workflow w WHERE w.name=:name")
 })
 public class Workflow implements Serializable {
 
@@ -113,6 +111,12 @@ public class Workflow implements Serializable {
 		this.description = description;
 	}
 
+	/**
+	 * Add {@link State} to this Workflow
+	 * 
+	 * @param state
+	 *            {@link State} to add
+	 */
 	public void addState(State state) {
 		if (getStates() == null) {
 			setStates(new ArrayList<State>());
@@ -124,10 +128,22 @@ public class Workflow implements Serializable {
 
 	}
 
+	/**
+	 * Add {@link Project} to this Workflow
+	 * 
+	 * @param project
+	 *            {@link Project} to add
+	 */
 	public void addProject(Project project) {
 		projects.add(project);
 	}
 
+	/**
+	 * Add {@link State}s to this Workflow
+	 * 
+	 * @param states
+	 *            Collection of {@link State}s to add
+	 */
 	public void addAllStates(Collection<State> states) {
 		// if (states == null) {
 		// states = new ArrayList<>();
@@ -140,14 +156,32 @@ public class Workflow implements Serializable {
 		}
 	}
 
+	/**
+	 * Remove {@link State} from this Workflow
+	 * 
+	 * @param state
+	 *            {@link State} to remove
+	 */
 	public boolean removeState(State state) {
 		return states.remove(state);
 	}
 
+	/**
+	 * Remove {@link State}s from this Workflow
+	 * 
+	 * @param states
+	 *            Collection of {@link State}s to remove
+	 */
 	public boolean removeAllStates(Collection<State> states) {
 		return states.removeAll(states);
 	}
 
+	/**
+	 * Remove {@link Project} from this Workflow
+	 * 
+	 * @param project
+	 *            {@link Project} to remove
+	 */
 	public boolean removeProject(Project project) {
 		return projects.remove(project);
 	}
@@ -156,8 +190,7 @@ public class Workflow implements Serializable {
 	 * Checks if this workflow contains all the states given as argument.
 	 * 
 	 * @param states
-	 *            that are checked if they are contained already by this
-	 *            <code>Workflow</code>
+	 *            that are checked if they are contained already by this <code>Workflow</code>
 	 * @return true if and only if all the states are contained
 	 * */
 	public boolean containsAll(Collection<State> states) {

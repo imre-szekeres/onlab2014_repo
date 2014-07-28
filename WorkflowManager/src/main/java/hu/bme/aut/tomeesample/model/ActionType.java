@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"),
-		@NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at " + "WHERE at.id=:id") })
+		@NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at WHERE at.id=:id") })
 public class ActionType implements Serializable {
 
 	@Id
@@ -64,11 +64,23 @@ public class ActionType implements Serializable {
 		this.roles = roles;
 	}
 
+	/**
+	 * Add {@link Role} to this ActionType
+	 * 
+	 * @param role
+	 *            {@link Role} to add
+	 */
 	public void addRole(Role role) {
 		roles.add(role);
 		role.addActionType(this);
 	}
 
+	/**
+	 * Remove {@link Role} from this ActionType
+	 * 
+	 * @param role
+	 *            {@link Role} to remove
+	 */
 	public void removeRole(Role role) {
 		role.removeActionType(this);
 		roles.remove(role);
@@ -80,28 +92,37 @@ public class ActionType implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		ActionType other = (ActionType) obj;
 		if (actionTypeName == null) {
-			if (other.actionTypeName != null)
+			if (other.actionTypeName != null) {
 				return false;
-		} else if (!actionTypeName.equals(other.actionTypeName))
+			}
+		} else if (!actionTypeName.equals(other.actionTypeName)) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (roles == null) {
-			if (other.roles != null)
+			if (other.roles != null) {
 				return false;
-		} else if (!roles.equals(other.roles))
+			}
+		} else if (!roles.equals(other.roles)) {
 			return false;
+		}
 		return true;
 	}
 

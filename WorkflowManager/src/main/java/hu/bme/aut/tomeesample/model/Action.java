@@ -27,10 +27,8 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Action.findAll", query = "SELECT a FROM Action a"),
-		@NamedQuery(name = "Action.findById", query = "SELECT a FROM Action a "
-				+ "WHERE a.id=:id"),
-		@NamedQuery(name = "Action.findByType", query = "SELECT a FROM Action a "
-				+ "WHERE a.actionType.id=:typeId")
+		@NamedQuery(name = "Action.findById", query = "SELECT a FROM Action a WHERE a.id=:id"),
+		@NamedQuery(name = "Action.findByType", query = "SELECT a FROM Action a WHERE a.actionType.id=:typeId")
 })
 public class Action implements Serializable {
 

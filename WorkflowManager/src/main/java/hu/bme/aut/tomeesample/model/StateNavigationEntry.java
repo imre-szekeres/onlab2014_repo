@@ -27,12 +27,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "StateNavigationEntry.findAll", query = "SELECT sne FROM StateNavigationEntry sne"),
-		@NamedQuery(name = "StateNavigationEntry.findById", query = "SELECT sne FROM StateNavigationEntry sne "
-				+ "WHERE sne.id=:id"),
-		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne "
-				+ "WHERE sne.parent.id=:parentId"),
-		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne "
-				+ "WHERE sne.actionType.id=:typeId AND sne.parent.id=:parentId")
+		@NamedQuery(name = "StateNavigationEntry.findById", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.id=:id"),
+		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.parent.id=:parentId"),
+		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.actionType.id=:typeId AND sne.parent.id=:parentId")
 })
 public class StateNavigationEntry implements Serializable {
 
@@ -105,33 +102,44 @@ public class StateNavigationEntry implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		StateNavigationEntry other = (StateNavigationEntry) obj;
 		if (actionType == null) {
-			if (other.actionType != null)
+			if (other.actionType != null) {
 				return false;
-		} else if (!actionType.equals(other.actionType))
+			}
+		} else if (!actionType.equals(other.actionType)) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (nextState == null) {
-			if (other.nextState != null)
+			if (other.nextState != null) {
 				return false;
-		} else if (!nextState.equals(other.nextState))
+			}
+		} else if (!nextState.equals(other.nextState)) {
 			return false;
+		}
 		if (parent == null) {
-			if (other.parent != null)
+			if (other.parent != null) {
 				return false;
-		} else if (!parent.equals(other.parent))
+			}
+		} else if (!parent.equals(other.parent)) {
 			return false;
+		}
 		return true;
 	}
 

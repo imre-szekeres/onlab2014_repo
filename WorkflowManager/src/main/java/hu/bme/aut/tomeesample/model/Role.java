@@ -17,7 +17,7 @@ import javax.persistence.ManyToMany;
 
 /**
  * Entity implementation class for Entity: Role
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -79,36 +79,44 @@ public class Role implements Serializable {
 	}
 
 	/**
+	 * Add {@link User} to this Role
+	 * 
 	 * @param user
-	 *            the user to add
-	 * @return true if the user is added
+	 *            the {@link User} to add
+	 * @return true if the {@link User} is added
 	 */
 	public boolean addUser(User user) {
 		return this.users.add(user);
 	}
 
 	/**
+	 * Remove {@link User} from this Role
+	 * 
 	 * @param user
-	 *            the user to remove
-	 * @return true if the user is removed
+	 *            the {@link User} to remove
+	 * @return true if the {@link User} is removed
 	 */
 	public boolean removeUser(User user) {
 		return this.users.remove(user);
 	}
 
 	/**
+	 * Add {@link ActionType} to this Role
+	 * 
 	 * @param actionType
-	 *            the actionType to add
-	 * @return true if the actionType is added
+	 *            the {@link ActionType} to add
+	 * @return true if the {@link ActionType} is added
 	 */
 	public boolean addActionType(ActionType actionType) {
 		return actionTypes.add(actionType);
 	}
 
 	/**
+	 * Remove {@link ActionType} from this Role
+	 * 
 	 * @param actionType
-	 *            the actionType to remove
-	 * @return true if the actionType is removed
+	 *            the {@link ActionType} to remove
+	 * @return true if the {@link ActionType} is removed
 	 */
 	public boolean removeActionType(ActionType actionType) {
 		return actionTypes.remove(actionType);

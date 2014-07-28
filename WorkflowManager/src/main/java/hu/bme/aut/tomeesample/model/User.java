@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: User
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -157,6 +157,12 @@ public class User implements Serializable {
 		this.description = description;
 	}
 
+	/**
+	 * Add {@link Comment} to this User
+	 * 
+	 * @param comment
+	 *            {@link Comment} to add
+	 */
 	public void addComment(Comment comment) {
 		if (comments == null) {
 			comments = new ArrayList<Comment>();
@@ -164,10 +170,22 @@ public class User implements Serializable {
 		this.comments.add(comment);
 	}
 
+	/**
+	 * Add {@link Role} to this User
+	 * 
+	 * @param role
+	 *            {@link Role} to add
+	 */
 	public void addRole(Role role) {
 		this.roles.add(role);
 	}
 
+	/**
+	 * Add {@link ProjectAssignment} to this User
+	 * 
+	 * @param projectAssignment
+	 *            {@link ProjectAssignment} to add
+	 */
 	public void addProjectAssignment(ProjectAssignment assignment) {
 		if (this.getProjectAssignments() == null) {
 			this.setProjectAssignments(new HashSet<ProjectAssignment>());
@@ -192,14 +210,32 @@ public class User implements Serializable {
 		this.comments = comments;
 	}
 
+	/**
+	 * Remove {@link Comment} from this User
+	 * 
+	 * @param comment
+	 *            {@link Comment} to remove
+	 */
 	public boolean removeComment(Comment comment) {
 		return comments.remove(comment);
 	}
 
+	/**
+	 * Remove {@link Role} from this User
+	 * 
+	 * @param role
+	 *            {@link Role} to remove
+	 */
 	public boolean removeRole(Role role) {
 		return roles.remove(role);
 	}
 
+	/**
+	 * Remove {@link ProjectAssignment} from this User
+	 * 
+	 * @param projectAssignment
+	 *            {@link ProjectAssignment} to remove
+	 */
 	public boolean removeProjectAssignment(ProjectAssignment assignment) {
 		return projectAssignments.remove(assignment);
 	}
@@ -207,7 +243,7 @@ public class User implements Serializable {
 	/**
 	 * Checks whether the <code>User</code> has any <code>Role</code> with the
 	 * given name.
-	 *
+	 * 
 	 * @param name
 	 * @return true only if any of the roles has a name like the passed argument
 	 * */

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class AccessFilter
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%. %G%"
  */
@@ -42,6 +42,7 @@ public class AccessFilter implements Filter {
 	 */
 	@Override
 	public void destroy() {
+		// FIXME: it is empty, is it okay?
 	}
 
 	/**
@@ -60,12 +61,14 @@ public class AccessFilter implements Filter {
 						"/faces/auth/index.xhtml?faces-redirect=true";
 				hreq.getRequestDispatcher(target).forward(request, response);
 			}
-			if (session.getAttribute("subject") == null && uri.contains("/faces/auth/"))
+			if (session.getAttribute("subject") == null && uri.contains("/faces/auth/")) {
 				hreq.getRequestDispatcher("/faces/login.xhtml?faces-redirect=true").forward(request, response);
-			else if ((uri.contains("/faces/auth/man/") && !((User) session.getAttribute("subject")).hasRole("manager")) ||
-					(uri.contains("/faces/auth/admin/") && !((User) session.getAttribute("subject")).hasRole("administrator")))
+			} else if ((uri.contains("/faces/auth/man/") && !((User) session.getAttribute("subject")).hasRole("manager")) ||
+					(uri.contains("/faces/auth/admin/") && !((User) session.getAttribute("subject")).hasRole("administrator"))) {
 				hreq.getRequestDispatcher("/faces/auth/index.xhtml?faces-redirect=true").forward(request, response);
+			}
 		} catch (Exception e) {
+			// FIXME: we should do something, I guess
 		}
 	}
 
@@ -74,6 +77,7 @@ public class AccessFilter implements Filter {
 	 */
 	@Override
 	public void init(FilterConfig fConfig) throws ServletException {
+		// FIXME: it is empty, is it okay?
 	}
 
 }

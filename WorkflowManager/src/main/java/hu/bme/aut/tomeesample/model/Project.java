@@ -38,12 +38,9 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p"),
-		@NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p "
-				+ "WHERE p.id=:id"),
-		@NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p "
-				+ "WHERE p.name=:name"),
-		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p "
-				+ "WHERE p.workflow.name=:name")
+		@NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p WHERE p.id=:id"),
+		@NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p WHERE p.name=:name"),
+		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name")
 })
 public class Project implements Serializable {
 
@@ -151,26 +148,50 @@ public class Project implements Serializable {
 		this.workflow = workflow;
 	}
 
-	public void addHistoryEntry(HistoryEntry entry) {
+	/**
+	 * Add {@link HistoryEntry} to this Project
+	 * 
+	 * @param historyEntry
+	 *            {@link HistoryEntry} to add
+	 */
+	public void addHistoryEntry(HistoryEntry historyEntry) {
 		if (historyEntries == null) {
 			historyEntries = new ArrayList<HistoryEntry>();
 		}
-		historyEntries.add(entry);
+		historyEntries.add(historyEntry);
 	}
 
-	public void addProjectAssignment(ProjectAssignment assignment) {
+	/**
+	 * Add {@link ProjectAssignment} to this Project
+	 * 
+	 * @param projectAssignment
+	 *            {@link ProjectAssignment} to add
+	 */
+	public void addProjectAssignment(ProjectAssignment projectAssignment) {
 		if (this.getProjectAssignments() == null) {
 			this.setProjectAssignments(new HashSet<ProjectAssignment>());
 		}
-		projectAssignments.add(assignment);
+		projectAssignments.add(projectAssignment);
 	}
 
-	public boolean removeHistoryEntry(HistoryEntry entry) {
-		return historyEntries.remove(entry);
+	/**
+	 * Remove {@link HistoryEntry} from this Project
+	 * 
+	 * @param historyEntry
+	 *            {@link HistoryEntry} to remove
+	 */
+	public boolean removeHistoryEntry(HistoryEntry historyEntry) {
+		return historyEntries.remove(historyEntry);
 	}
 
-	public boolean removeProjectAssignment(ProjectAssignment assignment) {
-		return projectAssignments.remove(assignment);
+	/**
+	 * Remove {@link ProjectAssignment} from this Project
+	 * 
+	 * @param projectAssignment
+	 *            {@link ProjectAssignment} to remove
+	 */
+	public boolean removeProjectAssignment(ProjectAssignment projectAssignment) {
+		return projectAssignments.remove(projectAssignment);
 	}
 
 	/**
@@ -188,6 +209,12 @@ public class Project implements Serializable {
 		this.comments = comments;
 	}
 
+	/**
+	 * Add {@link Comment} to this Project
+	 * 
+	 * @param comment
+	 *            {@link Comment} to add
+	 */
 	public void addComment(Comment comment) {
 		if (comments == null) {
 			comments = new ArrayList<Comment>();
@@ -195,6 +222,12 @@ public class Project implements Serializable {
 		comments.add(comment);
 	}
 
+	/**
+	 * Remove {@link Comment} from this Project
+	 * 
+	 * @param comment
+	 *            {@link Comment} to remove
+	 */
 	public void removeComment(Comment comment) {
 		comments.remove(comment);
 	}

@@ -168,24 +168,54 @@ public class State implements Serializable {
 		this.workflow = workflow;
 	}
 
-	public void addHistoryEntry(HistoryEntry entry) {
-		historyEntries.add(entry);
+	/**
+	 * Add {@link HistoryEntry} to this State
+	 * 
+	 * @param historyEntry
+	 *            {@link HistoryEntry} to add
+	 */
+	public void addHistoryEntry(HistoryEntry historyEntry) {
+		historyEntries.add(historyEntry);
 	}
 
-	public boolean removeHistoryEntry(HistoryEntry entry) {
-		return historyEntries.remove(entry);
+	/**
+	 * Remove {@link HistoryEntry} from this State
+	 * 
+	 * @param historyEntry
+	 *            {@link HistoryEntry} to remove
+	 */
+	public boolean removeHistoryEntry(HistoryEntry historyEntry) {
+		return historyEntries.remove(historyEntry);
 	}
 
+	/**
+	 * Remove {@link StateNavigationEntry} from this State
+	 * 
+	 * @param stateNavigationEntry
+	 *            {@link StateNavigationEntry} to remove
+	 */
 	public void removeNexState(StateNavigationEntry stateNavigationEntry) {
 		nextStates.remove(stateNavigationEntry);
 		stateNavigationEntry.setParent(null);
 	}
 
+	/**
+	 * Add {@link StateNavigationEntry} to this State
+	 * 
+	 * @param stateNavigationEntry
+	 *            {@link StateNavigationEntry} to add
+	 */
 	public void addNextState(StateNavigationEntry stateNavigationEntry) {
 		getNextStates().add(stateNavigationEntry);
 		stateNavigationEntry.setParent(this);
 	}
 
+	/**
+	 * Add a child state to this State
+	 * 
+	 * @param child
+	 *            child state to add
+	 */
 	public void addChild(State child) {
 		if (getChildren() == null) {
 			setChildren(new ArrayList<State>());
@@ -196,6 +226,12 @@ public class State implements Serializable {
 		}
 	}
 
+	/**
+	 * Remove the child state from this State's children
+	 * 
+	 * @param child
+	 *            child state to remove
+	 */
 	public boolean removeChild(State child) {
 		return children.remove(child);
 	}
@@ -215,38 +251,49 @@ public class State implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		State other = (State) obj;
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		// if (nextStates == null) {
 		// if (other.nextStates != null)
 		// return false;
 		// } else if (!nextStates.equals(other.nextStates))
 		// return false;
 		if (parent == null) {
-			if (other.parent != null)
+			if (other.parent != null) {
 				return false;
-		} else if (!parent.equals(other.parent))
+			}
+		} else if (!parent.equals(other.parent)) {
 			return false;
+		}
 		if (workflow == null) {
-			if (other.workflow != null)
+			if (other.workflow != null) {
 				return false;
-		} else if (!workflow.equals(other.workflow))
+			}
+		} else if (!workflow.equals(other.workflow)) {
 			return false;
+		}
 		return true;
 	}
 
