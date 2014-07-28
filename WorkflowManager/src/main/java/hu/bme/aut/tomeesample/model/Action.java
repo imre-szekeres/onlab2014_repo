@@ -34,6 +34,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "Action.findAll", query = "SELECT a FROM Action a"),
 		@NamedQuery(name = "Action.findById", query = "SELECT a FROM Action a WHERE a.id=:id"),
@@ -42,17 +43,14 @@ import lombok.ToString;
 public class Action implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@NotNull
 	@ManyToOne
 	private ActionType actionType;
 
-	@Getter
 	@Setter
 	@Size(min = 10, max = 512)
 	private String description;

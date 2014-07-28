@@ -34,6 +34,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
 		@NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c " + "WHERE c.id=:id"),
@@ -42,26 +43,21 @@ import lombok.Setter;
 public class Comment implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@Size(min = 1, max = 512)
 	private String description;
 
-	@Getter
 	@NotNull
 	@ManyToOne
 	private User user;
 
-	@Getter
 	@NotNull
 	@ManyToOne
 	private Project project;
 
-	@Getter
 	@Setter
 	@NotNull
 	private Date postDate;

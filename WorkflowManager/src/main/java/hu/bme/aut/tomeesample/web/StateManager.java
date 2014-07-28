@@ -19,6 +19,9 @@ import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -40,10 +43,18 @@ public class StateManager {
 	StateNavigationEntryService stateNavigationEntryService;
 	private List<State> stateList;
 
+	@Getter
+	@Setter
 	private String name;
+	@Getter
+	@Setter
 	private String description;
 
+	@Getter
+	@Setter
 	private ActionType selectedActionType;
+	@Getter
+	@Setter
 	private State selectedNextState;
 
 	/**
@@ -281,35 +292,4 @@ public class StateManager {
 		return stateList;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public ActionType getSelectedActionType() {
-		return selectedActionType;
-	}
-
-	public void setSelectedActionType(ActionType selectedActionType) {
-		this.selectedActionType = selectedActionType;
-	}
-
-	public State getSelectedNextState() {
-		return selectedNextState;
-	}
-
-	public void setSelectedNextState(State selectedNextState) {
-		this.selectedNextState = selectedNextState;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 }

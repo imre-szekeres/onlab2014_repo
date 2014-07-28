@@ -34,6 +34,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "HistoryEntry.findAll", query = "SELECT he FROM HistoryEntry he"),
 		@NamedQuery(name = "HistoryEntry.findById", query = "SELECT he FROM HistoryEntry he WHERE he.id=:id"),
@@ -43,34 +44,28 @@ import lombok.ToString;
 public class HistoryEntry implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@Size(min = 10, max = 512)
 	private Date when;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Size(min = 5, max = 16)
 	private String userName;
 
-	@Getter
 	@Setter
 	@NotNull
 	@ManyToOne
 	private State state;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Size(min = 2, max = 20)
 	private String actionTypeName;
 
-	@Getter
 	@Setter
 	@NotNull
 	@OneToOne

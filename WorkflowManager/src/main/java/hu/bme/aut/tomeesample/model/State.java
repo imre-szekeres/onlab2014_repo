@@ -37,6 +37,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
 		@NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
@@ -48,51 +49,41 @@ import lombok.Setter;
 public class State implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@NotNull
 	private String name;
 
-	@Getter
 	@Setter
 	private String description;
 
-	@Getter
 	@Setter
 	private boolean initial;
 
-	@Getter
 	@Setter
 	@ManyToOne
 	@JoinColumn
 	private Workflow workflow;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	private List<StateNavigationEntry> nextStates;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<HistoryEntry> historyEntries;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private List<BlobFile> files;
 
-	@Getter
 	@Setter
 	@ManyToOne
 	@JoinColumn
 	private State parent;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
 	private List<State> children;

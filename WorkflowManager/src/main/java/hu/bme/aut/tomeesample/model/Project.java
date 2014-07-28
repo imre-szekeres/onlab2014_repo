@@ -43,6 +43,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p"),
 		@NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p "
@@ -55,45 +56,37 @@ import lombok.Setter;
 public class Project implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Size(min = 5, max = 16)
 	@Column(unique = true)
 	private String name;
 
-	@Getter
 	@Setter
 	@Size(min = 13, max = 512)
 	private String description;
 
-	@Getter
 	@Setter
 	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
 	private State currentState;
 
-	@Getter
 	@Setter
 	@NotNull
 	@ManyToOne
 	private Workflow workflow;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Set<ProjectAssignment> projectAssignments;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;

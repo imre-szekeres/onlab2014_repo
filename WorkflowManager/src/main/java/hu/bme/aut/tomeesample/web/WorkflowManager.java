@@ -15,6 +15,9 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -31,9 +34,14 @@ public class WorkflowManager {
 	@Inject
 	private StateService stateService;
 	private List<Workflow> workflowList;
+	@Getter
+	@Setter
 	private Workflow workflow;
-
+	@Getter
+	@Setter
 	private String name = "Default Workflow";
+	@Getter
+	@Setter
 	private String description = "This is a default workflow.";
 
 	/**
@@ -95,39 +103,18 @@ public class WorkflowManager {
 			throws ValidatorException {
 		logger.debug("validating: " + value.toString());
 		logger.debug("in validateName - workflowService: " + workflowService == null ? "null" : workflowService.toString());
-		if (!workflowService.validateName(((String) value).trim()))
+		if (!workflowService.validateName(((String) value).trim())) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "workflowService name validating error", "workflowService name validating error"));
+		}
 	}
 
 	public void validateDescription(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
 		logger.debug("validating: " + value.toString());
 		logger.debug("in validateName - workflowService: " + workflowService == null ? "null" : workflowService.toString());
-		if (!workflowService.validateDescription(((String) value).trim()))
+		if (!workflowService.validateDescription(((String) value).trim())) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "workflowService description validating error", "workflowService description validating error"));
+		}
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public Workflow getWorkflow() {
-		return workflow;
-	}
-
-	public void setWorkflow(Workflow workflow) {
-		this.workflow = workflow;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 }

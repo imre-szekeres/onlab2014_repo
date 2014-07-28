@@ -32,21 +32,19 @@ import lombok.Setter;
 @Entity
 @EqualsAndHashCode
 @NoArgsConstructor
+@Getter
 @NamedQueries({ @NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"), @NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at " + "WHERE at.id=:id") })
 public class ActionType implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Column(unique = true)
 	private String actionTypeName;
 
-	@Getter
 	@Setter
 	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes", fetch = FetchType.EAGER)
 	private Set<Role> roles;

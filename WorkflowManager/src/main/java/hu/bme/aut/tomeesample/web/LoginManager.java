@@ -25,10 +25,13 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.log4j.Logger;
 
 /**
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -43,8 +46,14 @@ public class LoginManager {
 	@Inject
 	private RoleService roleService;
 
+	@Getter
+	@Setter
 	private User subject;
+	@Getter
+	@Setter
 	private String passwordAgain;
+	@Getter
+	@Setter
 	private String role;
 
 	@PostConstruct
@@ -58,7 +67,7 @@ public class LoginManager {
 
 	/**
 	 * Fetches the users already registered/created into/in the application.
-	 *
+	 * 
 	 * @return a list of all the found users
 	 * */
 	public List<User> listUsers() {
@@ -76,7 +85,7 @@ public class LoginManager {
 
 	/**
 	 * Registers a new user with the previously set parameters then logs it in.
-	 *
+	 * 
 	 * @return the string representation of the page to navigate to
 	 * */
 	public String register() {
@@ -87,8 +96,9 @@ public class LoginManager {
 			userService.create(subject);
 			logger.debug(" user " + subject.getUsername() + " was created by " + subject == null ? null : subject.getUsername());
 
-			if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject") == null)
+			if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("subject") == null) {
 				return login();
+			}
 		} catch (Exception e) {
 			logger.error(" in register: ", e);
 		}
@@ -98,7 +108,7 @@ public class LoginManager {
 	/**
 	 * Checks whether the user was able to authenticate itself. It strongly
 	 * depends on the validation mechanism to be called previously.
-	 *
+	 * 
 	 * @return the name of the page to navigate to
 	 * */
 	public String login() {
@@ -133,7 +143,7 @@ public class LoginManager {
 	/**
 	 * Validates the submitted user name and if it differs from the required
 	 * then the authentication fails with error message.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -141,7 +151,7 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            that was submitted
-	 *
+	 * 
 	 * @throws ValidatorException
 	 *             when the submitted user name value differs from the required
 	 * */
@@ -157,7 +167,7 @@ public class LoginManager {
 	/**
 	 * Validates the submitted password and if it differs from the required then
 	 * the authentication fails with error message.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -165,20 +175,21 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            that was submitted
-	 *
+	 * 
 	 * @throws ValidatorException
 	 *             when the submitted password value differs from the required
 	 * */
 	public void validatePassword(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (subject != null)
+		if (subject != null) {
 			checkPassword((String) value);
+		}
 	}
 
 	/**
 	 * Checks whether the given password equals to the password registered in
 	 * the found user.
-	 *
+	 * 
 	 * @param password
 	 *            to diff-against the fetched password
 	 * @throws ValidatorException
@@ -186,8 +197,9 @@ public class LoginManager {
 	 * */
 	private void checkPassword(String password) throws ValidatorException {
 		try {
-			if (!subject.getPassword().equals(password))
+			if (!subject.getPassword().equals(password)) {
 				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username or password", "pasword or username is invalid"));
+			}
 		} catch (Exception e) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid username or password", "pasword or username is invalid"), e);
 		}
@@ -196,7 +208,7 @@ public class LoginManager {
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given user name corresponds to the constraints defined on it.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -204,19 +216,20 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            that was submitted
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validateUsernameIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateUsername((String) value))
+		if (!userService.validateUsername((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "username must be between 7 and 32 characters or already exists!", "username must be between 7 and 32 characters or already exists!"));
+		}
 	}
 
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given password corresponds to the constraints defined on it.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -224,20 +237,21 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            that was submitted
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validatePasswordIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validatePassword((String) value))
+		if (!userService.validatePassword((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid password!", "invalid password!"));
+		}
 		this.subject.setPassword((String) value);
 	}
 
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given passwords do match.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -246,19 +260,20 @@ public class LoginManager {
 	 * @param value
 	 *            the second password to ensure it was correctly given in the
 	 *            first time
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validatePasswordAgainIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validatePasswords(this.subject.getPassword(), (String) value))
+		if (!userService.validatePasswords(this.subject.getPassword(), (String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "passwords do not match!", "passwords do not match!"));
+		}
 	}
 
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given email matches against a specified pattern.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -266,20 +281,21 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            representing an email
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validateEmailIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateEmail((String) value))
+		if (!userService.validateEmail((String) value)) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid email format!", "invalid email format!"));
+		}
 	}
 
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given description corresponds to the constraints defined on
 	 * it.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -287,15 +303,16 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            representing a user description
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validateDescriptionIn(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!userService.validateDescription(((String) value).trim()))
+		if (!userService.validateDescription(((String) value).trim())) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"description length must be between 0 and 1024 characters!",
 					"description length must be between 0 and 1024 characters!"));
+		}
 	}
 
 	/**
@@ -316,21 +333,6 @@ public class LoginManager {
 			FacesMessageUtils.errorMessage(ctx, "error while attempting delete!");
 		}
 		return "/auth/man/add_user.xhtml";
-	}
-
-	/**
-	 * @return the subject
-	 */
-	public User getSubject() {
-		return subject;
-	}
-
-	/**
-	 * @param subject
-	 *            the subject to set
-	 */
-	public void setSubject(User subject) {
-		this.subject = subject;
 	}
 
 	public String getUsername() {
@@ -375,36 +377,6 @@ public class LoginManager {
 
 	public void setDescription(String description) {
 		this.subject.setDescription(description);
-	}
-
-	/**
-	 * @return the passwordAgain
-	 */
-	public String getPasswordAgain() {
-		return passwordAgain;
-	}
-
-	/**
-	 * @param passwordAgain
-	 *            the passwordAgain to set
-	 */
-	public void setPasswordAgain(String passwordAgain) {
-		this.passwordAgain = passwordAgain;
-	}
-
-	/**
-	 * @return the role
-	 */
-	public String getRole() {
-		return role;
-	}
-
-	/**
-	 * @param role
-	 *            the role to set
-	 */
-	public void setRole(String role) {
-		this.role = role;
 	}
 
 	@Override

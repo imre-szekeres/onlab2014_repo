@@ -25,10 +25,13 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.log4j.Logger;
 
 /**
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -45,13 +48,16 @@ public class RoleManager implements Serializable {
 	private RoleService roleService;
 	@Inject
 	private UserService userService;
+	@Getter
+	@Setter
 	private Role role;
 
 	@PostConstruct
 	public void init() {
 		this.role = new Role();
-		if (conversation.isTransient())
+		if (conversation.isTransient()) {
 			conversation.begin();
+		}
 	}
 
 	/**
@@ -61,8 +67,9 @@ public class RoleManager implements Serializable {
 	 * @return the page id of the profile page
 	 * */
 	public String profileOf(Role role) {
-		if (!conversation.isTransient())
+		if (!conversation.isTransient()) {
 			conversation.end();
+		}
 		this.role = role;
 		conversation.begin();
 		return "/auth/admin/role_profile.xhtml";
@@ -71,7 +78,7 @@ public class RoleManager implements Serializable {
 	/**
 	 * Fetches the already created <code>Role</code>s from the persistence
 	 * context.
-	 *
+	 * 
 	 * @return a list containing all the roles
 	 * */
 	public List<Role> listRoles() {
@@ -81,7 +88,7 @@ public class RoleManager implements Serializable {
 	/**
 	 * Creates a new <code>Role</code> with the previously specified name, and
 	 * persists it.
-	 *
+	 * 
 	 * @return the view id to navigate to.
 	 * */
 	public String create() {
@@ -103,7 +110,7 @@ public class RoleManager implements Serializable {
 	/**
 	 * Delegates the call to a <code>RoleService</code> instance to ensure
 	 * whether the given name is not already defined.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -111,20 +118,20 @@ public class RoleManager implements Serializable {
 	 *            from
 	 * @param value
 	 *            representing a role name
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validateName(FacesContext context, UIComponent component, Object value)
 			throws ValidatorException {
-		if (!roleService.validateName(((String) value).trim()))
+		if (!roleService.validateName(((String) value).trim())) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "role name already exists", "role name already exists"));
+		}
 	}
 
 	/**
 	 * 
 	 * 
-	 * @return a list of <code>User</code>s assigned to the given
-	 *         <code>Role</code>
+	 * @return a list of <code>User</code>s assigned to the given <code>Role</code>
 	 * */
 	public List<User> listUsers() {
 		return (this.role == null || this.role.getId() == null) ?
@@ -135,8 +142,7 @@ public class RoleManager implements Serializable {
 	/**
 	 * 
 	 * 
-	 * @return a list of <code>ActionType</code>s assigned to the given
-	 *         <code>Role</code>
+	 * @return a list of <code>ActionType</code>s assigned to the given <code>Role</code>
 	 * */
 	public List<ActionType> listActions() {
 		return (this.role == null || this.role.getId() == null) ?
@@ -191,17 +197,4 @@ public class RoleManager implements Serializable {
 		return "/auth/admin/add_role.xhtml";
 	}
 
-	/**
-	 * @return the role
-	 */
-	public Role getRole() {
-		return role;
-	}
-
-	/**
-	 * @param role
-	 */
-	public void setRole(Role role) {
-		this.role = role;
-	}
 }

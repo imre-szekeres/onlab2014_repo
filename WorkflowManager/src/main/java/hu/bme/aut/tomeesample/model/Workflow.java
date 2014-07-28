@@ -39,6 +39,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "Workflow.findAll", query = "SELECT w FROM Workflow w"),
 		@NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w "
@@ -49,28 +50,23 @@ import lombok.ToString;
 public class Workflow implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Size(min = 5, max = 32)
 	private String name;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Size(min = 16, max = 512)
 	private String description;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "workflow", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private List<State> states = new ArrayList<State>();
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "workflow")
 	private List<Project> projects = new ArrayList<Project>();

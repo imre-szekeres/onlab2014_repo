@@ -24,6 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
 @Table(name = "FILE_STORAGE")
 @NamedQueries(
 {
@@ -34,22 +35,18 @@ import lombok.ToString;
 public class BlobFile implements Serializable
 {
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@NotNull
 	private String fileName;
 
-	@Getter
 	@Setter
 	@NotNull
 	@ManyToOne
 	private State state;
 
-	@Getter
 	@Setter
 	@Lob
 	private byte[] content;

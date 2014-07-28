@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 /**
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -46,10 +46,12 @@ public class ApplicationManager implements java.io.Serializable {
 			admin = new Role("administrator");
 			tryCreate(admin);
 		}
-		if (roleService.findByName("manager") == null)
+		if (roleService.findByName("manager") == null) {
 			tryCreate(new Role("manager"));
-		if (roleService.findByName("visitor") == null)
+		}
+		if (roleService.findByName("visitor") == null) {
 			tryCreate(new Role("visitor"));
+		}
 		if (userService.findByName("sudoer") == null) {
 			User sudoer = new User("sudoer", "sudoer7", "sudoer@cvf.wm.com", admin,
 					"A humble administrator for the (R) WorkflowManager application! "
@@ -81,6 +83,7 @@ public class ApplicationManager implements java.io.Serializable {
 		return logger.getName();
 	}
 
+	// FIXME HEE?? WHY?
 	public void setLoggerName(String name) {
 	}
 }

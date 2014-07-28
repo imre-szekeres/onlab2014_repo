@@ -17,6 +17,8 @@ import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 /**
@@ -37,7 +39,11 @@ public class ActionTypeManager {
 	private List<ActionType> actionTypeList;
 	private Map<Long, Boolean> isVisible;
 
+	@Getter
+	@Setter
 	private String actionTypeName = "";
+	@Getter
+	@Setter
 	private Long selectedRoleId;
 
 	@PostConstruct
@@ -173,22 +179,6 @@ public class ActionTypeManager {
 			roles.addAll(roleSet);
 		}
 		return roles;
-	}
-
-	public String getActionTypeName() {
-		return actionTypeName;
-	}
-
-	public void setActionTypeName(String actionTypeName) {
-		this.actionTypeName = actionTypeName;
-	}
-
-	public Long getSelectedRoleId() {
-		return selectedRoleId;
-	}
-
-	public void setSelectedRoleId(Long selectedRoleId) {
-		this.selectedRoleId = selectedRoleId;
 	}
 
 }

@@ -29,6 +29,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "ProjectAssignment.findById", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.id=:id"),
 		@NamedQuery(name = "ProjectAssignment.findByProjectId", query = "SELECT pa FROM ProjectAssignment pa WHERE pa.project.id=:projectId"),
@@ -36,17 +37,14 @@ import lombok.ToString;
 public class ProjectAssignment implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@NotNull
 	@ManyToOne
 	private User user;
 
-	@Getter
 	@Setter
 	@NotNull
 	@ManyToOne

@@ -19,6 +19,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -34,6 +37,8 @@ public class CommentManager {
 
 	@Inject
 	private CommentService commentService;
+	@Getter
+	@Setter
 	private Comment comment;
 
 	@PostConstruct
@@ -42,9 +47,8 @@ public class CommentManager {
 	}
 
 	/**
-	 * Fetches the <code>Comment</code>s already posted by the given
-	 * <code>User</code>.
-	 *
+	 * Fetches the <code>Comment</code>s already posted by the given <code>User</code>.
+	 * 
 	 * @return a list of all the found comments
 	 * */
 	public List<Comment> listCommentsOf(User user) {
@@ -54,9 +58,8 @@ public class CommentManager {
 	}
 
 	/**
-	 * Fetches the <code>Comment</code>s already posted to the given
-	 * <code>Project</code>.
-	 *
+	 * Fetches the <code>Comment</code>s already posted to the given <code>Project</code>.
+	 * 
 	 * @return a list of all the found comments
 	 * */
 	public List<Comment> listCommentsFor(Project project) {
@@ -109,21 +112,6 @@ public class CommentManager {
 			logger.error(" failed to remove comment: " + comment.toString(), e);
 		}
 		return "/auth/project_profile.xhtml";
-	}
-
-	/**
-	 * @return the comment
-	 */
-	public Comment getComment() {
-		return comment;
-	}
-
-	/**
-	 * @param comment
-	 *            the comment to set
-	 */
-	public void setComment(Comment comment) {
-		this.comment = comment;
 	}
 
 	@Override

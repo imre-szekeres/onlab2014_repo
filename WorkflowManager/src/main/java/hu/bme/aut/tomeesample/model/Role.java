@@ -31,25 +31,22 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
 @SuppressWarnings("serial")
 public class Role implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@Column(unique = true)
 	private String name;
 
-	@Getter
 	@Setter
 	@ManyToMany(targetEntity = ActionType.class, fetch = FetchType.EAGER)
 	private Set<ActionType> actionTypes = new HashSet<>();;
 
-	@Getter
 	@ManyToMany(targetEntity = hu.bme.aut.tomeesample.model.User.class, mappedBy = "roles")
 	private Set<User> users = new HashSet<>();;
 

@@ -44,6 +44,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 		@NamedQuery(name = "User.findById", query = "SELECT u FROM User u "
@@ -55,46 +56,38 @@ import lombok.Setter;
 public class User implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Size(min = 5, max = 16)
 	@Column(unique = true)
 	private String username;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Size(min = 7, max = 32)
 	private String password;
 
-	@Getter
 	@Setter
 	@NotNull
 	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}")
 	private String email;
 
-	@Getter
 	@Setter
 	@Size(min = 0, max = 1024)
 	private String description;
 
-	@Getter
 	@Setter
 	@NotNull
 	@ManyToMany(targetEntity = hu.bme.aut.tomeesample.model.Role.class, fetch = FetchType.EAGER)
 	private Set<Role> roles = new HashSet<Role>();;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
-	@Getter
 	@Setter
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Set<ProjectAssignment> projectAssignments;

@@ -34,6 +34,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
 @NamedQueries({
 		@NamedQuery(name = "StateNavigationEntry.findAll", query = "SELECT sne FROM StateNavigationEntry sne"),
 		@NamedQuery(name = "StateNavigationEntry.findById", query = "SELECT sne FROM StateNavigationEntry sne "
@@ -46,24 +47,20 @@ import lombok.ToString;
 public class StateNavigationEntry implements Serializable {
 
 	@Id
-	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Getter
 	@Setter
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn
 	private State parent;
 
-	@Getter
 	@Setter
 	@Column
 	@ManyToOne(fetch = FetchType.EAGER)
 	@NotNull
 	private State nextState;
 
-	@Getter
 	@Setter
 	@Column
 	@ManyToOne(fetch = FetchType.EAGER)
