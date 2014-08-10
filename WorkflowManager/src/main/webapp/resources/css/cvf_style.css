@@ -37,16 +37,15 @@
     border: #006699 2px solid;
 }
 
+.menu-sub-item{
+	padding-right: 10px !important;
+}
+
 .home-link {
-    position: relative;
+	padding-right: 30px !important;
     text-decoration: none;
-    display: inline-block;
     color: white;
-    left: 13px;
-    font-size: 25px;
-    line-height: 50px;
     vertical-align: middle;
-    top: -18px;
     font-family: 'Open Sans';
 }
 

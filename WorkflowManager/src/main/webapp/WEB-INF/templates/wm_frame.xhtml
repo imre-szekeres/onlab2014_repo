@@ -10,73 +10,41 @@
         <title>
             <ui:insert name='title'>WorkflowManager</ui:insert>
         </title>
-        <h:outputStylesheet library='css' name='cvf_style.css'></h:outputStylesheet>
+        <!--<h:outputStylesheet library='css' name='cvf_style.css'></h:outputStylesheet>-->
         <h:outputScript     library='js'  name='jquery-1.11.0.min.js'></h:outputScript>
         <h:outputScript     library='js'  name='jquery-ui-1.10.4.js' ></h:outputScript>
+		<f:facet name="last">
+			<h:outputStylesheet library="css" name="cvf_style.css" />
+		</f:facet>
     </h:head>
     
     <h:body>
-        <div id='header-div' >
-            <div id='brand-span'>
-                <h:form>
-                <h3>
-                    <h:commandLink styleClass="home-link" action='#{ navigationManager.home() }' value="WorkflowManager" />
-                </h3>
-                </h:form>
-            </div>
-            <span id='brand-img-span'></span>
-            <div id='unavbar' >
+        <!--<div id='header-div' >-->
+            <!--<span id='brand-img-span'></span>-->
+            <!--<div id='unavbar' >-->
+                    <!--<h:commandLink styleClass="home-link" action='#{ navigationManager.home() }' value="WorkflowManager" />-->
             	<h:form>
-					<div id='unavmenu-wrapper'>     
-						<ul id='menu' >
-							<li class='menu-item'>
-								<h:commandLink styleClass='menu-item' action='#{ navigationManager.profile() }'><span>#{ sessionScope.subject.username }</span></h:commandLink>
-							</li>                            
-							<li class='menu-item lseparated'>
-								<h:commandLink styleClass='menu-item' action='#{ loginManager.logout() }'><span>Sign out</span></h:commandLink>
-							</li>
-							<li class='menu-item'>
-								<span styleClass='menu-item'>Manage</span>
-								<ul id='submenu'>
-									<li class='submenu-item'>
-										<h:commandLink styleClass='menu-item' action='#{ navigationManager.workflows() }'><span>Workflows</span></h:commandLink>
-									</li>
-									<li class='submenu-item'>
-										<h:commandLink styleClass='menu-item' action='#{ navigationManager.addProject() }'><span>Projects</span></h:commandLink>
-									</li>
-									
-									<c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
-										<li class='submenu-item'>
-											<h:commandLink styleClass='menu-item' action='#{ navigationManager.addUser() }'><span>Users</span></h:commandLink>
-										</li>
-									
-										<c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
-											<li class='submenu-item'>
-												<h:commandLink styleClass='menu-item' action='#{ navigationManager.addRole() }'><span>Roles</span></h:commandLink>
-											</li>
-											<li class='submenu-item'>
-												<h:commandLink styleClass='menu-item' action='#{ navigationManager.actionTypes() }'><span>Action types</span></h:commandLink>
-											</li>
-										</c:if>
-									</c:if> 
-								</ul>
-							</li>
-						</ul>
-					</div>
-            	</h:form>
-            </div>
-        </div>
-        
-        
-        
-        
-<!-- 	        <div id='rnavbar'> -->
-<!-- 	            <div id='rnavmenu-wrapper'> -->
-<!-- 	                <h:form prpendId='false'> -->
-	                
-<!-- 	                </h:form> -->
-<!-- 	            </div> -->
-<!-- 	        </div> -->
+					<p:menubar>
+						<p:menuitem styleClass="home-link menu-sub-item" value="WorkflowManager" action="#{ navigationManager.home() }"/>
+						<p:submenu styleClass="menu-sub-item" label='#{sessionScope.subject.username}' icon='ui-icon-person'>
+							<p:menuitem value='Profile' action='#{ navigationManager.profile() }'/>
+							<p:menuitem value='Sign out' action='#{ navigationManager.profile() }'/>
+						</p:submenu>
+						<p:submenu styleClass="menu-sub-item" label='Manage' icon='ui-icon-note'>
+							<p:menuitem value='Workflows' action='#{ navigationManager.workflows() }'/>
+							<p:menuitem value='Projects' action='#{ navigationManager.addProject() }'/>
+							<c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
+								<p:menuitem value='Users' action='#{ navigationManager.addUser() }'/>
+								<c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
+									<p:menuitem value='Roles' action='#{ navigationManager.addRole() }'/>
+									<p:menuitem value='Action types' action='#{ navigationManager.actionTypes() }'/>
+								</c:if>
+							</c:if> 
+						</p:submenu>
+					</p:menubar>
+				</h:form>
+            <!--</div>-->
+        <!--</div>-->
 		
 		<div id="body_container">    
 	        <div id='content-container' >
