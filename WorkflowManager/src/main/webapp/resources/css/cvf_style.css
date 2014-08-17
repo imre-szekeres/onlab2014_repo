@@ -38,11 +38,11 @@
 }
 
 .menu-sub-item{
-	padding-right: 10px !important;
+	margin-right: 10px !important;
 }
 
 .home-link {
-	padding-right: 30px !important;
+	margin-right: 30px !important;
     text-decoration: none;
     color: white;
     vertical-align: middle;
@@ -179,11 +179,12 @@
 	margin-right:auto;
 	width: 800px;
     height: 618px;
+	
 }
 
 #content-container {
     position: relative ;
-	float:right
+	float:right;
     width: 800px;
     height: 618px;
 }
@@ -1122,3 +1123,7 @@
     border-radius: 7px 7px 7px 7px;
 }
 
+/* AFTER UI REFACTOR */
+.noBorder td,tr{
+	border:none !important; 
+}

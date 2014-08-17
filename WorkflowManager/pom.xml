@@ -6,6 +6,18 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<repositories>
+		<repository>
+			<id>apache-snapshot</id>
+			<name>Apache Snapshot Repository</name>
+			<url>https://repository.apache.org/content/groups/snapshots/</url>
+		</repository>
+		<repository>
+			<id>prime-repo</id>
+			<name>Prime Repo</name>
+			<url>http://repository.primefaces.org</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -32,6 +44,12 @@
     		<groupId>org.primefaces</groupId>  
     		<artifactId>primefaces</artifactId>  
     		<version>5.0</version>  
+		</dependency>
+		
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>pepper-grinder</artifactId>
+			<version>1.0.10</version>
 		</dependency>
 
 		<!-- Test dependencies -->
@@ -143,13 +161,6 @@
 		</plugins>
 	</build>
 
-	<repositories>
-		<repository>
-			<id>apache-snapshot</id>
-			<name>Apache Snapshot Repository</name>
-			<url>https://repository.apache.org/content/groups/snapshots/</url>
-		</repository>
-	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>apache-snapshot</id>

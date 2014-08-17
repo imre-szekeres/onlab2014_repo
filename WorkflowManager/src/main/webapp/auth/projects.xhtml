@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c='http://java.sun.com/jsp/jstl/core'>
+
+	<ui:composition template="../WEB-INF/templates/wm_frame.xhtml">	
+		<ui:define name='content'>
+			<p:panel>
+				<h:form>
+					<p:panelGrid style='margin-left:auto; margin-right:auto;'>
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="2">Name</p:column>
+								<p:column colspan="2">Description</p:column>
+								<p:column colspan="2">Current state</p:column>
+								<p:column colspan="2">Workflow</p:column>
+								<p:column colspan="2">Delete</p:column>
+							</p:row>
+						</f:facet>
+						<c:forEach items='#{ projectManager.listProjects() }' var='project' >
+							<p:row>
+								<p:column  colspan="2">
+									<p:commandLink value='#{ project.name }' action='#{ projectManager.profileOf( project ) }'/>
+								</p:column>
+								<p:column  colspan="2">
+									<p:inputTextarea readonly='true' value='#{ project.description }' styleClass='inputTextAreaClass'/>
+								</p:column>
+								<p:column  colspan="2">
+									<h:outputText value='#{ project.currentState.name }' />
+								</p:column>
+								<p:column  colspan="2">
+									<h:outputText value='#{ project.workflow.name }' />
+								</p:column>
+								<p:column  colspan="2">
+									<p:commandButton action='#{projectManager.remove( project )}' icon='ui-icon-closethick'/>
+								</p:column>
+							</p:row>
+						</c:forEach>
+					</p:panelGrid>
+				</h:form>
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+</html>

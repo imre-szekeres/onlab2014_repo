@@ -1,224 +1,108 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:composition template="../WEB-INF/templates/wm_frame.xhtml">
 	
-	   <ui:define name='content_title'>
-	       #{ profileManager.user.username }
-	   </ui:define>
-	   
-	   <ui:define name='content'>
-	   
-	       <div style='margin:21px; '>
-	       <h:form id='pro-form' prependId="false" >
-	           <div id='usrprofile-div'>
-		       <h:panelGrid columns='1'  cellspacing='1' cellpadding='2' id='profile-grid'  >           
-		           <c:choose>
-		              <c:when test='#{ profileManager.editable }'>
-		                   
-		                   <h:message for='username' styleClass='error-message profile-grid' />
-                           <h:panelGrid columns='2' styleClass='profile-grid' >
-                               <h:outputText value='Username: ' />
-                               <h:outputText value='#{ profileManager.user.username }' name='username' id='username' />
-                           </h:panelGrid>
-		                   
-		                   <h:message for='old_password' styleClass='error-message profile-grid' />
-	                       <h:message for='new_password' styleClass='error-message profile-grid' />
-	                       <h:panelGrid columns='2' id='chpass-panel' styleClass='profile-grid' >
-	                           <h:outputText value='Old Password: ' />
-	                           <h:inputSecret value='#{ profileManager.oldPassword }' name='old_password' id='old_password' 
-	                                    validator='#{ profileManager.validateOldPassword }' styleClass='inputTextClass' />
-	                           
-	                           <h:outputText value='New Password: ' />
-	                           <h:inputSecret value='#{ profileManager.newPassword }' name='new_password' id='new_password' 
-	                                    validator='#{   profileManager.validateNewPassword }' styleClass='inputTextClass' />   
-	                       </h:panelGrid>
-	                       
-	                       <h:message for='email'       styleClass='error-message profile-grid' />
-	                       <h:message for='description' styleClass='error-message profile-grid' />
-	                       <h:panelGrid columns='2' styleClass='profile-grid'>
-	                           <h:outputText value='Email: ' />
-	                           <h:inputText value='#{ profileManager.user.email }' name='email' id='email' 
-	                                        validator='#{ profileManager.validateEmailIn }' styleClass='inputTextClass'/>
-	                           
-	                           <h:outputText value='Description: ' />
-	                           <h:inputTextarea value='#{ profileManager.user.description }' name='description' id='description' 
-	                                            validator='#{ profileManager.validateDescriptionIn }' size='100' styleClass='inputTextAreaClass'/>
-	                       </h:panelGrid>
-	                       
-	                       <h:panelGrid columns='2' id='submit-panel' styleClass='profile-grid'>
-	                           <h:commandButton type='submit' value='Submit' id='submit-btn' action='#{ profileManager.modify }' styleClass='btn'/>
-	                           <h:commandButton type='button' value='Cancel' id='cancel-btn' styleClass='btn'/>
-	                       </h:panelGrid>
-	                       
-	                       <h:panelGrid columns='2' id='modif-panel' styleClass='profile-grid'>
-	                           <h:commandButton type='submit' value='Submit' id='msubmit-btn' action='#{ profileManager.modify }' styleClass='btn'/>
-	                           <h:commandButton type='button' id='chpass-btn' styleClass='cvf-btn btn' style='width:100%;' value='Change Password' ></h:commandButton>               
-	                       </h:panelGrid>
-		              </c:when>
-		              
-		              <c:otherwise>
-		                  
-		                  <h:panelGrid columns='2'>
-		                  
-		                      <h:outputText value='Username: ' />
-		                      <h:outputText value='#{ profileManager.user.username }' />
-		                      
-		                      <h:outputText value='Email: ' />
-		                      <h:outputText value='#{ profileManager.user.email }' />
-		                  
-		                      <h:outputText value='Description: ' />
-		                      <h:inputTextarea value='#{ profileManager.user.description }' readonly='true' styleClass='inputTextAreaClass'/>
-		                  </h:panelGrid>		                  
-		              </c:otherwise>
-		           </c:choose>
-		           
-		       </h:panelGrid>
-		       </div>
-		       
-		       <div id='manageroles-div'>
-		       <div id='usrroles-panel'>
-			       <div id='usrroles-header'>
-			           <h:outputText value='Roles'></h:outputText>
-			       </div>
-			       <div id='usrrolestable-wrapper'>
-			           <h:dataTable value="#{ profileManager.listRoles() }" var='role' title='Roles for #{ profileManager.user.username }'
-			                        id='usrroles-table'>
-                           <h:column>
-                               <h:outputText value='#{ role.name }' />
-                           </h:column>
-                       </h:dataTable>
-			       </div>
-	           </div>
-	           
-	           <c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
-                   <div id='addrole-panel'>
-                       <h:panelGrid columns='1'>
-	                       <h:panelGrid id='role-panel' columns='2'>
-	                           <h:selectOneMenu id='selectone-role' value='#{ profileManager.role }' styleClass='selectMenu'>
-	                               <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
-	                                   <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
-	                               </c:forEach>
-	                           </h:selectOneMenu>
-	                           <h:commandButton value='Add' action='#{ profileManager.addRole() }' styleClass='btn'/> 
-	                       </h:panelGrid>
-	                       <h:commandButton type='button' value='Add Role' id='add-role-btn' styleClass='btn'/>
-	                   </h:panelGrid>
-                   </div>
-               </c:if>
-               </div>
-	           
-	       </h:form>
-	       
-	       <h:form prependId='false'>
-	           <div id='commentpanel-div'>
-	               <hr />
-	               <div>
-	                   <h:commandButton type='button' styleClass='cvf-button btn' value='Show Comments' id='comment-btn' ></h:commandButton>
-	               </div>	               
-	               
-	               <div id='comment-panel'>
-	                   <div id='comments-header'>
-	                       <h:outputText value='Comments' id='comments-hdr'></h:outputText>
-                       </div>
-                       
-                       <div id='comments-wrapper'>
-                           <h:dataTable id='comment-table' value='#{ commentManager.listCommentsOf( profileManager.user ) }' 
-                                        var='comment'>
-                               <h:column>
-                                   <h:outputText value='Commented on' />
-                               </h:column>
-                               <h:column>
-                                   <h:commandLink value='#{ comment.project.name }' action='#{ projectManager.profileOf( comment.project ) }' />
-                               </h:column>
-                               <h:column>
-                                   <h:outputText value=' at ' />
-                               </h:column>
-                               <h:column>
-                                   <h:outputText value='#{ comment.postDate }' >
-                                       <f:convertDateTime pattern='yyyy.MM.dd HH:mm' />
-                                   </h:outputText>
-                               </h:column>
-                           </h:dataTable>
-                       </div>
-	               </div>
-	           </div>
-	       </h:form>
-	       </div>
-	       
-	       <div id='assignedprojects-div'>
-               <div id='assignedprojects-panel'>
-                   <div id='assignedprojects-header'>
-                       <h:outputText value='Assigned Projects' />
-                   </div>
-                   <div id='assignedprojects-wrapper'>
-                       <h:dataTable value="#{ profileManager.listAssignments() }" var='assignment'
-                                    id='assignedprojects-table'>
-                           <h:column>
-                               <h:form prependId='false'>
-                                   <h:commandLink value='#{ assignment.project.name }' action='#{ projectManager.profileOf( assignment.project ) }' />
-                               </h:form>
-                           </h:column>
-                       </h:dataTable>
-                   </div>
-               </div>
-           </div>
-	       
-	       <h:outputScript>
-	           var submit_pnl  = $("#submit-panel");
-	           var chpass_pnl  = $("#chpass-panel");
-	           var modif_pnl   = $("#modif-panel");
-	           var role_pnl    = $("#role-panel");
-	           var comment_pnl = $('#comment-panel');
-	           var comment_btn = $('#comment-btn');
-	       
-	           function onCancel( event ) {
-	               //$("input[type!='button'][type!='submit'],textarea").prop( 'disabled',true );
-	               chpass_pnl.hide();
-                   submit_pnl.hide();
-                   modif_pnl.show();
-	           }
-	       
-	           function startPassChange() {
-	               $("input[type='password']").prop( 'disabled',false );
-	               modif_pnl.hide();
-                   chpass_pnl.show();
-                   submit_pnl.show();
-	           }
-	       
-	           function startModify() {
-	               $("input,textarea").prop( 'disabled',false );
-	               modif_pnl.hide();
-	               submit_pnl.show();
-	           }
-	           
-	           function addRole( event ) {
-	               $(this).hide();
-	               role_pnl.show();
-	           }
-	           
-	           function toggleComments( event ) {
-	               comment_pnl.slideToggle(1000);
-	               comment_btn.val( comment_btn.val() == 'Show Comments' ? 'Hide Comments' : 'Show Comments' );
-	           }
-	       
-	           $(function(){
-	               onCancel();
-	               $("#chpass-btn").click( startPassChange );
-	               $("#cancel-btn").click( onCancel );
-	               $('#add-role-btn').click( addRole );
-	               $('#subject-in').hide();
-	               comment_pnl.hide();
-	               comment_btn.click( toggleComments );
-	               
-	               role_pnl.hide();
-	           });
-	       </h:outputScript>
-	   </ui:define>
-	   
+	<ui:define name='content_title'>
+		#{ profileManager.user.username }
+	</ui:define>
+	
+	<ui:define name='content'>
+		<h:form>
+			<p:tabView dynamic='true' cache='true'>
+				<p:tab title='Profile settings'>
+					<c:choose>
+						<c:when test='#{ profileManager.editable }'>
+							<h:panelGrid columns='2'  cellpadding='5' id='profile_grid'  >
+								<p:outputLabel value='Username' />
+								<p:outputLabel value='#{ profileManager.user.username }'/>
+								
+								<p:outputLabel value='Email' for='email_input' />
+								<p:inputText id='email_input' value='#{ profileManager.user.email }' validator='#{ profileManager.validateEmailIn }' />
+								
+								<p:outputLabel value='Description' for='description_input'/>
+								<p:inputTextarea id='description_input' value='#{ profileManager.user.description }'  validator='#{ profileManager.validateDescriptionIn }' rows='5' cols='50'/>
+							</h:panelGrid>
+							
+							<p:commandButton id='saveProfile_btn' value='Save' action='#{ profileManager.modify }' icon='ui-icon-check'/>
+							<p:commandButton id='cancel_btn' value='Cancel' icon='ui-icon-cancel'/>
+							<p:commandButton id='chpass_btn' value='Change password' icon='ui-icon-locked' onclick="PF('chpass_modal').show();"/>
+
+							<p:dialog header="Change password" widgetVar="chpass_modal" modal="true" style='height:300px; width:100px;'>
+								<h:panelGrid id='chpass_grid' columns='2'  cellspacing='5' cellpadding='5' >
+									<p:outputLabel value='Old password' for='old_password'/>
+									<p:password id='old_password' value='#{ profileManager.oldPassword }' validator='#{ profileManager.validateOldPassword }'/> 
+									
+									<p:outputLabel value='New password' for='new_password' />
+									<p:password id='new_password' value='#{ profileManager.newPassword }' match='new_password_again' feedback='true' required='true' validator='#{   profileManager.validateNewPassword }' />
+									
+									<p:outputLabel value='Confirm new password' for='new_password_again' />
+									<p:password id='new_password_again' value='#{ profileManager.newPassword }' feedback='true' required='true' validator='#{   profileManager.validateNewPassword }'/>
+								</h:panelGrid>
+								
+								<p:commandButton id='saveChpass_btn' value='Save' update='chpass_grid' action='#{ profileManager.modify }' icon='ui-icon-check'/>
+							</p:dialog> 
+						
+						</c:when>
+						<c:otherwise>
+							<h:panelGrid id='profile_grid' columns='2'  cellspacing='1' cellpadding='2' >
+								<h:outputText value='Username: ' />
+								<h:outputText value='#{ profileManager.user.username }' />
+								<h:outputText value='Email: ' />
+								<h:outputText value='#{ profileManager.user.email }' />
+								<h:outputText value='Description: ' />
+								<h:inputTextarea value='#{ profileManager.user.description }' readonly='true' styleClass='inputTextAreaClass'/>
+							</h:panelGrid>
+						</c:otherwise>
+					</c:choose>
+				</p:tab>
+				
+				<p:tab title='My roles'>
+					<p:dataList value="#{profileManager.listRoles()}" var="role" type="definition">
+						<h:outputText value="#{role.name}"  style="margin-left:10px;"/>
+					</p:dataList>
+					<c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
+						<p:commandButton id='add_role_btn' value='Add Role' onclick="PF('add_role_modal').show();"/>
+						<p:dialog header="Change password" widgetVar="add_role_modal" modal="true" style='height:300px; width:100px;'>
+							<h:panelGrid id='role_panel' columns='2'>
+								<p:selectOneMenu id='select_one_role' value='#{ profileManager.role }' styleClass='selectMenu'>
+									<c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
+										<f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
+									</c:forEach>
+								</p:selectOneMenu>
+								<p:commandButton value='Add' action='#{ profileManager.addRole() }'/>
+							</h:panelGrid>
+						</p:dialog>
+					</c:if>
+				</p:tab>
+				
+				<p:tab title='My projects'>
+					<h:outputText value='Assigned Projects' />
+					<p:dataList id='assigned_projects_table' value="#{ profileManager.listAssignments() }" var='assignment'>
+						<h:column>
+							<h:commandLink value='#{ assignment.project.name }' action='#{ projectManager.profileOf( assignment.project ) }' />
+						</h:column>
+					</p:dataList>
+				</p:tab>
+				
+				<p:tab title='My comments'>
+					<p:dataList id='comment_table' value='#{ commentManager.listCommentsOf( profileManager.user ) }' var='comment'>
+							<h:outputText value='Commented on' />
+							<h:commandLink value='#{ comment.project.name }' action='#{ projectManager.profileOf( comment.project ) }' />
+							<h:outputText value=' at ' />
+							<h:outputText  value='#{ comment.postDate }' disabled='true'>
+								<f:convertDateTime pattern='yyyy.MM.dd HH:mm' />
+							</h:outputText >
+					</p:dataList>
+				</p:tab>
+			</p:tabView>
+		</h:form>
+	</ui:define>
+	
 	</ui:composition>
 </html>

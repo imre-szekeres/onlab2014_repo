@@ -13,7 +13,9 @@ import hu.bme.aut.tomeesample.utils.FacesMessageUtils;
 import hu.bme.aut.tomeesample.utils.ManagingUtils;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -26,9 +28,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.primefaces.context.RequestContext;
 
 /**
- *
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -58,7 +61,7 @@ public class LoginManager {
 
 	/**
 	 * Fetches the users already registered/created into/in the application.
-	 *
+	 * 
 	 * @return a list of all the found users
 	 * */
 	public List<User> listUsers() {
@@ -76,7 +79,7 @@ public class LoginManager {
 
 	/**
 	 * Registers a new user with the previously set parameters then logs it in.
-	 *
+	 * 
 	 * @return the string representation of the page to navigate to
 	 * */
 	public String register() {
@@ -99,7 +102,7 @@ public class LoginManager {
 	/**
 	 * Checks whether the user was able to authenticate itself. It strongly
 	 * depends on the validation mechanism to be called previously.
-	 *
+	 * 
 	 * @return the name of the page to navigate to
 	 * */
 	public String login() {
@@ -134,7 +137,7 @@ public class LoginManager {
 	/**
 	 * Validates the submitted user name and if it differs from the required
 	 * then the authentication fails with error message.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -142,7 +145,7 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            that was submitted
-	 *
+	 * 
 	 * @throws ValidatorException
 	 *             when the submitted user name value differs from the required
 	 * */
@@ -158,7 +161,7 @@ public class LoginManager {
 	/**
 	 * Validates the submitted password and if it differs from the required then
 	 * the authentication fails with error message.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -166,7 +169,7 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            that was submitted
-	 *
+	 * 
 	 * @throws ValidatorException
 	 *             when the submitted password value differs from the required
 	 * */
@@ -180,7 +183,7 @@ public class LoginManager {
 	/**
 	 * Checks whether the given password equals to the password registered in
 	 * the found user.
-	 *
+	 * 
 	 * @param password
 	 *            to diff-against the fetched password
 	 * @throws ValidatorException
@@ -199,7 +202,7 @@ public class LoginManager {
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given user name corresponds to the constraints defined on it.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -207,7 +210,7 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            that was submitted
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validateUsernameIn(FacesContext context, UIComponent component, Object value)
@@ -220,7 +223,7 @@ public class LoginManager {
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given password corresponds to the constraints defined on it.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -228,7 +231,7 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            that was submitted
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validatePasswordIn(FacesContext context, UIComponent component, Object value)
@@ -242,7 +245,7 @@ public class LoginManager {
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given passwords do match.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -251,7 +254,7 @@ public class LoginManager {
 	 * @param value
 	 *            the second password to ensure it was correctly given in the
 	 *            first time
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validatePasswordAgainIn(FacesContext context, UIComponent component, Object value)
@@ -264,7 +267,7 @@ public class LoginManager {
 	/**
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given email matches against a specified pattern.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -272,7 +275,7 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            representing an email
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validateEmailIn(FacesContext context, UIComponent component, Object value)
@@ -286,7 +289,7 @@ public class LoginManager {
 	 * Delegates the call to a <code>UserService</code> instance to ensure
 	 * whether the given description corresponds to the constraints defined on
 	 * it.
-	 *
+	 * 
 	 * @param context
 	 *            representing the current JSF context
 	 * @param component
@@ -294,7 +297,7 @@ public class LoginManager {
 	 *            from
 	 * @param value
 	 *            representing a user description
-	 *
+	 * 
 	 * @throws ValidatorException
 	 * */
 	public void validateDescriptionIn(FacesContext context, UIComponent component, Object value)
@@ -324,6 +327,20 @@ public class LoginManager {
 			FacesMessageUtils.errorMessage(ctx, "error while attempting delete!");
 		}
 		return "/auth/man/add_user.xhtml";
+	}
+
+	/**
+	 * Opens a modal dialog for creating a new user.
+	 */
+	public void showNewUserDialog() {
+		Map<String, Object> options = new HashMap<String, Object>();
+		options.put("modal", true);
+		options.put("draggable", false);
+		options.put("resizable", false);
+		// options.put("contentHeight", 320);
+		// options.put("contentWidth", 500);
+
+		RequestContext.getCurrentInstance().openDialog("/auth/man/new_user", options, null);
 	}
 
 	/**

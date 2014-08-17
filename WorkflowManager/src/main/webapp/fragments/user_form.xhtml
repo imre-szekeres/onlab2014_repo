@@ -5,46 +5,46 @@
                     xmlns:c='http://java.sun.com/jsp/jstl/core'>
                     
 	            <div>          
-                <h:form id="adduser_form" method='POST'>
-                    <h:panelGrid columns="3" cellspacing="1" cellpadding="2">                      
-                      <h:outputText value='Username:' />
-                      <h:inputText id="user_in" name="username" value="#{ loginManager.subject.username }" 
-                                   validator='#{ loginManager.validateUsernameIn }' styleClass='inputTextClass'/>
-                      <h:message for="user_in" styleClass='error-message' />
-                      
-                      <h:outputText value='Password:' />
-                      <h:inputSecret id="pass_in" name="password" value="#{ loginManager.subject.password }" 
-                                validator='#{ loginManager.validatePasswordIn }' label='Password: ' styleClass='inputTextClass'/>
-                      <h:message for="pass_in" styleClass='error-message' />
-                      
-                      <h:outputText value='Password Again:' />
-                      <h:inputSecret id="passa_in" name="passwordAgain" 
-                             value="#{ loginManager.passwordAgain }" styleClass='inputTextClass'/>
-                      <h:message for="passa_in" styleClass='error-message' />
-                      
-                      <h:outputText value='Email:' />
-                      <h:inputText id="email_in" name="email" value="#{ loginManager.subject.email }" 
-                                   validator='#{ loginManager.validateEmailIn }' styleClass='inputTextClass'/>
-                      <h:message for="email_in" styleClass='error-message' />
-                      
-                      <h:outputText value='Description:' />
-                      <h:inputTextarea size='50' id='desc_in' name="description" value="#{ loginManager.subject.description }" 
-                                       validator='#{ loginManager.validateDescriptionIn }' styleClass='inputTextAreaClass'/>
-                      <h:message for='desc_in' styleClass='error-message' />
-                      
-                      <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole('administrator') }">
-                          <h:outputText value='Role: ' />
-                          <h:selectOneMenu styleClass='selectMenu' id='selectone-role' value='#{ loginManager.role }' >
-                              <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
-                                  <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
-                              </c:forEach>
-                          </h:selectOneMenu>
-                          <span></span>
-                      </c:if>
-                      
-                      <h:commandButton action="#{ loginManager.register }" value="#{ sessionScope.subject ne null ? 'Create User' : 'Register' }" id="adduser_btn" styleClass='btn'/>
-                    </h:panelGrid>
-                </h:form>
+					<h:form id="adduser_form" method='POST'>
+						<h:panelGrid id='new_user_grid' columns="3" cellspacing="1" cellpadding="2">                      
+						  <h:outputText value='Username:' />
+						  <h:inputText id="user_in" name="username" value="#{ loginManager.subject.username }" 
+									   validator='#{ loginManager.validateUsernameIn }' styleClass='inputTextClass'/>
+						  <h:message for="user_in" styleClass='error-message' />
+						  
+						  <h:outputText value='Password:' />
+						  <h:inputSecret id="pass_in" name="password" value="#{ loginManager.subject.password }" 
+									validator='#{ loginManager.validatePasswordIn }' label='Password: ' styleClass='inputTextClass'/>
+						  <h:message for="pass_in" styleClass='error-message' />
+						  
+						  <h:outputText value='Password Again:' />
+						  <h:inputSecret id="passa_in" name="passwordAgain" 
+								 value="#{ loginManager.passwordAgain }" styleClass='inputTextClass'/>
+						  <h:message for="passa_in" styleClass='error-message' />
+						  
+						  <h:outputText value='Email:' />
+						  <h:inputText id="email_in" name="email" value="#{ loginManager.subject.email }" 
+									   validator='#{ loginManager.validateEmailIn }' styleClass='inputTextClass'/>
+						  <h:message for="email_in" styleClass='error-message' />
+						  
+						  <h:outputText value='Description:' />
+						  <h:inputTextarea size='50' id='desc_in' name="description" value="#{ loginManager.subject.description }" 
+										   validator='#{ loginManager.validateDescriptionIn }' styleClass='inputTextAreaClass'/>
+						  <h:message for='desc_in' styleClass='error-message' />
+						  
+						  <c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole('administrator') }">
+							  <h:outputText value='Role: ' />
+							  <h:selectOneMenu styleClass='selectMenu' id='selectone-role' value='#{ loginManager.role }' >
+								  <c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
+									  <f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
+								  </c:forEach>
+							  </h:selectOneMenu>
+							  <span></span>
+						  </c:if>
+						  
+						  <h:commandButton action="#{ loginManager.register }" value="#{ sessionScope.subject ne null ? 'Create User' : 'Register' }" update='new_user_grid'/>
+						</h:panelGrid>
+					</h:form>
                 </div>
                 
                 <div hidden='true'>

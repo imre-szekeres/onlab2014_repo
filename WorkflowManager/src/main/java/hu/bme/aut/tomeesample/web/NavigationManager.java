@@ -76,9 +76,23 @@ public class NavigationManager {
 	 * 
 	 * @return index or add_user page
 	 * */
-	public String addUser() {
+	public String newUser() {
 		clearConversation();
-		String pageID = "/auth/man/add_user.xhtml";
+		String pageID = "/auth/man/new_user.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
+	}
+
+	/**
+	 * Results the pageID to navigate to after the call, considers the status
+	 * and <code>Role</code>s of the <code>User</code> referred as subject, and
+	 * unauthorised access outcomes in a different pageID that was requested.
+	 * 
+	 * @return index or add_user page
+	 * */
+	public String users() {
+		clearConversation();
+		String pageID = "/auth/users.xhtml";
 		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
 		return pageID;
 	}
@@ -104,6 +118,20 @@ public class NavigationManager {
 	 * 
 	 * @return index or workflows page
 	 * */
+	public String newWorkflow() {
+		clearConversation();
+		String pageID = "/auth/man/new_workflow.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
+	}
+
+	/**
+	 * Results the pageID to navigate to after the call, considers the status
+	 * and <code>Role</code>s of the <code>User</code> referred as subject, and
+	 * unauthorised access outcomes in a different pageID that was requested.
+	 * 
+	 * @return index or workflows page
+	 * */
 	public String workflows() {
 		clearConversation();
 		String pageID = "/auth/workflows.xhtml";
@@ -116,11 +144,25 @@ public class NavigationManager {
 	 * and <code>Role</code>s of the <code>User</code> referred as subject, and
 	 * unauthorised access outcomes in a different pageID that was requested.
 	 * 
+	 * @return index or workflows page
+	 * */
+	public String newProject() {
+		clearConversation();
+		String pageID = "/auth/man/new_project.xhtml";
+		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
+		return pageID;
+	}
+
+	/**
+	 * Results the pageID to navigate to after the call, considers the status
+	 * and <code>Role</code>s of the <code>User</code> referred as subject, and
+	 * unauthorised access outcomes in a different pageID that was requested.
+	 * 
 	 * @return index or add_project page
 	 * */
-	public String addProject() {
+	public String projects() {
 		clearConversation();
-		String pageID = "/auth/add_project.xhtml";
+		String pageID = "/auth/projects.xhtml";
 		logger.debug(" user " + ManagingUtils.fetchSubjectFrom(FacesContext.getCurrentInstance()).getUsername() + " visited " + pageID);
 		return pageID;
 	}
@@ -154,7 +196,8 @@ public class NavigationManager {
 	}
 
 	private void clearConversation() {
-		if (!this.conversation.isTransient())
+		if (!this.conversation.isTransient()) {
 			this.conversation.end();
+		}
 	}
 }

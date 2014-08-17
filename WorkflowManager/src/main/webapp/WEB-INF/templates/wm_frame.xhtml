@@ -5,105 +5,104 @@
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c='http://java.sun.com/jsp/jstl/core'>
+	  
+	<f:view contentType="text/html">
 
-    <h:head>
-        <title>
-            <ui:insert name='title'>WorkflowManager</ui:insert>
-        </title>
-        <!--<h:outputStylesheet library='css' name='cvf_style.css'></h:outputStylesheet>-->
-        <h:outputScript     library='js'  name='jquery-1.11.0.min.js'></h:outputScript>
-        <h:outputScript     library='js'  name='jquery-ui-1.10.4.js' ></h:outputScript>
-		<f:facet name="last">
+		<h:head>
+			<title>
+				<ui:insert name='title'>WorkflowManager</ui:insert>
+			</title>
 			<h:outputStylesheet library="css" name="cvf_style.css" />
-		</f:facet>
-    </h:head>
-    
-    <h:body>
-        <!--<div id='header-div' >-->
-            <!--<span id='brand-img-span'></span>-->
-            <!--<div id='unavbar' >-->
-                    <!--<h:commandLink styleClass="home-link" action='#{ navigationManager.home() }' value="WorkflowManager" />-->
-            	<h:form>
-					<p:menubar>
-						<p:menuitem styleClass="home-link menu-sub-item" value="WorkflowManager" action="#{ navigationManager.home() }"/>
-						<p:submenu styleClass="menu-sub-item" label='#{sessionScope.subject.username}' icon='ui-icon-person'>
-							<p:menuitem value='Profile' action='#{ navigationManager.profile() }'/>
-							<p:menuitem value='Sign out' action='#{ navigationManager.profile() }'/>
-						</p:submenu>
-						<p:submenu styleClass="menu-sub-item" label='Manage' icon='ui-icon-note'>
-							<p:menuitem value='Workflows' action='#{ navigationManager.workflows() }'/>
-							<p:menuitem value='Projects' action='#{ navigationManager.addProject() }'/>
-							<c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
-								<p:menuitem value='Users' action='#{ navigationManager.addUser() }'/>
-								<c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
-									<p:menuitem value='Roles' action='#{ navigationManager.addRole() }'/>
-									<p:menuitem value='Action types' action='#{ navigationManager.actionTypes() }'/>
-								</c:if>
-							</c:if> 
-						</p:submenu>
-					</p:menubar>
-				</h:form>
-            <!--</div>-->
-        <!--</div>-->
+			<h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+			<h:outputScript     library='js'  name='jquery-1.11.0.min.js'/>
+			<h:outputScript     library='js'  name='jquery-ui-1.10.4.js' />
+		</h:head>
 		
-		<div id="body_container">    
-	        <div id='content-container' >
-	            <div id='ctitle-div'>
-	                <h3>
-	                    <ui:insert name='content_title'>Welcome!</ui:insert>
-	                </h3>
-	            </div>
-	            
-	            <div id='content-div'>
-	                
-	                <c:if test='#{ not empty facesContext.messageList }' >
-	                    <div id='global-messages-container'>
-	                        <h:messages id='global-messages' globalOnly='true' ></h:messages>
-	                    </div>
-	                </c:if>
-	                
-	                <ui:insert name='content'>
-	                    <p>
-	                        Welcome to WorkflowManager!
-	                    </p>
-	                </ui:insert>
-	            </div>
-	        </div>
-        
-        </div>
-		
-        <div id='footer-div' >
-            <div>
-                 <h5>
-                    <span id='footer-spanr' class='footer-span'>
-                        (R) WorkflowManager
-                    </span>
-                    <span id='footer-spanc' class='footer-span'>
-                        Contact: vagege@gmail.com | icloudred@gmail.com
-                    </span>
-                 </h5>    
-            </div>
-        </div>
-        
-        <h:outputScript>
-            var $_gmsgs = $("#global-messages-container");
-            
-            $_gmsgs.click(function() {
-                $_gmsgs.fadeOut("slow");
-            }).hide().slideDown(1600);
-        </h:outputScript>
-        
-        <!-- script for show/hide buttons -->
-        <h:outputScript>
-		function showOrHide(id) {
-			var element = $("."+id);
-			console.log(id);
-			if (element.is(":visible")) {
-				element.hide();
-			} else {
-				element.show();
-			}
-		};
-        </h:outputScript>
-    </h:body>
+		<h:body>
+			<h:form>
+				<p:menubar style='width: 99%;'>
+					<p:menuitem styleClass="home-link menu-sub-item" value="WorkflowManager" action="#{ navigationManager.home() }"/>
+					<p:submenu styleClass="menu-sub-item" label='#{sessionScope.subject.username}' icon='ui-icon-person'>
+						<p:menuitem value='Profile' action='#{ navigationManager.profile() }'/>
+						<p:menuitem value='Sign out' action='#{ loginManager.logout() }'/>
+					</p:submenu>
+					<p:submenu styleClass="menu-sub-item" label='Workflows' icon='ui-icon-calculator'>
+						<c:if test="#{ sessionScope.subject.hasRole('manager') }">
+							<p:menuitem value='New workflow' action='#{ navigationManager.newWorkflow() }'/>
+						</c:if>
+						<p:menuitem value='Manage workflows' action='#{ navigationManager.workflows() }'/>
+					</p:submenu>
+					<p:submenu styleClass="menu-sub-item" label='Projects' icon='ui-icon-clipboard'>
+						<c:if test="#{ sessionScope.subject.hasRole('manager') }">
+							<p:menuitem value='New project' action='#{ navigationManager.newProject() }'/>
+						</c:if>
+						<p:menuitem value='Manage projects' action='#{ navigationManager.projects() }'/>
+					</p:submenu>
+					<p:submenu styleClass="menu-sub-item" label='Manage' icon='ui-icon-note'>
+						<c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole( 'manager' ) }">
+							<p:menuitem value='Users' action='#{ navigationManager.users() }'/>
+							<c:if test="#{ sessionScope.subject.hasRole('administrator') }" >
+								<p:menuitem value='Roles' action='#{ navigationManager.addRole() }'/>
+								<p:menuitem value='Action types' action='#{ navigationManager.actionTypes() }'/>
+							</c:if>
+						</c:if> 
+					</p:submenu>
+				</p:menubar>
+			</h:form>
+			<ui:insert name='toolbar'>
+
+			</ui:insert>
+				   
+			<div id='body_container'>
+				<ui:insert name='content'>
+					<h:form>
+						<p:outputPanel deferred="true">
+							<p:panel header='Welcome!'>
+								<p>
+									Welcome to WorkflowManager!
+								</p>
+							</p:panel>
+						</p:outputPanel>
+					</h:form>
+				</ui:insert>
+			</div>
+				<!--</div>-->
+			
+		   <!-- </div>-->
+			
+			<div id='footer-div' >
+				<div>
+					 <h5>
+						<span id='footer-spanr' class='footer-span'>
+							(R) WorkflowManager
+						</span>
+						<span id='footer-spanc' class='footer-span'>
+							Contact: vagege@gmail.com | icloudred@gmail.com
+						</span>
+					 </h5>    
+				</div>
+			</div>
+			
+			<h:outputScript>
+				var $_gmsgs = $("#global-messages-container");
+				
+				$_gmsgs.click(function() {
+					$_gmsgs.fadeOut("slow");
+				}).hide().slideDown(1600);
+			</h:outputScript>
+			
+			<!-- script for show/hide buttons -->
+			<h:outputScript>
+			function showOrHide(id) {
+				var element = $("."+id);
+				console.log(id);
+				if (element.is(":visible")) {
+					element.hide();
+				} else {
+					element.show();
+				}
+			};
+			</h:outputScript>
+		</h:body>
+	</f:view>
 </html>

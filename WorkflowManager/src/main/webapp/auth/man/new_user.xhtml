@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+
+	<h:form id="adduser_form" method='POST'>
+		<p:panelGrid id='new_user_grid' styleClass='noBorder'>
+			<p:row>
+				<p:column>
+					<p:outputLabel value='Username: ' for='user_in'/>
+				</p:column>
+				<p:column>
+					<p:inputText id="user_in" value="#{ loginManager.subject.username }" validator='#{ loginManager.validateUsernameIn }'/>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel value='Password: ' for='pass_in'/>
+				</p:column>
+				<p:column>
+					<p:password  id="pass_in" value="#{ loginManager.subject.password }" match='passa_in_again' validator='#{ loginManager.validatePasswordIn }'/>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel value='Password Again: ' for='passa_in_again'/>
+				</p:column>
+				<p:column>
+					<p:password id="passa_in_again" value="#{ loginManager.passwordAgain }"/>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel value='Email: ' for='email_in'/>
+				</p:column>
+				<p:column>
+					<p:inputText id="email_in" value="#{ loginManager.subject.email }" validator='#{ loginManager.validateEmailIn }'/>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel value='Description: ' for='desc_in'/>
+				</p:column>
+				<p:column>
+					<p:inputTextarea size='50' id='desc_in' value="#{ loginManager.subject.description }" validator='#{ loginManager.validateDescriptionIn }'/>
+				</p:column>
+			</p:row>
+			<p:row>
+				<c:if test="#{ sessionScope.subject ne null and sessionScope.subject.hasRole('administrator') }">
+					<p:column>
+						<p:outputLabel value='Role: ' for='selectone_role'/>
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id='selectone_role' value='#{ loginManager.role }' >
+							<c:forEach items='#{ loginManager.listRoleNames() }' var='roleName' >
+								<f:selectItem itemLabel='#{ roleName }' itemValue='#{ roleName }' />
+							</c:forEach>
+						</p:selectOneMenu>
+					</p:column>
+				</c:if>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:commandButton action="#{ loginManager.register }" value="#{ sessionScope.subject ne null ? 'Create User' : 'Register' }" update='new_user_grid'/>
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</h:form>
+
+</html>
