@@ -1,0 +1,1125 @@
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 200;
+    src: url('http://themes.googleusercontent.com/static/fonts/opensans/v5/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff') format('woff');
+}
+
+/* Register Page */
+#reg-header {
+}
+
+#reg-content {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    padding: 21px;
+    width: 700px;
+    height: 350px;
+    background-color: #F8F8F8;
+    border-right: #006699 2px solid;
+    border-bottom: #006699 2px solid;
+    border-left: #F0F0F0 1px solid;
+    border-top: #F0F0F0 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#header-div {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: black;
+    width: 100%;
+    min-width: 1140px;
+    height: 50px;
+    box-shadow: 3px 3px 2px #D0D0D0;
+    border-radius: 3px 3px 3px 3px;
+    border: #006699 2px solid;
+}
+
+.home-link {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+    left: 13px;
+    font-size: 25px;
+    line-height: 50px;
+    vertical-align: middle;
+    top: -18px;
+    font-family: 'Open Sans';
+}
+
+#brand-span {
+    position: absolute;
+    top: 0px;
+    width: 270px;
+    height: 50px;
+}
+
+
+#userform-wrapper {
+    padding: 13px;
+    margin:  13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+
+/* Drop down manu bar */
+
+#unavbar {
+    position: relative;
+    left: 350px;
+    width: 80%;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+}
+
+#menu {
+  text-align: left;
+  display: inline;
+  margin: 0;
+  padding: 15px 4px 17px 0;
+  list-style: none;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+#menu li {
+  font: 12px/18px sans-serif;
+  display: inline-block;
+  margin-right: -4px;
+  position: relative;
+  padding: 15px 4px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  text-decoration: none; 
+    text-align: center;
+     color: white; 
+    width: 100px;
+    height: 20px;
+    font-size: 16px;
+}
+#menu  li:hover {
+  background: -webkit-linear-gradient(#006699, black);
+    background: -o-linear-gradient(#006699, black);
+    background: -moz-linear-gradient(#006699, black);
+    background: linear-gradient(#006699, black);
+/*     border: #006699 1px solid; */
+}
+#submenu {
+  padding: 0;
+  position: absolute;
+  z-index: 999;
+  top: 48px;
+  left: 0;
+  width: 150px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transiton: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  -ms-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -transition: opacity 0.2s;
+  text-decoration: none; 
+    text-align: center;
+     color: white; 
+    width: 100px;
+    height: 20px;
+    font-size: 16px;
+}
+#submenu li { 
+  background: #000; 
+  display: block; 
+  color: #fff;
+  text-shadow: 0 -1px 0 #000;
+}
+
+#submenu li{ 
+  color: #fff;
+  text-shadow: 0 -1px 0 #000;
+}
+
+#submenu li:hover { 
+	
+}
+ 
+#menu li:hover ul {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  
+}
+
+
+.menu-item {
+    position: relative;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    display: block;
+}
+
+#body_container{
+	position: relative;
+	top: 90px; 
+	margin-left:auto;
+	margin-right:auto;
+	width: 800px;
+    height: 618px;
+}
+
+#content-container {
+    position: relative ;
+	float:right
+    width: 800px;
+    height: 618px;
+}
+
+#ctitle-div {
+    position: relative;
+}
+
+#ctitle-div H3 {
+    position: absolute;
+    text-align: center;
+    top: -21px;
+    width: 100%;
+    line-height: 30px;
+    border-radius: 5px 5px 5px 5px;
+    vertical-align: middle;
+    background: -webkit-linear-gradient(#006699, #101010);
+    background: -o-linear-gradient(#006699, #101010);
+    background: -moz-linear-gradient(#006699, #101010);
+    background: linear-gradient(#006699, #101010);
+    border-top: #686868 2px solid;
+    border-bottom: #686868 2px solid;
+    color: #F8F8F8;
+}
+
+#content-div {
+    position: absolute;
+    top: 38px;
+    width: 100%;
+    height: 777px;
+    background-color: #F8F8F8;
+    border-bottom: #003366 1px solid;
+    border-right: #003366 1px solid;
+    border-left: #D8D8D8 1px solid;
+    border-top: #D8D8D8 1px solid;
+    border-radius: 5px;
+}
+
+#footer-div {
+    position: absolute;
+    top: 943px;
+    left: 0px;
+    background-color: #C8C8C8;
+    width: 100%;
+    height: 35px;
+}
+
+#footer-div H5 {
+    float: right;
+    position: relative;
+    top: -21px;
+    left: -5px;
+    line-height: 35px;
+    vertical-align: middle;
+}
+
+#footer-spanr {
+    position: relative;
+    left: -35px;
+}
+
+/* Sign In Space */
+#signin-bodiv {
+    position: absolute;
+    left: 50%;
+    top: 21px;
+    width: 350px;
+    height: 700px;
+}
+
+#brand-div {
+    position: relative;
+    left: -180px;
+    width: 350px;
+    height: 200px;
+}
+
+#brand-div IMG {
+    border: #D8D8D8 1px solid;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#brand-div P {
+    position: relative;
+    left: 10px;
+    font-size: 13px;
+}
+
+#usrimg-div {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    left: 100px;
+    top: 30px;
+    background-image: url('images/usr_03.jpg') no-repeat top right;
+    border: #006699 2px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#signin-container {
+    position: relative;
+    left: -175px;
+    width: 350px;
+    height: 450px;
+    border-radius: 7px 7px 7px 7px;
+    border-bottom: #989898 2px solid;
+    border-right: #A8A8A8 1px solid;
+    border-left: #A8A8A8 1px solid;
+    background-color: #F0F0F0;
+}
+
+#signin-panel {
+    position: relative;
+    top: 10px;
+}
+
+#form-div {
+    position: absolute;
+    top: 275px;
+    left: 70px;
+    width: 210px;
+}
+
+.user-input {
+    width: 210px;
+    height: 35px;
+    font: 21px;
+}
+
+.user-input-button {
+    width: 218px;
+    height: 35px;
+    color: #006699;
+    border: #006699 2px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+/* Messages Space */
+#global-messages-container {
+    background-color: black;
+    position: absolute;
+    top: -65px;
+    left: 670px;
+    width: 300px;
+    height: 40px;
+    z-index: 5;
+    display: inline-block;
+    line-height: 40px;
+    border-radius: 4px 4px 4px 4px;
+    border: #006699 1px solid;
+}
+
+#global-messages {
+    position: relative;
+    text-align: center;
+    list-style-type: none;
+    display: inline-block;
+    top: -15px;
+    color: white;
+    width: 300px;
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+    border-radius: 4px 4px 4px 4px;
+}
+
+#global-messages li {
+    position: relative;
+    left: -35px;
+}
+
+#global-messages-container:hover {
+    opacity: 0.77;
+}
+
+/* Error Space */
+#signin-errorbox {
+    list-style-type: none;
+    position: absolute;
+    top: -50px;
+    left: -47px;
+    width: 300px;
+}
+
+#signin-errorbox UL {
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.error-message {
+    text-decoration: none;
+    color: red;
+}
+
+/* Users Space */
+
+#usrprofile-div {
+    width: 50%;
+    height: 210px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+    padding-top: 7px;
+    overflow: auto;
+}
+
+#usrstable-div {
+    position: relative;
+    width: 700px;
+    left: 21px;    
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#usrstable-form {
+    position: relative;
+    width: 100%;
+}
+
+#usrstable-header {
+    position: relative;
+    width: 700px;
+    height: 35px;
+    line-height: 35px;
+    border-bottom: #006699 1px solid;
+    background-color: #006699;
+}
+
+.usrstable-th {
+    position: relative;
+    color: white;
+    height: 35px;
+    line-height: 35px;
+    display: inline-block;
+    text-align: center;
+}
+
+.usrstable-col {
+    width: 135px;
+    text-align: center;
+}
+
+#usrstable-body {
+    position: relative;
+    height: 250px;
+    max-height: 250px;
+    overflow-x: auto;
+}
+
+#usrstable-body TABLE {
+/* set background-color of the usrstable body.. */
+}
+
+#usrname-span {
+    width: 110px;
+    left: 5px;
+}
+
+#passwd-span {
+    left: -2px;
+}
+
+#email-span {
+    width: 130px;
+    left: 31px;
+}
+
+#desc-span {
+    width: 130px;
+    left: 150px;
+}
+
+#del-span {
+    width: 110px;
+    left: 145px;
+}
+
+
+
+/* UsrRole Space */
+
+#manageroles-div {
+    position: relative;
+    top: -220px;
+    left: 500px;
+    width: 213px;
+    height: 230px;
+}
+
+#usrroles-panel {
+    width: 100%;
+    height: 190px;
+}
+
+#usrroles-header {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 24px;
+    color: #006699;
+}
+
+#usrrolestable-wrapper {
+    width:  100%;
+    height: 160px;
+    overflow: auto;
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#usrroles-table{
+    width: 100%;
+    text-align: center;
+}
+
+#usrroles-table TR{
+    width: 100%;
+    text-align: center;
+}
+
+#usrroles-table TD{
+    width: 100%;
+    text-align: center;
+}
+
+#assignedprojects-div {
+    position: relative;
+    top: -550px;
+    left: 518px;
+    width: 220px;
+    height: 260px;
+}
+
+#assignedprojects-panel {
+    width: 100%;
+    height: 100%;
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#assignedprojects-header {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 19px;
+    color: white;
+    background-color: #006699;
+}
+
+#assignedprojects-wrapper {
+    width:  100%;
+    height: 230px;
+    max-height: 230px;
+    overflow: auto;
+}
+
+#assignedprojects-table {
+    width: 100%;
+    text-align: center;
+}
+
+#assignedprojects-table TR{
+    width: 100%;
+    text-align: center;
+}
+
+#assignedprojects-table TD{
+    width: 100%;
+    text-align: center;
+}
+
+
+
+
+
+/* Projects Space */
+#createproject-div {
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#projectstable-div {
+    position: relative;
+    width: 700px;
+    top: 21px;
+    left: 42px;    
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#projectstable-form {
+    position: relative;
+    width: 100%;
+}
+
+#projectstable-header {
+    position: relative;
+    width: 700px;
+    height: 35px;
+    line-height: 35px;
+    border-bottom: #006699 1px solid;
+    background-color: #006699;
+}
+
+.projectstable-th {
+    position: relative;
+    color: white;
+    height: 35px;
+    line-height: 35px;
+    display: inline-block;
+    text-align: center;
+}
+
+.projectstable-col {
+    width: 135px;
+    text-align: center;
+}
+
+#projectstable-body {
+    position: relative;
+    height: 250px;
+    max-height: 250px;
+    overflow-x: auto;
+}
+
+
+#projname-span {
+    width: 90px;
+    left: 16px;
+}
+
+#projdesc-span {
+    width: 110px;
+    left: 70px;
+}
+
+#projstate-span {
+    width: 110px;
+    left: 100px;
+}
+
+#projwf-span {
+    width: 100px;
+    left: 100px;
+}
+
+#projhist-span {
+}
+
+#projusrs-span {
+}
+
+#projrem-span {
+    width: 100px;
+    left: 100px;
+}
+
+/* Workflow.xhtml */
+#createworkflow-div {
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#workflowstable-div {
+    position: relative;
+    width: 700px;
+    top: 21px;
+    left: 42px;    
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+    margin-bottom: 3em;
+}
+
+#workflowstable-form {
+    position: relative;
+    width: 100%;
+}
+
+#workflowstable-header {
+    position: relative;
+    width: 700px;
+    height: 35px;
+    line-height: 35px;
+    border-bottom: #006699 1px solid;
+    background-color: #006699;
+}
+
+.workflowstable-th {
+    position: relative;
+    color: white;
+    height: 35px;
+    line-height: 35px;
+    display: inline-block;
+    text-align: center;
+}
+
+.workflowname-col {
+    width: 135px;
+    text-align: center;
+}
+
+.workflowdesc-col {
+    width: 350px;
+    text-align: center;
+}
+
+.workflowdel-col {
+    width: 135px;
+    text-align: center;
+}
+
+#workflowstable-body {
+    position: relative;
+    height: 250px;
+    max-height: 250px;
+    overflow-x: auto;
+}
+
+
+#workflowname-span {
+    width: 90px;
+    left: 16px;
+}
+
+#workflowdesc-span {
+    width: 110px;
+    left: 150px;
+}
+
+#workflowdel-span {
+    width: 100px;
+    left: 300px;
+}
+
+/* Roles.xhtml */
+#createrole-div {
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+/* TODO: lecser�lni a table-s megold�sunkra */
+#rolestable_div {
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+/* States.xhtml */
+#createstate-div {
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#state-div {
+    position: relative;
+    width: 700px;
+    top: 21px;
+    left: 42px;    
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+    margin-bottom: 3em;
+}
+
+
+#state_list_header {
+    position: relative;
+    width: 700px;
+    height: 35px;
+    line-height: 35px;
+    border-bottom: #006699 1px solid;
+    background-color: #006699;
+}
+
+.statetable-th {
+    position: relative;
+    color: white;
+    height: 35px;
+    line-height: 35px;
+    display: inline-block;
+    text-align: center;
+}
+
+#stateinit-col {
+	position: relative;
+	top: 5px;
+    width: 5px;
+    left: 20px;
+    text-align: center;
+    float: left;
+}
+
+#statename-col {
+	position: relative;
+    width: 100px;
+    left: 50px;
+    text-align: center;
+    float: left;
+}
+
+#statedexc-col {
+	position: relative;
+    width: 350px;
+    left: 80px;
+    text-align: center;
+    float: left;
+}
+
+#statedel-col {
+	position: relative;
+    width: 50px;
+    left: 95px;
+    text-align: center;
+    float: left;
+}
+ 
+#state_list_body {
+    position: relative;
+    height: 250px;
+    max-height: 250px;
+    overflow-x: auto;
+}
+
+
+#state_initial {
+    width: 5px;
+    left: 10px;
+}
+
+#state_name {
+    width: 40px;
+    left: 70px;
+}
+
+.state_actionType_block{
+	clear: both;
+}
+
+.state_actionType_list {
+	padding: 10px 0px;
+}
+
+.state_add_actionType {
+	padding-left: 10px;
+	margin-left: 100px;
+}
+
+.state_actionTypeName{
+	font-weight: bold;
+}
+
+.add_action_btn{
+	margin-left: 25px;
+}
+
+.nextStatePanel-name{
+	padding-right: 25px;
+}
+
+.actionTypePanel-name{
+	padding-left: 10px;
+	margin-left: 100px;
+}
+
+.one-state{
+/* 	margin: 5px; */
+	border-top: 1px solid #000;
+	border-bottom: 1px dotted #D1D1D1;
+	padding: 5px;
+	padding-top: 15px;
+	padding-bottom: 30px;
+}
+
+#state_dexc {
+    width: 200px;
+    left: 200px;
+}
+
+#state_delete {
+    width: 50px;
+    left: 300px;
+}
+
+/* ActionType.xhtml */
+
+.actionType_Frame {
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+/* ProjectProfiel Space */
+#projectprofile-div {
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#assignmentdiv-wrapper {
+    margin:  13px;
+    padding: 13px;
+    width:  350px;
+    height: 400px;
+}
+
+#assignedusrs-panel {
+    width: 350px:
+    height: 400px;
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px; 
+}
+
+#assignedusrs-header {
+    line-height: 30px;
+    height: 30px;
+    text-align: center;
+    color: white;
+    border-bottom: #006699 1px solid;
+    background-color: #006699;
+}
+
+#assignedusrs-table {
+    position: relative;
+    width: 350px:
+    height: 400px;
+    max-height: 400px;
+    overflow-x: auto;
+}
+
+
+/* Comments Space */
+
+#projectcomments-body {
+    margin: 13px;
+    padding: 13px;
+    width: 550px;
+    height: 250px;
+    max-height: 200px;
+    overflow-x: auto;
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#newcomment-div {
+    margin: 13px;
+    padding: 13px;
+    width: 550px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#projectcomments-div {
+    position: relative;
+    top: -220px;
+    width: 92%;
+    margin: 13px;
+    padding: 13px;
+}
+
+#commentpanel-div {
+    position: relative;
+    top: -200px;
+    width: 100%;
+    height: 350px;
+}
+
+#comment-panel {
+    position: relative;
+    top: 20px;
+    width: 450px;
+    height: 300px;
+    opacity: 0.8;
+}
+
+#comments-header {
+    height: 30px;
+    font-size: 24px;
+    color: #006699;
+}
+
+#comments-wrapper {
+    width: 450px;
+    height: 260px;
+    max-height: 260px;
+    overflow-x: auto;
+    border: #006699 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+.actionTypePanel {
+    padding: 10px 5px;
+    margin: 5px 5px;
+    margin-top: 20px;
+}
+
+.actionType_btn{
+	margin: 0px 15px;
+}
+
+.role_list_on_at_name{
+	float:left;
+	width: 150px;
+}
+
+.role_list_on_at{
+	margin-bottom: 20px;
+}
+
+.actionTypePanel_hiddenContent {
+	border-top: 1px dotted #006699;
+	border-bottom: 3px double #006699;
+    padding: 10px 5px;
+    margin: 5px 5px;
+}
+
+.actionTypePanel-name {
+	width: 10em;
+}
+
+/* Input fields, buttons, links */
+
+.btn {
+	background: white; 
+	border:1px solid  #006699; 
+}
+
+.btn:HOVER {
+	background: -webkit-radial-gradient(white,white,white,  #B2E4FF ); /* Safari 5.1 to 6.0 */
+	background: -o-radial-gradient(white,white,white,  #B2E4FF ); /* For Opera 11.6 to 12.0 */
+	background: -moz-radial-gradient(white,white,white,  #B2E4FF ); /* For Firefox 3.6 to 15 */
+	background: radial-gradient(white,white,white,  #B2E4FF ); /* Standard syntax */
+	border:1px solid  #006699; 
+}
+
+.btn:ACTIVE {
+	background: -webkit-radial-gradient(#B2E4FF,#B2E4FF,white,  white ); /* Safari 5.1 to 6.0 */
+	background: -o-radial-gradient(#B2E4FF,#B2E4FF,white,  white ); /* For Opera 11.6 to 12.0 */
+	background: -moz-radial-gradient(#B2E4FF,#B2E4FF,white,  white ); /* For Firefox 3.6 to 15 */
+	background: radial-gradient(#B2E4FF,#B2E4FF,white,  white ); /* Standard syntax */
+	border:1px solid  #006699; 
+}
+
+.inputTextClass {
+	border:1px dotted black;
+	padding: 3px;
+}
+
+.inputTextClass:HOVER {
+	border:1px solid #006699;
+}
+
+.inputTextClass:FOCUS {
+	border:1px solid #006699;
+}
+
+.inputTextAreaClass {
+	border:1px dotted black;
+	padding: 3px;
+}
+
+.inputTextAreaClass:HOVER {
+	border:1px solid #006699; 
+}
+
+.inputTextAreaClass:FOCUS {
+	border:1px solid #006699; 
+}
+
+.selectMenu{
+	border:1px dotted black;
+}
+
+.selectMenu:HOVER{
+	border:1px solid #006699;
+}
+
+.link-on-name{
+	color: #0093E4;
+	text-decoration: none;
+}
+
+.link-on-name:HOVER{
+	border-bottom: 1px solid #0093E4;
+}
+
+.link-on-name:VISITED{
+	color: #0093E4;
+	 text-decoration: none;
+}
+
+/* RoleProfile Space */
+
+#roleprofile-div {
+    margin: 13px;
+    padding: 13px;
+}
+
+#roleprofile-wrapper {
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#assignedusrs-wrapper {
+    width: 210px;
+    height: 300px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
+#assignedactions-wrapper {
+    position: relative;
+    top: -340px;
+    left: 300px;
+    width: 210px;
+    height: 300px;
+    margin: 13px;
+    padding: 13px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+    border: #888888 1px solid;
+    border-radius: 7px 7px 7px 7px;
+}
+
