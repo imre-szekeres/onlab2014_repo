@@ -15,7 +15,9 @@
 <body>
 
     <div id='header-wrapper'>
-        
+        <jsp:include page='fragments/page_header.jsp' >
+            <jsp:param name='appRoot' value='${ appRoot }' />
+        </jsp:include>
     </div>
     
     <div id='content-wrapper'>

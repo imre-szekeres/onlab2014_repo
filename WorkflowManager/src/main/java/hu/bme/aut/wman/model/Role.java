@@ -38,15 +38,19 @@ public class Role implements Serializable {
 	@ManyToMany(targetEntity = hu.bme.aut.wman.model.User.class, mappedBy = "roles")
 	private Set<User> users;
 
+	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Privilege.class, fetch = FetchType.EAGER)
+	private Set<Privilege> privileges;
+	
 	public Role() {
-		super();
-		this.users = new HashSet<>();
-		this.actionTypes = new HashSet<>();
+		this("");
 	}
 
 	public Role(String name) {
-		this();
+		super();
 		this.name = name;
+		this.users = new HashSet<User>();
+		this.actionTypes = new HashSet<ActionType>();
+		this.privileges = new HashSet<Privilege>();
 	}
 
 	/**
@@ -136,7 +140,53 @@ public class Role implements Serializable {
 	public void setActionTypes(Set<ActionType> actionTypes) {
 		this.actionTypes = actionTypes;
 	}
+	
+	
 
+	/**
+	 * @return the privileges
+	 */
+	public Set<Privilege> getPrivileges() {
+		return privileges;
+	}
+
+	/**
+	 * @param privileges the privileges to set
+	 */
+	public void setPrivileges(Set<Privilege> privileges) {
+		this.privileges = privileges;
+	}
+
+	/**
+	 * Add {@link Privilege} to this Role
+	 * 
+	 * @param privilege
+	 *            the {@link Privilege} to add
+	 * @return true if the {@link Privilege} is added
+	 */
+	public boolean addPrivilege(Privilege privilege) {
+		return this.privileges.add(privilege);
+	}
+
+	/**
+	 * Remove {@link Privilege} from this Role
+	 * 
+	 * @param privilege
+	 *            the {@link Privilege} to remove
+	 * @return true if the {@link Privilege} is removed
+	 */
+	public boolean removePrivilege(Privilege privilege) {
+		return this.privileges.remove(privilege);
+	}
+	
+	// TODO: comment
+	public boolean hasPrivilege(String name) {
+		for(Privilege p : privileges)
+			if(p.getName().equals(name))
+				return true;
+		return false;
+	}
+	
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */

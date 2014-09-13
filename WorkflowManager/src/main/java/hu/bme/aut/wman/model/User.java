@@ -257,6 +257,14 @@ public class User implements Serializable {
 		}
 		return false;
 	}
+	
+	// TODO: comment
+	public boolean hasPrivilege(String name) {
+		for(Role r : roles)
+			if(r.hasPrivilege(name))
+				return true;
+		return false;
+	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
