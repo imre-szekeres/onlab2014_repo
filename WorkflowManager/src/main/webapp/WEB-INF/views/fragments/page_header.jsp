@@ -3,6 +3,6 @@
     
 <div id='page-header'>
     <span>
-        <a href='${ param.appRoot }'>WorkflowManager</a>
+        <a id='home-href' class='decor-less' href='${ param.appRoot }/'>WorkflowManager</a>
     </span>
 </div>

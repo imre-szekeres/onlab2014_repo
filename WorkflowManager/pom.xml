@@ -130,7 +130,7 @@
                 <configuration>
                     <tomeeVersion>1.7.0</tomeeVersion>
                     <tomeeClassifier>plus</tomeeClassifier>
-                    <reloadOnUpdate>false</reloadOnUpdate>              
+                    <reloadOnUpdate>true</reloadOnUpdate>              
                     <synchronization>                   
                         <updateOnlyExtensions>
                             <updateOnlyExtension>.xhtml</updateOnlyExtension>
