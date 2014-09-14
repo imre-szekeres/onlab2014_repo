@@ -1,12 +1,5 @@
-/**
- * Project.java
- * 
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
 
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,9 +9,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -28,24 +18,21 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Entity implementation class for Entity: Project
+ * Entity implementation class for Projects
  * 
- * @author Imre Szekeres
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p"),
-		@NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p WHERE p.id=:id"),
-		@NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p WHERE p.name=:name"),
+		// @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p"),
+		// @NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p WHERE p.id=:id"),
+		// @NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p WHERE p.name=:name"),
 		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name")
 })
-public class Project implements Serializable {
+public class Project extends AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	public static final String NQ_FIND_BY_WORKFLOW_NAME = "Project.findAllByWorkflowName";
 
 	@NotNull
 	@Size(min = 5, max = 16)
@@ -85,10 +72,6 @@ public class Project implements Serializable {
 		this.projectAssignments = new HashSet<>();
 		this.historyEntries = new ArrayList<>();
 		this.comments = new ArrayList<>();
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getName() {

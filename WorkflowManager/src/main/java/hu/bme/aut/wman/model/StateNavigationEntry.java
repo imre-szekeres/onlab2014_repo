@@ -1,19 +1,9 @@
-/**
- * Action.java
- * 
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
-
-import java.io.Serializable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -21,25 +11,26 @@ import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Gergely Varkonyi
+ * Entity implementation class for connections between <code>States</code>.
+ * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "StateNavigationEntry.findAll", query = "SELECT sne FROM StateNavigationEntry sne"),
-		@NamedQuery(name = "StateNavigationEntry.findById", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.id=:id"),
-		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.parent.id=:parentId"),
+		// @NamedQuery(name = "StateNavigationEntry.findAll", query = "SELECT sne FROM StateNavigationEntry sne"),
+		// @NamedQuery(name = "StateNavigationEntry.findById", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.id=:id"),
+		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.parentState.id=:parentId"),
 		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.actionType.id=:typeId AND sne.parent.id=:parentId")
 })
-public class StateNavigationEntry implements Serializable {
+public class StateNavigationEntry extends AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	public static final String NQ_FIND_BY_PARENT_ID = "StateNavigationEntry.findByParentId";
+	public static final String NQ_FIND_BY_ACTIONTYPE_AND_PARENT_ID = "StateNavigationEntry.findByActionType";
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn
-	private State parent;
+	private State parentState;
 
 	@Column
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -58,19 +49,15 @@ public class StateNavigationEntry implements Serializable {
 	public StateNavigationEntry(ActionType actionType, State nextState, State parent) {
 		this.actionType = actionType;
 		this.nextState = nextState;
-		this.parent = parent;
-	}
-
-	public Long getId() {
-		return id;
+		this.parentState = parent;
 	}
 
 	public State getParent() {
-		return parent;
+		return parentState;
 	}
 
 	public void setParent(State parent) {
-		this.parent = parent;
+		this.parentState = parent;
 	}
 
 	public State getNextState() {
@@ -96,7 +83,7 @@ public class StateNavigationEntry implements Serializable {
 		result = prime * result + ((actionType == null) ? 0 : actionType.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nextState == null) ? 0 : nextState.hashCode());
-		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+		result = prime * result + ((parentState == null) ? 0 : parentState.hashCode());
 		return result;
 	}
 
@@ -133,11 +120,11 @@ public class StateNavigationEntry implements Serializable {
 		} else if (!nextState.equals(other.nextState)) {
 			return false;
 		}
-		if (parent == null) {
-			if (other.parent != null) {
+		if (parentState == null) {
+			if (other.parentState != null) {
 				return false;
 			}
-		} else if (!parent.equals(other.parent)) {
+		} else if (!parentState.equals(other.parentState)) {
 			return false;
 		}
 		return true;
@@ -145,7 +132,7 @@ public class StateNavigationEntry implements Serializable {
 
 	@Override
 	public String toString() {
-		return "StateNavigationEntry [id=" + id + ", parent=" + parent.getName() + ", nextState=" + nextState.getName() + ", actionType=" + actionType + "]";
+		return "StateNavigationEntry [id=" + id + ", parent=" + parentState.getName() + ", nextState=" + nextState.getName() + ", actionType=" + actionType + "]";
 	}
 
 }

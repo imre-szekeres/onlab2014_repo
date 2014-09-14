@@ -5,7 +5,6 @@
  * */
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,9 +13,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -27,22 +23,24 @@ import javax.validation.constraints.NotNull;
 /**
  * Entity implementation class for Entity: State
  * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
-		@NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
+		// @NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
+		// @NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
 		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId"),
 		@NamedQuery(name = "State.findChildrenByParentId", query = "SELECT s FROM State s WHERE s.parent.id=:parentId"),
-		@NamedQuery(name = "State.findByInitial", query = "SELECT s FROM State s WHERE s.initial=:initial"),
+		// @NamedQuery(name = "State.findByInitial", query = "SELECT s FROM State s WHERE s.initial=:initial"),
 		@NamedQuery(name = "State.findRootStatesByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId and s.parent IS NULL")
 })
-public class State implements Serializable {
+public class State extends AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	public static final String NQ_FIND_BY_WORKFLOW_ID = "State.findByWorkflowId";
+	// TODO I'm 75% sure, we don't need this two any more
+	public static final String NQ_FIND_CHILDREN_BY_PARENT_ID = "State.findChildrenByParentId";
+	public static final String NQ_FIND_ROOT_STATES_BY_WORKFLOW_ID = "State.findRootStatesByWorkflowId";
 
 	@NotNull
 	// @Size(min = 4, max = 25)
@@ -56,10 +54,6 @@ public class State implements Serializable {
 	@ManyToOne
 	@JoinColumn
 	private Workflow workflow;
-
-	// @ManyToMany(fetch = FetchType.EAGER)
-	// @MapKeyJoinColumn
-	// private Map<ActionType, State> nextStates;
 
 	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	private List<StateNavigationEntry> nextStates;
@@ -88,12 +82,7 @@ public class State implements Serializable {
 		this.initial = initial;
 		this.historyEntries = new HashSet<>();
 		this.files = new ArrayList<>();
-		// this.nextStates = new HashMap<>();
 		this.children = new ArrayList<>();
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getName() {
@@ -275,11 +264,6 @@ public class State implements Serializable {
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		// if (nextStates == null) {
-		// if (other.nextStates != null)
-		// return false;
-		// } else if (!nextStates.equals(other.nextStates))
-		// return false;
 		if (parent == null) {
 			if (other.parent != null) {
 				return false;

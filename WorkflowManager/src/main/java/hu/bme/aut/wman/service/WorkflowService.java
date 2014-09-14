@@ -1,99 +1,53 @@
-/**
- * WorkflowService.java
- */
 package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Workflow;
 
-import java.util.List;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.validation.Validation;
-import javax.validation.Validator;
 
 /**
- * @author Imre Szekeres
+ * Helps make operations with <code>Workflow</code>.
+ * 
  * @version "%I%, %G%"
  */
 @Stateless
 @LocalBean
-public class WorkflowService {
+public class WorkflowService extends AbstractDataService<Workflow> {
 
-	@PersistenceContext
-	EntityManager em;
-	private Validator validator;
+	// private Validator validator;
 
-	/**
-	 * Initialises the <code>Validator</code> for future use.
-	 * */
-	@PostConstruct
-	public void init() {
-		validator = Validation.buildDefaultValidatorFactory().getValidator();
-	}
-
-	/**
-	 * Persists a newly created <code>Workflow</code>.
-	 * 
-	 * @param workflow
-	 *            the newly created worklow that is about to be persisted.
-	 * */
-	public void create(Workflow workflow) {
-		em.persist(workflow);
-	}
-
-	public void update(Workflow workflow) {
-		em.merge(workflow);
-	}
-
-	public void remove(Workflow workflow) {
-		em.remove(workflow);
-	}
-
-	public void removeDetached(Workflow workflow) {
-		Object managed = em.merge(workflow);
-		em.remove(managed);
-	}
+	// @PostConstruct
+	// public void init() {
+	// validator = Validation.buildDefaultValidatorFactory().getValidator();
+	// }
 
 	public void setWorkflowToState(Workflow workflow, State state) {
 		workflow.addState(state);
-		em.merge(workflow);
+		save(workflow);
 	}
 
-	public List<Workflow> findAll() {
-		return em.createNamedQuery("Workflow.findAll", Workflow.class).getResultList();
+	public Workflow selectByName(String name) {
+		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", name));
+		// FIXME should check if has exactly one element
+		return selectByParameters(parameterList).get(0);
 	}
 
-	public Workflow findById(Long id) {
-		try {
-			TypedQuery<Workflow> select = em.createNamedQuery("Workflow.findById", Workflow.class);
-			select.setParameter("id", id);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
+	@Override
+	protected Class<Workflow> getEntityClass() {
+		return Workflow.class;
 	}
 
-	public Workflow findByName(String name) {
-		try {
-			TypedQuery<Workflow> select = em.createNamedQuery("Workflow.findByName", Workflow.class);
-			select.setParameter("name", name);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public boolean validateName(String name) {
-		return validator.validateValue(Workflow.class, "name", name).size() == 0;
-	}
-
-	public boolean validateDescription(String description) {
-		return validator.validateValue(Workflow.class, "description", description).size() == 0;
-	}
+	// public boolean validateName(String name) {
+	// return validator.validateValue(Workflow.class, "name", name).size() == 0;
+	// }
+	//
+	// public boolean validateDescription(String description) {
+	// return validator.validateValue(Workflow.class, "description", description).size() == 0;
+	// }
 }

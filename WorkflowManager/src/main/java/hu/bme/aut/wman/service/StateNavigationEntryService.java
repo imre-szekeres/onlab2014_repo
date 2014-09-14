@@ -1,78 +1,39 @@
-/**
- * ActionService.java
- */
 package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.StateNavigationEntry;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 /**
- * @author Gergely Varkonyi
+ * Helps make operations with <code>StateNavigationEntry</code>.
+ * 
+ * @version "%I%, %G%"
  */
 @Stateless
 @LocalBean
-public class StateNavigationEntryService {
+public class StateNavigationEntryService extends AbstractDataService<StateNavigationEntry> {
 
-	@PersistenceContext
-	EntityManager em;
-
-	public void create(StateNavigationEntry stateNavigationEntry) {
-		em.persist(stateNavigationEntry);
+	public List<StateNavigationEntry> selectByParentId(Long parentId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("parentId", parentId));
+		return callNamedQuery(StateNavigationEntry.NQ_FIND_BY_PARENT_ID, parameterList);
 	}
 
-	public void update(StateNavigationEntry stateNavigationEntry) {
-		em.merge(stateNavigationEntry);
+	public List<StateNavigationEntry> selectByActionTypeId(Long typeId, Long parentId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("typeId", typeId));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("parentId", parentId));
+		return callNamedQuery(StateNavigationEntry.NQ_FIND_BY_ACTIONTYPE_AND_PARENT_ID, parameterList);
 	}
 
-	public void remove(StateNavigationEntry stateNavigationEntry) {
-		em.remove(stateNavigationEntry);
-	}
-
-	public void removeDetached(StateNavigationEntry stateNavigationEntry) {
-		Object managed = em.merge(stateNavigationEntry);
-		em.remove(managed);
-	}
-
-	public List<StateNavigationEntry> findAll() {
-		return em.createNamedQuery("StateNavigationEntry.findAll", StateNavigationEntry.class).getResultList();
-	}
-
-	public StateNavigationEntry findById(Long id) {
-		try {
-			TypedQuery<StateNavigationEntry> select = em.createNamedQuery("StateNavigationEntry.findById", StateNavigationEntry.class);
-			select.setParameter("id", id);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public List<StateNavigationEntry> findByParentId(Long parentId) {
-		try {
-			TypedQuery<StateNavigationEntry> select = em.createNamedQuery("StateNavigationEntry.findByParentId", StateNavigationEntry.class);
-			select.setParameter("parentId", parentId);
-			return select.getResultList();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public StateNavigationEntry findByActionTypeId(Long typeId, Long parentId) {
-		try {
-			TypedQuery<StateNavigationEntry> select = em.createNamedQuery("StateNavigationEntry.findByActionType", StateNavigationEntry.class);
-			select.setParameter("typeId", typeId);
-			select.setParameter("parentId", parentId);
-			StateNavigationEntry ret = select.getSingleResult();
-			return ret;
-		} catch (Exception e) {
-			return null;
-		}
+	@Override
+	protected Class<StateNavigationEntry> getEntityClass() {
+		return StateNavigationEntry.class;
 	}
 }

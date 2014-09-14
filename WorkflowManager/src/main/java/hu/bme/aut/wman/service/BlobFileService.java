@@ -1,61 +1,32 @@
-/**
- * ActionService.java
- */
 package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.BlobFile;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 /**
- * @author Gergely Várkonyi
+ * Helps make operations with <code>BlobFile</code>.
+ * 
+ * @version "%I%, %G%"
  */
 @Stateless
 @LocalBean
-public class BlobFileService {
+public class BlobFileService extends AbstractDataService<BlobFile> {
 
-	@PersistenceContext
-	EntityManager em;
-
-	public void create(BlobFile file) {
-		em.persist(file);
+	public List<BlobFile> selectByFileName(String fileName) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("fileName", fileName));
+		return selectByParameters(parameterList);
 	}
 
-	public void update(BlobFile file) {
-		em.merge(file);
-	}
-
-	public void remove(BlobFile file) {
-		em.remove(file);
-	}
-
-	public List<BlobFile> findAll() {
-		return em.createNamedQuery("BlobFile.findAll", BlobFile.class).getResultList();
-	}
-
-	public BlobFile findById(Long id) {
-		try {
-			TypedQuery<BlobFile> select = em.createNamedQuery("BlobFile.findById", BlobFile.class);
-			select.setParameter("id", id);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public BlobFile findByFileName(String fileName) {
-		try {
-			TypedQuery<BlobFile> select = em.createNamedQuery("BlobFile.findByFileName", BlobFile.class);
-			select.setParameter("fileName", fileName);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
+	@Override
+	protected Class<BlobFile> getEntityClass() {
+		return BlobFile.class;
 	}
 }
