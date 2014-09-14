@@ -1,33 +1,21 @@
-/**
- * Role.java
- * */
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 /**
  * Entity implementation class for Entity: Role
  * 
- * @author Imre Szekeres
  * @version "%I%, %G%"
  */
 @Entity
 @SuppressWarnings("serial")
-public class Role implements Serializable {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Role extends AbstractEntity {
 
 	@Column(unique = true)
 	private String name;
@@ -47,13 +35,6 @@ public class Role implements Serializable {
 	public Role(String name) {
 		this();
 		this.name = name;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
 	}
 
 	/**

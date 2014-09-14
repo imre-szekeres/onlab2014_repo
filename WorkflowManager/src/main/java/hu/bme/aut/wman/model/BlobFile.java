@@ -1,33 +1,27 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Entity implementation to store files in database
+ * 
+ * @version "%I%, %G%"
+ */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "FILE_STORAGE")
 @NamedQueries(
 {
-		@NamedQuery(name = "FileStorage.findAll", query = "SELECT f FROM BlobFile f"),
-		@NamedQuery(name = "FileStorage.findById", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
-		@NamedQuery(name = "FileStorage.findByFileName", query = "SELECT f FROM BlobFile f WHERE f.fileName = :fileName")
+// @NamedQuery(name = "FileStorage.findAll", query = "SELECT f FROM BlobFile f"),
+// @NamedQuery(name = "FileStorage.findById", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
+// @NamedQuery(name = "FileStorage.findByFileName", query = "SELECT f FROM BlobFile f WHERE f.fileName = :fileName")
 })
-public class BlobFile implements Serializable
-{
-	private static final long serialVersionUID = -4796720242338042828L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class BlobFile extends AbstractEntity {
 
 	@NotNull
 	private String fileName;
@@ -48,11 +42,6 @@ public class BlobFile implements Serializable
 		this.fileName = fileName;
 		this.content = content;
 		this.state = state;
-	}
-
-	public Long getId()
-	{
-		return id;
 	}
 
 	public String getFileName()

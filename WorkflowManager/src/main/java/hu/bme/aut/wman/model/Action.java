@@ -1,8 +1,3 @@
-/**
- * Action.java
- * 
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
 
 import java.io.Serializable;
@@ -20,9 +15,11 @@ import javax.validation.constraints.Size;
 /**
  * Entity implementation class for Entity: Action
  * 
- * @author Imre Szekeres
+ * DEPRECATED, don't use it, we should delete it soon
+ * 
  * @version "%I%, %G%"
  */
+@Deprecated
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({

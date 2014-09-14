@@ -1,17 +1,8 @@
-/**
- * HistoryEntry.java
- * 
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,20 +13,21 @@ import javax.validation.constraints.Size;
 /**
  * Entity implementation class for Entity: HistoryEntry
  * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "HistoryEntry.findAll", query = "SELECT he FROM HistoryEntry he"),
-		@NamedQuery(name = "HistoryEntry.findById", query = "SELECT he FROM HistoryEntry he WHERE he.id=:id"),
+		// @NamedQuery(name = "HistoryEntry.findAll", query = "SELECT he FROM HistoryEntry he"),
+		// @NamedQuery(name = "HistoryEntry.findById", query = "SELECT he FROM HistoryEntry he WHERE he.id=:id"),
 		@NamedQuery(name = "HistoryEntry.findByUser", query = "SELECT he FROM HistoryEntry he WHERE he.userName=:userName"),
 		@NamedQuery(name = "HistoryEntry.findByState", query = "SELECT he FROM HistoryEntry he WHERE he.state.id=:stateId"),
 		@NamedQuery(name = "HistoryEntry.findByProject", query = "SELECT he FROM HistoryEntry he WHERE he.project.id= :projectId") })
-public class HistoryEntry implements Serializable {
+public class HistoryEntry extends AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	public static final String NQ_FIND_BY_USER_NAME = "HistoryEntry.findByUser";
+	public static final String NQ_FIND_BY_STATE_ID = "HistoryEntry.findByState";
+	public static final String NQ_FIND_BY_PROJECT_ID = "HistoryEntry.findByProject";
 
 	@Size(min = 10, max = 512)
 	private Date when;
@@ -55,10 +47,6 @@ public class HistoryEntry implements Serializable {
 	@NotNull
 	@OneToOne
 	private Project project;
-
-	public Long getId() {
-		return id;
-	}
 
 	public String getUser() {
 		return userName;
@@ -110,8 +98,9 @@ public class HistoryEntry implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof HistoryEntry))
+		if (!(o instanceof HistoryEntry)) {
 			return false;
+		}
 		return (((HistoryEntry) o).id).equals(this.id);
 	}
 

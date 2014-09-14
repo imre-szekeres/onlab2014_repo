@@ -1,74 +1,47 @@
-/**
- * ActionService.java
- */
 package hu.bme.aut.wman.service;
 
-import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.ProjectAssignment;
-import hu.bme.aut.wman.model.User;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 /**
- * @author Gergely Várkonyi
+ * Helps make operations with <code>ProjectAssignment</code>.
+ * 
+ * @version "%I%, %G%"
  */
 @Stateless
 @LocalBean
-public class ProjectAssignmentService {
+class ProjectAssignmentService extends AbstractDataService<ProjectAssignment> {
 
-	@PersistenceContext
-	EntityManager em;
-
-	public void create(ProjectAssignment projectAssignment) {
-		em.persist(projectAssignment);
+	public List<ProjectAssignment> selectByUserName(String userName) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("userName", userName));
+		return callNamedQuery(ProjectAssignment.NQ_FIND_BY_USER_NAME, parameterList);
 	}
 
-	public void update(ProjectAssignment projectAssignment) {
-		em.merge(projectAssignment);
+	public List<ProjectAssignment> selectByProjectId(Long projectId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectId", projectId));
+		return callNamedQuery(ProjectAssignment.NQ_FIND_BY_PROJECT_ID, parameterList);
 	}
 
-	public void remove(ProjectAssignment projectAssignment) {
-		em.remove(projectAssignment);
+	@Override
+	protected Class<ProjectAssignment> getEntityClass() {
+		return ProjectAssignment.class;
 	}
 
-	public void removeDetached(ProjectAssignment projectAssignment) {
-		ProjectAssignment managed = em.merge(projectAssignment);
-		em.remove(managed);
-	}
-
-	public ProjectAssignment findById(Long id) {
-		try {
-			TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findById", ProjectAssignment.class);
-			select.setParameter("id", id);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public List<ProjectAssignment> findByUserName(String userName) {
-		TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findByUser", ProjectAssignment.class);
-		select.setParameter("userName", userName);
-		return select.getResultList();
-	}
-
-	public List<ProjectAssignment> findByProjectId(Long projectId) {
-		TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findByProjectId", ProjectAssignment.class);
-		select.setParameter("projectId", projectId);
-		return select.getResultList();
-	}
-
-	public ProjectAssignment createFor(Long projectID, Long userID) {
-		User user = em.find(User.class, userID);
-		Project project = em.find(Project.class, projectID);
-		ProjectAssignment pa = new ProjectAssignment(user, project);
-		em.persist(pa);
-		return pa;
-	}
+	// TODO rewrite this method
+	// public ProjectAssignment createFor(Long projectID, Long userID) {
+	// User user = em.find(User.class, userID);
+	// Project project = em.find(Project.class, projectID);
+	// ProjectAssignment pa = new ProjectAssignment(user, project);
+	// em.persist(pa);
+	// return pa;
+	// }
 }

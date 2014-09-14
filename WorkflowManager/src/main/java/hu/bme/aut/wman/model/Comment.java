@@ -1,18 +1,8 @@
-/**
- * Comment.java
- * 
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
 
-
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,20 +12,19 @@ import javax.validation.constraints.Size;
 /**
  * Entity implementation class for Entity: Comment
  * 
- * @author Gergely Várkonyi
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
-		@NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c " + "WHERE c.id=:id"),
+		// @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
+		// @NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c " + "WHERE c.id=:id"),
 		@NamedQuery(name = "Comment.findByUser", query = "SELECT c FROM Comment c " + "WHERE c.user.username=:userName"),
-		@NamedQuery(name = "Comment.findByProject", query = "SELECT c FROM Comment c " + "WHERE c.project.name=:name") })
-public class Comment implements Serializable {
+		@NamedQuery(name = "Comment.findByProject", query = "SELECT c FROM Comment c " + "WHERE c.project.id=:id") })
+public class Comment extends AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	public static final String NQ_FIND_BY_USER_NAME = "Comment.findByUser";
+	public static final String NQ_FIND_BY_PROJECT_ID = "Comment.findByProject";
 
 	@Size(min = 1, max = 512)
 	private String description;
@@ -68,10 +57,6 @@ public class Comment implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public User getUser() {
