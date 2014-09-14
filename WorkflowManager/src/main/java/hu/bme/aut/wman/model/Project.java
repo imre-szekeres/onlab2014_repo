@@ -1,6 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +17,11 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Entity implementation class for Projects
+ * 
+ * @version "%I%, %G%"
+ */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
@@ -26,7 +30,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p WHERE p.name=:name"),
 		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name")
 })
-public class Project extends AbstractEntity implements Serializable {
+public class Project extends AbstractEntity {
 
 	@NotNull
 	@Size(min = 5, max = 16)

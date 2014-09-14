@@ -1,6 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +20,8 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: User
+ * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
@@ -30,7 +31,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.username=:username"),
 })
 @Table(name = "WM_USER")
-public class User extends AbstractEntity implements Serializable {
+public class User extends AbstractEntity {
 
 	@NotNull
 	@Size(min = 5, max = 16)

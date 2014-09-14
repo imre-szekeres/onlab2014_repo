@@ -1,6 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Entity;
@@ -13,6 +12,8 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: HistoryEntry
+ * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
@@ -22,7 +23,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "HistoryEntry.findByUser", query = "SELECT he FROM HistoryEntry he WHERE he.userName=:userName"),
 		@NamedQuery(name = "HistoryEntry.findByState", query = "SELECT he FROM HistoryEntry he WHERE he.state.id=:stateId"),
 		@NamedQuery(name = "HistoryEntry.findByProject", query = "SELECT he FROM HistoryEntry he WHERE he.project.id= :projectId") })
-public class HistoryEntry extends AbstractEntity implements Serializable {
+public class HistoryEntry extends AbstractEntity {
 
 	@Size(min = 10, max = 512)
 	private Date when;

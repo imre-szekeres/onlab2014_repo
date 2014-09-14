@@ -7,21 +7,24 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+/**
+ * Helps make operations with <code>Workflow</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @Stateless
 @LocalBean
 public class WorkflowService extends AbstractDataService<Workflow> {
 
 	// private Validator validator;
 
-	@PostConstruct
-	public void init() {
-		this.setClass(Workflow.class);
-		// validator = Validation.buildDefaultValidatorFactory().getValidator();
-	}
+	// @PostConstruct
+	// public void init() {
+	// validator = Validation.buildDefaultValidatorFactory().getValidator();
+	// }
 
 	public void setWorkflowToState(Workflow workflow, State state) {
 		workflow.addState(state);
@@ -32,7 +35,12 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", name));
 		// FIXME should check if has exactly one element
-		return findByParameters(parameterList).get(0);
+		return selectByParameters(parameterList).get(0);
+	}
+
+	@Override
+	protected Class<Workflow> getEntityClass() {
+		return Workflow.class;
 	}
 
 	// public boolean validateName(String name) {

@@ -1,6 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +15,8 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Workflow
+ * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
@@ -24,7 +25,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w WHERE w.id=:id"),
 		@NamedQuery(name = "Workflow.findByName", query = "SELECT w FROM Workflow w WHERE w.name=:name")
 })
-public class Workflow extends AbstractEntity implements Serializable {
+public class Workflow extends AbstractEntity {
 
 	@NotNull
 	@Size(min = 5, max = 32)

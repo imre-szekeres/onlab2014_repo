@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 
+/**
+ * Helps make operations with <code>State</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @Stateless
 @LocalBean
 public class StateService extends AbstractDataService<State> {
@@ -26,11 +30,10 @@ public class StateService extends AbstractDataService<State> {
 	@Inject
 	StateNavigationEntryService stateNavigationEntryService;
 
-	@PostConstruct
-	public void init() {
-		this.setClass(State.class);
-		// validator = Validation.buildDefaultValidatorFactory().getValidator();
-	}
+	// @PostConstruct
+	// public void init() {
+	// validator = Validation.buildDefaultValidatorFactory().getValidator();
+	// }
 
 	public void createWithParent(State parent, State child) {
 		save(child);
@@ -101,7 +104,12 @@ public class StateService extends AbstractDataService<State> {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("initial", true));
 		// FIXME should check if has exactly one element
-		return findByParameters(parameterList).get(0);
+		return selectByParameters(parameterList).get(0);
+	}
+
+	@Override
+	protected Class<State> getEntityClass() {
+		return State.class;
 	}
 
 	// public boolean validateName(String name) {

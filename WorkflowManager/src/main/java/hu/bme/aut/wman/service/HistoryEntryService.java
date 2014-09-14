@@ -2,19 +2,18 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.HistoryEntry;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+/**
+ * Helps make operations with <code>HistoryEntry</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @Stateless
 @LocalBean
 public class HistoryEntryService extends AbstractDataService<HistoryEntry> {
-
-	@PostConstruct
-	private void init() {
-		this.setClass(HistoryEntry.class);
-	}
 
 	/**
 	 * Use findByParameters method instead
@@ -56,5 +55,10 @@ public class HistoryEntryService extends AbstractDataService<HistoryEntry> {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	@Override
+	protected Class<HistoryEntry> getEntityClass() {
+		return HistoryEntry.class;
 	}
 }

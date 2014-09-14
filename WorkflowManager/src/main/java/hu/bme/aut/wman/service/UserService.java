@@ -7,10 +7,14 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+/**
+ * Helps make operations with <code>User</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @LocalBean
 @Stateless
 @SuppressWarnings("serial")
@@ -18,17 +22,21 @@ public class UserService extends AbstractDataService<User> implements Serializab
 
 	// private Validator validator;
 
-	@PostConstruct
-	public void init() {
-		this.setClass(User.class);
-		// validator = Validation.buildDefaultValidatorFactory().getValidator();
-	}
+	// @PostConstruct
+	// public void init() {
+	// validator = Validation.buildDefaultValidatorFactory().getValidator();
+	// }
 
 	public User findByName(String username) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", username));
 		// FIXME should check if has exactly one element
-		return findByParameters(parameterList).get(0);
+		return selectByParameters(parameterList).get(0);
+	}
+
+	@Override
+	protected Class<User> getEntityClass() {
+		return User.class;
 	}
 
 	// /**

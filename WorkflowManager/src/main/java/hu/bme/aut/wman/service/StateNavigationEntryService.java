@@ -4,19 +4,18 @@ import hu.bme.aut.wman.model.StateNavigationEntry;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+/**
+ * Helps make operations with <code>StateNavigationEntry</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @Stateless
 @LocalBean
 public class StateNavigationEntryService extends AbstractDataService<StateNavigationEntry> {
-
-	@PostConstruct
-	private void init() {
-		this.setClass(StateNavigationEntry.class);
-	}
 
 	/**
 	 * Use findByParameters method instead
@@ -46,5 +45,10 @@ public class StateNavigationEntryService extends AbstractDataService<StateNaviga
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	@Override
+	protected Class<StateNavigationEntry> getEntityClass() {
+		return StateNavigationEntry.class;
 	}
 }

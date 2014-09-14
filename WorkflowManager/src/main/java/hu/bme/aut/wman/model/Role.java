@@ -1,6 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,10 +10,12 @@ import javax.persistence.ManyToMany;
 
 /**
  * Entity implementation class for Entity: Role
+ * 
+ * @version "%I%, %G%"
  */
 @Entity
 @SuppressWarnings("serial")
-public class Role extends AbstractEntity implements Serializable {
+public class Role extends AbstractEntity {
 
 	@Column(unique = true)
 	private String name;

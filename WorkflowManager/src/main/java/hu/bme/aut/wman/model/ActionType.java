@@ -1,6 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,13 +12,15 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for Entity: ActionType
+ * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"),
 		@NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at WHERE at.id=:id") })
-public class ActionType extends AbstractEntity implements Serializable {
+public class ActionType extends AbstractEntity {
 
 	@NotNull
 	@Column(unique = true)

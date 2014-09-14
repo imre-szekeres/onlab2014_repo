@@ -14,6 +14,10 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Action
+ * 
+ * DEPRECATED, don't use it, we should delete it soon
+ * 
+ * @version "%I%, %G%"
  */
 @Deprecated
 @SuppressWarnings("serial")

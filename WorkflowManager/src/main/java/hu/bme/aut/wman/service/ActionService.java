@@ -10,6 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+/**
+ * DEPRECATED: Don't use it, we should delete it soon
+ * 
+ * @version "%I%, %G%"
+ */
 @Deprecated
 @Stateless
 @LocalBean

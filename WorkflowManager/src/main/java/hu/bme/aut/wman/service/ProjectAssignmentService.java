@@ -4,15 +4,18 @@ import hu.bme.aut.wman.model.ProjectAssignment;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+/**
+ * Helps make operations with <code>ProjectAssignment</code>.
+ * 
+ * @version "%I%, %G%"
+ */
+@Stateless
+@LocalBean
 class ProjectAssignmentService extends AbstractDataService<ProjectAssignment> {
-
-	@PostConstruct
-	private void init() {
-		this.setClass(ProjectAssignment.class);
-	}
 
 	/**
 	 * Use findByParameters method instead
@@ -32,6 +35,11 @@ class ProjectAssignmentService extends AbstractDataService<ProjectAssignment> {
 		TypedQuery<ProjectAssignment> select = em.createNamedQuery("ProjectAssignment.findByProjectId", ProjectAssignment.class);
 		select.setParameter("projectId", projectId);
 		return select.getResultList();
+	}
+
+	@Override
+	protected Class<ProjectAssignment> getEntityClass() {
+		return ProjectAssignment.class;
 	}
 
 	// TODO rewrite this method

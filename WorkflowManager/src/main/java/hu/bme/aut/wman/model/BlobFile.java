@@ -1,7 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -10,6 +8,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Entity implementation to store files in database
+ * 
+ * @version "%I%, %G%"
+ */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "FILE_STORAGE")
 @NamedQueries(
@@ -18,9 +22,7 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "FileStorage.findById", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
 		@NamedQuery(name = "FileStorage.findByFileName", query = "SELECT f FROM BlobFile f WHERE f.fileName = :fileName")
 })
-public class BlobFile extends AbstractEntity implements Serializable
-{
-	private static final long serialVersionUID = -4796720242338042828L;
+public class BlobFile extends AbstractEntity {
 
 	@NotNull
 	private String fileName;

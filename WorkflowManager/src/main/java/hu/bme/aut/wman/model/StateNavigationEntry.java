@@ -1,7 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +10,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Entity implementation class for connections between <code>States</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
@@ -20,7 +23,7 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.parent.id=:parentId"),
 		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.actionType.id=:typeId AND sne.parent.id=:parentId")
 })
-public class StateNavigationEntry extends AbstractEntity implements Serializable {
+public class StateNavigationEntry extends AbstractEntity {
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn

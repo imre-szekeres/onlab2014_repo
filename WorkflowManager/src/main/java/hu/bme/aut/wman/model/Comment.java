@@ -1,6 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -12,6 +11,8 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Comment
+ * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
@@ -20,7 +21,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c " + "WHERE c.id=:id"),
 		@NamedQuery(name = "Comment.findByUser", query = "SELECT c FROM Comment c " + "WHERE c.user.username=:userName"),
 		@NamedQuery(name = "Comment.findByProject", query = "SELECT c FROM Comment c " + "WHERE c.project.name=:name") })
-public class Comment extends AbstractEntity implements Serializable {
+public class Comment extends AbstractEntity {
 
 	@Size(min = 1, max = 512)
 	private String description;

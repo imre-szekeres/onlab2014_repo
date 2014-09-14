@@ -8,22 +8,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+/**
+ * Helps make operations with <code>Project</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @Stateless
 @LocalBean
 public class ProjectService extends AbstractDataService<Project> {
 
 	// private Validator validator;
 
-	@PostConstruct
-	private void init() {
-		this.setClass(Project.class);
-		// validator = Validation.buildDefaultValidatorFactory().getValidator();
-	}
+	// @PostConstruct
+	// private void init() {
+	// validator = Validation.buildDefaultValidatorFactory().getValidator();
+	// }
 
 	// /**
 	// * Validates the given project name against the constraints given in the <code>Project</code> class.
@@ -62,7 +65,7 @@ public class ProjectService extends AbstractDataService<Project> {
 	public List<Project> findByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", name));
-		return findByParameters(parameterList);
+		return selectByParameters(parameterList);
 	}
 
 	/**
@@ -85,5 +88,10 @@ public class ProjectService extends AbstractDataService<Project> {
 				+ "WHERE pa.u.username = :username AND pa.project = p", Project.class);
 		selectFor.setParameter("username", username);
 		return selectFor.getResultList();
+	}
+
+	@Override
+	protected Class<Project> getEntityClass() {
+		return Project.class;
 	}
 }

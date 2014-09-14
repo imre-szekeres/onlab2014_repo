@@ -11,11 +11,15 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+/**
+ * Helps make operations with <code>Role</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @LocalBean
 @Stateless
 @SuppressWarnings("serial")
@@ -23,17 +27,16 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 
 	// private Validator validator;
 
-	@PostConstruct
-	private void init() {
-		this.setClass(Role.class);
-		// validator = Validation.buildDefaultValidatorFactory().getValidator();
-	}
+	// @PostConstruct
+	// private void init() {
+	// validator = Validation.buildDefaultValidatorFactory().getValidator();
+	// }
 
 	public Role findByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", name));
 		// FIXME should check if has exactly one element
-		return findByParameters(parameterList).get(0);
+		return selectByParameters(parameterList).get(0);
 	}
 
 	/**
@@ -62,6 +65,11 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 	@Deprecated
 	public String[] findRoleNames() {
 		return em.createQuery("SELECT r.name FROM Role r", String[].class).getResultList().toArray(new String[0]);
+	}
+
+	@Override
+	protected Class<Role> getEntityClass() {
+		return Role.class;
 	}
 
 	// /**

@@ -4,19 +4,18 @@ import hu.bme.aut.wman.model.Comment;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+/**
+ * Helps make operations with <code>Comment</code>.
+ * 
+ * @version "%I%, %G%"
+ */
 @Stateless
 @LocalBean
 public class CommentService extends AbstractDataService<Comment> {
-
-	@PostConstruct
-	private void init() {
-		this.setClass(Comment.class);
-	}
 
 	// TODO rewrite these methods
 	// public User createFor(Project project, User user, Comment comment) throws Exception {
@@ -57,5 +56,10 @@ public class CommentService extends AbstractDataService<Comment> {
 		TypedQuery<Comment> select = em.createNamedQuery("Comment.findByProject", Comment.class);
 		select.setParameter("name", projectName);
 		return select.getResultList();
+	}
+
+	@Override
+	protected Class<Comment> getEntityClass() {
+		return Comment.class;
 	}
 }

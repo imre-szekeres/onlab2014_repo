@@ -6,6 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * An abstract Entity to use the AbstractDataService, every entity should extends this!
+ * 
+ * @version "%I%, %G%"
+ */
 public abstract class AbstractEntity implements Serializable {
 
 	@Id

@@ -5,7 +5,6 @@
  * */
 package hu.bme.aut.wman.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +23,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Entity implementation class for Entity: State
  * 
+ * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
@@ -35,7 +35,7 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "State.findByInitial", query = "SELECT s FROM State s WHERE s.initial=:initial"),
 		@NamedQuery(name = "State.findRootStatesByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId and s.parent IS NULL")
 })
-public class State extends AbstractEntity implements Serializable {
+public class State extends AbstractEntity {
 
 	@NotNull
 	// @Size(min = 4, max = 25)
