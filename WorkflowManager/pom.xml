@@ -28,7 +28,17 @@
             <version>10.10.1.1</version>
         </dependency>
         
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.0.3.RELEASE</version>
+        </dependency>
         
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>4.0.3.RELEASE</version>
+        </dependency>
         
         <dependency>
             <groupId>org.springframework</groupId>
@@ -130,7 +140,7 @@
                 <configuration>
                     <tomeeVersion>1.7.0</tomeeVersion>
                     <tomeeClassifier>plus</tomeeClassifier>
-                    <reloadOnUpdate>false</reloadOnUpdate>              
+                    <reloadOnUpdate>true</reloadOnUpdate>              
                     <synchronization>                   
                         <updateOnlyExtensions>
                             <updateOnlyExtension>.xhtml</updateOnlyExtension>

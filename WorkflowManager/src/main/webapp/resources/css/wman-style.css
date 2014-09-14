@@ -1,0 +1,33 @@
+.decor-less {
+	text-decoration: none;
+}
+
+#home-href {
+	
+	dispay: inline-block;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	
+	padding: 5px;
+}
+
+#header-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	width: 100%;
+	height: 50px;
+
+	margin:  0;
+	padding: 0;
+}
+
+#content-wrapper {
+	position: absolute;
+	top: 50px;
+	left: 0px;
+	
+	margin: 10px;
+}

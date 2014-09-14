@@ -236,6 +236,14 @@ public class User extends AbstractEntity {
 		}
 		return false;
 	}
+	
+	// TODO: comment
+	public boolean hasPrivilege(String name) {
+		for(Role r : roles)
+			if(r.hasPrivilege(name))
+				return true;
+		return false;
+	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
