@@ -58,18 +58,10 @@ public class StateService extends AbstractDataService<State> {
 		save(state);
 	}
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public List<State> findByWorkflowId(Long workflowId) {
-		try {
-			TypedQuery<State> select = em.createNamedQuery("State.findByWorkflowId", State.class);
-			select.setParameter("workflowId", workflowId);
-			return select.getResultList();
-		} catch (Exception e) {
-			return null;
-		}
+	public List<State> selectByWorkflowId(Long workflowId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("workflowId", workflowId));
+		return callNamedQuery(State.NQ_FIND_BY_WORKFLOW_ID, parameterList);
 	}
 
 	/**

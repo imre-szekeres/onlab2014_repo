@@ -2,11 +2,13 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.StateNavigationEntry;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
 
 /**
  * Helps make operations with <code>StateNavigationEntry</code>.
@@ -17,34 +19,17 @@ import javax.persistence.TypedQuery;
 @LocalBean
 public class StateNavigationEntryService extends AbstractDataService<StateNavigationEntry> {
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public List<StateNavigationEntry> findByParentId(Long parentId) {
-		try {
-			TypedQuery<StateNavigationEntry> select = em.createNamedQuery("StateNavigationEntry.findByParentId", StateNavigationEntry.class);
-			select.setParameter("parentId", parentId);
-			return select.getResultList();
-		} catch (Exception e) {
-			return null;
-		}
+	public List<StateNavigationEntry> selectByParentId(Long parentId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("parentId", parentId));
+		return callNamedQuery(StateNavigationEntry.NQ_FIND_BY_PARENT_ID, parameterList);
 	}
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public StateNavigationEntry findByActionTypeId(Long typeId, Long parentId) {
-		try {
-			TypedQuery<StateNavigationEntry> select = em.createNamedQuery("StateNavigationEntry.findByActionType", StateNavigationEntry.class);
-			select.setParameter("typeId", typeId);
-			select.setParameter("parentId", parentId);
-			StateNavigationEntry ret = select.getSingleResult();
-			return ret;
-		} catch (Exception e) {
-			return null;
-		}
+	public List<StateNavigationEntry> selectByActionTypeId(Long typeId, Long parentId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("typeId", typeId));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("parentId", parentId));
+		return callNamedQuery(StateNavigationEntry.NQ_FIND_BY_ACTIONTYPE_AND_PARENT_ID, parameterList);
 	}
 
 	@Override

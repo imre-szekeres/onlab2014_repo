@@ -6,8 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,9 +15,9 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("serial")
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"),
-		@NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at WHERE at.id=:id") })
+// @NamedQueries({
+// @NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"),
+// @NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at WHERE at.id=:id") })
 public class ActionType extends AbstractEntity {
 
 	@NotNull

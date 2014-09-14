@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -77,11 +78,11 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 */
 	public List<T> selectAll() {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<T> buildedQuery = builder.createQuery(getEntityClass());
+		CriteriaQuery<T> buildedCriteriaQuery = builder.createQuery(getEntityClass());
 
-		Root<T> root = buildedQuery.from(getEntityClass());
+		Root<T> root = buildedCriteriaQuery.from(getEntityClass());
 
-		return em.createQuery(buildedQuery.select(root)).getResultList();
+		return em.createQuery(buildedCriteriaQuery.select(root)).getResultList();
 	}
 
 	/**
@@ -108,22 +109,43 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * 
 	 * @param parameters
 	 *            of the query, connected with AND
-	 * @return result list of the query
+	 * @return result list of the executed query
 	 */
 	public List<T> selectByParameters(List<Entry<String, Object>> parameters) {
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<T> buildedQuery = builder.createQuery(getEntityClass());
+		CriteriaQuery<T> buildedCriteriaQuery = buildCriteriaByParameters(parameters);
 
-		Root<T> root = buildedQuery.from(getEntityClass());
+		return em.createQuery(buildedCriteriaQuery).getResultList();
+	}
+
+	/**
+	 * Support calling named queries. You can find the named query's name in the entity classes
+	 * 
+	 * @param queryName
+	 *            the name of the query in the specific entity class
+	 * @param parameters
+	 *            of the query
+	 * @return result list of the executed query
+	 */
+	protected List<T> callNamedQuery(String queryName, List<Entry<String, Object>> parameters) {
+		TypedQuery<T> namedQuery = em.createNamedQuery(queryName, getEntityClass());
+		for (Entry<String, Object> entry : parameters) {
+			namedQuery.setParameter(entry.getKey(), entry.getValue());
+		}
+		return namedQuery.getResultList();
+	}
+
+	private CriteriaQuery<T> buildCriteriaByParameters(List<Entry<String, Object>> parameters) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<T> buildedCriteriaQuery = builder.createQuery(getEntityClass());
+
+		Root<T> root = buildedCriteriaQuery.from(getEntityClass());
 
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		for (Entry<String, Object> parameter : parameters) {
 			predicates.add(builder.equal(root.get(parameter.getKey()), parameter.getValue()));
 		}
 
-		buildedQuery.select(root).where(predicates.toArray(new Predicate[] {}));
-
-		return em.createQuery(buildedQuery).getResultList();
+		return buildedCriteriaQuery.select(root).where(predicates.toArray(new Predicate[] {}));
 	}
 
 	/**

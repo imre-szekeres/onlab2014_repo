@@ -25,12 +25,14 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p"),
-		@NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p WHERE p.id=:id"),
-		@NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p WHERE p.name=:name"),
+		// @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p"),
+		// @NamedQuery(name = "Project.findById", query = "SELECT p FROM Project p WHERE p.id=:id"),
+		// @NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p WHERE p.name=:name"),
 		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name")
 })
 public class Project extends AbstractEntity {
+
+	public static final String NQ_FIND_BY_WORKFLOW_NAME = "Project.findAllByWorkflowName";
 
 	@NotNull
 	@Size(min = 5, max = 16)

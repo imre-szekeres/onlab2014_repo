@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -18,9 +17,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "FILE_STORAGE")
 @NamedQueries(
 {
-		@NamedQuery(name = "FileStorage.findAll", query = "SELECT f FROM BlobFile f"),
-		@NamedQuery(name = "FileStorage.findById", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
-		@NamedQuery(name = "FileStorage.findByFileName", query = "SELECT f FROM BlobFile f WHERE f.fileName = :fileName")
+// @NamedQuery(name = "FileStorage.findAll", query = "SELECT f FROM BlobFile f"),
+// @NamedQuery(name = "FileStorage.findById", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
+// @NamedQuery(name = "FileStorage.findByFileName", query = "SELECT f FROM BlobFile f WHERE f.fileName = :fileName")
 })
 public class BlobFile extends AbstractEntity {
 

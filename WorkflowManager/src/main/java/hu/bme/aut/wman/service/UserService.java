@@ -27,7 +27,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
-	public User findByName(String username) {
+	public User selectByName(String username) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", username));
 		// FIXME should check if has exactly one element

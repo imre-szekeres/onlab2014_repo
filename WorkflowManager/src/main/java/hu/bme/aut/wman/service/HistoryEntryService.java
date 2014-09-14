@@ -2,9 +2,13 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.HistoryEntry;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
 
 /**
  * Helps make operations with <code>HistoryEntry</code>.
@@ -15,46 +19,22 @@ import javax.persistence.TypedQuery;
 @LocalBean
 public class HistoryEntryService extends AbstractDataService<HistoryEntry> {
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public HistoryEntry findByUserName(String userName) {
-		try {
-			TypedQuery<HistoryEntry> select = em.createNamedQuery("HistoryEntry.findByUser", HistoryEntry.class);
-			select.setParameter("userName", userName);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
+	public List<HistoryEntry> selectByUserName(String userName) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("userName", userName));
+		return callNamedQuery(HistoryEntry.NQ_FIND_BY_USER_NAME, parameterList);
 	}
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public HistoryEntry findByStateId(Long stateId) {
-		try {
-			TypedQuery<HistoryEntry> select = em.createNamedQuery("HistoryEntry.findByState", HistoryEntry.class);
-			select.setParameter("stateId", stateId);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
+	public List<HistoryEntry> selectByStateId(Long stateId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("stateId", stateId));
+		return callNamedQuery(HistoryEntry.NQ_FIND_BY_STATE_ID, parameterList);
 	}
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public HistoryEntry findByProjectId(Long projectId) {
-		try {
-			TypedQuery<HistoryEntry> select = em.createNamedQuery("HistoryEntry.findByProject", HistoryEntry.class);
-			select.setParameter("projectId", projectId);
-			return select.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
+	public List<HistoryEntry> selectByProjectId(Long projectId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectId", projectId));
+		return callNamedQuery(HistoryEntry.NQ_FIND_BY_PROJECT_ID, parameterList);
 	}
 
 	@Override

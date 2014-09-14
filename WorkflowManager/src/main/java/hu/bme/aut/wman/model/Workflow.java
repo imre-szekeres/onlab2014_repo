@@ -7,8 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,11 +18,11 @@ import javax.validation.constraints.Size;
  */
 @SuppressWarnings("serial")
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "Workflow.findAll", query = "SELECT w FROM Workflow w"),
-		@NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w WHERE w.id=:id"),
-		@NamedQuery(name = "Workflow.findByName", query = "SELECT w FROM Workflow w WHERE w.name=:name")
-})
+// @NamedQueries({
+// @NamedQuery(name = "Workflow.findAll", query = "SELECT w FROM Workflow w"),
+// @NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w WHERE w.id=:id"),
+// @NamedQuery(name = "Workflow.findByName", query = "SELECT w FROM Workflow w WHERE w.name=:name")
+// })
 public class Workflow extends AbstractEntity {
 
 	@NotNull

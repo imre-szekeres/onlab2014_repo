@@ -2,11 +2,13 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.Comment;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
 
 /**
  * Helps make operations with <code>Comment</code>.
@@ -38,24 +40,16 @@ public class CommentService extends AbstractDataService<Comment> {
 	// return managedu;
 	// }
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public List<Comment> findByUserName(String userName) {
-		TypedQuery<Comment> select = em.createNamedQuery("Comment.findByUser", Comment.class);
-		select.setParameter("userName", userName);
-		return select.getResultList();
+	public List<Comment> selectByUserName(String userName) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("userName", userName));
+		return callNamedQuery(Comment.NQ_FIND_BY_USER_NAME, parameterList);
 	}
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public List<Comment> findByProjectName(String projectName) {
-		TypedQuery<Comment> select = em.createNamedQuery("Comment.findByProject", Comment.class);
-		select.setParameter("name", projectName);
-		return select.getResultList();
+	public List<Comment> selectByProjectId(String projectId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("id", projectId));
+		return callNamedQuery(Comment.NQ_FIND_BY_PROJECT_ID, parameterList);
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 		save(workflow);
 	}
 
-	public Workflow findByName(String name) {
+	public Workflow selectByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", name));
 		// FIXME should check if has exactly one element

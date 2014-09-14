@@ -52,22 +52,19 @@ public class ProjectService extends AbstractDataService<Project> {
 	// return validator.validateValue(Project.class, "description", description).size() == 0;
 	// }
 
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public List<Project> findAllByWorkflowName(String workflowName) {
-		TypedQuery<Project> selectAll = em.createNamedQuery("Project.findAllByWorkflowName", Project.class);
-		selectAll.setParameter("name", workflowName);
-		return selectAll.getResultList();
+	public List<Project> selectAllByWorkflowName(String workflowName) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", workflowName));
+		return callNamedQuery(Project.NQ_FIND_BY_WORKFLOW_NAME, parameterList);
 	}
 
-	public List<Project> findByName(String name) {
+	public List<Project> selectByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", name));
 		return selectByParameters(parameterList);
 	}
 
+	// TODO it should be in UserService
 	/**
 	 * Use findByParameters method instead
 	 */

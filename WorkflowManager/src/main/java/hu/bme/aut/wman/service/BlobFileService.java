@@ -19,8 +19,8 @@ import javax.ejb.Stateless;
 @LocalBean
 public class BlobFileService extends AbstractDataService<BlobFile> {
 
-	public List<BlobFile> findByFileName(String fileName) {
-		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+	public List<BlobFile> selectByFileName(String fileName) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("fileName", fileName));
 		return selectByParameters(parameterList);
 	}

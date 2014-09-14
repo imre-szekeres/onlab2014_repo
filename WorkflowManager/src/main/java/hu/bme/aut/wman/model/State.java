@@ -28,14 +28,19 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
-		@NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
+		// @NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
+		// @NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
 		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId"),
 		@NamedQuery(name = "State.findChildrenByParentId", query = "SELECT s FROM State s WHERE s.parent.id=:parentId"),
-		@NamedQuery(name = "State.findByInitial", query = "SELECT s FROM State s WHERE s.initial=:initial"),
+		// @NamedQuery(name = "State.findByInitial", query = "SELECT s FROM State s WHERE s.initial=:initial"),
 		@NamedQuery(name = "State.findRootStatesByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId and s.parent IS NULL")
 })
 public class State extends AbstractEntity {
+
+	public static final String NQ_FIND_BY_WORKFLOW_ID = "State.findByWorkflowId";
+	// TODO I'm 75% sure, we don't need this two any more
+	public static final String NQ_FIND_CHILDREN_BY_PARENT_ID = "State.findChildrenByParentId";
+	public static final String NQ_FIND_ROOT_STATES_BY_WORKFLOW_ID = "State.findRootStatesByWorkflowId";
 
 	@NotNull
 	// @Size(min = 4, max = 25)
