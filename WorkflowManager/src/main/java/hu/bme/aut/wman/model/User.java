@@ -1,10 +1,4 @@
-/**
- * User.java
- *
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
-
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,9 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -30,9 +21,6 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: User
- * 
- * @author Imre Szekeres
- * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
@@ -42,11 +30,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.username=:username"),
 })
 @Table(name = "WM_USER")
-public class User implements Serializable {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class User extends AbstractEntity implements Serializable {
 
 	@NotNull
 	@Size(min = 5, max = 16)
@@ -106,10 +90,6 @@ public class User implements Serializable {
 		this.description = description;
 		this.comments = new ArrayList<Comment>();
 		this.projectAssignments = new java.util.HashSet<ProjectAssignment>();
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getUsername() {

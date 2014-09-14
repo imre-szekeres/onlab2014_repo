@@ -1,8 +1,3 @@
-/**
- * ActionType.java
- * 
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
 
 import java.io.Serializable;
@@ -11,9 +6,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,18 +13,13 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for Entity: ActionType
- * 
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"),
 		@NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at WHERE at.id=:id") })
-public class ActionType implements Serializable {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class ActionType extends AbstractEntity implements Serializable {
 
 	@NotNull
 	@Column(unique = true)
@@ -84,10 +71,6 @@ public class ActionType implements Serializable {
 	public void removeRole(Role role) {
 		role.removeActionType(this);
 		roles.remove(role);
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	@Override

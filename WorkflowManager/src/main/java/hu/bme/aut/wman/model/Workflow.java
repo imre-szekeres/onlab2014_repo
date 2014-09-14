@@ -1,8 +1,3 @@
-/**
- * Workflow.java
- *
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
 
 import java.io.Serializable;
@@ -13,9 +8,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -24,9 +16,6 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Workflow
- * 
- * @author Imre Szekeres
- * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
@@ -35,11 +24,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w WHERE w.id=:id"),
 		@NamedQuery(name = "Workflow.findByName", query = "SELECT w FROM Workflow w WHERE w.name=:name")
 })
-public class Workflow implements Serializable {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Workflow extends AbstractEntity implements Serializable {
 
 	@NotNull
 	@Size(min = 5, max = 32)
@@ -62,10 +47,6 @@ public class Workflow implements Serializable {
 	public Workflow(String name, String description) {
 		this.name = name;
 		this.description = description;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getName() {

@@ -3,9 +3,6 @@ package hu.bme.aut.wman.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -21,13 +18,9 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "FileStorage.findById", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
 		@NamedQuery(name = "FileStorage.findByFileName", query = "SELECT f FROM BlobFile f WHERE f.fileName = :fileName")
 })
-public class BlobFile implements Serializable
+public class BlobFile extends AbstractEntity implements Serializable
 {
 	private static final long serialVersionUID = -4796720242338042828L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
 	@NotNull
 	private String fileName;
@@ -48,11 +41,6 @@ public class BlobFile implements Serializable
 		this.fileName = fileName;
 		this.content = content;
 		this.state = state;
-	}
-
-	public Long getId()
-	{
-		return id;
 	}
 
 	public String getFileName()

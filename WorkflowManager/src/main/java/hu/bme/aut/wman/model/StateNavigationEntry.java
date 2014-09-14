@@ -1,8 +1,3 @@
-/**
- * Action.java
- * 
- * @author Imre Szekeres
- * */
 package hu.bme.aut.wman.model;
 
 import java.io.Serializable;
@@ -11,18 +6,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
-/**
- * @author Gergely Varkonyi
- */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
@@ -31,11 +20,7 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.parent.id=:parentId"),
 		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.actionType.id=:typeId AND sne.parent.id=:parentId")
 })
-public class StateNavigationEntry implements Serializable {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class StateNavigationEntry extends AbstractEntity implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn
@@ -59,10 +44,6 @@ public class StateNavigationEntry implements Serializable {
 		this.actionType = actionType;
 		this.nextState = nextState;
 		this.parent = parent;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public State getParent() {

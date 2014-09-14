@@ -14,9 +14,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -38,11 +35,7 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "State.findByInitial", query = "SELECT s FROM State s WHERE s.initial=:initial"),
 		@NamedQuery(name = "State.findRootStatesByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId and s.parent IS NULL")
 })
-public class State implements Serializable {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class State extends AbstractEntity implements Serializable {
 
 	@NotNull
 	// @Size(min = 4, max = 25)
@@ -56,10 +49,6 @@ public class State implements Serializable {
 	@ManyToOne
 	@JoinColumn
 	private Workflow workflow;
-
-	// @ManyToMany(fetch = FetchType.EAGER)
-	// @MapKeyJoinColumn
-	// private Map<ActionType, State> nextStates;
 
 	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	private List<StateNavigationEntry> nextStates;
@@ -88,12 +77,7 @@ public class State implements Serializable {
 		this.initial = initial;
 		this.historyEntries = new HashSet<>();
 		this.files = new ArrayList<>();
-		// this.nextStates = new HashMap<>();
 		this.children = new ArrayList<>();
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getName() {
@@ -275,11 +259,6 @@ public class State implements Serializable {
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		// if (nextStates == null) {
-		// if (other.nextStates != null)
-		// return false;
-		// } else if (!nextStates.equals(other.nextStates))
-		// return false;
 		if (parent == null) {
 			if (other.parent != null) {
 				return false;
