@@ -55,7 +55,7 @@ public class State extends AbstractEntity {
 	@JoinColumn
 	private Workflow workflow;
 
-	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@OneToMany(mappedBy = "parentState", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	private List<StateNavigationEntry> nextStates;
 
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

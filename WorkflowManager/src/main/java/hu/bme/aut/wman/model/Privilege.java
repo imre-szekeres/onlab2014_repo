@@ -6,22 +6,17 @@ package hu.bme.aut.wman.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 /**
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
+@SuppressWarnings("serial")
 @Entity
-public class Privilege {
+public class Privilege extends AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	
 	@NotNull
 	private String name;
@@ -39,13 +34,6 @@ public class Privilege {
 		this.roles = new HashSet<Role>();
 	}
 
-	
-	/**
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
 
 	/**
 	 * @return the name
