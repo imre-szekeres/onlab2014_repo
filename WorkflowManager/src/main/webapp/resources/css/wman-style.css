@@ -1,10 +1,125 @@
+
+/* BEGIN xxx */
+/* END   xxx */
+
+/* BEGIN Globals */
+.centralised-hori {
+	left: 50%;
+}
+
+.centralised-verti {
+	top: 50%;
+}
+
+.pos-absol {
+	position: absolute;
+}
+
+.pos-rel {
+	position: relative;
+}
+
 .decor-less {
 	text-decoration: none;
 }
 
+.error-message-wrapper {
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+}
+
+.error-message {
+	height: 25px;
+	line-height: 25px;
+	vertical-align: middle;
+	
+	color: red;
+}
+
+/* END   Globals */
+
+
+
+/* BEGIN Sing-In */
+#login-header-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	z-index: 10;
+
+	width: 100%;
+	height: 70px;
+
+	margin:  0;
+	padding: 0;
+	background-color: #428BCA;
+	border: 1px solid #428BCA;
+}
+
+.form-row {
+	width: 100%;
+	margin: 5px;
+}
+
+.centraliser {
+	left: 50%;
+}
+
+#sign-in-form-wrapper {
+	top: 200px;
+	left: -200px;
+	min-width: 400px;
+	min-height: 300px;
+	max-width: 400px;
+	max-height: 300px;
+	
+	border: 1px solid #428BCA;
+	border-radius: 7px 7px  7px  7px; 
+}
+
+#close-signin-wrapper {
+	left: -21px;
+}
+
+.app-name {
+
+	color: white;
+}
+
+#sign-in-form {
+	top: 125px;
+	left: 75px;
+	max-width: 250px;
+	max-height: 140px;
+}
+
+#not-part-of-it-wrapper {
+	top: 20px;
+	left: -20px;
+}
+
+#not-part-of-it-wrapper.btn {
+	min-width: 60px;
+}
+
+#sign-in-trigger-btn {
+	color: #428BCA;
+}
+
+#register-btn {}
+
+
+
+
+/* END   Sign-In */
+
+
+/* BEGIN WM-Banner */
 #home-href {
 	
-	dispay: inline-block;
+	display: inline-block;
 	height: 50px;
 	line-height: 50px;
 	vertical-align: middle;
@@ -23,7 +138,10 @@
 	margin:  0;
 	padding: 0;
 }
+/* END   WM-Banner */
 
+
+/* BEGIN WM-Content */
 #content-wrapper {
 	position: absolute;
 	top: 50px;
@@ -31,3 +149,5 @@
 	
 	margin: 10px;
 }
+
+/* END   WM-Content */
