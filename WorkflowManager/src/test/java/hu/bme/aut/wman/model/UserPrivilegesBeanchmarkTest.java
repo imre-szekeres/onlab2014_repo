@@ -5,11 +5,11 @@ package hu.bme.aut.wman.model;
 
 import static org.junit.Assert.fail;
 import hu.bme.aut.wman.benchmark.Benchmarkable;
-import hu.bme.aut.wman.benchmark.SimpleBenchmarker;
 import hu.bme.aut.wman.utils.StringUtils;
 
 import java.util.Collection;
 
+import hu.bme.aut.wman.benchmark.SimpleBenchmarker;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -31,7 +31,7 @@ public class UserPrivilegesBeanchmarkTest {
 	
 	@Parameters
 	public static Collection<Object[]> data() {
-		SimpleBenchmarker benchmarker = new SimpleBenchmarker() {
+		Benchmarkable simple = new SimpleBenchmarker() {
 			
 			@Override
 			public void setup() {
@@ -61,7 +61,7 @@ public class UserPrivilegesBeanchmarkTest {
 			
 			private User user;
 		};
-		return Arrays.asList(new Object[][] {{ benchmarker }});
+		return Arrays.asList(new Object[][] {{ simple }});
 	}
 	
 	@Test

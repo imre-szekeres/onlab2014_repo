@@ -2,7 +2,7 @@ package hu.bme.aut.wman.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +13,7 @@ import javax.persistence.Id;
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
-@Entity
+@MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
 
 	@Id

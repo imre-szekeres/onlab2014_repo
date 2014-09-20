@@ -30,18 +30,6 @@
         
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>4.0.3.RELEASE</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>4.0.3.RELEASE</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>4.0.3.RELEASE</version>
             <scope>compile</scope>
@@ -148,6 +136,7 @@
                             <updateOnlyExtension>.js</updateOnlyExtension>
                             <updateOnlyExtension>.css</updateOnlyExtension>
                             <updateOnlyExtension>.jsp</updateOnlyExtension>
+                            <updateOnlyExtension>.class</updateOnlyExtension>
                         </updateOnlyExtensions>
                     </synchronization>                  
                 </configuration>
