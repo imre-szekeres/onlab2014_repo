@@ -3,7 +3,6 @@ package hu.bme.aut.wman.model;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -15,13 +14,11 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "FILE_STORAGE")
-@NamedQueries(
-{
-// @NamedQuery(name = "FileStorage.findAll", query = "SELECT f FROM BlobFile f"),
-// @NamedQuery(name = "FileStorage.findById", query = "SELECT f FROM BlobFile f WHERE f.id = :id"),
-// @NamedQuery(name = "FileStorage.findByFileName", query = "SELECT f FROM BlobFile f WHERE f.fileName = :fileName")
-})
 public class BlobFile extends AbstractEntity {
+
+	public static final String PR_FILE_NAME = "fileName";
+	public static final String PR_STATE = "state";
+	public static final String PR_CONTENT = "content";
 
 	@NotNull
 	private String fileName;

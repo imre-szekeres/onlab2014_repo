@@ -17,14 +17,17 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		// @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
-		// @NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c " + "WHERE c.id=:id"),
 		@NamedQuery(name = "Comment.findByUser", query = "SELECT c FROM Comment c " + "WHERE c.user.username=:userName"),
 		@NamedQuery(name = "Comment.findByProject", query = "SELECT c FROM Comment c " + "WHERE c.project.id=:id") })
 public class Comment extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_USER_NAME = "Comment.findByUser";
 	public static final String NQ_FIND_BY_PROJECT_ID = "Comment.findByProject";
+
+	public static final String PR_DESCRIPTION = "description";
+	public static final String PR_USER = "user";
+	public static final String PR_POST_DATE = "postDate";
+	public static final String PR_PROJECT = "project";
 
 	@Size(min = 1, max = 512)
 	private String description;

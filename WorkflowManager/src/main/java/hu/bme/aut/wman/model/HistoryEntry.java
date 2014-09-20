@@ -18,16 +18,20 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		// @NamedQuery(name = "HistoryEntry.findAll", query = "SELECT he FROM HistoryEntry he"),
-		// @NamedQuery(name = "HistoryEntry.findById", query = "SELECT he FROM HistoryEntry he WHERE he.id=:id"),
 		@NamedQuery(name = "HistoryEntry.findByUser", query = "SELECT he FROM HistoryEntry he WHERE he.userName=:userName"),
-		@NamedQuery(name = "HistoryEntry.findByState", query = "SELECT he FROM HistoryEntry he WHERE he.state.id=:stateId"),
-		@NamedQuery(name = "HistoryEntry.findByProject", query = "SELECT he FROM HistoryEntry he WHERE he.project.id= :projectId") })
+		@NamedQuery(name = "HistoryEntry.findByState", query = "SELECT he FROM HistoryEntry he WHERE he.state.id=:id"),
+		@NamedQuery(name = "HistoryEntry.findByProject", query = "SELECT he FROM HistoryEntry he WHERE he.project.id= :id") })
 public class HistoryEntry extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_USER_NAME = "HistoryEntry.findByUser";
 	public static final String NQ_FIND_BY_STATE_ID = "HistoryEntry.findByState";
 	public static final String NQ_FIND_BY_PROJECT_ID = "HistoryEntry.findByProject";
+
+	public static final String PR_USER_NAME = "userName";
+	public static final String PR_WHEN = "when";
+	public static final String PR_STATE = "state";
+	public static final String PR_ACTION_TYPE_NAME = "actionTypeName";
+	public static final String PR_PROJECT = "project";
 
 	@Size(min = 10, max = 512)
 	private Date when;
