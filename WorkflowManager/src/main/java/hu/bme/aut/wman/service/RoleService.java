@@ -1,15 +1,15 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotFoundException;
+import hu.bme.aut.wman.exceptions.TooMuchElementException;
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Role;
-import hu.bme.aut.wman.model.User;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -32,11 +32,11 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
-	public Role findByName(String name) {
+	public Role findByName(String name) throws TooMuchElementException, EntityNotFoundException {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Role.PR_NAME, name));
-		// FIXME should check if has exactly one element
-		return selectByParameters(parameterList).get(0);
+
+		return checkHasExactlyOneElement(selectByOwnProperties(parameterList)).get(0);
 	}
 
 	/**
@@ -51,12 +51,6 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-	// FIXME it should be in UserService
-	@Deprecated
-	public Set<User> findUsersBy(Long roleId) {
-		return em.find(Role.class, roleId).getUsers();
 	}
 
 	/**

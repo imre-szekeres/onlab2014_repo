@@ -1,5 +1,7 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotFoundException;
+import hu.bme.aut.wman.exceptions.TooMuchElementException;
 import hu.bme.aut.wman.model.AbstractEntity;
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.State;
@@ -60,7 +62,7 @@ public class StateService extends AbstractDataService<State> {
 		save(state);
 	}
 
-	public List<State> selectByWorkflowId(Long workflowId) {
+	public List<State> selectByWorkflowId(Long workflowId) throws EntityNotFoundException {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, workflowId));
 		return callNamedQuery(State.NQ_FIND_BY_WORKFLOW_ID, parameterList);
@@ -94,11 +96,11 @@ public class StateService extends AbstractDataService<State> {
 		}
 	}
 
-	public State findInitial() {
+	public State findInitial() throws TooMuchElementException, EntityNotFoundException {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(State.PR_INITIAL, true));
-		// FIXME should check if has exactly one element
-		return selectByParameters(parameterList).get(0);
+
+		return checkHasExactlyOneElement(selectByOwnProperties(parameterList)).get(0);
 	}
 
 	@Override

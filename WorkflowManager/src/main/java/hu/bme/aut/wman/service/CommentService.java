@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotFoundException;
 import hu.bme.aut.wman.model.AbstractEntity;
 import hu.bme.aut.wman.model.Comment;
 import hu.bme.aut.wman.model.User;
@@ -42,13 +43,13 @@ public class CommentService extends AbstractDataService<Comment> {
 	// return managedu;
 	// }
 
-	public List<Comment> selectByUserName(String userName) {
+	public List<Comment> selectByUserName(String userName) throws EntityNotFoundException {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, userName));
 		return callNamedQuery(Comment.NQ_FIND_BY_USER_NAME, parameterList);
 	}
 
-	public List<Comment> selectByProjectId(String projectId) {
+	public List<Comment> selectByProjectId(String projectId) throws EntityNotFoundException {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, projectId));
 		return callNamedQuery(Comment.NQ_FIND_BY_PROJECT_ID, parameterList);

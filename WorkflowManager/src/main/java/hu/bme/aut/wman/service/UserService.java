@@ -1,14 +1,20 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotFoundException;
+import hu.bme.aut.wman.exceptions.TooMuchElementException;
+import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.TypedQuery;
 
 /**
  * Helps make operations with <code>User</code>.
@@ -30,11 +36,31 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	public User selectByName(String username) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, username));
-		// FIXME should check if has exactly one element
-		if (selectByParameters(parameterList).size() > 0) {
-			return selectByParameters(parameterList).get(0);
+
+		try {
+			return checkHasExactlyOneElement(selectByOwnProperties(parameterList)).get(0);
+		} catch (TooMuchElementException e) {
+			// TODO handle users with same name, although it should not happen :)
+			return null;
+		} catch (EntityNotFoundException e) {
+			return null;
 		}
-		return null;
+	}
+
+	/**
+	 * Use findByParameters method instead
+	 */
+	@Deprecated
+	public List<User> selectByProject(Long projectID) {
+		TypedQuery<User> selectFor = em.createQuery("SELECT u FROM User u, ProjectAssignment pa "
+				+ "WHERE pa.user = u AND pa.project.id = :projectID", User.class);
+		selectFor.setParameter("projectID", projectID);
+		return selectFor.getResultList();
+	}
+
+	@Deprecated
+	public Set<User> findUsersBy(Long roleId) {
+		return em.find(Role.class, roleId).getUsers();
 	}
 
 	@Override
