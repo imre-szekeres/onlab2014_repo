@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotFoundException;
 import hu.bme.aut.wman.model.BlobFile;
 
 import java.util.AbstractMap;
@@ -19,10 +20,10 @@ import javax.ejb.Stateless;
 @LocalBean
 public class BlobFileService extends AbstractDataService<BlobFile> {
 
-	public List<BlobFile> selectByFileName(String fileName) {
+	public List<BlobFile> selectByFileName(String fileName) throws EntityNotFoundException {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(BlobFile.PR_FILE_NAME, fileName));
-		return selectByParameters(parameterList);
+		return selectByOwnProperties(parameterList);
 	}
 
 	@Override
