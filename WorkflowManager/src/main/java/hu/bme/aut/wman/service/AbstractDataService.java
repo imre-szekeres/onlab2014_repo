@@ -1,5 +1,7 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotFoundException;
+import hu.bme.aut.wman.exceptions.TooMuchElementException;
 import hu.bme.aut.wman.model.AbstractEntity;
 
 import java.util.AbstractMap;
@@ -91,11 +93,12 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * @param id
 	 *            of the entity
 	 * @return the result entity
+	 * @throws EntityNotFoundException
 	 */
-	public T selectById(Long id) {
+	public T selectById(Long id) throws EntityNotFoundException {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, id));
-		Iterator<T> results = selectByParameters(parameterList).iterator();
+		Iterator<T> results = selectByOwnProperties(parameterList).iterator();
 
 		if (results.hasNext()) {
 			return results.next();
@@ -110,11 +113,12 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * @param parameters
 	 *            of the query, connected with AND
 	 * @return result list of the executed query
+	 * @throws EntityNotFoundException
 	 */
-	public List<T> selectByParameters(List<Entry<String, Object>> parameters) {
+	public List<T> selectByOwnProperties(List<Entry<String, Object>> parameters) throws EntityNotFoundException {
 		CriteriaQuery<T> buildedCriteriaQuery = buildCriteriaByParameters(parameters);
 
-		return em.createQuery(buildedCriteriaQuery).getResultList();
+		return checkHasAnyResult(em.createQuery(buildedCriteriaQuery).getResultList());
 	}
 
 	/**
@@ -125,15 +129,21 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * @param parameters
 	 *            of the query
 	 * @return result list of the executed query
+	 * @throws EntityNotFoundException
 	 */
-	protected List<T> callNamedQuery(String queryName, List<Entry<String, Object>> parameters) {
+	protected List<T> callNamedQuery(String queryName, List<Entry<String, Object>> parameters) throws EntityNotFoundException {
 		TypedQuery<T> namedQuery = em.createNamedQuery(queryName, getEntityClass());
 		for (Entry<String, Object> entry : parameters) {
 			namedQuery.setParameter(entry.getKey(), entry.getValue());
 		}
-		return namedQuery.getResultList();
+
+		return checkHasAnyResult(namedQuery.getResultList());
 	}
 
+	/**
+	 * @param parameters
+	 * @return a CriteriaQuery builded from the parameters
+	 */
 	private CriteriaQuery<T> buildCriteriaByParameters(List<Entry<String, Object>> parameters) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> buildedCriteriaQuery = builder.createQuery(getEntityClass());
@@ -146,6 +156,47 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 		}
 
 		return buildedCriteriaQuery.select(root).where(predicates.toArray(new Predicate[] {}));
+	}
+
+	/**
+	 * @throws TooMuchElementException
+	 *             if the list has more than one element
+	 * @param listToCheck
+	 *            the list to check if has exactly one element.
+	 * @return the same list it gets to support chaining
+	 */
+	protected List<T> checkHasExactlyOneElement(List<T> listToCheck) throws TooMuchElementException {
+		int size = listToCheck.size();
+		if (size > 1) {
+			throw new TooMuchElementException("This query should return exactly one entity, but it returned " + size + "entitise.", size);
+		} else {
+			return listToCheck;
+		}
+	}
+
+	/**
+	 * @throws EntityNotFoundException
+	 *             (not runtime)
+	 *             if the list has not any element
+	 * @param listToCheck
+	 *            the list to check if has any element.
+	 * @return the same list it gets to support chaining
+	 */
+	protected List<T> checkHasAnyResult(List<T> listToCheck) throws EntityNotFoundException {
+		if (listToCheck.size() == 0) {
+			throw new EntityNotFoundException();
+		} else {
+			return listToCheck;
+		}
+	}
+
+	/**
+	 * Gives back the CriteriaBuilder to the descendant classes to make more complex queries.
+	 * 
+	 * @return CriteriaBuilder
+	 */
+	protected CriteriaBuilder getCriteriaBuilder() {
+		return em.getCriteriaBuilder();
 	}
 
 	/**

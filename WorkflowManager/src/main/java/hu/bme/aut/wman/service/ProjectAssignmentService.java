@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotFoundException;
 import hu.bme.aut.wman.model.AbstractEntity;
 import hu.bme.aut.wman.model.ProjectAssignment;
 import hu.bme.aut.wman.model.User;
@@ -21,13 +22,13 @@ import javax.ejb.Stateless;
 @LocalBean
 class ProjectAssignmentService extends AbstractDataService<ProjectAssignment> {
 
-	public List<ProjectAssignment> selectByUserName(String userName) {
+	public List<ProjectAssignment> selectByUserName(String userName) throws EntityNotFoundException {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, userName));
 		return callNamedQuery(ProjectAssignment.NQ_FIND_BY_USER_NAME, parameterList);
 	}
 
-	public List<ProjectAssignment> selectByProjectId(Long projectId) {
+	public List<ProjectAssignment> selectByProjectId(Long projectId) throws EntityNotFoundException {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, projectId));
 		return callNamedQuery(ProjectAssignment.NQ_FIND_BY_PROJECT_ID, parameterList);

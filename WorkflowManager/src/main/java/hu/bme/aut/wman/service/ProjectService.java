@@ -1,7 +1,7 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotFoundException;
 import hu.bme.aut.wman.model.Project;
-import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
 
 import java.util.AbstractMap;
@@ -53,35 +53,23 @@ public class ProjectService extends AbstractDataService<Project> {
 	// return validator.validateValue(Project.class, "description", description).size() == 0;
 	// }
 
-	public List<Project> selectAllByWorkflowName(String workflowName) {
+	public List<Project> selectAllByWorkflowName(String workflowName) throws EntityNotFoundException {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Workflow.PR_NAME, workflowName));
 		return callNamedQuery(Project.NQ_FIND_BY_WORKFLOW_NAME, parameterList);
 	}
 
-	public List<Project> selectByName(String name) {
+	public List<Project> selectByName(String name) throws EntityNotFoundException {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Project.PR_NAME, name));
-		return selectByParameters(parameterList);
-	}
-
-	// TODO it should be in UserService
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public List<User> findUsersFor(Long projectID) {
-		TypedQuery<User> selectFor = em.createQuery("SELECT u FROM User u, ProjectAssignment pa "
-				+ "WHERE pa.user = u AND pa.project.id = :projectID", User.class);
-		selectFor.setParameter("projectID", projectID);
-		return selectFor.getResultList();
+		return selectByOwnProperties(parameterList);
 	}
 
 	/**
 	 * Use findByParameters method instead
 	 */
 	@Deprecated
-	public List<Project> findProjectsFor(String username) {
+	public List<Project> selectByUser(String username) {
 		TypedQuery<Project> selectFor = em.createQuery("SELECT p FROM Project o, ProjectAssignment pa "
 				+ "WHERE pa.u.username = :username AND pa.project = p", Project.class);
 		selectFor.setParameter("username", username);
