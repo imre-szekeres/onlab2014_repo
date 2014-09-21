@@ -50,7 +50,7 @@
 	        </div>
         </c:if>
         <div id='password-again-row' class='user-form-row form-group ${ passwordAgainClass }' >
-            <label class='control-label col-lg-4' for='passwordAgain' >Password Again</label>
+            <label class='control-label col-lg-4' for='passwordAgain' >Confirm</label>
             <div class='col-lg-8'>
                 <input id='password-again' name='password-again' type='password' class='form-control' />
             </div> 
