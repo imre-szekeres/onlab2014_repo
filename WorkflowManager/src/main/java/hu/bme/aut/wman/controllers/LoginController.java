@@ -5,7 +5,6 @@ package hu.bme.aut.wman.controllers;
 
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.UserService;
-import hu.bme.aut.wman.utils.HistoryUtils;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @version "%I%, %G%"
  */
 @Controller
-public class LoginController {
+public class LoginController extends AbstractController {
+
+	public static final String LOGIN = "/login";
 
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
@@ -32,10 +33,9 @@ public class LoginController {
 
 		if (request.getSession().getAttribute("subject") != null) {
 			model.addAttribute("message", "Welcome to WorkflowManager!");
-			model.addAttribute("pageName", "index");
-			return HistoryUtils.FRAME;
+			return navigateToFrame("index", model);
 		}
-		return "redirect:/" + HistoryUtils.LOGIN;
+		return redirectTo(LOGIN);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -43,8 +43,7 @@ public class LoginController {
 
 		User subject = new User();
 		model.addAttribute("subject", subject);
-		model.addAttribute("pageName", "login");
-		return HistoryUtils.LOGIN;
+		return navigateTo(LOGIN, "login", model);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -52,11 +51,11 @@ public class LoginController {
 
 		if (isAuthenticated(subject)) {
 			request.getSession().setAttribute("subject", subject);
-			return "redirect:/";
+			return redirectTo("/");
 		}
 		subject.setPassword("");
 		model.addAttribute("loginError", "Username or password is invalid!");
-		return HistoryUtils.LOGIN;
+		return LOGIN;
 	}
 
 	private final boolean isAuthenticated(User subject) {
