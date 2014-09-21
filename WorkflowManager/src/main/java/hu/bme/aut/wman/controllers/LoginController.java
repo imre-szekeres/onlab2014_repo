@@ -4,7 +4,8 @@
 package hu.bme.aut.wman.controllers;
 
 
-
+import java.util.Map;
+import java.util.HashMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,8 +51,9 @@ public class LoginController {
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String postLogin(@ModelAttribute("subject") User subject, HttpServletRequest request, Model model){
 
-		if(isAuthenticated(subject)) {
-			request.getSession().setAttribute("subject", subject);
+		User user;
+		if((user = doAuthenticate(subject)) != null) {
+			request.getSession().setAttribute("subject", user);
 			return "redirect:/";
 		}
 		subject.setPassword("");
@@ -60,11 +62,33 @@ public class LoginController {
 	}
 
 
-	private final boolean isAuthenticated(User subject) {
+	private final User doAuthenticate(User subject) {
 
 		User user = userService.selectByName(subject.getUsername());
 		if(user == null)
-			return false;
-		return user.getPassword().equals(subject.getPassword());
+			return null;
+		return user.getPassword().equals(subject.getPassword()) ? user : null;
+	}
+	
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
+		Map<String, String> validationErrors;
+		if((validationErrors = doValidate(user, request)).size() <= 0) {
+			// TODO: userService.save(user);
+			request.getSession().setAttribute("subject", user);
+			// TODO: add a newbie Role to the user..
+		}
+		model.addAttribute("validationErrors", validationErrors);
+		return "redirect:/";
+	}
+	
+	private final Map<String, String> doValidate(User user, HttpServletRequest request) {
+		// TODO:
+		System.out.println("user.username: " + user.getUsername());
+		System.out.println("user.password: " + user.getPassword());
+		System.out.println("passwordAgain: " + request.getParameter("passwordAgain"));
+		System.out.println("user.email: " + user.getEmail());
+		System.out.println("user.description: " + user.getDescription());
+		return new HashMap<String, String>(0);
 	}
 }
