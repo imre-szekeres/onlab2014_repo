@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  
-<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>   
+<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
+<%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -20,7 +21,9 @@
 	        </div>
         </c:if>
         <div id='username-row' class='user-form-row form-group ${ usernameClass }' >
-            <label class='control-label col-lg-4' for='username' >Username</label>
+            <label class='control-label col-lg-4' for='username' >
+                <spring:message code='user.form.username.label' />
+            </label>
             <div class='col-lg-8'>
                 <form:input id='username' path='username' type='text' class='form-control' />
             </div> 
@@ -35,7 +38,9 @@
 	        </div>
         </c:if>
         <div id='password-row' class='user-form-row form-group ${ passwordClass }' >
-            <label class='control-label col-lg-4' for='password' >Password</label>
+            <label class='control-label col-lg-4' for='password' >
+                <spring:message code='user.form.password.label' />
+            </label>
             <div class='col-lg-8'>
                 <form:input id='password' path='password' type='password' class='form-control' />
             </div> 
@@ -50,7 +55,9 @@
 	        </div>
         </c:if>
         <div id='password-again-row' class='user-form-row form-group ${ passwordAgainClass }' >
-            <label class='control-label col-lg-4' for='passwordAgain' >Confirm</label>
+            <label class='control-label col-lg-4' for='passwordAgain' >
+                <spring:message code='user.form.passwordConfirm.label' />
+            </label>
             <div class='col-lg-8'>
                 <input id='password-again' name='password-again' type='password' class='form-control' />
             </div> 
@@ -65,7 +72,9 @@
 	        </div>
         </c:if>
         <div id='email-row' class='user-form-row form-group ${ emailClass }' >
-            <label class='control-label col-lg-4' for='email' >Email</label>
+            <label class='control-label col-lg-4' for='email' >
+                <spring:message code='user.form.email.label' />
+            </label>
             <div class='col-lg-8'>
                 <form:input id='email' path='email' type='text' class='form-control' /> 
             </div>
@@ -80,7 +89,9 @@
 	        </div>
         </c:if>
         <div id='description-row' class='user-form-row form-group ${ descriptionClass }' >
-            <label class='control-label col-lg-4' for='description' >Description</label>
+            <label class='control-label col-lg-4' for='description' >
+                <spring:message code='user.form.description.label' />
+            </label>
             <div class='col-lg-8'>
                 <form:textarea id='description' path='description' type='text' class='form-control' />
             </div> 
@@ -89,7 +100,7 @@
         
         <div class='user-form-row form-row form-group'>
             <div id='user-from-submit-wrapper' class='col-lg-12 pos-rel'>
-                <input type='submit' id='register-submit' class='btn btn-primary btn-block pos-rel' value='Register' />
+                <input type='submit' id='register-submit' class='btn btn-primary btn-block pos-rel' value='${ param.submitButtonValue }' />
             </div>
         </div>
         </fieldset>

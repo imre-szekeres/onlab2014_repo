@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
+<%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -42,6 +43,7 @@
             <jsp:include page='fragments/user_form.jsp'>
                 <jsp:param name='postAction' value='${ appRoot }/register' />
                 <jsp:param name='userRef' value='subject' />
+                <jsp:param name='submitButtonValue' value='Register' />
             </jsp:include>
         </div>
     </div>
@@ -60,7 +62,11 @@
             
             <div class='form-row'>
                 <div class='error-message-wrapper'>
-                    <span class='error-message' >${ loginError }</span>
+                    <c:if test='${ not empty loginError }' >
+                        <div id='sign-in-error-message' class='alert alert-danger pos-rel'>
+                            <spring:message code='login.error.message' />
+                        </div>
+                    </c:if>
                 </div>
             </div>
                                    

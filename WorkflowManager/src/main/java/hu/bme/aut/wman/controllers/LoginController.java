@@ -41,8 +41,7 @@ public class LoginController {
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String getLogin(Model model) {
 
-		User subject = new User();
-		model.addAttribute("subject", subject);
+		model.addAttribute("subject", new User());
 		model.addAttribute("pageName", "login");
 		return "login";
 	}
@@ -57,7 +56,7 @@ public class LoginController {
 			return "redirect:/";
 		}
 		subject.setPassword("");
-		model.addAttribute("loginError", "Username or password is invalid!");
+		model.addAttribute("loginError", true);
 		return "login";
 	}
 

@@ -67,6 +67,10 @@
 	left: 50%;
 }
 
+#sign-in-error-message {
+	top: -32px;
+}
+
 #sign-in-form-wrapper {
 	top: 200px;
 	left: -200px;
