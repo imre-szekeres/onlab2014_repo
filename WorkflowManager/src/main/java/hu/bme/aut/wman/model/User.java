@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 @Table(name = "WM_USER")
 public class User extends AbstractEntity {
 
-	public static final String PR_NAME = "userName";
+	public static final String PR_NAME = "username";
 	public static final String PR_PASSWORD = "password";
 	public static final String PR_EMAIL = "email";
 	public static final String PR_DESCRIPTION = "description";
@@ -37,7 +37,7 @@ public class User extends AbstractEntity {
 	@NotNull
 	@Size(min = 5, max = 16)
 	@Column(unique = true)
-	private String userName;
+	private String username;
 
 	@NotNull
 	@Size(min = 7, max = 32)
@@ -84,9 +84,9 @@ public class User extends AbstractEntity {
 		this.roles = roles;
 	}
 
-	protected User(String userName, String password, String email, String description) {
+	protected User(String username, String password, String email, String description) {
 		super();
-		this.userName = userName;
+		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.description = description;
@@ -95,7 +95,7 @@ public class User extends AbstractEntity {
 	}
 
 	public String getUsername() {
-		return userName;
+		return username;
 	}
 
 	public String getPassword() {
@@ -114,8 +114,8 @@ public class User extends AbstractEntity {
 		return roles;
 	}
 
-	public void setUsername(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public void setPassword(String password) {
@@ -239,7 +239,7 @@ public class User extends AbstractEntity {
 		}
 		return false;
 	}
-	
+
 	// TODO: comment
 	public boolean hasPrivilege(String name) {
 		for (Role r : roles) {
