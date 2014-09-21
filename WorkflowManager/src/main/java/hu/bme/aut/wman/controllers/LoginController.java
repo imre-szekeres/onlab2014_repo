@@ -86,7 +86,7 @@ public class LoginController {
 		// TODO:
 		System.out.println("user.username: " + user.getUsername());
 		System.out.println("user.password: " + user.getPassword());
-		System.out.println("passwordAgain: " + request.getParameter("passwordAgain"));
+		System.out.println("passwordAgain: " + request.getParameter("password-again"));
 		System.out.println("user.email: " + user.getEmail());
 		System.out.println("user.description: " + user.getDescription());
 		return new HashMap<String, String>(0);
