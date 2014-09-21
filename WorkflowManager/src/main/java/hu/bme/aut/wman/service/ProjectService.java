@@ -2,6 +2,7 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.model.Workflow;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -54,13 +55,13 @@ public class ProjectService extends AbstractDataService<Project> {
 
 	public List<Project> selectAllByWorkflowName(String workflowName) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", workflowName));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Workflow.PR_NAME, workflowName));
 		return callNamedQuery(Project.NQ_FIND_BY_WORKFLOW_NAME, parameterList);
 	}
 
 	public List<Project> selectByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", name));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Project.PR_NAME, name));
 		return selectByParameters(parameterList);
 	}
 

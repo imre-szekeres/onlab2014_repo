@@ -23,13 +23,16 @@ import javax.validation.constraints.Size;
  */
 @SuppressWarnings("serial")
 @Entity
-// @NamedQueries({
-// @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-// @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id=:id"),
-// @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.username=:username"),
-// })
 @Table(name = "WM_USER")
 public class User extends AbstractEntity {
+
+	public static final String PR_NAME = "username";
+	public static final String PR_PASSWORD = "password";
+	public static final String PR_EMAIL = "email";
+	public static final String PR_DESCRIPTION = "description";
+	public static final String PR_ROLES = "roles";
+	public static final String PR_COMMENTS = "comments";
+	public static final String PR_PROJECT_ASSIGNMENTS = "projectAssignments";
 
 	@NotNull
 	@Size(min = 5, max = 16)
@@ -62,22 +65,22 @@ public class User extends AbstractEntity {
 		this.roles = new HashSet<Role>();
 	}
 
-	public User(String username, String password, String email, Role role) {
-		this(username, password, email, role, "");
+	public User(String userName, String password, String email, Role role) {
+		this(userName, password, email, role, "");
 	}
 
-	public User(String username, String password, String email, Set<Role> roles) {
-		this(username, password, email, roles, "");
+	public User(String userName, String password, String email, Set<Role> roles) {
+		this(userName, password, email, roles, "");
 	}
 
-	public User(String username, String password, String email, Role role, String description) {
-		this(username, password, email, description);
+	public User(String userName, String password, String email, Role role, String description) {
+		this(userName, password, email, description);
 		this.roles = new java.util.HashSet<Role>();
 		this.roles.add(role);
 	}
 
-	public User(String username, String password, String email, Set<Role> roles, String description) {
-		this(username, password, email, description);
+	public User(String userName, String password, String email, Set<Role> roles, String description) {
+		this(userName, password, email, description);
 		this.roles = roles;
 	}
 
@@ -236,12 +239,14 @@ public class User extends AbstractEntity {
 		}
 		return false;
 	}
-	
+
 	// TODO: comment
 	public boolean hasPrivilege(String name) {
-		for(Role r : roles)
-			if(r.hasPrivilege(name))
+		for (Role r : roles) {
+			if (r.hasPrivilege(name)) {
 				return true;
+			}
+		}
 		return false;
 	}
 

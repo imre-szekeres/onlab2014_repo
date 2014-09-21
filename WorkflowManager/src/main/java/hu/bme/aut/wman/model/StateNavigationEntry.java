@@ -18,8 +18,6 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		// @NamedQuery(name = "StateNavigationEntry.findAll", query = "SELECT sne FROM StateNavigationEntry sne"),
-		// @NamedQuery(name = "StateNavigationEntry.findById", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.id=:id"),
 		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.parentState.id=:parentId"),
 		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.actionType.id=:typeId AND sne.parentState.id=:parentId")
 })
@@ -27,6 +25,10 @@ public class StateNavigationEntry extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_PARENT_ID = "StateNavigationEntry.findByParentId";
 	public static final String NQ_FIND_BY_ACTIONTYPE_AND_PARENT_ID = "StateNavigationEntry.findByActionType";
+
+	public static final String PR_PARENT_STATE = "parentState";
+	public static final String PR_NEXT_STATE = "nextState";
+	public static final String PR_ACTION_TYPE = "actionType";
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn

@@ -17,13 +17,15 @@ import javax.validation.constraints.NotNull;
 @Entity
 @SuppressWarnings("serial")
 @NamedQueries({
-		// @NamedQuery(name = "ProjectAssignment.findById", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.id=:id"),
-		@NamedQuery(name = "ProjectAssignment.findByProjectId", query = "SELECT pa FROM ProjectAssignment pa WHERE pa.project.id=:projectId"),
+		@NamedQuery(name = "ProjectAssignment.findByProjectId", query = "SELECT pa FROM ProjectAssignment pa WHERE pa.project.id=:id"),
 		@NamedQuery(name = "ProjectAssignment.findByUser", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.user.username=:username") })
 public class ProjectAssignment extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_USER_NAME = "ProjectAssignment.findByUser";
 	public static final String NQ_FIND_BY_PROJECT_ID = "ProjectAssignment.findByProjectId";
+
+	public static final String PR_USER = "user";
+	public static final String PR_PROJECT = "project";
 
 	@NotNull
 	@ManyToOne

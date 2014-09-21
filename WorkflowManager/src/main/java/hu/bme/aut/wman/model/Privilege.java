@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+
 /**
  * @author Imre Szekeres
  * @version "%I%, %G%"
@@ -17,7 +18,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Privilege extends AbstractEntity {
 
-	
+	public static final String PR_NAME = "name";
+	public static final String PR_ROLES = "roles";
+
 	@NotNull
 	private String name;
 	
@@ -43,7 +46,8 @@ public class Privilege extends AbstractEntity {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -66,25 +70,31 @@ public class Privilege extends AbstractEntity {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof Privilege))
+		}
+		if (!(obj instanceof Privilege)) {
 			return false;
+		}
 		Privilege other = (Privilege) obj;
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
-	
-	
+
 }

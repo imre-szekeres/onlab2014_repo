@@ -28,11 +28,8 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		// @NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"),
-		// @NamedQuery(name = "State.findById", query = "SELECT s FROM State s " + "WHERE s.id=:id"),
-		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId"),
+		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:id"),
 		@NamedQuery(name = "State.findChildrenByParentId", query = "SELECT s FROM State s WHERE s.parent.id=:parentId"),
-		// @NamedQuery(name = "State.findByInitial", query = "SELECT s FROM State s WHERE s.initial=:initial"),
 		@NamedQuery(name = "State.findRootStatesByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId and s.parent IS NULL")
 })
 public class State extends AbstractEntity {
@@ -41,6 +38,14 @@ public class State extends AbstractEntity {
 	// TODO I'm 75% sure, we don't need this two any more
 	public static final String NQ_FIND_CHILDREN_BY_PARENT_ID = "State.findChildrenByParentId";
 	public static final String NQ_FIND_ROOT_STATES_BY_WORKFLOW_ID = "State.findRootStatesByWorkflowId";
+
+	public static final String PR_NAME = "name";
+	public static final String PR_INITIAL = "initial";
+	public static final String PR_WORKFLOW = "workflow";
+	public static final String PR_DESCRIPTION = "description";
+	public static final String PR_NEXTSTATES = "nextStates";
+	public static final String PR_FILES = "files";
+	public static final String PR_HISTORYENTRIES = "historyEntries";
 
 	@NotNull
 	// @Size(min = 4, max = 25)
@@ -64,12 +69,12 @@ public class State extends AbstractEntity {
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private List<BlobFile> files;
 
-	@ManyToOne
-	@JoinColumn
-	private State parent;
-
-	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-	private List<State> children;
+	// @ManyToOne
+	// @JoinColumn
+	// private State parent;
+	//
+	// @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+	// private List<State> children;
 
 	public State() {
 		super();
@@ -82,7 +87,7 @@ public class State extends AbstractEntity {
 		this.initial = initial;
 		this.historyEntries = new HashSet<>();
 		this.files = new ArrayList<>();
-		this.children = new ArrayList<>();
+		// this.children = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -105,9 +110,9 @@ public class State extends AbstractEntity {
 		return nextStates;
 	}
 
-	public State getParent() {
-		return parent;
-	}
+	// public State getParent() {
+	// return parent;
+	// }
 
 	public boolean isInitial() {
 		return initial;
@@ -117,17 +122,17 @@ public class State extends AbstractEntity {
 		this.initial = initial;
 	}
 
-	public void setParent(State parent) {
-		this.parent = parent;
-	}
-
-	public List<State> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<State> children) {
-		this.children = children;
-	}
+	// public void setParent(State parent) {
+	// this.parent = parent;
+	// }
+	//
+	// public List<State> getChildren() {
+	// return children;
+	// }
+	//
+	// public void setChildren(List<State> children) {
+	// this.children = children;
+	// }
 
 	public void setNextStates(List<StateNavigationEntry> nextStates) {
 		this.nextStates = nextStates;
@@ -199,31 +204,31 @@ public class State extends AbstractEntity {
 		stateNavigationEntry.setParent(this);
 	}
 
-	/**
-	 * Add a child state to this State
-	 * 
-	 * @param child
-	 *            child state to add
-	 */
-	public void addChild(State child) {
-		if (getChildren() == null) {
-			setChildren(new ArrayList<State>());
-		}
-		if (child != null && !getChildren().contains(child)) {
-			getChildren().add(child);
-			child.setParent(this);
-		}
-	}
-
-	/**
-	 * Remove the child state from this State's children
-	 * 
-	 * @param child
-	 *            child state to remove
-	 */
-	public boolean removeChild(State child) {
-		return children.remove(child);
-	}
+	// /**
+	// * Add a child state to this State
+	// *
+	// * @param child
+	// * child state to add
+	// */
+	// public void addChild(State child) {
+	// if (getChildren() == null) {
+	// setChildren(new ArrayList<State>());
+	// }
+	// if (child != null && !getChildren().contains(child)) {
+	// getChildren().add(child);
+	// child.setParent(this);
+	// }
+	// }
+	//
+	// /**
+	// * Remove the child state from this State's children
+	// *
+	// * @param child
+	// * child state to remove
+	// */
+	// public boolean removeChild(State child) {
+	// return children.remove(child);
+	// }
 
 	@Override
 	public int hashCode() {
@@ -264,13 +269,13 @@ public class State extends AbstractEntity {
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		if (parent == null) {
-			if (other.parent != null) {
-				return false;
-			}
-		} else if (!parent.equals(other.parent)) {
-			return false;
-		}
+		// if (parent == null) {
+		// if (other.parent != null) {
+		// return false;
+		// }
+		// } else if (!parent.equals(other.parent)) {
+		// return false;
+		// }
 		if (workflow == null) {
 			if (other.workflow != null) {
 				return false;

@@ -34,7 +34,7 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 
 	public Role findByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("name", name));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Role.PR_NAME, name));
 		// FIXME should check if has exactly one element
 		return selectByParameters(parameterList).get(0);
 	}

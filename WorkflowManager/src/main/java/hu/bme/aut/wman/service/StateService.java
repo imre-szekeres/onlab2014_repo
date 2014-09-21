@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.model.AbstractEntity;
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.StateNavigationEntry;
@@ -35,11 +36,12 @@ public class StateService extends AbstractDataService<State> {
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
+	@Deprecated
 	public void createWithParent(State parent, State child) {
 		save(child);
 
 		State managedParent = attach(parent);
-		managedParent.addChild(child);
+		// managedParent.addChild(child);
 		save(managedParent);
 	}
 
@@ -60,7 +62,7 @@ public class StateService extends AbstractDataService<State> {
 
 	public List<State> selectByWorkflowId(Long workflowId) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("workflowId", workflowId));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, workflowId));
 		return callNamedQuery(State.NQ_FIND_BY_WORKFLOW_ID, parameterList);
 	}
 
@@ -94,7 +96,7 @@ public class StateService extends AbstractDataService<State> {
 
 	public State findInitial() {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("initial", true));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(State.PR_INITIAL, true));
 		// FIXME should check if has exactly one element
 		return selectByParameters(parameterList).get(0);
 	}

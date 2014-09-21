@@ -18,12 +18,12 @@ import javax.validation.constraints.Size;
  */
 @SuppressWarnings("serial")
 @Entity
-// @NamedQueries({
-// @NamedQuery(name = "Workflow.findAll", query = "SELECT w FROM Workflow w"),
-// @NamedQuery(name = "Workflow.findById", query = "SELECT w FROM Workflow w WHERE w.id=:id"),
-// @NamedQuery(name = "Workflow.findByName", query = "SELECT w FROM Workflow w WHERE w.name=:name")
-// })
 public class Workflow extends AbstractEntity {
+
+	public static final String PR_NAME = "name";
+	public static final String PR_STATES = "states";
+	public static final String PR_DESCRIPTION = "description";
+	public static final String PR_PROJECTS = "projects";
 
 	@NotNull
 	@Size(min = 5, max = 32)
