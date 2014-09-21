@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.AbstractEntity;
 
 import java.util.AbstractMap;
@@ -61,8 +62,9 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * 
 	 * @param entity
 	 *            to delete
+	 * @throws EntityNotDeletableException
 	 */
-	public void delete(T entity) {
+	public void delete(T entity) throws EntityNotDeletableException {
 		if (isDetached(entity)) {
 			em.remove(entity);
 		} else {
