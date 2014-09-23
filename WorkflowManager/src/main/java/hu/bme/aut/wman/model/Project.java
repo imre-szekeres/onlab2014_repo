@@ -25,11 +25,13 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name")
+		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name"),
+		@NamedQuery(name = "Project.findProjectsForUser", query = "SELECT p FROM Project o, ProjectAssignment pa WHERE pa.u.username = :username AND pa.project = p")
 })
 public class Project extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_WORKFLOW_NAME = "Project.findAllByWorkflowName";
+	public static final String NQ_FIND_PROJECTS_FOR_USER = "Project.findProjectsForUser";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_CURRENT_STATE = "currentState";
@@ -67,11 +69,15 @@ public class Project extends AbstractEntity {
 	@NotNull
 	private Boolean active = true;
 
+	@NotNull
+	private User owner;
+
+	@Deprecated
 	public Project() {
 		super();
 	}
 
-	public Project(String name, String description, Workflow workflow) {
+	public Project(String name, String description, Workflow workflow, User owner) {
 		this.name = name;
 		this.description = description;
 		this.workflow = workflow;
@@ -80,6 +86,7 @@ public class Project extends AbstractEntity {
 		this.projectAssignments = new HashSet<>();
 		this.historyEntries = new ArrayList<>();
 		this.comments = new ArrayList<>();
+		this.owner = owner;
 	}
 
 	public String getName() {
@@ -264,5 +271,13 @@ public class Project extends AbstractEntity {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 }

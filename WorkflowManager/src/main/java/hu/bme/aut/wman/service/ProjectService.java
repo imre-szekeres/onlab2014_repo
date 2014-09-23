@@ -1,18 +1,26 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.State;
+import hu.bme.aut.wman.model.Transition;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 /**
  * Helps make operations with <code>Project</code>.
@@ -22,6 +30,9 @@ import javax.persistence.TypedQuery;
 @Stateless
 @LocalBean
 public class ProjectService extends AbstractDataService<Project> {
+
+	@Autowired
+	TransitionService transitionService;
 
 	// private Validator validator;
 
@@ -54,45 +65,128 @@ public class ProjectService extends AbstractDataService<Project> {
 	// return validator.validateValue(Project.class, "description", description).size() == 0;
 	// }
 
+	/**
+	 * You can not delete projects, only closing is allowed.
+	 * NOTE: If you call this method, it will not delete the project either!
+	 */
+	@Override
+	@Deprecated
+	public void delete(Project entity) throws EntityNotDeletableException {
+	};
+
+	/**
+	 * Closes the project.
+	 * 
+	 * @param project
+	 */
+	public void close(Project project) {
+		if (!project.isActive()) {
+			return;
+		} else {
+			if (isDetached(project)) {
+				project = attach(project);
+			}
+			project.setActive(false);
+		}
+	}
+
+	/**
+	 * Reopens the project. It means it will be active.
+	 * 
+	 * @param project
+	 */
+	public void reopen(Project project) {
+		if (project.isActive()) {
+			return;
+		} else {
+			if (isDetached(project)) {
+				project = attach(project);
+			}
+			project.setActive(true);
+		}
+	}
+
+	/**
+	 * Sets the owner on the project.
+	 * 
+	 * @param project
+	 * @param newOwner
+	 */
+	public void setOwnerOnProject(Project project, User newOwner) {
+		if (project.getOwner() == newOwner) {
+			return;
+		} else {
+			if (isDetached(project)) {
+				project = attach(project);
+			}
+			project.setOwner(newOwner);
+		}
+	}
+
+	/**
+	 * Executes the given action on the project. The project will go from the current state into an other.
+	 * 
+	 * @param project
+	 * @param action
+	 *            to execute
+	 */
+	public void executeAction(Project project, final ActionType action) {
+		State currentState = project.getCurrentState();
+
+		Collection<Transition> transitions = Collections2.filter(transitionService.selectByParentId(currentState.getId()), new Predicate<Transition>() {
+
+			@Override
+			public boolean apply(Transition transition) {
+				return transition.getActionType() == action;
+			}
+		});
+
+		if (!transitions.isEmpty()) {
+			project.setCurrentState(transitions.iterator().next().getNextState());
+			save(project);
+		} else {
+			throw new IllegalArgumentException("There is no transition with this " + action + " from the " + currentState + " on " + project + ".");
+		}
+	}
+
+	/**
+	 * @param workflowName
+	 * @return the projects which have the given workflow
+	 */
 	public List<Project> selectAllByWorkflowName(String workflowName) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Workflow.PR_NAME, workflowName));
 		return callNamedQuery(Project.NQ_FIND_BY_WORKFLOW_NAME, parameterList);
 	}
 
+	/**
+	 * @param workflowName
+	 * @return the projects which have the given name
+	 */
 	public List<Project> selectByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Project.PR_NAME, name));
 		return selectByParameters(parameterList);
 	}
 
+	/**
+	 * @param workflowName
+	 * @return the projects which are in the given state
+	 */
 	public List<Project> selectByCurrentState(State state) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Project.PR_CURRENT_STATE, state));
 		return selectByParameters(parameterList);
 	}
 
-	// TODO it should be in UserService
 	/**
-	 * Use findByParameters method instead
+	 * @param workflowName
+	 * @return the projects which have the given user assigned to it
 	 */
-	@Deprecated
-	public List<User> findUsersFor(Long projectID) {
-		TypedQuery<User> selectFor = em.createQuery("SELECT u FROM User u, ProjectAssignment pa "
-				+ "WHERE pa.user = u AND pa.project.id = :projectID", User.class);
-		selectFor.setParameter("projectID", projectID);
-		return selectFor.getResultList();
-	}
-
-	/**
-	 * Use findByParameters method instead
-	 */
-	@Deprecated
-	public List<Project> findProjectsFor(String username) {
-		TypedQuery<Project> selectFor = em.createQuery("SELECT p FROM Project o, ProjectAssignment pa "
-				+ "WHERE pa.u.username = :username AND pa.project = p", Project.class);
-		selectFor.setParameter("username", username);
-		return selectFor.getResultList();
+	public List<Project> findProjectsForUser(String username) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, username));
+		return callNamedQuery(Project.NQ_FIND_PROJECTS_FOR_USER, parameterList);
 	}
 
 	@Override

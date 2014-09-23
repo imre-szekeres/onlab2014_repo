@@ -5,6 +5,7 @@ import hu.bme.aut.wman.model.User;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
@@ -35,6 +36,12 @@ public class UserService extends AbstractDataService<User> implements Serializab
 			return selectByParameters(parameterList).get(0);
 		}
 		return null;
+	}
+
+	public List<User> selectUsersForProject(Long projectID) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectID", projectID));
+		return callNamedQuery(User.NQ_FIND_USERS_FOR_PROJECT, parameterList);
 	}
 
 	@Override
