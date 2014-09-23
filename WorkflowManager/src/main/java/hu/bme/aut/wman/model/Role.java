@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 
 /**
  * Entity implementation class for Entity: Role
@@ -15,7 +16,10 @@ import javax.persistence.ManyToMany;
  */
 @Entity
 @SuppressWarnings("serial")
+@NamedQuery(name = "Role.findByActionType", query = "SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes")
 public class Role extends AbstractEntity {
+
+	public static final String NQ_FIND_BY_ACTIONTYPE = "Role.findByActionType";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_ACTION_TYPES = "actionTypes";
@@ -33,7 +37,7 @@ public class Role extends AbstractEntity {
 
 	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Privilege.class, fetch = FetchType.EAGER)
 	private Set<Privilege> privileges;
-	
+
 	public Role() {
 		this("");
 	}
@@ -163,7 +167,7 @@ public class Role extends AbstractEntity {
 	public boolean removePrivilege(Privilege privilege) {
 		return this.privileges.remove(privilege);
 	}
-	
+
 	// TODO: comment
 	public boolean hasPrivilege(String name) {
 		for (Privilege p : privileges) {
@@ -173,7 +177,7 @@ public class Role extends AbstractEntity {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */

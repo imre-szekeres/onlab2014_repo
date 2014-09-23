@@ -7,9 +7,12 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Helps make operations with <code>User</code>.
@@ -20,6 +23,9 @@ import javax.ejb.Stateless;
 @Stateless
 @SuppressWarnings("serial")
 public class UserService extends AbstractDataService<User> implements Serializable {
+
+	@Autowired
+	RoleService roleService;
 
 	// private Validator validator;
 
@@ -43,13 +49,21 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	}
 
 	/**
-	 * @param projectID
+	 * @param projectId
 	 * @return users who are on the given project
 	 */
-	public List<User> selectUsersForProject(Long projectID) {
+	public List<User> selectUsersByProjectId(Long projectId) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectID", projectID));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectID", projectId));
 		return callNamedQuery(User.NQ_FIND_USERS_FOR_PROJECT, parameterList);
+	}
+
+	/**
+	 * @param roleId
+	 * @return users who has the given role
+	 */
+	public Set<User> selectUsersByRole(Long roleId) {
+		return roleService.selectById(roleId).getUsers();
 	}
 
 	@Override

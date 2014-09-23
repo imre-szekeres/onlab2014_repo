@@ -2,18 +2,19 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Role;
-import hu.bme.aut.wman.model.User;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 /**
  * Helps make operations with <code>Role</code>.
@@ -32,39 +33,37 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
+	/**
+	 * @param name
+	 * @return role which has the given name
+	 */
 	public Role findByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Role.PR_NAME, name));
-		// FIXME should check if has exactly one element
 		return selectByParameters(parameterList).get(0);
 	}
 
 	/**
-	 * Use findByParameters method instead
+	 * @param actionType
+	 * @return roles who can execute the given actionType
 	 */
-	@Deprecated
 	public List<Role> findByActionType(ActionType actionType) {
-		try {
-			TypedQuery<Role> selectOne = em.createQuery("SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes", Role.class);
-			selectOne.setParameter("actionType", actionType);
-			return selectOne.getResultList();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	// FIXME it should be in UserService
-	@Deprecated
-	public Set<User> findUsersBy(Long roleId) {
-		return em.find(Role.class, roleId).getUsers();
+		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("actionType", actionType));
+		return callNamedQuery(Role.NQ_FIND_BY_ACTIONTYPE, parameterList);
 	}
 
 	/**
-	 * Use findByParameters method instead
+	 * @return all role's names
 	 */
-	@Deprecated
-	public String[] findRoleNames() {
-		return em.createQuery("SELECT r.name FROM Role r", String[].class).getResultList().toArray(new String[0]);
+	public Collection<String> findRoleNames() {
+		return Collections2.transform(selectAll(), new Function<Role, String>() {
+
+			@Override
+			public String apply(Role role) {
+				return role.getName();
+			}
+		});
 	}
 
 	@Override

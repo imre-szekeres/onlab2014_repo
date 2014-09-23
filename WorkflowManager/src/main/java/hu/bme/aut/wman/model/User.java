@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
 @NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectID")
 public class User extends AbstractEntity {
 
-	public static final String NQ_FIND_USERS_FOR_PROJECT = "Project.findUsersForProject";
+	public static final String NQ_FIND_USERS_FOR_PROJECT = "User.findUsersForProject";
 
 	public static final String PR_NAME = "username";
 	public static final String PR_PASSWORD = "password";
