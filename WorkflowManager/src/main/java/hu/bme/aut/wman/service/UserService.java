@@ -41,7 +41,6 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	public User selectByName(String username) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, username));
-		// FIXME should check if has exactly one element
 		if (selectByParameters(parameterList).size() > 0) {
 			return selectByParameters(parameterList).get(0);
 		}

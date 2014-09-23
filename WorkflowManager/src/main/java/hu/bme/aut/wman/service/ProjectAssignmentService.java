@@ -38,12 +38,4 @@ class ProjectAssignmentService extends AbstractDataService<ProjectAssignment> {
 		return ProjectAssignment.class;
 	}
 
-	// TODO rewrite this method
-	// public ProjectAssignment createFor(Long projectID, Long userID) {
-	// User user = em.find(User.class, userID);
-	// Project project = em.find(Project.class, projectID);
-	// ProjectAssignment pa = new ProjectAssignment(user, project);
-	// em.persist(pa);
-	// return pa;
-	// }
 }

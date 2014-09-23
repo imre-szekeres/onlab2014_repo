@@ -3,6 +3,7 @@ package hu.bme.aut.wman.service;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Project;
+import hu.bme.aut.wman.model.ProjectAssignment;
 import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Transition;
 import hu.bme.aut.wman.model.User;
@@ -33,6 +34,8 @@ public class ProjectService extends AbstractDataService<Project> {
 
 	@Autowired
 	TransitionService transitionService;
+	@Autowired
+	ProjectAssignmentService projectAssignmentService;
 
 	// private Validator validator;
 
@@ -146,6 +149,41 @@ public class ProjectService extends AbstractDataService<Project> {
 			save(project);
 		} else {
 			throw new IllegalArgumentException("There is no transition with this " + action + " from the " + currentState + " on " + project + ".");
+		}
+	}
+
+	/**
+	 * Adds a user to the given project.
+	 * 
+	 * @param projectID
+	 * @param userID
+	 */
+	public void addUser(Long projectID, User user) {
+		Project project = selectById(projectID);
+		ProjectAssignment projectAssignment = new ProjectAssignment(user, project);
+
+		projectAssignmentService.save(projectAssignment);
+	}
+
+	/**
+	 * Removes a user from the given project.
+	 * 
+	 * @param projectId
+	 * @param userID
+	 * @throws EntityNotDeletableException
+	 *             if the assignment is not deletable for some reason
+	 */
+	public void removeUser(Long projectId, final User user) throws EntityNotDeletableException {
+		Collection<ProjectAssignment> assignments = Collections2.filter(projectAssignmentService.selectByProjectId(projectId), new Predicate<ProjectAssignment>() {
+
+			@Override
+			public boolean apply(ProjectAssignment projectAssignment) {
+				return projectAssignment.getUser() == user;
+			}
+		});
+
+		if (!assignments.isEmpty()) {
+			projectAssignmentService.delete(assignments.iterator().next());
 		}
 	}
 

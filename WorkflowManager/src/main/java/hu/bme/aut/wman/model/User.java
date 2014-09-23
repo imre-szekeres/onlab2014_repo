@@ -61,8 +61,8 @@ public class User extends AbstractEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	private Set<ProjectAssignment> projectAssignments;
+	// @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	// private Set<ProjectAssignment> projectAssignments;
 
 	public User() {
 		super();
@@ -95,7 +95,7 @@ public class User extends AbstractEntity {
 		this.email = email;
 		this.description = description;
 		this.comments = new ArrayList<Comment>();
-		this.projectAssignments = new java.util.HashSet<ProjectAssignment>();
+		// this.projectAssignments = new java.util.HashSet<ProjectAssignment>();
 	}
 
 	public String getUsername() {
@@ -110,9 +110,9 @@ public class User extends AbstractEntity {
 		return comments;
 	}
 
-	public Set<ProjectAssignment> getProjectAssignments() {
-		return projectAssignments;
-	}
+	// public Set<ProjectAssignment> getProjectAssignments() {
+	// return projectAssignments;
+	// }
 
 	public Set<Role> getRoles() {
 		return roles;
@@ -165,27 +165,27 @@ public class User extends AbstractEntity {
 		this.roles.add(role);
 	}
 
-	/**
-	 * Add {@link ProjectAssignment} to this User
-	 * 
-	 * @param projectAssignment
-	 *            {@link ProjectAssignment} to add
-	 */
-	public void addProjectAssignment(ProjectAssignment assignment) {
-		if (this.getProjectAssignments() == null) {
-			this.setProjectAssignments(new HashSet<ProjectAssignment>());
-		}
-		this.projectAssignments.add(assignment);
-	}
+	// /**
+	// * Add {@link ProjectAssignment} to this User
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to add
+	// */
+	// public void addProjectAssignment(ProjectAssignment assignment) {
+	// if (this.getProjectAssignments() == null) {
+	// this.setProjectAssignments(new HashSet<ProjectAssignment>());
+	// }
+	// this.projectAssignments.add(assignment);
+	// }
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
-	public void setProjectAssignments(Set<ProjectAssignment>
-			projectAssignments) {
-		this.projectAssignments = projectAssignments;
-	}
+	// public void setProjectAssignments(Set<ProjectAssignment>
+	// projectAssignments) {
+	// this.projectAssignments = projectAssignments;
+	// }
 
 	/**
 	 * @param comments
@@ -215,15 +215,15 @@ public class User extends AbstractEntity {
 		return roles.remove(role);
 	}
 
-	/**
-	 * Remove {@link ProjectAssignment} from this User
-	 * 
-	 * @param projectAssignment
-	 *            {@link ProjectAssignment} to remove
-	 */
-	public boolean removeProjectAssignment(ProjectAssignment assignment) {
-		return projectAssignments.remove(assignment);
-	}
+	// /**
+	// * Remove {@link ProjectAssignment} from this User
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to remove
+	// */
+	// public boolean removeProjectAssignment(ProjectAssignment assignment) {
+	// return projectAssignments.remove(assignment);
+	// }
 
 	/**
 	 * Checks whether the <code>User</code> has any <code>Role</code> with the

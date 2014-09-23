@@ -1,9 +1,7 @@
 package hu.bme.aut.wman.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -60,8 +58,8 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
 
-	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	private Set<ProjectAssignment> projectAssignments;
+	// @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	// private Set<ProjectAssignment> projectAssignments;
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
@@ -83,7 +81,7 @@ public class Project extends AbstractEntity {
 		this.workflow = workflow;
 		this.workflow.addProject(this);
 		this.currentState = this.workflow.getInitialState();
-		this.projectAssignments = new HashSet<>();
+		// this.projectAssignments = new HashSet<>();
 		this.historyEntries = new ArrayList<>();
 		this.comments = new ArrayList<>();
 		this.owner = owner;
@@ -117,17 +115,17 @@ public class Project extends AbstractEntity {
 		this.historyEntries = historyEntries;
 	}
 
-	public Set<ProjectAssignment> getProjectAssignments() {
-		return projectAssignments;
-	}
+	// public Set<ProjectAssignment> getProjectAssignments() {
+	// return projectAssignments;
+	// }
 
-	/**
-	 * @param projectAssignments
-	 *            the projectAssignments to set
-	 */
-	public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
-		this.projectAssignments = projectAssignments;
-	}
+	// /**
+	// * @param projectAssignments
+	// * the projectAssignments to set
+	// */
+	// public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
+	// this.projectAssignments = projectAssignments;
+	// }
 
 	public void setName(String name) {
 		this.name = name;
@@ -158,18 +156,18 @@ public class Project extends AbstractEntity {
 		historyEntries.add(historyEntry);
 	}
 
-	/**
-	 * Add {@link ProjectAssignment} to this Project
-	 * 
-	 * @param projectAssignment
-	 *            {@link ProjectAssignment} to add
-	 */
-	public void addProjectAssignment(ProjectAssignment projectAssignment) {
-		if (this.getProjectAssignments() == null) {
-			this.setProjectAssignments(new HashSet<ProjectAssignment>());
-		}
-		projectAssignments.add(projectAssignment);
-	}
+	// /**
+	// * Add {@link ProjectAssignment} to this Project
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to add
+	// */
+	// public void addProjectAssignment(ProjectAssignment projectAssignment) {
+	// if (this.getProjectAssignments() == null) {
+	// this.setProjectAssignments(new HashSet<ProjectAssignment>());
+	// }
+	// projectAssignments.add(projectAssignment);
+	// }
 
 	/**
 	 * Remove {@link HistoryEntry} from this Project
@@ -181,15 +179,15 @@ public class Project extends AbstractEntity {
 		return historyEntries.remove(historyEntry);
 	}
 
-	/**
-	 * Remove {@link ProjectAssignment} from this Project
-	 * 
-	 * @param projectAssignment
-	 *            {@link ProjectAssignment} to remove
-	 */
-	public boolean removeProjectAssignment(ProjectAssignment projectAssignment) {
-		return projectAssignments.remove(projectAssignment);
-	}
+	// /**
+	// * Remove {@link ProjectAssignment} from this Project
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to remove
+	// */
+	// public boolean removeProjectAssignment(ProjectAssignment projectAssignment) {
+	// return projectAssignments.remove(projectAssignment);
+	// }
 
 	/**
 	 * @return the comments

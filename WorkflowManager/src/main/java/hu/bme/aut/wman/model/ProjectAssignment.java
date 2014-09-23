@@ -18,7 +18,8 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @NamedQueries({
 		@NamedQuery(name = "ProjectAssignment.findByProjectId", query = "SELECT pa FROM ProjectAssignment pa WHERE pa.project.id=:id"),
-		@NamedQuery(name = "ProjectAssignment.findByUser", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.user.username=:username") })
+		@NamedQuery(name = "ProjectAssignment.findByUser", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.user.username=:username")
+})
 public class ProjectAssignment extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_USER_NAME = "ProjectAssignment.findByUser";
@@ -44,8 +45,8 @@ public class ProjectAssignment extends AbstractEntity {
 		this.user = user;
 		this.project = project;
 
-		this.user.addProjectAssignment(this);
-		this.project.addProjectAssignment(this);
+		// this.user.addProjectAssignment(this);
+		// this.project.addProjectAssignment(this);
 	}
 
 	public User getUser() {
@@ -54,7 +55,7 @@ public class ProjectAssignment extends AbstractEntity {
 
 	public void setUser(User user) {
 		this.user = user;
-		this.user.addProjectAssignment(this);
+		// this.user.addProjectAssignment(this);
 	}
 
 	public Project getProject() {
@@ -63,7 +64,7 @@ public class ProjectAssignment extends AbstractEntity {
 
 	public void setProject(Project project) {
 		this.project = project;
-		this.project.addProjectAssignment(this);
+		// this.project.addProjectAssignment(this);
 	}
 
 	/**
