@@ -74,9 +74,6 @@ public class StateService extends AbstractDataService<State> {
 			}
 		}
 
-		// TODO
-		// I'm pretty sure we should do these in a transaction *****************************************
-
 		// Delete old entries first
 		for (Transition parent : parents) {
 			transitionService.delete(parent);
@@ -90,8 +87,6 @@ public class StateService extends AbstractDataService<State> {
 		for (Transition transition : transitions) {
 			transitionService.save(transition);
 		}
-
-		// **********************************************************************************************
 
 		// We can delete that state finally
 		super.delete(entity);
@@ -108,6 +103,14 @@ public class StateService extends AbstractDataService<State> {
 	 *            the destination state
 	 */
 	public void addTransition(State state, ActionType actionType, State nextState) {
+		List<Transition> transitionsOnState = transitionService.selectByParentId(state.getId());
+
+		for (Transition transition : transitionsOnState) {
+			if (transition.getActionType() == actionType) {
+				throw new IllegalArgumentException("There can not be two transitions with the same source and action type.");
+			}
+		}
+
 		// Create state navigation entry
 		Transition transition = new Transition(actionType, nextState, state);
 		transitionService.save(transition);
