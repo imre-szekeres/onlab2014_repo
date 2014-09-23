@@ -98,7 +98,7 @@ public class StateService extends AbstractDataService<State> {
 	}
 
 	/**
-	 * Add a transition to the state.
+	 * Add a new transition to the state.
 	 * 
 	 * @param state
 	 *            the source state

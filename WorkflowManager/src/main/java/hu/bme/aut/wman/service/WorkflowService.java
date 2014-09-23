@@ -7,7 +7,6 @@ import hu.bme.aut.wman.model.Workflow;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -66,16 +65,6 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 		} else {
 			super.delete(entity);
 		}
-	}
-
-	/**
-	 * Adds the state to the workflow.
-	 * 
-	 * @param workflow
-	 * @param state
-	 */
-	public void addState(Workflow workflow, State state) {
-		addStates(workflow, Arrays.<State> asList(state));
 	}
 
 	/**

@@ -36,11 +36,10 @@ public class TransitionService extends AbstractDataService<Transition> {
 		return callNamedQuery(Transition.NQ_FIND_BY_NEXT_STATE_ID, parameterList);
 	}
 
-	public List<Transition> selectByActionTypeId(Long typeId, Long parentId) {
+	public List<Transition> selectByActionTypeId(Long typeId) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("typeId", typeId));
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("parentId", parentId));
-		return callNamedQuery(Transition.NQ_FIND_BY_ACTIONTYPE_AND_PARENT_ID, parameterList);
+		return callNamedQuery(Transition.NQ_FIND_BY_ACTIONTYPE_ID, parameterList);
 	}
 
 	public Collection<State> selectNextStates(State state) {
