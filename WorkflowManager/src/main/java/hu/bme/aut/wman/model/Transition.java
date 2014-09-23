@@ -19,11 +19,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.parentState.id=:parentId"),
+		@NamedQuery(name = "StateNavigationEntry.findByNextId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.nextState.id=:nextId"),
 		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.actionType.id=:typeId AND sne.parentState.id=:parentId")
 })
-public class StateNavigationEntry extends AbstractEntity {
+public class Transition extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_PARENT_ID = "StateNavigationEntry.findByParentId";
+	public static final String NQ_FIND_BY_NEXT_STATE_ID = "StateNavigationEntry.findByNextId";
 	public static final String NQ_FIND_BY_ACTIONTYPE_AND_PARENT_ID = "StateNavigationEntry.findByActionType";
 
 	public static final String PR_PARENT_STATE = "parentState";
@@ -44,11 +46,11 @@ public class StateNavigationEntry extends AbstractEntity {
 	@NotNull
 	private ActionType actionType;
 
-	public StateNavigationEntry() {
+	public Transition() {
 
 	}
 
-	public StateNavigationEntry(ActionType actionType, State nextState, State parent) {
+	public Transition(ActionType actionType, State nextState, State parent) {
 		this.actionType = actionType;
 		this.nextState = nextState;
 		this.parentState = parent;
@@ -100,7 +102,7 @@ public class StateNavigationEntry extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		StateNavigationEntry other = (StateNavigationEntry) obj;
+		Transition other = (Transition) obj;
 		if (actionType == null) {
 			if (other.actionType != null) {
 				return false;

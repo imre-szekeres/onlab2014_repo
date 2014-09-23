@@ -1,6 +1,7 @@
 package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.Project;
+import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
 
@@ -62,6 +63,12 @@ public class ProjectService extends AbstractDataService<Project> {
 	public List<Project> selectByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Project.PR_NAME, name));
+		return selectByParameters(parameterList);
+	}
+
+	public List<Project> selectByCurrentState(State state) {
+		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Project.PR_CURRENT_STATE, state));
 		return selectByParameters(parameterList);
 	}
 

@@ -64,6 +64,9 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
+	@NotNull
+	private Boolean active = true;
+
 	public Project() {
 		super();
 	}
@@ -253,5 +256,13 @@ public class Project extends AbstractEntity {
 			return false;
 		}
 		return true;
+	}
+
+	public Boolean isActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 }

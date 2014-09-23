@@ -29,15 +29,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:id"),
-		@NamedQuery(name = "State.findChildrenByParentId", query = "SELECT s FROM State s WHERE s.parent.id=:parentId"),
-		@NamedQuery(name = "State.findRootStatesByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:workflowId and s.parent IS NULL")
+		@NamedQuery(name = "State.findInitialInWorkflow", query = "SELECT s FROM State s WHERE s.workflow.id=:id and s.initial=true"),
+
 })
 public class State extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_WORKFLOW_ID = "State.findByWorkflowId";
-	// TODO I'm 75% sure, we don't need this two any more
-	public static final String NQ_FIND_CHILDREN_BY_PARENT_ID = "State.findChildrenByParentId";
-	public static final String NQ_FIND_ROOT_STATES_BY_WORKFLOW_ID = "State.findRootStatesByWorkflowId";
+	public static final String NQ_FIND_INTIAL_IN_WORKFLOW = "State.findInitialInWorkflow";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_INITIAL = "initial";
@@ -60,8 +58,8 @@ public class State extends AbstractEntity {
 	@JoinColumn
 	private Workflow workflow;
 
-	@OneToMany(mappedBy = "parentState", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	private List<StateNavigationEntry> nextStates;
+	// @OneToMany(mappedBy = "parentState", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	// private List<Transition> nextStates;
 
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<HistoryEntry> historyEntries;
@@ -106,9 +104,9 @@ public class State extends AbstractEntity {
 		return historyEntries;
 	}
 
-	public List<StateNavigationEntry> getNextStates() {
-		return nextStates;
-	}
+	// public List<Transition> getNextStates() {
+	// return nextStates;
+	// }
 
 	// public State getParent() {
 	// return parent;
@@ -134,9 +132,9 @@ public class State extends AbstractEntity {
 	// this.children = children;
 	// }
 
-	public void setNextStates(List<StateNavigationEntry> nextStates) {
-		this.nextStates = nextStates;
-	}
+	// public void setNextStates(List<Transition> nextStates) {
+	// this.nextStates = nextStates;
+	// }
 
 	public List<BlobFile> getFiles() {
 		return files;
@@ -182,27 +180,27 @@ public class State extends AbstractEntity {
 		return historyEntries.remove(historyEntry);
 	}
 
-	/**
-	 * Remove {@link StateNavigationEntry} from this State
-	 * 
-	 * @param stateNavigationEntry
-	 *            {@link StateNavigationEntry} to remove
-	 */
-	public void removeNexState(StateNavigationEntry stateNavigationEntry) {
-		nextStates.remove(stateNavigationEntry);
-		stateNavigationEntry.setParent(null);
-	}
+	// /**
+	// * Remove {@link Transition} from this State
+	// *
+	// * @param stateNavigationEntry
+	// * {@link Transition} to remove
+	// */
+	// public void removeNexState(Transition stateNavigationEntry) {
+	// nextStates.remove(stateNavigationEntry);
+	// stateNavigationEntry.setParent(null);
+	// }
 
-	/**
-	 * Add {@link StateNavigationEntry} to this State
-	 * 
-	 * @param stateNavigationEntry
-	 *            {@link StateNavigationEntry} to add
-	 */
-	public void addNextState(StateNavigationEntry stateNavigationEntry) {
-		getNextStates().add(stateNavigationEntry);
-		stateNavigationEntry.setParent(this);
-	}
+	// /**
+	// * Add {@link Transition} to this State
+	// *
+	// * @param stateNavigationEntry
+	// * {@link Transition} to add
+	// */
+	// public void addNextState(Transition stateNavigationEntry) {
+	// getNextStates().add(stateNavigationEntry);
+	// stateNavigationEntry.setParent(this);
+	// }
 
 	// /**
 	// * Add a child state to this State
@@ -291,10 +289,10 @@ public class State extends AbstractEntity {
 		return "State [id=|" + id + "|, name=" + name + ", initial=" + initial + "]";
 	}
 
-	public State copy() {
-		State copy = new State(name, description, initial);
-		copy.setNextStates(nextStates);
-		copy.setWorkflow(workflow);
-		return copy;
-	}
+	// public State copy() {
+	// State copy = new State(name, description, initial);
+	// // copy.setNextStates(nextStates);
+	// copy.setWorkflow(workflow);
+	// return copy;
+	// }
 }
