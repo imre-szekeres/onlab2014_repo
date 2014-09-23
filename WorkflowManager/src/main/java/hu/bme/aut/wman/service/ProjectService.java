@@ -2,6 +2,7 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
+import hu.bme.aut.wman.model.Comment;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.ProjectAssignment;
 import hu.bme.aut.wman.model.State;
@@ -12,6 +13,7 @@ import hu.bme.aut.wman.model.Workflow;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -36,6 +38,10 @@ public class ProjectService extends AbstractDataService<Project> {
 	TransitionService transitionService;
 	@Autowired
 	ProjectAssignmentService projectAssignmentService;
+	@Autowired
+	UserService userService;
+	@Autowired
+	CommentService commentService;
 
 	// private Validator validator;
 
@@ -185,6 +191,22 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (!assignments.isEmpty()) {
 			projectAssignmentService.delete(assignments.iterator().next());
 		}
+	}
+
+	/**
+	 * Creates a comment on the project by the user with the message.
+	 * 
+	 * @param project
+	 * @param user
+	 * @param commentMessage
+	 */
+	public void commentOnProject(Project project, User user, String commentMessage) {
+		Comment comment = new Comment(user, project, commentMessage);
+		comment.setPostDate(new Date());
+
+		commentService.save(comment);
+		userService.save(user);
+		save(project);
 	}
 
 	/**
