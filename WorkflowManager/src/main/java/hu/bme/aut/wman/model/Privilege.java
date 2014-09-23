@@ -23,20 +23,20 @@ public class Privilege extends AbstractEntity {
 
 	@NotNull
 	private String name;
-	
+
 	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Role.class, mappedBy = "privileges")
 	private Set<Role> roles;
-	
+
+	@Deprecated
 	public Privilege() {
 		this("");
 	}
-	
+
 	public Privilege(String name) {
 		super();
 		this.name = name;
 		this.roles = new HashSet<Role>();
 	}
-
 
 	/**
 	 * @return the name
@@ -53,7 +53,7 @@ public class Privilege extends AbstractEntity {
 		this.name = name;
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -65,7 +65,7 @@ public class Privilege extends AbstractEntity {
 		return result;
 	}
 
-	/** 
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

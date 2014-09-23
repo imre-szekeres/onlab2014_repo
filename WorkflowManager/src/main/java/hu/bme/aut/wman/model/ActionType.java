@@ -29,7 +29,9 @@ public class ActionType extends AbstractEntity {
 	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes", fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
+	@Deprecated
 	public ActionType() {
+		super();
 	}
 
 	public ActionType(String actionTypeName) {

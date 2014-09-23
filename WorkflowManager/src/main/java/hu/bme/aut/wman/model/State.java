@@ -74,6 +74,7 @@ public class State extends AbstractEntity {
 	// @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
 	// private List<State> children;
 
+	@Deprecated
 	public State() {
 		super();
 	}

@@ -52,6 +52,10 @@ public class HistoryEntry extends AbstractEntity {
 	@OneToOne
 	private Project project;
 
+	public HistoryEntry() {
+		super();
+	}
+
 	public String getUser() {
 		return userName;
 	}

@@ -38,6 +38,7 @@ public class Role extends AbstractEntity {
 	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Privilege.class, fetch = FetchType.EAGER)
 	private Set<Privilege> privileges;
 
+	@Deprecated
 	public Role() {
 		this("");
 	}

@@ -46,8 +46,8 @@ public class Transition extends AbstractEntity {
 	@NotNull
 	private ActionType actionType;
 
+	@Deprecated
 	public Transition() {
-
 	}
 
 	public Transition(ActionType actionType, State nextState, State parent) {

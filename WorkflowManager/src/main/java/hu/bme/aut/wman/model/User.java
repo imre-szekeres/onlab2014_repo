@@ -64,6 +64,7 @@ public class User extends AbstractEntity {
 	// @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	// private Set<ProjectAssignment> projectAssignments;
 
+	@Deprecated
 	public User() {
 		super();
 		this.roles = new HashSet<Role>();

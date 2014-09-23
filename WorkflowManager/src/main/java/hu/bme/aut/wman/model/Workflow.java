@@ -39,6 +39,7 @@ public class Workflow extends AbstractEntity {
 	@OneToMany(mappedBy = "workflow")
 	private List<Project> projects = new ArrayList<Project>();
 
+	@Deprecated
 	public Workflow() {
 		super();
 	}

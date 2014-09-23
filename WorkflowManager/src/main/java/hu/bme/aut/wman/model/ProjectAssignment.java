@@ -36,6 +36,7 @@ public class ProjectAssignment extends AbstractEntity {
 	@ManyToOne
 	private Project project;
 
+	@Deprecated
 	public ProjectAssignment() {
 		super();
 	}

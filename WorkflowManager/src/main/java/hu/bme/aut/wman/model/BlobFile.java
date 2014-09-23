@@ -30,29 +30,26 @@ public class BlobFile extends AbstractEntity {
 	@Lob
 	private byte[] content;
 
-	public BlobFile()
-	{
+	@Deprecated
+	public BlobFile() {
+		super();
 	}
 
-	public BlobFile(String fileName, byte[] content, State state)
-	{
+	public BlobFile(String fileName, byte[] content, State state) {
 		this.fileName = fileName;
 		this.content = content;
 		this.state = state;
 	}
 
-	public String getFileName()
-	{
+	public String getFileName() {
 		return fileName;
 	}
 
-	public void setFileName(String fileName)
-	{
+	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
 
-	public byte[] getContent()
-	{
+	public byte[] getContent() {
 		return content;
 	}
 
@@ -70,16 +67,14 @@ public class BlobFile extends AbstractEntity {
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		int hash = 0;
 		hash += (id != null ? id.hashCode() : 0);
 		return hash;
 	}
 
 	@Override
-	public boolean equals(Object object)
-	{
+	public boolean equals(Object object) {
 		if (!(object instanceof BlobFile))
 		{
 			return false;
