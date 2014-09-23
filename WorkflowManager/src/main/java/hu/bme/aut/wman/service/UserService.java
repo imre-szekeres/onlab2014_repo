@@ -28,6 +28,10 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
+	/**
+	 * @param username
+	 * @return the user who has the given name
+	 */
 	public User selectByName(String username) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, username));
@@ -38,6 +42,10 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		return null;
 	}
 
+	/**
+	 * @param projectID
+	 * @return users who are on the given project
+	 */
 	public List<User> selectUsersForProject(Long projectID) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectID", projectID));
