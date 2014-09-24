@@ -54,8 +54,8 @@ public class LoginController extends AbstractController {
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String postLogin(@ModelAttribute("subject") User subject, HttpServletRequest request, Model model){
 
-		User user;
-		if((user = doAuthenticate(subject)) != null) {
+		User user = doAuthenticate(subject);
+		if (user != null) {
 			request.getSession().setAttribute("subject", user);
 			return "redirect:/";
 		}
