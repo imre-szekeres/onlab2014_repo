@@ -94,7 +94,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 */
 	public T selectById(Long id) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("id", id));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, id));
 		Iterator<T> results = selectByParameters(parameterList).iterator();
 
 		if (results.hasNext()) {

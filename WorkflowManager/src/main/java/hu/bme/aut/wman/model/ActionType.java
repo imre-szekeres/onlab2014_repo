@@ -15,10 +15,10 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("serial")
 @Entity
-// @NamedQueries({
-// @NamedQuery(name = "ActionType.findAll", query = "SELECT at FROM ActionType at"),
-// @NamedQuery(name = "ActionType.findById", query = "SELECT at FROM ActionType at WHERE at.id=:id") })
 public class ActionType extends AbstractEntity {
+
+	public static final String PR_NAME = "actionTypeName";
+	public static final String PR_ROLES = "roles";
 
 	@NotNull
 	@Column(unique = true)

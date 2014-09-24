@@ -3,50 +3,54 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.service.UserService;
 
 import java.util.Map;
 import java.util.HashMap;
+import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.stereotype.Controller;
-import javax.servlet.http.HttpServletRequest;
-import hu.bme.aut.wman.service.UserService;
-import org.springframework.ui.Model;
-import hu.bme.aut.wman.model.User;
-import javax.ejb.EJB;
+
 /**
  * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
 @Controller
-public class LoginController {
-	
-	@EJB(mappedName="java:module/UserService")
+public class LoginController extends AbstractController {
+
+	public static final String LOGIN = "/login";
+
+	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
 
-
-	@RequestMapping(value="/", method=RequestMethod.GET)
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request) {
 
-		if(request.getSession().getAttribute("subject") != null) {
+		if (request.getSession().getAttribute("subject") != null) {
 			model.addAttribute("message", "Welcome to WorkflowManager!");
-			model.addAttribute("pageName", "index");
-			return "wman_frame";
+			return navigateToFrame("index", model);
 		}
-		return "redirect:/login";
+		return redirectTo(LOGIN);
 	}
 
-	@RequestMapping(value="/login", method=RequestMethod.GET)
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String getLogin(Model model) {
 
-		model.addAttribute("subject", new User());
-		model.addAttribute("pageName", "login");
-		return "login";
+		User subject = new User();
+		model.addAttribute("subject", subject);
+		return navigateTo(LOGIN, "login", model);
 	}
 
-
+	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String postLogin(@ModelAttribute("subject") User subject, HttpServletRequest request, Model model){
 
@@ -82,12 +86,6 @@ public class LoginController {
 	}
 	
 	private final Map<String, String> doValidate(User user, HttpServletRequest request) {
-		// TODO:
-		System.out.println("user.username: " + user.getUsername());
-		System.out.println("user.password: " + user.getPassword());
-		System.out.println("passwordAgain: " + request.getParameter("password-again"));
-		System.out.println("user.email: " + user.getEmail());
-		System.out.println("user.description: " + user.getDescription());
 		return new HashMap<String, String>(0);
 	}
 }

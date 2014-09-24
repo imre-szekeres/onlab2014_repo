@@ -21,7 +21,7 @@ public class BlobFileService extends AbstractDataService<BlobFile> {
 
 	public List<BlobFile> selectByFileName(String fileName) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
-		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("fileName", fileName));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(BlobFile.PR_FILE_NAME, fileName));
 		return selectByParameters(parameterList);
 	}
 

@@ -17,6 +17,11 @@ import javax.persistence.ManyToMany;
 @SuppressWarnings("serial")
 public class Role extends AbstractEntity {
 
+	public static final String PR_NAME = "name";
+	public static final String PR_ACTION_TYPES = "actionTypes";
+	public static final String PR_USERS = "users";
+	public static final String PR_PRIVILEGS = "privileges";
+
 	@Column(unique = true)
 	private String name;
 
@@ -121,8 +126,6 @@ public class Role extends AbstractEntity {
 	public void setActionTypes(Set<ActionType> actionTypes) {
 		this.actionTypes = actionTypes;
 	}
-	
-	
 
 	/**
 	 * @return the privileges
@@ -132,7 +135,8 @@ public class Role extends AbstractEntity {
 	}
 
 	/**
-	 * @param privileges the privileges to set
+	 * @param privileges
+	 *            the privileges to set
 	 */
 	public void setPrivileges(Set<Privilege> privileges) {
 		this.privileges = privileges;
@@ -162,9 +166,11 @@ public class Role extends AbstractEntity {
 	
 	// TODO: comment
 	public boolean hasPrivilege(String name) {
-		for(Privilege p : privileges)
-			if(p.getName().equals(name))
+		for (Privilege p : privileges) {
+			if (p.getName().equals(name)) {
 				return true;
+			}
+		}
 		return false;
 	}
 	
