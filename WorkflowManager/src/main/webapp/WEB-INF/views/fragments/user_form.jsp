@@ -12,11 +12,11 @@
         
         <fieldset>
         <div id='user-form-input-positioner' class='pos-rel' >
-        <c:if test='${ not empty validationErrors or not empty validationErrors.username}' >
+        <c:if test='${ not empty validationErrors and not empty validationErrors.username}' >
 	        <c:set var='usernameClass' value='has-error' />
 	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.username }</span>
+	            <div class='alert alert-danger form-alert user-form-alert'>
+	                <span>${ validationErrors.username }</span>
 	            </div>
 	        </div>
         </c:if>
@@ -29,11 +29,11 @@
             </div> 
         </div>
         
-        <c:if test='${ not empty validationErrors or not empty validationErrors.password }' >
+        <c:if test='${ not empty validationErrors and not empty validationErrors.password }' >
 	        <c:set var='passwordClass' value='has-error' />
 	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.password }</span>
+	            <div class='alert alert-danger form-alert user-form-alert'>
+	                <span>${ validationErrors.password }</span>
 	            </div>
 	        </div>
         </c:if>
@@ -46,11 +46,11 @@
             </div> 
         </div>
         
-        <c:if test='${ not empty validationErrors or not empty validationErrors.confirmPassword }' >
+        <c:if test='${ not empty validationErrors and not empty validationErrors.confirmPassword }' >
 	        <c:set var='passwordAgainClass' value='has-error' />
 	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.confirmPassword }</span>
+	            <div class='alert alert-danger form-alert user-form-alert'>
+	                <span>${ validationErrors.confirmPassword }</span>
 	            </div>
 	        </div>
         </c:if>
@@ -63,11 +63,11 @@
             </div> 
         </div>
         
-        <c:if test='${ not empty validationErrors or not empty validationErrors.email }' >
+        <c:if test='${ not empty validationErrors and not empty validationErrors.email }' >
 	        <c:set var='emailClass' value='has-error' />
 	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.email }</span>
+	            <div class='alert alert-danger form-alert user-form-alert'>
+	                <span>${ validationErrors.email }</span>
 	            </div>
 	        </div>
         </c:if>
@@ -80,11 +80,11 @@
             </div>
         </div>
         
-        <c:if test='${ not empty validationErrors or not empty validationErrors.description}' >
+        <c:if test='${ not empty validationErrors and not empty validationErrors.description}' >
 	        <c:set var='descriptionClass' value='has-error' />
 	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.description }</span>
+	            <div class='alert alert-danger form-alert user-form-alert'>
+	                <span>${ validationErrors.description }</span>
 	            </div>
 	        </div>
         </c:if>

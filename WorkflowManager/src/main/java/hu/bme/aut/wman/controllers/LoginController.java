@@ -24,13 +24,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LoginController extends AbstractController {
 
+	public static final String APP_ROOT = "/";
 	public static final String LOGIN = "/login";
 
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
 
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+
+	@RequestMapping(value = APP_ROOT, method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request) {
 
 		if (request.getSession().getAttribute("subject") != null) {
@@ -41,7 +42,7 @@ public class LoginController extends AbstractController {
 	}
 
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = LOGIN, method = RequestMethod.GET)
 	public String getLogin(Model model) {
 
 		User subject = new User();
@@ -50,13 +51,13 @@ public class LoginController extends AbstractController {
 	}
 
 
-	@RequestMapping(value="/login", method=RequestMethod.POST)
+	@RequestMapping(value = LOGIN, method=RequestMethod.POST)
 	public String postLogin(@ModelAttribute("subject") User subject, HttpServletRequest request, Model model){
 
 		User user = doAuthenticate(subject);
 		if (user != null) {
 			request.getSession().setAttribute("subject", user);
-			return "redirect:/";
+			return redirectTo(APP_ROOT);
 		}
 		subject.setPassword("");
 		model.addAttribute("loginError", true);
@@ -82,6 +83,6 @@ public class LoginController extends AbstractController {
 			// TODO: add a newbie Role to the user..
 		}
 		model.addAttribute("validationErrors", validationErrors);
-		return redirectTo("/");
+		return "login";
 	}
 }

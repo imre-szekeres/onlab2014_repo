@@ -31,23 +31,25 @@
         </div>
     </div>
     
-    <div class='centraliser pos-absol' >
-    <div id='register-from-positioner' class='pos-rel'>
+    <section id='register-section' class='pos-absol' >
+    <div id='register-jumbotron' class='jumbotron' >
         <div>
-            <button id='close-register-positioner' type='button' class='close img-thumbnail pos-rel' onclick='showContent(event)' >
-                <span aria-hidden='true' >&times;</span>
-                <span class='sr-only'>Close</span>
-            </button>
-        </div>
-        <div id='register-form-wrapper' class='pos-rel'>
-            <jsp:include page='fragments/user_form.jsp'>
-                <jsp:param name='postAction' value='${ appRoot }/register' />
-                <jsp:param name='userRef' value='subject' />
-                <jsp:param name='submitButtonValue' value='Register' />
-            </jsp:include>
-        </div>
-    </div>
-    </div>
+                <button id='close-register-positioner' type='button' class='close img-thumbnail pos-rel' onclick='showContent(event)' >
+                    <span aria-hidden='true' >&times;</span>
+                    <span class='sr-only'>Close</span>
+                </button>
+            </div>
+	    <div id='register-from-positioner' class='pos-rel'>
+	        <div id='register-form-wrapper' class='pos-rel'>
+	            <jsp:include page='fragments/user_form.jsp'>
+	                <jsp:param name='postAction' value='${ appRoot }/register' />
+	                <jsp:param name='userRef' value='subject' />
+	                <jsp:param name='submitButtonValue' value='Register' />
+	            </jsp:include>
+	        </div>
+	    </div>
+	</div>
+    </section>
     
     <div class='centraliser pos-absol' >
     <div id='sign-in-form-wrapper' class='pos-rel' >
