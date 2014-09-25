@@ -46,11 +46,11 @@
             </div> 
         </div>
         
-        <c:if test='${ not empty validationErrors or not empty validationErrors.passwordAgain }' >
+        <c:if test='${ not empty validationErrors or not empty validationErrors.confirmPassword }' >
 	        <c:set var='passwordAgainClass' value='has-error' />
 	        <div class='user-form-row'>
 	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.passwordAgain }</span>
+	                <span class='error-message' >${ validationErrors.confirmPassword }</span>
 	            </div>
 	        </div>
         </c:if>
