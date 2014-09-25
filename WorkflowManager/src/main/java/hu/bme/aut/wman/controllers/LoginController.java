@@ -7,7 +7,6 @@ import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.UserService;
 
 import java.util.Map;
-import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,7 +40,7 @@ public class LoginController extends AbstractController {
 		return redirectTo(LOGIN);
 	}
 
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String getLogin(Model model) {
 
@@ -50,7 +49,7 @@ public class LoginController extends AbstractController {
 		return navigateTo(LOGIN, "login", model);
 	}
 
-	
+
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String postLogin(@ModelAttribute("subject") User subject, HttpServletRequest request, Model model){
 
@@ -68,24 +67,21 @@ public class LoginController extends AbstractController {
 	private final User doAuthenticate(User subject) {
 
 		User user = userService.selectByName(subject.getUsername());
-		if(user == null)
-			return null;
-		return user.getPassword().equals(subject.getPassword()) ? user : null;
+		if(user == null || user.getPassword().equals(subject.getPassword()))
+			return user;
+		return null;
 	}
-	
+
+
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
-		Map<String, String> validationErrors;
-		if((validationErrors = doValidate(user, request)).size() <= 0) {
+		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"), true);
+		if (validationErrors.size() <= 0) {
 			// TODO: userService.save(user);
 			request.getSession().setAttribute("subject", user);
 			// TODO: add a newbie Role to the user..
 		}
 		model.addAttribute("validationErrors", validationErrors);
-		return "redirect:/";
-	}
-	
-	private final Map<String, String> doValidate(User user, HttpServletRequest request) {
-		return new HashMap<String, String>(0);
+		return redirectTo("/");
 	}
 }
