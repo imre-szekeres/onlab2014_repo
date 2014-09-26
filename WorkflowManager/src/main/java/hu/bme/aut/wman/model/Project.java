@@ -24,7 +24,7 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name"),
-		@NamedQuery(name = "Project.findProjectsForUser", query = "SELECT p FROM Project o, ProjectAssignment pa WHERE pa.u.username = :username AND pa.project = p")
+		@NamedQuery(name = "Project.findProjectsForUser", query = "SELECT p FROM Project p, ProjectAssignment pa WHERE pa.user.username = :username AND pa.project = p")
 })
 public class Project extends AbstractEntity {
 
