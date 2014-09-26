@@ -25,18 +25,12 @@ import javax.persistence.TypedQuery;
 @SuppressWarnings("serial")
 public class RoleService extends AbstractDataService<Role> implements Serializable {
 
-	// private Validator validator;
-
-	// @PostConstruct
-	// private void init() {
-	// validator = Validation.buildDefaultValidatorFactory().getValidator();
-	// }
-
-	public Role findByName(String name) {
-		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+	public Role selectByName(String name) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Role.PR_NAME, name));
 		// FIXME should check if has exactly one element
-		return selectByParameters(parameterList).get(0);
+		List<Role> results = selectByParameters(parameterList);
+		return (results.size() > 0) ? results.get(0) : null;
 	}
 
 	/**
@@ -71,16 +65,4 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 	protected Class<Role> getEntityClass() {
 		return Role.class;
 	}
-
-	// /**
-	// * Validates the given name against the constraints given in the <code>Role</code> class.
-	// *
-	// * @param name
-	// * that will be validated
-	// * @return true only if the given name corresponds to the constraints given
-	// * in the class <code>Role</code>
-	// * */
-	// public boolean validateName(String name) {
-	// return validator.validateValue(Role.class, "name", name).size() == 0;
-	// }
 }

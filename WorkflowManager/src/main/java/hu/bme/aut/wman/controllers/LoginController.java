@@ -3,10 +3,13 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 
 import java.util.Map;
+
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,8 +32,12 @@ public class LoginController extends AbstractController {
 
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
+	
+	@EJB(mappedName = "java:module/RoleService")
+	private RoleService roleService;
 
 
+	
 	@RequestMapping(value = APP_ROOT, method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request) {
 
@@ -78,9 +85,12 @@ public class LoginController extends AbstractController {
 	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
 		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"), true);
 		if (validationErrors.size() <= 0) {
-			// TODO: userService.save(user);
+			Role reader = roleService.selectByName("Reader");
+			user.addRole(reader);
+			
+			userService.save(user);
+			roleService.save(reader);
 			request.getSession().setAttribute("subject", user);
-			// TODO: add a newbie Role to the user..
 			return redirectTo("/");
 		}
 		model.addAttribute("validationErrors", validationErrors);
