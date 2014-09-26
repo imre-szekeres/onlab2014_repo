@@ -74,32 +74,25 @@
 	top: -32px;
 }
 
-#sign-in-form-wrapper {
-	top: 200px;
-	left: -200px;
-	min-width: 400px;
-	min-height: 300px;
-	max-width: 400px;
-	max-height: 300px;
-	border: 1px solid #428BCA;
-	border-radius: 7px 7px  7px  7px; 
-}
-
-#close-signin-wrapper {
-	top: 7px;
-	left: -13px;
-}
-
 .app-name {
-
 	color: white;
 }
 
+#sign-in-modal-dialog {
+	width: 500px;
+}
+
+#sign-in-wrapper {
+	min-width: 160px;
+	width: auto;
+}
+
 #sign-in-form {
-	top: 125px;
-	left: 75px;
+	top: 31px;
+	left: 21%;
 	max-width: 250px;
-	max-height: 140px;
+	min-height: 140px;
+	height: auto;
 }
 
 #not-part-of-it-wrapper {
@@ -107,11 +100,12 @@
 	left: -20px;
 }
 
-#not-part-of-it-wrapper.btn {
-	min-width: 60px;
+#register-btn {
+	min-width: 100px;
 }
 
 #sign-in-trigger-btn {
+	min-width: 100px;
 	color: #428BCA;
 }
 
