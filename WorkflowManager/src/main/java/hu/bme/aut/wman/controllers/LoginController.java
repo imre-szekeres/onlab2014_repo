@@ -81,6 +81,7 @@ public class LoginController extends AbstractController {
 			// TODO: userService.save(user);
 			request.getSession().setAttribute("subject", user);
 			// TODO: add a newbie Role to the user..
+			return redirectTo("/");
 		}
 		model.addAttribute("validationErrors", validationErrors);
 		return "login";

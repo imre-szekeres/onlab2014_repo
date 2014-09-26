@@ -125,6 +125,14 @@
 	padding: 5px;
 }
 
+.user-form-label-row {
+	width: 105px;
+}
+
+.user-form-input-row {
+	width: 320px;
+}
+
 #register-section {
 	top: 210px;
 	width: 100%;
@@ -133,38 +141,17 @@
 #register-jumbotron {
 	width: 100%;
 	height: auto;	
-	display: table;
 }
 
-#register-from-positioner {	
+#register-from-positioner {
+	left: 30%;
 	height: auto;
 	min-height: 420px;
-	
-	display: table-row;
 }
 
 #close-register-positioner {
 	top: 7px;
 	left: -13px;
-}
-
-#register-form-wrapper {
-	top: 75px;
-	height: auto;
-	min-height: 400px;
-	
-	display: inline-block;
-}
-
-#user-form-wrapper {
-	width: 400px;
-	min-height: 400px;
-	height: auto;
-	
-	display: inline-block;
-}
-
-#user-form {
 }
 
 #user-form-input-positioner {
@@ -175,9 +162,19 @@
 	left: 20px;
 }
 
-#register-submit {
-	left: 20px;
+#user-form-submit {
+	left: -10px;
+	min-width: 313px;
 }
+
+#user-form-cancel {
+}
+
+.error-message-label {
+	padding-top: 7px;
+	display: inline-block;
+}
+
 /* END   Sign-In */
 
 
