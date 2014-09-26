@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
+<%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -17,7 +18,7 @@
 </head>
 <body>
     
-    <div id='login-header-wrapper' class='container' >
+    <div id='sign-in-header-wrapper' class='container' >
         <div class='row'>
             <div class='col-md-3'></div>
             <div class='col-md-3' id='app-name-wrapper' ><h3 class='app-name' ><strong>WorkflowManager</strong></h3></div>
@@ -31,9 +32,27 @@
     </div>
     
     <div class='centraliser pos-absol' >
+    <div id='register-from-positioner' class='pos-rel'>
+        <div>
+            <button id='close-register-positioner' type='button' class='close img-thumbnail pos-rel' onclick='showContent(event)' >
+                <span aria-hidden='true' >&times;</span>
+                <span class='sr-only'>Close</span>
+            </button>
+        </div>
+        <div id='register-form-wrapper' class='pos-rel'>
+            <jsp:include page='fragments/user_form.jsp'>
+                <jsp:param name='postAction' value='${ appRoot }/register' />
+                <jsp:param name='userRef' value='subject' />
+                <jsp:param name='submitButtonValue' value='Register' />
+            </jsp:include>
+        </div>
+    </div>
+    </div>
+    
+    <div class='centraliser pos-absol' >
     <div id='sign-in-form-wrapper' class='pos-rel' >
         <div>
-            <button id='close-signin-wrapper' type='button' class='close img-thumbnail' onclick='showContent(event)' >
+            <button id='close-signin-wrapper' type='button' class='close img-thumbnail pos-rel' onclick='showContent(event)' >
                 <span aria-hidden='true' >&times;</span>
                 <span class='sr-only'>Close</span>
             </button>
@@ -43,7 +62,11 @@
             
             <div class='form-row'>
                 <div class='error-message-wrapper'>
-                    <span class='error-message' >${ loginError }</span>
+                    <c:if test='${ not empty loginError }' >
+                        <div id='sign-in-error-message' class='alert alert-danger pos-rel'>
+                            <spring:message code='login.error.message' />
+                        </div>
+                    </c:if>
                 </div>
             </div>
                                    
@@ -64,10 +87,10 @@
     </div>
     
     <script>
-        var $_signin_wrapper = $('#sign-in-form-wrapper');
-        var $_register_wrapper = $('#register-form-wrapper');
+        var $_signin = $('#sign-in-form-wrapper');
+        var $_register = $('#register-from-positioner').parent();
         var $_page_content = $('#page-content-wrapper');
-        var $_dynamics = $([$_signin_wrapper, $_register_wrapper, $_page_content]);
+        var $_dynamics = $([$_signin, $_register, $_page_content]);
         
         function fadeOut($_element) {
         	$_element.fadeOut();
@@ -91,11 +114,11 @@
         }
         
         function showSignIn(event) {
-        	fadeAllBut($_signin_wrapper, $_dynamics);
+        	fadeAllBut($_signin, $_dynamics);
         }
         
         function showRegister(event) {
-        	fadeAllBut($_register_wrapper, $_dynamics);
+        	fadeAllBut($_register, $_dynamics);
         }
         
         function showContent(event) {
@@ -118,7 +141,12 @@
     <c:choose>
         <c:when test='${ not empty loginError }'>
             <script>
-                hideAllBut($_signin_wrapper, $_dynamics);
+                hideAllBut($_signin, $_dynamics);
+            </script>
+        </c:when>
+        <c:when test='${ not empty validationErrors }' >
+            <script>
+                hideAllBut($_register, $_dynamics);
             </script>
         </c:when>
         <c:otherwise>

@@ -30,7 +30,6 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
 		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:id"),
 		@NamedQuery(name = "State.findInitialInWorkflow", query = "SELECT s FROM State s WHERE s.workflow.id=:id and s.initial=true"),
-
 })
 public class State extends AbstractEntity {
 

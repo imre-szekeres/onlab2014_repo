@@ -42,7 +42,7 @@
 
 
 /* BEGIN Sing-In */
-#login-header-wrapper {
+#sign-in-header-wrapper {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -67,6 +67,10 @@
 	left: 50%;
 }
 
+#sign-in-error-message {
+	top: -32px;
+}
+
 #sign-in-form-wrapper {
 	top: 200px;
 	left: -200px;
@@ -80,7 +84,8 @@
 }
 
 #close-signin-wrapper {
-	left: -21px;
+	top: 7px;
+	left: -13px;
 }
 
 .app-name {
@@ -108,11 +113,45 @@
 	color: #428BCA;
 }
 
-#register-btn {}
 
+#register-from-positioner {
+	top: 150px;
+	left: -250px;
+	
+	width: 400px;
+	height: 450px;
+	border: 1px solid #428BCA;
+	border-radius: 7px 7px  7px  7px;
+}
 
+#close-register-positioner {
+	top: 7px;
+	left: -13px;
+}
 
+#register-form-wrapper {
+	top: 75px;
+}
 
+#user-form-wrapper {
+	width: 400px;
+	height: 400px;
+}
+
+#user-form {
+}
+
+#user-form-input-positioner {
+	left: -10px;
+}
+
+#user-form-submit-wrapper {
+	left: 20px;
+}
+
+#register-submit {
+	left: 20px;
+}
 /* END   Sign-In */
 
 
