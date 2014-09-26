@@ -85,10 +85,9 @@
     </div>
     
     <script>
-        var $_signin = $('#sign-in-form-wrapper');
         var $_register = $('#register-from-positioner').parent();
         var $_page_content = $('#page-content-wrapper');
-        var $_dynamics = $([$_signin, $_register, $_page_content]);
+        var $_dynamics = $([$_register, $_page_content]);
         
         function fadeOut($_element) {
         	$_element.fadeOut();
@@ -109,10 +108,6 @@
         			fadeIn($_elements[i]);
         		else fadeOut($_elements[i]);
         	}
-        }
-        
-        function showSignIn(event) {
-        	fadeAllBut($_signin, $_dynamics);
         }
         
         function showRegister(event) {
@@ -148,7 +143,6 @@
     <c:choose>
         <c:when test='${ not empty loginError }'>
             <script>
-                //hideAllBut($_signin, $_dynamics);
                 hideAll($_dynamics);
                 $('#sign-in-trigger-btn').trigger('click');
             </script>
