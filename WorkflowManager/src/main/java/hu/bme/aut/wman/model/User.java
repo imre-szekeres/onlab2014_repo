@@ -40,14 +40,14 @@ public class User extends AbstractEntity {
 	private String username;
 
 	@NotNull
-	@Size(min = 7, max = 32, message = "must be between 5 and 16 chars.")
+	@Size(min = 7, max = 32, message = "must be between 7 and 32 chars.")
 	private String password;
 
 	@NotNull
 	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid format.")
 	private String email;
 
-	@Size(min = 100, max = 1024, message = "must be between 100 and 1024 chars.")
+	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 chars.")
 	private String description;
 
 	@NotNull
