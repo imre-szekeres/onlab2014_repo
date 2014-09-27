@@ -33,12 +33,13 @@ public class Workflow extends AbstractEntity {
 	@Size(min = 16, max = 512)
 	private String description;
 
-	@OneToMany(mappedBy = "workflow", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "workflow", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<State> states = new ArrayList<State>();
 
 	@OneToMany(mappedBy = "workflow")
 	private List<Project> projects = new ArrayList<Project>();
 
+	@Deprecated
 	public Workflow() {
 		super();
 	}
@@ -92,23 +93,6 @@ public class Workflow extends AbstractEntity {
 	}
 
 	/**
-	 * Add {@link State} to this Workflow
-	 * 
-	 * @param state
-	 *            {@link State} to add
-	 */
-	public void addState(State state) {
-		if (getStates() == null) {
-			setStates(new ArrayList<State>());
-		}
-		if (state != null && !getStates().contains(state)) {
-			getStates().add(state);
-			state.setWorkflow(this);
-		}
-
-	}
-
-	/**
 	 * Add {@link Project} to this Workflow
 	 * 
 	 * @param project
@@ -116,44 +100,6 @@ public class Workflow extends AbstractEntity {
 	 */
 	public void addProject(Project project) {
 		projects.add(project);
-	}
-
-	/**
-	 * Add {@link State}s to this Workflow
-	 * 
-	 * @param states
-	 *            Collection of {@link State}s to add
-	 */
-	public void addAllStates(Collection<State> states) {
-		// if (states == null) {
-		// states = new ArrayList<>();
-		// }
-		for (State state : states) {
-			if (state != null && !getStates().contains(state)) {
-				getStates().add(state);
-				state.setWorkflow(this);
-			}
-		}
-	}
-
-	/**
-	 * Remove {@link State} from this Workflow
-	 * 
-	 * @param state
-	 *            {@link State} to remove
-	 */
-	public boolean removeState(State state) {
-		return states.remove(state);
-	}
-
-	/**
-	 * Remove {@link State}s from this Workflow
-	 * 
-	 * @param states
-	 *            Collection of {@link State}s to remove
-	 */
-	public boolean removeAllStates(Collection<State> states) {
-		return states.removeAll(states);
 	}
 
 	/**

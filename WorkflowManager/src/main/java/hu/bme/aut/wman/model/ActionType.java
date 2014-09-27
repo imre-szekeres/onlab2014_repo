@@ -1,5 +1,7 @@
 package hu.bme.aut.wman.model;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -27,7 +29,9 @@ public class ActionType extends AbstractEntity {
 	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes", fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
+	@Deprecated
 	public ActionType() {
+		super();
 	}
 
 	public ActionType(String actionTypeName) {
@@ -53,23 +57,27 @@ public class ActionType extends AbstractEntity {
 	/**
 	 * Add {@link Role} to this ActionType
 	 * 
-	 * @param role
+	 * @param roles
 	 *            {@link Role} to add
 	 */
-	public void addRole(Role role) {
-		roles.add(role);
-		role.addActionType(this);
+	public void addRoles(Collection<Role> roles) {
+		this.roles.addAll(roles);
+		for (Role role : roles) {
+			role.addActionType(this);
+		}
 	}
 
 	/**
 	 * Remove {@link Role} from this ActionType
 	 * 
-	 * @param role
+	 * @param roles
 	 *            {@link Role} to remove
 	 */
-	public void removeRole(Role role) {
-		role.removeActionType(this);
-		roles.remove(role);
+	public void removeRoles(List<Role> roles) {
+		this.roles.removeAll(roles);
+		for (Role role : roles) {
+			role.removeActionType(this);
+		}
 	}
 
 	@Override

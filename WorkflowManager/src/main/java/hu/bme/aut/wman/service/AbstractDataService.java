@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.AbstractEntity;
 
 import java.util.AbstractMap;
@@ -27,9 +28,8 @@ import javax.persistence.criteria.Root;
  */
 public abstract class AbstractDataService<T extends AbstractEntity> {
 
-	// TODO make EntityManager private, remove deprecated methods from services
 	@PersistenceContext
-	protected EntityManager em;
+	private EntityManager em;
 
 	/**
 	 * Saves the given entity. Persist if it is a new entity, merge if it is not.
@@ -61,8 +61,9 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * 
 	 * @param entity
 	 *            to delete
+	 * @throws EntityNotDeletableException
 	 */
-	public void delete(T entity) {
+	public void delete(T entity) throws EntityNotDeletableException {
 		if (isDetached(entity)) {
 			em.remove(entity);
 		} else {
