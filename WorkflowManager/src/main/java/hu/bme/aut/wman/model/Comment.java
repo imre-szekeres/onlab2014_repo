@@ -43,6 +43,7 @@ public class Comment extends AbstractEntity {
 	@NotNull
 	private Date postDate;
 
+	@Deprecated
 	public Comment() {
 		super();
 	}

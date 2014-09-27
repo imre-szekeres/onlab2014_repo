@@ -18,13 +18,15 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "StateNavigationEntry.findByParentId", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.parentState.id=:parentId"),
-		@NamedQuery(name = "StateNavigationEntry.findByActionType", query = "SELECT sne FROM StateNavigationEntry sne WHERE sne.actionType.id=:typeId AND sne.parentState.id=:parentId")
+		@NamedQuery(name = "Transition.findByParentId", query = "SELECT t FROM Transition t WHERE t.parentState.id=:parentId"),
+		@NamedQuery(name = "Transition.findByNextId", query = "SELECT t FROM Transition t WHERE t.nextState.id=:nextId"),
+		@NamedQuery(name = "Transition.findByActionTypeId", query = "SELECT t FROM Transition t WHERE t.actionType.id=:typeId")
 })
-public class StateNavigationEntry extends AbstractEntity {
+public class Transition extends AbstractEntity {
 
-	public static final String NQ_FIND_BY_PARENT_ID = "StateNavigationEntry.findByParentId";
-	public static final String NQ_FIND_BY_ACTIONTYPE_AND_PARENT_ID = "StateNavigationEntry.findByActionType";
+	public static final String NQ_FIND_BY_PARENT_ID = "Transition.findByParentId";
+	public static final String NQ_FIND_BY_NEXT_STATE_ID = "Transition.findByNextId";
+	public static final String NQ_FIND_BY_ACTIONTYPE_ID = "Transition.findByActionTypeId";
 
 	public static final String PR_PARENT_STATE = "parentState";
 	public static final String PR_NEXT_STATE = "nextState";
@@ -44,11 +46,11 @@ public class StateNavigationEntry extends AbstractEntity {
 	@NotNull
 	private ActionType actionType;
 
-	public StateNavigationEntry() {
-
+	@Deprecated
+	public Transition() {
 	}
 
-	public StateNavigationEntry(ActionType actionType, State nextState, State parent) {
+	public Transition(ActionType actionType, State nextState, State parent) {
 		this.actionType = actionType;
 		this.nextState = nextState;
 		this.parentState = parent;
@@ -100,7 +102,7 @@ public class StateNavigationEntry extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		StateNavigationEntry other = (StateNavigationEntry) obj;
+		Transition other = (Transition) obj;
 		if (actionType == null) {
 			if (other.actionType != null) {
 				return false;
@@ -134,7 +136,7 @@ public class StateNavigationEntry extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "StateNavigationEntry [id=" + id + ", parent=" + parentState.getName() + ", nextState=" + nextState.getName() + ", actionType=" + actionType + "]";
+		return "Transition [id=" + id + ", parent=" + parentState.getName() + ", nextState=" + nextState.getName() + ", actionType=" + actionType + "]";
 	}
 
 }

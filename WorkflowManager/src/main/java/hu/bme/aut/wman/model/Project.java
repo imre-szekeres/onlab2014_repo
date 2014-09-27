@@ -1,9 +1,7 @@
 package hu.bme.aut.wman.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,11 +23,13 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name")
+		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name"),
+		@NamedQuery(name = "Project.findProjectsForUser", query = "SELECT p FROM Project p, ProjectAssignment pa WHERE pa.user.username = :username AND pa.project = p")
 })
 public class Project extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_WORKFLOW_NAME = "Project.findAllByWorkflowName";
+	public static final String NQ_FIND_PROJECTS_FOR_USER = "Project.findProjectsForUser";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_CURRENT_STATE = "currentState";
@@ -58,25 +58,33 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
 
-	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	private Set<ProjectAssignment> projectAssignments;
+	// @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	// private Set<ProjectAssignment> projectAssignments;
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
+	@NotNull
+	private Boolean active = true;
+
+	@NotNull
+	private User owner;
+
+	@Deprecated
 	public Project() {
 		super();
 	}
 
-	public Project(String name, String description, Workflow workflow) {
+	public Project(String name, String description, Workflow workflow, User owner) {
 		this.name = name;
 		this.description = description;
 		this.workflow = workflow;
 		this.workflow.addProject(this);
 		this.currentState = this.workflow.getInitialState();
-		this.projectAssignments = new HashSet<>();
+		// this.projectAssignments = new HashSet<>();
 		this.historyEntries = new ArrayList<>();
 		this.comments = new ArrayList<>();
+		this.owner = owner;
 	}
 
 	public String getName() {
@@ -107,17 +115,17 @@ public class Project extends AbstractEntity {
 		this.historyEntries = historyEntries;
 	}
 
-	public Set<ProjectAssignment> getProjectAssignments() {
-		return projectAssignments;
-	}
+	// public Set<ProjectAssignment> getProjectAssignments() {
+	// return projectAssignments;
+	// }
 
-	/**
-	 * @param projectAssignments
-	 *            the projectAssignments to set
-	 */
-	public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
-		this.projectAssignments = projectAssignments;
-	}
+	// /**
+	// * @param projectAssignments
+	// * the projectAssignments to set
+	// */
+	// public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
+	// this.projectAssignments = projectAssignments;
+	// }
 
 	public void setName(String name) {
 		this.name = name;
@@ -148,18 +156,18 @@ public class Project extends AbstractEntity {
 		historyEntries.add(historyEntry);
 	}
 
-	/**
-	 * Add {@link ProjectAssignment} to this Project
-	 * 
-	 * @param projectAssignment
-	 *            {@link ProjectAssignment} to add
-	 */
-	public void addProjectAssignment(ProjectAssignment projectAssignment) {
-		if (this.getProjectAssignments() == null) {
-			this.setProjectAssignments(new HashSet<ProjectAssignment>());
-		}
-		projectAssignments.add(projectAssignment);
-	}
+	// /**
+	// * Add {@link ProjectAssignment} to this Project
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to add
+	// */
+	// public void addProjectAssignment(ProjectAssignment projectAssignment) {
+	// if (this.getProjectAssignments() == null) {
+	// this.setProjectAssignments(new HashSet<ProjectAssignment>());
+	// }
+	// projectAssignments.add(projectAssignment);
+	// }
 
 	/**
 	 * Remove {@link HistoryEntry} from this Project
@@ -171,15 +179,15 @@ public class Project extends AbstractEntity {
 		return historyEntries.remove(historyEntry);
 	}
 
-	/**
-	 * Remove {@link ProjectAssignment} from this Project
-	 * 
-	 * @param projectAssignment
-	 *            {@link ProjectAssignment} to remove
-	 */
-	public boolean removeProjectAssignment(ProjectAssignment projectAssignment) {
-		return projectAssignments.remove(projectAssignment);
-	}
+	// /**
+	// * Remove {@link ProjectAssignment} from this Project
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to remove
+	// */
+	// public boolean removeProjectAssignment(ProjectAssignment projectAssignment) {
+	// return projectAssignments.remove(projectAssignment);
+	// }
 
 	/**
 	 * @return the comments
@@ -253,5 +261,21 @@ public class Project extends AbstractEntity {
 			return false;
 		}
 		return true;
+	}
+
+	public Boolean isActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 }

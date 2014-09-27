@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -24,7 +25,10 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "WM_USER")
+@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectID")
 public class User extends AbstractEntity {
+
+	public static final String NQ_FIND_USERS_FOR_PROJECT = "User.findUsersForProject";
 
 	public static final String PR_NAME = "username";
 	public static final String PR_PASSWORD = "password";
@@ -57,9 +61,10 @@ public class User extends AbstractEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	private Set<ProjectAssignment> projectAssignments;
+	// @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	// private Set<ProjectAssignment> projectAssignments;
 
+	@Deprecated
 	public User() {
 		super();
 		this.roles = new HashSet<Role>();
@@ -91,7 +96,7 @@ public class User extends AbstractEntity {
 		this.email = email;
 		this.description = description;
 		this.comments = new ArrayList<Comment>();
-		this.projectAssignments = new java.util.HashSet<ProjectAssignment>();
+		// this.projectAssignments = new java.util.HashSet<ProjectAssignment>();
 	}
 
 	public String getUsername() {
@@ -106,9 +111,9 @@ public class User extends AbstractEntity {
 		return comments;
 	}
 
-	public Set<ProjectAssignment> getProjectAssignments() {
-		return projectAssignments;
-	}
+	// public Set<ProjectAssignment> getProjectAssignments() {
+	// return projectAssignments;
+	// }
 
 	public Set<Role> getRoles() {
 		return roles;
@@ -161,27 +166,27 @@ public class User extends AbstractEntity {
 		this.roles.add(role);
 	}
 
-	/**
-	 * Add {@link ProjectAssignment} to this User
-	 * 
-	 * @param projectAssignment
-	 *            {@link ProjectAssignment} to add
-	 */
-	public void addProjectAssignment(ProjectAssignment assignment) {
-		if (this.getProjectAssignments() == null) {
-			this.setProjectAssignments(new HashSet<ProjectAssignment>());
-		}
-		this.projectAssignments.add(assignment);
-	}
+	// /**
+	// * Add {@link ProjectAssignment} to this User
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to add
+	// */
+	// public void addProjectAssignment(ProjectAssignment assignment) {
+	// if (this.getProjectAssignments() == null) {
+	// this.setProjectAssignments(new HashSet<ProjectAssignment>());
+	// }
+	// this.projectAssignments.add(assignment);
+	// }
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
-	public void setProjectAssignments(Set<ProjectAssignment>
-			projectAssignments) {
-		this.projectAssignments = projectAssignments;
-	}
+	// public void setProjectAssignments(Set<ProjectAssignment>
+	// projectAssignments) {
+	// this.projectAssignments = projectAssignments;
+	// }
 
 	/**
 	 * @param comments
@@ -211,15 +216,15 @@ public class User extends AbstractEntity {
 		return roles.remove(role);
 	}
 
-	/**
-	 * Remove {@link ProjectAssignment} from this User
-	 * 
-	 * @param projectAssignment
-	 *            {@link ProjectAssignment} to remove
-	 */
-	public boolean removeProjectAssignment(ProjectAssignment assignment) {
-		return projectAssignments.remove(assignment);
-	}
+	// /**
+	// * Remove {@link ProjectAssignment} from this User
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to remove
+	// */
+	// public boolean removeProjectAssignment(ProjectAssignment assignment) {
+	// return projectAssignments.remove(assignment);
+	// }
 
 	/**
 	 * Checks whether the <code>User</code> has any <code>Role</code> with the
