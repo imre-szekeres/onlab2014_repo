@@ -39,19 +39,19 @@ public class User extends AbstractEntity {
 	public static final String PR_PROJECT_ASSIGNMENTS = "projectAssignments";
 
 	@NotNull
-	@Size(min = 5, max = 16)
+	@Size(min = 5, max = 16, message = "must be between 5 and 16 chars.")
 	@Column(unique = true)
 	private String username;
 
 	@NotNull
-	@Size(min = 7, max = 32)
+	@Size(min = 7, max = 32, message = "must be between 5 and 16 chars.")
 	private String password;
 
 	@NotNull
-	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}")
+	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid format.")
 	private String email;
 
-	@Size(min = 0, max = 1024)
+	@Size(min = 100, max = 1024, message = "must be between 100 and 1024 chars.")
 	private String description;
 
 	@NotNull
