@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -24,9 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @LocalBean
 public class CommentService extends AbstractDataService<Comment> {
 
-	@Autowired
+	@EJB(mappedName = "java:module/UserService")
 	UserService userService;
-	@Autowired
+	@EJB(mappedName = "java:module/ProjectService")
 	ProjectService projectService;
 
 	/**

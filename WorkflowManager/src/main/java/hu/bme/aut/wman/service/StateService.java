@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -28,12 +29,12 @@ public class StateService extends AbstractDataService<State> {
 
 	// private Validator validator;
 
-	@Autowired
+	@EJB(mappedName = "java:module/ActionTypeService")
 	ActionTypeService actionTypeService;
-	@Autowired
+	@EJB(mappedName = "java:module/TransitionService")
 	TransitionService transitionService;
-	@Autowired
-	private ProjectService projectService;
+	@EJB(mappedName = "java:module/ProjectService")
+	ProjectService projectService;
 
 	// @PostConstruct
 	// public void init() {

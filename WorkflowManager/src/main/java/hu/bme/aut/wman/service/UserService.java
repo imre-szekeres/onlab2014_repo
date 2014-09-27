@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -24,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SuppressWarnings("serial")
 public class UserService extends AbstractDataService<User> implements Serializable {
 
-	@Autowired
+	@EJB(mappedName = "java:module/RoleService")
 	RoleService roleService;
 
 	// private Validator validator;

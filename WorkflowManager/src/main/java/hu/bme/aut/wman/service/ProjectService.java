@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -34,13 +35,13 @@ import com.google.common.collect.Collections2;
 @LocalBean
 public class ProjectService extends AbstractDataService<Project> {
 
-	@Autowired
+	@EJB(mappedName = "java:module/TransitionService")
 	TransitionService transitionService;
-	@Autowired
+	@EJB(mappedName = "java:module/ProjectAssignmentService")
 	ProjectAssignmentService projectAssignmentService;
-	@Autowired
+	@EJB(mappedName = "java:module/UserService")
 	UserService userService;
-	@Autowired
+	@EJB(mappedName = "java:module/CommentService")
 	CommentService commentService;
 
 	// private Validator validator;

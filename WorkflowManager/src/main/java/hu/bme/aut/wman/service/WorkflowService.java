@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -35,9 +36,9 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
-	@Autowired
+	@EJB(mappedName = "java:module/ProjectService")
 	private ProjectService projectService;
-	@Autowired
+	@EJB(mappedName = "java:module/StateService")
 	private StateService stateService;
 
 	/**
