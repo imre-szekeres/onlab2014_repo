@@ -15,8 +15,14 @@
 </head>
 <body>
 
-    <div id='header-wrapper'>
-        <jsp:include page='fragments/page_header.jsp' >
+	<div id='side-menu-wrapper'>
+        <jsp:include page='fragments/side_menu.jsp' >
+			<jsp:param name='appRoot' value='${ appRoot }' />
+		</jsp:include>
+    </div>
+
+    <div id='top-menu-wrapper'>
+        <jsp:include page='fragments/top_menu.jsp' >
             <jsp:param name='appRoot' value='${ appRoot }' />
         </jsp:include>
     </div>

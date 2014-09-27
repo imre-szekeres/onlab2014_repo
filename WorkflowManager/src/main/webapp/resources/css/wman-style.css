@@ -174,8 +174,6 @@
 
 /* BEGIN WM-Banner */
 #home-href {
-	
-	display: inline-block;
 	height: 50px;
 	line-height: 50px;
 	vertical-align: middle;
@@ -201,9 +199,83 @@
 #content-wrapper {
 	position: absolute;
 	top: 50px;
+	left: 150px;
+	margin-top: 10px;
+	margin-left: 30px;
+}
+/* END   WM-Content */
+
+/* BEGIN Side Menu */
+#side-menu-wrapper {
 	left: 0px;
+	position: absolute;
 	
-	margin: 10px;
+	height: 100%;
+	width: 150px;
+	
+	background-color: #428BCA;
 }
 
-/* END   WM-Content */
+#side-menu-bar a:link{
+	text-decoration: none;
+	color: white;
+}
+#side-menu-bar a:visited {
+	text-decoration: none;
+	color: white;
+}
+#side-menu-bar a:hover {
+	text-decoration: none;
+	color: white;
+}
+#side-menu-bar a:active {
+	text-decoration: none;
+	color: white;
+}
+
+#home-href-wrapper {
+	width: 150px;
+	height: 50px;
+	vertical-align: center;
+}
+
+#home-href {
+	margin:	0px 4px;
+	font-size: 15px;
+}
+
+.side-menu-icon {
+	font-size: 50px;
+	color:inherit;
+	padding-left: 10px;
+}
+
+.side-menu-title {
+	font-size: 15px;
+	color:inherit;
+	padding-top: 5px;
+}
+
+#side-menu-buttons {
+	margin-top: 25px;
+}
+
+.side-menu-button {
+	margin: 75px 35px;
+	color: white;
+}
+
+.side-menu-button:hover {
+	color: #FF9933;
+	cursor: pointer;
+}
+/* END   Side Menu */
+
+/* BEGIN Top Menu */
+#top-menu-wrapper {
+	left: 150px;
+	position: absolute;
+	
+	height: 50px;
+}
+/* END   Top Menu */
