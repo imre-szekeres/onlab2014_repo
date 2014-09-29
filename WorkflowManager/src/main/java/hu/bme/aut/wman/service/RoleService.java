@@ -2,6 +2,7 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Role;
+import hu.bme.aut.wman.model.User;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
@@ -12,6 +13,7 @@ import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.TypedQuery;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;

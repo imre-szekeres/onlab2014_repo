@@ -52,6 +52,7 @@ public class LoginController extends AbstractController {
 	@RequestMapping(value = LOGIN, method = RequestMethod.GET)
 	public String getLogin(Model model) {
 
+		@SuppressWarnings("deprecation")
 		User subject = new User();
 		model.addAttribute("subject", subject);
 		return navigateTo(LOGIN, "login", model);
@@ -89,6 +90,8 @@ public class LoginController extends AbstractController {
 			user.addRole(reader);
 			
 			userService.save(user);
+			
+			reader.addUser(user);
 			roleService.save(reader);
 			request.getSession().setAttribute("subject", user);
 			return redirectTo("/");

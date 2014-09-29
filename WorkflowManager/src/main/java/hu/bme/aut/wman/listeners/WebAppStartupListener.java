@@ -33,13 +33,13 @@ public class WebAppStartupListener
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
-		// TODO:
+		// TODO: logging
 		System.out.println("WebAppStartupListener.onApplicationEvent: start");
 		Role role;
 		if ((role = roleService.selectByName("System Administrator")) == null) {
 			role = new Role("System Administrator");
 			roleService.save(role);
-			// TODO:
+			// TODO: logging
 			System.out.println("WebAppStartupListener.onApplicationEvent: role " + role.getName() + " was created..");
 		}
 		
@@ -51,14 +51,17 @@ public class WebAppStartupListener
 					   		  role,
 					   		  "A humble administrator of the application to test and make it work, and mantain its functionality.");
 			userService.save(sudoer);
-			// TODO:
+			
+			role.addUser(sudoer);
+			roleService.save(role);
+			// TODO: loggging
 			System.out.println("WebAppStartupListener.onApplicationEvent: user " + sudoer.getUsername() + " was created..");
 		}
 		
 		if ((role = roleService.selectByName("Reader")) == null) {
 			role = new Role("Reader");
 			roleService.save(role);
-			// TODO:
+			// TODO: logging
 			System.out.println("WebAppStartupListener.onApplicationEvent: role " + role.getName() + " was created..");
 		}
 	}
