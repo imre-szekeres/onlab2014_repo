@@ -34,11 +34,11 @@
     <section id='register-section' class='pos-absol' >
     <div id='register-jumbotron' class='jumbotron' >
 	    <div id='register-from-positioner' class='pos-rel'>
-	            <jsp:include page='fragments/user_form.jsp'>
-	                <jsp:param name='postAction' value='${ appRoot }/register' />
-	                <jsp:param name='userRef' value='subject' />
-	                <jsp:param name='submitButtonValue' value='Register' />
-	            </jsp:include>
+	        <jsp:include page='fragments/user_form.jsp'>
+	            <jsp:param name='postAction' value='${ appRoot }/register' />
+	            <jsp:param name='userRef' value='subject' />
+	            <jsp:param name='submitButtonValue' value='Register' />
+	        </jsp:include>
 	    </div>
 	</div>
     </section>

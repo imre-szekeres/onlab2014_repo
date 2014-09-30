@@ -32,7 +32,7 @@ public class Role extends AbstractEntity {
 	@ManyToMany(targetEntity = ActionType.class, fetch = FetchType.EAGER)
 	private Set<ActionType> actionTypes;
 
-	@ManyToMany(targetEntity = hu.bme.aut.wman.model.User.class, mappedBy = "roles")
+	@ManyToMany(targetEntity = hu.bme.aut.wman.model.User.class, mappedBy = "roles", fetch = FetchType.EAGER)
 	private Set<User> users;
 
 	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Privilege.class, fetch = FetchType.EAGER)

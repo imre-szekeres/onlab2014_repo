@@ -7,6 +7,7 @@ import hu.bme.aut.wman.service.validation.ValidationEngine;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -69,6 +70,12 @@ public class UserService extends AbstractDataService<User> implements Serializab
 			return selectByParameters(parameterList).get(0);
 		}
 		return null;
+	}
+	
+	public List<User> listUsersOf(String roleName) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("roleName", roleName));
+		return callNamedQuery("User.findUsersOf", parameters);
 	}
 
 	@Override
