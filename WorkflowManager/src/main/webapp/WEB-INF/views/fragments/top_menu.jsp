@@ -7,13 +7,13 @@
 			<c:forEach var='tab' items='${navigationTabs}'>
 				<c:choose>
 					  <c:when test="${activeTab eq tab.key}">
-						<li class="active">
+						<li class="active top-menu-tab">
 					  </c:when>
 					  <c:otherwise>
-						<li>
+						<li class="top-menu-tab">
 					  </c:otherwise>
 				</c:choose>
-							<a href='${tab.key}'>${tab.value}</a>
+							<a id="top-menu-link" href='${tab.key}'>${tab.value}</a>
 						</li>
 			</c:forEach>
 		</ul>

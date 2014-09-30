@@ -264,4 +264,26 @@
 	
 	height: 50px;
 }
+
+/* tab color */
+.nav-tabs>li>a { 
+	background-color: #8142C9;
+	color: white;
+}
+
+#top-menu-link {
+	border-radius: 0%;
+}
+
+/* active tab color */
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  color: #8142C9;
+  background-color: #white;
+}
+
+/* hover tab color */
+.nav-tabs>li>a:hover { 
+	background-color: white;
+	color: #8142C9;
+}
 /* END   Top Menu */
