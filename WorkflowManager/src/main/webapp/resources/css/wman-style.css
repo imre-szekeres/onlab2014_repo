@@ -181,6 +181,7 @@
 /* BEGIN WM-Content */
 #content-wrapper {
 	position: absolute;
+	top: 50px;
 	left: 150px;
 	margin-top: 10px;
 	margin-left: 30px;

@@ -14,7 +14,7 @@
 			</div>
 		</a>
 		
-		<a href=''>
+		<a href='${ param.appRoot }/workflows'>
 			<div id='workflows-button' class='side-menu-button'>
 				<span class='glyphicon glyphicon-random side-menu-icon'/>
 				<div class='side-menu-title'>Workflows</div>
