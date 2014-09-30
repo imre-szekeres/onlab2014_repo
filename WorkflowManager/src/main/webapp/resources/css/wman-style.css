@@ -181,7 +181,6 @@
 /* BEGIN WM-Content */
 #content-wrapper {
 	position: absolute;
-	top: 50px;
 	left: 150px;
 	margin-top: 10px;
 	margin-left: 30px;
@@ -191,7 +190,8 @@
 /* BEGIN Side Menu */
 #side-menu-wrapper {
 	left: 0px;
-	position: absolute;
+	top: 0px;
+	position: fixed;
 	
 	height: 100%;
 	width: 150px;
@@ -199,21 +199,21 @@
 	background-color: #428BCA;
 }
 
-#side-menu-bar a:link{
+#side-menu-buttons a:link{
 	text-decoration: none;
-	color: white;
+	color: #91BBE0;
 }
-#side-menu-bar a:visited {
+#side-menu-buttons a:visited {
 	text-decoration: none;
-	color: white;
+	color: #91BBE0;
 }
-#side-menu-bar a:hover {
+#side-menu-buttons a:hover {
 	text-decoration: none;
-	color: white;
+	color: #91BBE0;
 }
-#side-menu-bar a:active {
+#side-menu-buttons a:active {
 	text-decoration: none;
-	color: white;
+	color: #91BBE0;
 }
 
 #home-href-wrapper {
@@ -222,9 +222,10 @@
 	vertical-align: center;
 }
 
-#home-href {
+#home-href  {
 	margin:	0px 4px;
 	font-size: 15px;
+	color: white;
 }
 
 .side-menu-icon {
@@ -244,12 +245,13 @@
 }
 
 .side-menu-button {
-	margin: 75px 35px;
-	color: white;
+	margin: 75px 25px;
+	color: #91BBE0;
+	text-align: center;
 }
 
 .side-menu-button:hover {
-	color: #FF9933;
+	color: white;
 	cursor: pointer;
 }
 /* END   Side Menu */

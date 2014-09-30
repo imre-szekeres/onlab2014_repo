@@ -21,11 +21,13 @@
 		</jsp:include>
     </div>
 
-    <div id='top-menu-wrapper'>
-        <jsp:include page='fragments/top_menu.jsp' >
-            <jsp:param name='appRoot' value='${ appRoot }' />
-        </jsp:include>
-    </div>
+	<c:if test="${not empty navigationTabs}">
+		<div id='top-menu-wrapper'>
+			<jsp:include page='fragments/top_menu.jsp' >
+				<jsp:param name='navigationTabs' value='${ navigationTabs }' />
+			</jsp:include>
+		</div>
+	</c:if>
     
     <div id='content-wrapper'>
         <jsp:include page='${ pageName }.jsp' >
