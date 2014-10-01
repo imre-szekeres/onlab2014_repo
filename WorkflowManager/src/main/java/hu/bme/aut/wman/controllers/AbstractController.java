@@ -15,11 +15,6 @@ public class AbstractController {
 	public static final String NAV_PREFIX = "/WorkflowManager";
 
 	/**
-	 * You should set it a key from the navigationTabs map, this tab will be the "active"
-	 */
-	protected String activeTabKey = "";
-
-	/**
 	 * Navigates to the given content page in the frame.
 	 * 
 	 * @param pageName
@@ -46,7 +41,6 @@ public class AbstractController {
 	 */
 	public String navigateTo(String to, String pageName, Model model) {
 		model.addAttribute("pageName", pageName);
-		model.addAttribute("activeTab", activeTabKey);
 		return to;
 	}
 
