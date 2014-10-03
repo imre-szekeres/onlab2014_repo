@@ -125,12 +125,11 @@ public class Workflow extends AbstractEntity {
 
 	/**
 	 * Returns the pre-definit collection of <code>State</code>s that every and
-	 * each <code>Workflow</code> has like Initial, Paused, Closed.
+	 * each <code>Workflow</code> has like Initial.
 	 * 
 	 * @return basic states that every <code>Workflow</code> has by default.
 	 * */
-	public static List<State> getBasicStates(Workflow workflow) {
-		// The initialState has no parent state -> null
+	public static List<State> getBasicStates() {
 		State initialState = new State("Initial state",
 				"This is the first state, when a project is created.", true);
 		// Create the basic states list

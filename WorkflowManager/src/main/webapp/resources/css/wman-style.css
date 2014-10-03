@@ -183,6 +183,10 @@
 	position: absolute;
 	top: 50px;
 	left: 150px;
+	
+	width:auto;
+	height:auto;
+	
 	margin-top: 10px;
 	margin-left: 30px;
 }
@@ -193,6 +197,7 @@
 	left: 0px;
 	top: 0px;
 	position: fixed;
+	z-index: 101;
 	
 	height: 100%;
 	width: 120px;
@@ -204,6 +209,7 @@
 	left: 0px;
 	top: 0px;
 	position: fixed;
+	z-index: 100;
 	
 	height: 100%;
 	width: 130px;
@@ -238,7 +244,7 @@
 
 #home-href-wrapper>a {
 	font-size: 15px;
-	color: #428BCA;
+	color: black;
 	padding: 20px 0px;
 	line-height: normal;
 	text-decoration: blink;
@@ -277,16 +283,17 @@
 
 /* BEGIN Top Menu */
 #top-menu-wrapper {
+	top: 0px;
 	left: 130px;
-	position: absolute;
+	position: fixed;
+	z-index: 99;
 	
 	height: 50px;
 }
 
 /* tab color */
 .nav-tabs>li>a { 
-	/*background-color: white;*/
-	color: #428BCA;
+	color: black;
 }
 
 #top-menu-link {
@@ -295,15 +302,82 @@
 
 /* active tab color */
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
-  color: #428BCA;
-  /*background-color: #428BCA;*/
-}
-
-/* hover tab color */
-.nav-tabs>li>a:hover { 
-	/*background-color: #428BCA;
-	color: white;*/
+  color: black;
 }
 /* END   Top Menu */
 
-/* purple:  #8142C9 */
+/* purple:  #8142C9  dark: #5700B3 */
+
+/* BEGIN Workflows */
+.workflow-wrapper {
+	width: 350px;
+	
+	position: relative;
+	float: left;
+	margin-top: 20px;
+	margin-right: 40px;
+	
+	background-color: white;
+}
+
+.workflow-description {
+	width: 350px;
+	color: black;
+}
+
+.workflow-wrapper a {
+	text-decoration: blink;
+}
+
+.workflow-name {
+    width: 350px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	
+	color: white;
+	background-color: #428BCA;
+}
+
+/* little buttons :) */
+.delete-button {
+	position: relative;
+	top: -40px;
+	left: 290px;
+
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	color: white;
+	line-height: 30;
+	background-color: #C72626;
+}
+.edit-button {
+	position: relative;
+	top: -70px;
+	left: 0px;
+
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	color: white;
+	line-height: 30;
+	background-color: #428BCA;
+}
+.open-button {
+	position: relative;
+	top: -100px;
+	left: 40px;
+
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	color: white;
+	line-height: 30;
+	background-color: #428BCA;
+}
+
+/* END   Workflows */

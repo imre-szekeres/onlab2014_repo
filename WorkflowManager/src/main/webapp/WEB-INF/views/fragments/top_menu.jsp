@@ -5,14 +5,6 @@
 	
 		<ul class="nav nav-tabs nav-justified">
 			<c:forEach var='tab' items='${navigationTabs}'>
-				<!--<c:choose>
-					  <c:when test="${activeTab eq tab.key}">
-						<li class="active top-menu-tab">
-					  </c:when>
-					  <c:otherwise>
-						<li class="top-menu-tab">
-					  </c:otherwise>
-				</c:choose>-->
 						<li  class="top-menu-tab">
 							<a id="top-menu-link" href="${tab.key}">${tab.value}</a>
 						</li>

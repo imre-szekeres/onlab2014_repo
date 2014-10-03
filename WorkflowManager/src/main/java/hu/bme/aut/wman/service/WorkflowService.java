@@ -14,8 +14,7 @@ import java.util.Map.Entry;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -36,9 +35,9 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
-	@EJB(mappedName = "java:module/ProjectService")
+	@Inject
 	private ProjectService projectService;
-	@EJB(mappedName = "java:module/StateService")
+	@EJB
 	private StateService stateService;
 
 	/**
@@ -109,6 +108,8 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 			return false;
 		} else if (workflow.getStates().size() == 1 && workflow.getStates().get(0) != workflow.getInitialState()) {
 			return false;
+		} else if (selectByName(workflow.getName()) != null) {
+			return false;
 		} else {
 			return true;
 		}
@@ -121,7 +122,8 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	public Workflow selectByName(String name) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Workflow.PR_NAME, name));
-		return selectByParameters(parameterList).get(0);
+		List<Workflow> result = selectByParameters(parameterList);
+		return result.isEmpty() ? null : result.get(0);
 	}
 
 	/**

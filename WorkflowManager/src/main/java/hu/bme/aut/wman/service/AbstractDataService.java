@@ -43,6 +43,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 		} else {
 			em.merge(entity);
 		}
+		System.out.println("entity saved");
 	}
 
 	/**
