@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -21,10 +22,16 @@ public class ActionType extends AbstractEntity {
 
 	public static final String PR_NAME = "actionTypeName";
 	public static final String PR_ROLES = "roles";
+	public static final String PR_DOMAIN = "domain";
+	
 
 	@NotNull
 	@Column(unique = true)
 	private String actionTypeName;
+	
+	@NotNull
+	@ManyToOne
+	private Domain domain;
 
 	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes", fetch = FetchType.EAGER)
 	private Set<Role> roles;
@@ -34,8 +41,9 @@ public class ActionType extends AbstractEntity {
 		super();
 	}
 
-	public ActionType(String actionTypeName) {
+	public ActionType(String actionTypeName, Domain domain) {
 		this.actionTypeName = actionTypeName;
+		this.domain = domain;
 	}
 
 	public String getActionTypeName() {
@@ -80,50 +88,50 @@ public class ActionType extends AbstractEntity {
 		}
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		ActionType other = (ActionType) obj;
-		if (actionTypeName == null) {
-			if (other.actionTypeName != null) {
-				return false;
-			}
-		} else if (!actionTypeName.equals(other.actionTypeName)) {
-			return false;
-		}
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		if (roles == null) {
-			if (other.roles != null) {
-				return false;
-			}
-		} else if (!roles.equals(other.roles)) {
-			return false;
-		}
-		return true;
-	}
+	
 
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((actionTypeName == null) ? 0 : actionTypeName.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		int result = super.hashCode();
+		result = prime * result
+				+ ((actionTypeName == null) ? 0 : actionTypeName.hashCode());
+		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		return result;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof ActionType))
+			return false;
+		ActionType other = (ActionType) obj;
+		if (actionTypeName == null) {
+			if (other.actionTypeName != null)
+				return false;
+		} else if (!actionTypeName.equals(other.actionTypeName))
+			return false;
+		if (domain == null) {
+			if (other.domain != null)
+				return false;
+		} else if (!domain.equals(other.domain))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		return true;
 	}
 
 	@Override

@@ -3,9 +3,9 @@
  */
 package hu.bme.aut.wman.controllers;
 
-import org.apache.log4j.Logger;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 
@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -67,7 +68,7 @@ public class LoginController extends AbstractController {
 
 		User user = doAuthenticate(subject);
 		if (user != null) {
-			request.getSession().setAttribute("subject", user);
+			request.getSession().setAttribute("subject", new SecurityToken(user.getId()));
 			
 			LOGGER.info("user: " + user.getUsername() + " logged in");
 			return redirectTo(APP_ROOT);

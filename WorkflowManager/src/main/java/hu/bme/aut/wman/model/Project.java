@@ -64,8 +64,9 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
+	/* TODO: ugyanugy "Serializable" ugyanakkor 4x kevesebb helyet foglal */
 	@NotNull
-	private Boolean active = true;
+	private boolean active = true;
 
 	@NotNull
 	private User owner;
