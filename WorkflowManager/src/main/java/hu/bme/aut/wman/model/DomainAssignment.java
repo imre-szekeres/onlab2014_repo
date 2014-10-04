@@ -3,12 +3,15 @@
  */
 package hu.bme.aut.wman.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 /**
  * @author Imre Szekeres
@@ -16,6 +19,9 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("serial")
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "DomainAssignment.findByDomain", query = "SELECT da FROM DomainAssignment da WHERE da.domain.name = :domainName ")
+})
 public class DomainAssignment extends AbstractEntity {
 
 	@NotNull
@@ -34,10 +40,13 @@ public class DomainAssignment extends AbstractEntity {
 		super();
 	}
 	
-	public DomainAssignment(User user, Domain domain) {
+	public DomainAssignment(User user, Domain domain, Role role) {
 		super();
 		this.user = user;
 		this.domain = domain;
+		
+		this.userRoles = new HashSet<Role>();
+		this.userRoles.add(role);
 	}
 
 	/**

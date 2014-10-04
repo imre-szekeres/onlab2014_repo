@@ -58,6 +58,7 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
 
+	// TODO: elaborate ?
 	// @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	// private Set<ProjectAssignment> projectAssignments;
 

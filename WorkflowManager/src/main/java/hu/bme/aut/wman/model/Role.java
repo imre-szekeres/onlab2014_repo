@@ -24,7 +24,8 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Role.findByAssignment", query = "SELECT r FROM Role r, DomainAssignment d "+
 														"WHERE d.domain.name = :domainName "+
 														    "AND d.user.id = :userID "+
-															"AND r MEMBER OF d.userRoles ")
+															"AND r MEMBER OF d.userRoles "),
+	@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r WHERE r.domain.name = :domainName ")
 })
 public class Role extends AbstractEntity {
 
@@ -60,14 +61,13 @@ public class Role extends AbstractEntity {
 		super();
 	}
 
-	public Role(String name, DomainAssignment domainAssignment) {
+	public Role(String name, Domain domain) {
 		super();
 		this.name = name;
+		this.domain = domain;
 		this.actionTypes = new HashSet<ActionType>();
 		this.privileges = new HashSet<Privilege>();
-		
 		this.domainAssignments = new HashSet<DomainAssignment>();
-		this.domainAssignments.add(domainAssignment);
 	}
 
 	/**

@@ -228,7 +228,39 @@ public class User extends AbstractEntity {
 		}
 		return false;
 	}
+	
+	
 
+	/**
+	 * @return the domainAssignments
+	 */
+	public Set<DomainAssignment> getDomainAssignments() {
+		return domainAssignments;
+	}
+
+	/**
+	 * @param domainAssignments the domainAssignments to set
+	 */
+	public void setDomainAssignments(Set<DomainAssignment> domainAssignments) {
+		this.domainAssignments = domainAssignments;
+	}
+
+	/**
+	 * @param domainAssignment
+	 * @return true if domainAssignment was added successfully
+	 * */
+	public boolean addDomainAssignment(DomainAssignment domainAssignment) {
+		return this.domainAssignments.add(domainAssignment);
+	}
+	
+	/**
+	 * @param domainAssignment
+	 * @return true if domainAssignment was removed successfully
+	 * */
+	public boolean removeDomainAssignment(DomainAssignment domainAssignment) {
+		return this.domainAssignments.remove(domainAssignment);
+	}
+	
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */

@@ -111,6 +111,22 @@ public class Domain extends AbstractEntity {
 	}
 
 	/**
+	 * @param domainAssignment
+	 * @return true if domainAssignment was added successfully
+	 * */
+	public boolean addDomainAssignment(DomainAssignment domainAssignment) {
+		return this.domainAssignments.add(domainAssignment);
+	}
+	
+	/**
+	 * @param domainAssignment
+	 * @return true if domainAssignment was removed successfully
+	 * */
+	public boolean removeDomainAssignment(DomainAssignment domainAssignment) {
+		return this.domainAssignments.remove(domainAssignment);
+	}
+	
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

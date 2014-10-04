@@ -77,7 +77,7 @@ public class ActionType extends AbstractEntity {
 
 	/**
 	 * Remove {@link Role} from this ActionType
-	 * 
+	 * 111
 	 * @param roles
 	 *            {@link Role} to remove
 	 */
@@ -88,7 +88,19 @@ public class ActionType extends AbstractEntity {
 		}
 	}
 
-	
+	/**
+	 * @return the domain
+	 */
+	public Domain getDomain() {
+		return domain;
+	}
+
+	/**
+	 * @param domain the domain to set
+	 */
+	public void setDomain(Domain domain) {
+		this.domain = domain;
+	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
