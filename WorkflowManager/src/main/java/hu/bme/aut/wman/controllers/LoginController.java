@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import org.apache.log4j.Logger;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.RoleService;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class LoginController extends AbstractController {
+	
+	private static final Logger LOGGER = Logger.getLogger(LoginController.class);
 
 	public static final String APP_ROOT = "/";
 	public static final String LOGIN = "/login";
@@ -65,6 +68,8 @@ public class LoginController extends AbstractController {
 		User user = doAuthenticate(subject);
 		if (user != null) {
 			request.getSession().setAttribute("subject", user);
+			
+			LOGGER.info("user: " + user.getUsername() + " logged in");
 			return redirectTo(APP_ROOT);
 		}
 		subject.setPassword("");
@@ -94,6 +99,8 @@ public class LoginController extends AbstractController {
 			reader.addUser(user);
 			roleService.save(reader);
 			request.getSession().setAttribute("subject", user);
+			
+			LOGGER.info("user: " + user.getUsername() + " registered as " + reader.getName());
 			return redirectTo("/");
 		}
 		model.addAttribute("validationErrors", validationErrors);
