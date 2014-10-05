@@ -25,72 +25,69 @@
             <div class='col-md-4' id='not-part-of-it-wrapper' >
                 <span class='app-name' ><strong>Not a part of it yet?</strong></span>
                 <button class='btn btn-warning' id='register-btn' onClick='showRegister(event)' >Register</button>
-                <button class='btn btn-default' id='sign-in-trigger-btn' onclick='showSignIn(event)' >Sign In</button>
+                <button class='btn btn-default' id='sign-in-trigger-btn' data-toggle='modal' data-target='#sign-in-modal' >Sign In</button>
             </div>
             <div class='col-md-2'></div>
         </div>
     </div>
     
-    <div class='centraliser pos-absol' >
-    <div id='register-from-positioner' class='pos-rel'>
-        <div>
-            <button id='close-register-positioner' type='button' class='close img-thumbnail pos-rel' onclick='showContent(event)' >
-                <span aria-hidden='true' >&times;</span>
-                <span class='sr-only'>Close</span>
-            </button>
-        </div>
-        <div id='register-form-wrapper' class='pos-rel'>
-            <jsp:include page='fragments/user_form.jsp'>
-                <jsp:param name='postAction' value='${ appRoot }/register' />
-                <jsp:param name='userRef' value='subject' />
-                <jsp:param name='submitButtonValue' value='Register' />
-            </jsp:include>
-        </div>
-    </div>
-    </div>
+    <section id='register-section' class='pos-absol' >
+    <div id='register-jumbotron' class='jumbotron' >
+	    <div id='register-from-positioner' class='pos-rel'>
+	        <jsp:include page='fragments/user_form.jsp'>
+	            <jsp:param name='postAction' value='${ appRoot }/register' />
+	            <jsp:param name='userRef' value='subject' />
+	            <jsp:param name='submitButtonValue' value='Register' />
+	        </jsp:include>
+	    </div>
+	</div>
+    </section>
     
-    <div class='centraliser pos-absol' >
-    <div id='sign-in-form-wrapper' class='pos-rel' >
-        <div>
-            <button id='close-signin-wrapper' type='button' class='close img-thumbnail pos-rel' onclick='showContent(event)' >
-                <span aria-hidden='true' >&times;</span>
-                <span class='sr-only'>Close</span>
-            </button>
-        </div>
-        <div>
-        <form:form action='/WorkflowManager/login' modelAttribute='subject' method='POST' class='form-horizontal pos-rel' id='sign-in-form' >
-            
-            <div class='form-row'>
-                <div class='error-message-wrapper'>
-                    <c:if test='${ not empty loginError }' >
-                        <div id='sign-in-error-message' class='alert alert-danger pos-rel'>
-                            <spring:message code='login.error.message' />
-                        </div>
-                    </c:if>
+    <div class='modal fade' id='sign-in-modal' tabindex='-1' role='dialog' aria-labelledby='#sign-in-label' aria-hidden='true' >
+        <div class='modal-dialog' id='sign-in-modal-dialog' >
+            <div class='modal-content' >
+                <div class='modal-header' >
+                    <button type='button' class='close' data-dismiss='modal'>
+                        <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
+                    </button>
+                    <h4 class='modal-title' id='sign-in-label' >Sign In</h4>
+                </div>
+                <div class='modal-body' id='sign-in-wrapper' >
+                
+                    <form:form action='/WorkflowManager/login' modelAttribute='subject' method='POST' class='form-horizontal pos-rel' id='sign-in-form' >
+			            <div class='form-row'>
+			                <div class='error-message-wrapper'>
+			                    <c:if test='${ not empty loginError }' >
+			                        <div id='sign-in-error-message' class='alert alert-danger pos-rel'>
+			                            <spring:message code='login.error.message' />
+			                        </div>
+			                    </c:if>
+			                </div>
+			            </div>
+			                                   
+			            <c:set var='inputClass' value='${ loginError == null ? "" : "has-error"  }' />
+			                                   
+			            <div class='form-row ${ inputClass }'>
+			                <form:input id='username' path='username' type='text' value='Username' class='form:input-large form-control' />
+			            </div>
+			            <div class='form-row ${ inputClass }' >
+			                <form:input id='password' path='password' type='password' class='form:input-large form-control'/>
+			            </div>
+			       </form:form>
+                
+                </div>
+                <div class='modal-footer' >
+                    <button type='button' class='btn btn-warning' data-dismiss='modal' >Cancel</button>
+                    <button type='button' class='btn btn-primary' onclick='submitSignIn(event)' >Sign In</button>
                 </div>
             </div>
-                                   
-            <c:set var='inputClass' value='${ loginError == null ? "" : "has-error"  }' />
-                                   
-            <div class='form-row ${ inputClass }'>
-                <form:input id='username' path='username' type='text' value='Username' class='form:input-large form-control' />
-            </div>
-            <div class='form-row ${ inputClass }' >
-                <form:input id='password' path='password' type='password' class='form:input-large form-control'/>
-            </div>
-            <div class='form-row' >
-                <input type='submit' value='Sign In' id='sign-in-btn' class='btn btn-primary btn-block' />
-            </div>
-       </form:form>
-       </div>
-    </div>
+        </div>
     </div>
     
     <script>
-        var $_signin = $('#sign-in-form-wrapper');
         var $_register = $('#register-from-positioner').parent();
         var $_page_content = $('#page-content-wrapper');
-        var $_dynamics = $([$_signin, $_register, $_page_content]);
+        var $_dynamics = $([$_register, $_page_content]);
         
         function fadeOut($_element) {
         	$_element.fadeOut();
@@ -113,10 +110,6 @@
         	}
         }
         
-        function showSignIn(event) {
-        	fadeAllBut($_signin, $_dynamics);
-        }
-        
         function showRegister(event) {
         	fadeAllBut($_register, $_dynamics);
         }
@@ -136,12 +129,22 @@
                     $_elements[i].hide();
             }
         }
+        
+        function onUserFormCancel(event) {
+        	showContent(event);
+        }
+        
+        function submitSignIn(event) {
+        	$('#sign-in-form').submit();
+        }
+        
     </script>
     
     <c:choose>
         <c:when test='${ not empty loginError }'>
             <script>
-                hideAllBut($_signin, $_dynamics);
+                hideAll($_dynamics);
+                $('#sign-in-trigger-btn').trigger('click');
             </script>
         </c:when>
         <c:when test='${ not empty validationErrors }' >

@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,7 +26,10 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "WM_USER")
-@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectID")
+@NamedQueries({
+	@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectID"),
+	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r WHERE r.name=:roleName AND u MEMBER OF r.users ")
+})
 public class User extends AbstractEntity {
 
 	public static final String NQ_FIND_USERS_FOR_PROJECT = "User.findUsersForProject";
@@ -39,19 +43,19 @@ public class User extends AbstractEntity {
 	public static final String PR_PROJECT_ASSIGNMENTS = "projectAssignments";
 
 	@NotNull
-	@Size(min = 5, max = 16)
+	@Size(min = 5, max = 16, message = "must be between 5 and 16 chars.")
 	@Column(unique = true)
 	private String username;
 
 	@NotNull
-	@Size(min = 7, max = 32)
+	@Size(min = 7, max = 32, message = "must be between 7 and 32 chars.")
 	private String password;
 
 	@NotNull
-	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}")
+	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid format.")
 	private String email;
 
-	@Size(min = 0, max = 1024)
+	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 chars.")
 	private String description;
 
 	@NotNull
