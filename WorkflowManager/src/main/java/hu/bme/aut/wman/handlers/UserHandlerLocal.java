@@ -19,8 +19,8 @@ public interface UserHandlerLocal {
 
 	User removeUser(long userID)  throws Exception;
 
-	boolean addRole(long userID, String domain, String role);
-	boolean removeRole(long userID, String domain, String role) throws Exception;
+	boolean addRole(long userID, String role);
+	boolean removeRole(long userID, String role) throws Exception;
 
 	User assignUser(long userID, String domain, String role);
 	User deassignUser(long userID, String domain) throws Exception;

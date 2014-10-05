@@ -53,9 +53,9 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	}
 
 	@Override
-	public boolean addRole(long userID, String domain, String role) {
+	public boolean addRole(long userID, String role) {
 		Role r = roleService.selectByName(role);
-		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, domain);
+		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, r.getDomain().getName());
 		
 		boolean isSucceeded = da.addUserRole(r);
 		domainAssignmentService.save(da);
@@ -64,9 +64,9 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	}
 
 	@Override
-	public boolean removeRole(long userID, String domain, String role) {
+	public boolean removeRole(long userID, String role) {
 		Role r = roleService.selectByName(role);
-		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, domain);
+		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, r.getDomain().getName());
 		
 		boolean isSucceeded = da.removeUserRole(r);
 		domainAssignmentService.save(da);

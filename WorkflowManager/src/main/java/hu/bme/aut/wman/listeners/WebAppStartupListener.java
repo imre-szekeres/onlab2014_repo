@@ -4,17 +4,18 @@
 package hu.bme.aut.wman.listeners;
 
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-
+import hu.bme.aut.wman.handlers.UserHandlerLocal;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 
 import javax.ejb.EJB;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 /**
@@ -28,15 +29,21 @@ public class WebAppStartupListener
 	public static final String LOGFILE_LOCATION = "WEB-INF/classes/log4j.properties";
 	
 
-	@EJB(mappedName="java:module/UserService")
+	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
 	
-	@EJB(mappedName="java:module/RoleService")
+	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
 	
 	
-	@EJB(mappedName="java:module/PrivilegeService")
+	@EJB(mappedName = "java:module/PrivilegeService")
 	private PrivilegeService privilegeService;
+	
+	@EJB(mappedName = "java:module/DomainService")
+	private DomainService domainService;
+	
+	@EJB(mappedName = "java:module/UserHandlerImpl")
+	private UserHandlerLocal userHandler;
 	
 	
 	static {
