@@ -46,21 +46,32 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	}
 
 	@Override
-	public User removeUser(long userID) {
-		// TODO Auto-generated method stub
-		return null;
+	public User removeUser(long userID) throws Exception {
+		User user = userService.selectById(userID);
+		userService.delete(user);
+		return user;
 	}
 
 	@Override
-	public User addRole(long userID, String role) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean addRole(long userID, String domain, String role) {
+		Role r = roleService.selectByName(role);
+		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, domain);
+		
+		boolean isSucceeded = da.addUserRole(r);
+		domainAssignmentService.save(da);
+		roleService.save(r);
+		return isSucceeded;
 	}
 
 	@Override
-	public User removeRole(long userID, String role) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean removeRole(long userID, String domain, String role) {
+		Role r = roleService.selectByName(role);
+		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, domain);
+		
+		boolean isSucceeded = da.removeUserRole(r);
+		domainAssignmentService.save(da);
+		roleService.save(r);
+		return isSucceeded;
 	}
 
 	@Override
@@ -72,20 +83,24 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	
 	private User assignUser(User user, String domain, Role role) {
 		Domain d = domainService.selectByName(domain);
-		DomainAssignment assignment = new DomainAssignment(user, d, role);
+		return assignUser(user, d, role);
+	}
+	
+	private User assignUser(User user, Domain domain, Role role) {
+		DomainAssignment assignment = new DomainAssignment(user, domain, role);
 		user.addDomainAssignment(assignment);
-		d.addDomainAssignment(assignment);
+		domain.addDomainAssignment(assignment);
 		
 		userService.save(user);
-		domainService.save(d);
+		domainService.save(domain);
 		domainAssignmentService.save(assignment);
-		return null;
+		return user;
 	}
 
 	@Override
 	public User deassignUser(long userID, String domain) throws EntityNotDeletableException {
 		User user = userService.selectById(userID);
-		DomainAssignment da = domainAssignmentService.selectByDomainName(domain);
+		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, domain);
 		Domain d = da.getDomain();
 		
 		user.removeDomainAssignment(da);
@@ -100,8 +115,7 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	@Override
 	public Map<String, String> validate(User user, String otherPassword,
 			boolean isRegistered) {
-		// TODO Auto-generated method stub
-		return null;
+		return userService.validate(user, otherPassword, isRegistered);
 	}
 
 }

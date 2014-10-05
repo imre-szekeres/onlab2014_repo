@@ -20,9 +20,9 @@ import javax.ejb.Stateless;
 @Stateless
 public class DomainService extends AbstractDataService<Domain> {
 
-	public Domain selectByName(String domainName) {
+	public Domain selectByName(String domain) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
-		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domainName));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domain));
 		
 		List<Domain> domains = callNamedQuery("Domian.findByName", parameters);
 		return (domains.size() > 0) ? domains.get(0) : null;

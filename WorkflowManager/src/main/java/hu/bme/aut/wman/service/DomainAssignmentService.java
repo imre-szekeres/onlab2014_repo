@@ -21,11 +21,18 @@ import javax.ejb.Stateless;
 @Stateless
 public class DomainAssignmentService extends AbstractDataService<DomainAssignment> {
 
-	public DomainAssignment selectByDomainName(String domain) {
+	public List<DomainAssignment> selectByDomainName(String domain) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<>(1);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domain));
+		return callNamedQuery("DomainAssignment.findByDomain", parameters);
+	}
+	
+	public DomainAssignment selectByDomainFor(long userID, String domain) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<>(2);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domain));
+		List<DomainAssignment> assignments = callNamedQuery("DomainAssignment.findByDomainFor", parameters);
 		
-		List<DomainAssignment> assignments = callNamedQuery("DomainAssignment.findByDomain", parameters);
 		return (assignments.size() > 0) ? assignments.get(0) : null;
 	}
 	

@@ -20,7 +20,11 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "DomainAssignment.findByDomain", query = "SELECT da FROM DomainAssignment da WHERE da.domain.name = :domainName ")
+	@NamedQuery(name = "DomainAssignment.findByDomain", query = "SELECT da FROM DomainAssignment da WHERE da.domain.name = :domainName "),
+	@NamedQuery(name = "DomainAssignment.findByDomainFor", query = "SELECT da FROM DomainAssignment da "+ 
+																   "WHERE da.user.id = :userID "+
+																		 "AND da.domain.name = :domainName "),
+	@NamedQuery(name = "DomainAssignment.findByUser", query = "SELECT da FROM DomainAssignment da WHERE da.user.username = :username ")
 })
 public class DomainAssignment extends AbstractEntity {
 
@@ -89,6 +93,28 @@ public class DomainAssignment extends AbstractEntity {
 	 */
 	public void setUserRoles(Set<Role> userRoles) {
 		this.userRoles = userRoles;
+	}
+	
+	/**
+	 * @param role
+	 * */
+	public boolean addUserRole(Role role) {
+		if (this.userRoles.add(role)) {
+			role.addDomainAssignment(this);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @param role
+	 * */
+	public boolean removeUserRole(Role role) {
+		if (this.userRoles.remove(role)) {
+			role.removeDomainAssignmnet(this);
+			return true;
+		}
+		return false;
 	}
 
 	/**

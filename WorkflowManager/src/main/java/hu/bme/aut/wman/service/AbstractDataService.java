@@ -93,7 +93,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 *            of the entity
 	 * @return the result entity
 	 */
-	public T selectById(Long id) {
+	public T selectById(long id) {
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, id));
 		Iterator<T> results = selectByParameters(parameterList).iterator();

@@ -109,15 +109,6 @@ public class User extends AbstractEntity {
 	// return projectAssignments;
 	// }
 
-	// TODO: perhaps put it into business logic?
-	public Set<Role> getRoles(String domainName) {
-		for(DomainAssignment d : domainAssignments) {
-			if(d.getDomain().getName().equals(domainName))
-				return d.getUserRoles();
-		}
-		return new HashSet<Role>(0);
-	}
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -149,24 +140,7 @@ public class User extends AbstractEntity {
 	 *            {@link Comment} to add
 	 */
 	public void addComment(Comment comment) {
-		if (comments == null) {
-			comments = new ArrayList<Comment>();
-		}
 		this.comments.add(comment);
-	}
-
-	// TODO: shall we put it into Service layer?
-	/**
-	 * Add {@link Role} to this User
-	 * 
-	 * @param role
-	 *            {@link Role} to add
-	 */
-	public void addRole(Role role, String domainName) {
-		for(DomainAssignment d : domainAssignments) {
-			if(d.getDomain().getName().equals(domainName))
-				d.getUserRoles().add(role);
-		}
 	}
 
 	// /**
@@ -181,14 +155,6 @@ public class User extends AbstractEntity {
 	// }
 	// this.projectAssignments.add(assignment);
 	// }
-
-	// TODO: shall we put it into Service layer?
-	public void setRoles(Set<Role> roles, String domainName) {
-		for(DomainAssignment d : domainAssignments) {
-			if(d.getDomain().getName().equals(domainName))
-				d.setUserRoles(roles);
-		}
-	}
 
 	// public void setProjectAssignments(Set<ProjectAssignment>
 	// projectAssignments) {
@@ -211,25 +177,7 @@ public class User extends AbstractEntity {
 	 */
 	public boolean removeComment(Comment comment) {
 		return comments.remove(comment);
-	}
-
-	
-	// TODO: shall we put it into Service layer?
-	/**
-	 * Remove {@link Role} from this User
-	 * 
-	 * @param role
-	 *            {@link Role} to remove
-	 */
-	public boolean removeRole(Role role, String domainName) {
-		for(DomainAssignment d : domainAssignments) {
-			if(d.getDomain().getName().equals(domainName))
-				return d.getUserRoles().remove(role);
-		}
-		return false;
-	}
-	
-	
+	}	
 
 	/**
 	 * @return the domainAssignments

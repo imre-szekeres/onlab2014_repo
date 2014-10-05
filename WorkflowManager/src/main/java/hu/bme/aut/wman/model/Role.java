@@ -85,6 +85,21 @@ public class Role extends AbstractEntity {
 		this.name = name;
 	}
 
+	
+
+	/**
+	 * @return the domain
+	 */
+	public Domain getDomain() {
+		return domain;
+	}
+
+	/**
+	 * @param domain the domain to set
+	 */
+	public void setDomain(Domain domain) {
+		this.domain = domain;
+	}
 
 	/**
 	 * Add {@link ActionType} to this Role
@@ -169,60 +184,6 @@ public class Role extends AbstractEntity {
 		}
 		return false;
 	}
-	
-	/**
-	 * @see {@link java.lang.Object#hashCode()}
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((actionTypes == null) ? 0 : actionTypes.hashCode());
-		result = prime
-				* result
-				+ ((domainAssignments == null) ? 0 : domainAssignments
-						.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result
-				+ ((privileges == null) ? 0 : privileges.hashCode());
-		return result;
-	}
-
-	/**
-	 * @see {@link java.lang.Object#equals(java.lang.Object)}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (!(obj instanceof Role))
-			return false;
-		Role other = (Role) obj;
-		if (actionTypes == null) {
-			if (other.actionTypes != null)
-				return false;
-		} else if (!actionTypes.equals(other.actionTypes))
-			return false;
-		if (domainAssignments == null) {
-			if (other.domainAssignments != null)
-				return false;
-		} else if (!domainAssignments.equals(other.domainAssignments))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (privileges == null) {
-			if (other.privileges != null)
-				return false;
-		} else if (!privileges.equals(other.privileges))
-			return false;
-		return true;
-	}
 
 	/**
 	 * @return the domainAssignments
@@ -250,6 +211,67 @@ public class Role extends AbstractEntity {
 	 * */
 	public boolean removeDomainAssignmnet(DomainAssignment domainAssignment) {
 		return this.domainAssignments.remove(domainAssignment);
+	}
+	
+
+	/**
+	 * @see {@link java.lang.Object#hashCode()}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((actionTypes == null) ? 0 : actionTypes.hashCode());
+		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
+		result = prime
+				* result
+				+ ((domainAssignments == null) ? 0 : domainAssignments
+						.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((privileges == null) ? 0 : privileges.hashCode());
+		return result;
+	}
+
+	/**
+	 * @see {@link java.lang.Object#equals(java.lang.Object)}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof Role))
+			return false;
+		Role other = (Role) obj;
+		if (actionTypes == null) {
+			if (other.actionTypes != null)
+				return false;
+		} else if (!actionTypes.equals(other.actionTypes))
+			return false;
+		if (domain == null) {
+			if (other.domain != null)
+				return false;
+		} else if (!domain.equals(other.domain))
+			return false;
+		if (domainAssignments == null) {
+			if (other.domainAssignments != null)
+				return false;
+		} else if (!domainAssignments.equals(other.domainAssignments))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (privileges == null) {
+			if (other.privileges != null)
+				return false;
+		} else if (!privileges.equals(other.privileges))
+			return false;
+		return true;
 	}
 
 	@Override
