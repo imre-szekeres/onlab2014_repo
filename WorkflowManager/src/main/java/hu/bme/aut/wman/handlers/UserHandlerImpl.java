@@ -40,9 +40,9 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	
 
 	@Override
-	public User createUser(User user, String initialRole, String domain) {
+	public User createUser(User user, String initialRole) {
 		Role initial = roleService.selectByName(initialRole);
-		return assignUser(user, domain, initial);
+		return assignUser(user, initial);
 	}
 
 	@Override
@@ -75,24 +75,23 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	}
 
 	@Override
-	public User assignUser(long userID, String domain, String role) {
+	public User assignUser(long userID, String role) {
 		User user = userService.selectById(userID);
 		Role r = roleService.selectByName(role);
-		return assignUser(user, domain, r);
+		return assignUser(user, r);
 	}
 	
-	private User assignUser(User user, String domain, Role role) {
-		Domain d = domainService.selectByName(domain);
-		return assignUser(user, d, role);
-	}
-	
-	private User assignUser(User user, Domain domain, Role role) {
+	private User assignUser(User user, Role role) {
+		Domain domain = role.getDomain();
 		DomainAssignment assignment = new DomainAssignment(user, domain, role);
+		
 		user.addDomainAssignment(assignment);
 		domain.addDomainAssignment(assignment);
+		role.addDomainAssignment(assignment);
 		
 		userService.save(user);
 		domainService.save(domain);
+		roleService.save(role);
 		domainAssignmentService.save(assignment);
 		return user;
 	}
@@ -105,6 +104,11 @@ public class UserHandlerImpl implements UserHandlerLocal {
 		
 		user.removeDomainAssignment(da);
 		d.removeDomainAssignment(da);
+		
+		for(Role r : da.getUserRoles()) {
+			r.removeDomainAssignmnet(da);
+			roleService.save(r);
+		}
 		
 		userService.save(user);
 		domainService.save(d);

@@ -92,7 +92,7 @@ public class LoginController extends AbstractController {
 		Map<String, String> validationErrors = userHandler.validate(user, request.getParameter("password-again"), true);
 		if (validationErrors.size() <= 0) {
 			
-			userHandler.createUser(user, "System Reader", "System");
+			userHandler.createUser(user, "System Reader");
 			request.getSession().setAttribute("subject", user);
 			
 			LOGGER.info("user: " + user.getUsername() + " registered as System Reader");

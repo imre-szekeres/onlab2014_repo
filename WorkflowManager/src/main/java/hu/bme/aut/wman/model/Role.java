@@ -41,7 +41,7 @@ public class Role extends AbstractEntity {
 	private String name;
 	
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Domain domain;
 
 	@NotNull
