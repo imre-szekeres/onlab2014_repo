@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 
-<div id="workflow-content-wrapper">
+<div id="workflow-content-wrapper" class="panel-body">
 	<c:forEach var="workflow" items="${workflows}">
 	<div class="panel-group workflow-wrapper" id="accordion${workflow.id}">
 		<div class="panel panel-default">

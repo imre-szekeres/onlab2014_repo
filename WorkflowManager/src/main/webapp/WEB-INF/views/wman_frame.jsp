@@ -27,10 +27,8 @@
 		</div>
 	</c:if>
     
-    <div id='content-wrapper'>
-        <jsp:include page='${ pageName }.jsp' >
-            <jsp:param name='appRoot' value='${ appRoot }' />
-        </jsp:include>
+	<div id='content-wrapper' class="panel panel-default">
+        <jsp:include page='${ pageName }.jsp' />
     </div> 
     
     <div id='footer-wrapper' >

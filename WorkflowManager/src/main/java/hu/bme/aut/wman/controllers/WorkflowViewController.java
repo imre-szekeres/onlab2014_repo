@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @version "%I%, %G%"
@@ -42,19 +43,22 @@ public class WorkflowViewController extends AbstractController {
 	@RequestMapping(value = NEW_WORKFLOW, method = RequestMethod.GET)
 	public String newWorkflowView(Model model, HttpServletRequest request) {
 
+		model.addAttribute("workflow", new Workflow());
 		model.addAttribute("message", "Create new workflow");
 		return navigateToFrame("new_workflow", model);
 	}
 
 	@RequestMapping(value = NEW_WORKFLOW, method = RequestMethod.POST)
-	public String postLogin(@ModelAttribute("workflow") Workflow workflow, HttpServletRequest request, Model model) {
+	public ModelAndView postNewWorkflow(@ModelAttribute("workflow") Workflow workflow, HttpServletRequest request, Model model) {
 
+		System.out.println(workflow + " " + workflow.getName() + "  " + workflow.getDescription());
 		workflow.setStates(Workflow.getBasicStates());
 
 		if (workflowService.verify(workflow)) {
 			workflowService.save(workflow);
 		}
-		return navigateToFrame("workflows", model);
+
+		return redirectToFrame(WORKFLOWS);
 	}
 
 	@RequestMapping(value = "/generate/workflow", method = RequestMethod.GET)

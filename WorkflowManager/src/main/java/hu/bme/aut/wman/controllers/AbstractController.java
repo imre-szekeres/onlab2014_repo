@@ -3,6 +3,7 @@ package hu.bme.aut.wman.controllers;
 import java.util.Map;
 
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.collect.Maps;
 
@@ -42,6 +43,17 @@ public class AbstractController {
 	public String navigateTo(String to, String pageName, Model model) {
 		model.addAttribute("pageName", pageName);
 		return to;
+	}
+
+	/**
+	 * Redirects to the frame
+	 * 
+	 * @return a string, with we should redirect
+	 */
+	public ModelAndView redirectToFrame(String pageSuffix) {
+		ModelAndView modelAndView = new ModelAndView("redirect:" + pageSuffix);
+		modelAndView.addObject("navigationTabs", getNavigationTabs());
+		return modelAndView;
 	}
 
 	/**
