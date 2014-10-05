@@ -48,6 +48,11 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	@Override
 	public User removeUser(long userID) throws Exception {
 		User user = userService.selectById(userID);
+		
+		for(DomainAssignment da : user.getDomainAssignments()) {
+			deassignUser(user, da);
+		}
+		
 		userService.delete(user);
 		return user;
 	}
@@ -100,6 +105,10 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	public User deassignUser(long userID, String domain) throws EntityNotDeletableException {
 		User user = userService.selectById(userID);
 		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, domain);
+		return deassignUser(user, da);
+	}
+	
+	private User deassignUser(User user, DomainAssignment da) throws EntityNotDeletableException {
 		Domain d = da.getDomain();
 		
 		user.removeDomainAssignment(da);
@@ -113,7 +122,7 @@ public class UserHandlerImpl implements UserHandlerLocal {
 		userService.save(user);
 		domainService.save(d);
 		domainAssignmentService.delete(da);
-		return null;
+		return user;
 	}
 
 	@Override
