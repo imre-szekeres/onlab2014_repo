@@ -7,11 +7,9 @@ import hu.bme.aut.wman.model.Transition;
 
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 /**
  * Helps make operations with <code>ActionTypes</code>.
@@ -22,9 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @LocalBean
 public class ActionTypeService extends AbstractDataService<ActionType> {
 
-	@EJB(mappedName = "java:module/TransitionService")
+	@Inject
 	TransitionService transitionService;
-	@EJB(mappedName = "java:module/RoleService")
+	@Inject
 	RoleService roleService;
 
 	// TODO we marked it as complex, but I don't remember why :(
