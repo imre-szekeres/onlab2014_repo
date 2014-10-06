@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -27,6 +28,7 @@ public class WorkflowViewController extends AbstractController {
 	public static final String INDEX = "/index";
 	public static final String WORKFLOWS = "/workflows";
 	public static final String NEW_WORKFLOW = "/new/workflow";
+	public static final String DELETE_WORKFLOW = "/delete/workflow";
 
 	@EJB(mappedName = "java:module/WorkflowService")
 	private WorkflowService workflowService;
@@ -51,7 +53,6 @@ public class WorkflowViewController extends AbstractController {
 	@RequestMapping(value = NEW_WORKFLOW, method = RequestMethod.POST)
 	public ModelAndView postNewWorkflow(@ModelAttribute("workflow") Workflow workflow, HttpServletRequest request, Model model) {
 
-		System.out.println(workflow + " " + workflow.getName() + "  " + workflow.getDescription());
 		workflow.setStates(Workflow.getBasicStates());
 
 		if (workflowService.verify(workflow)) {
@@ -61,30 +62,16 @@ public class WorkflowViewController extends AbstractController {
 		return redirectToFrame(WORKFLOWS);
 	}
 
-	@RequestMapping(value = "/generate/workflow", method = RequestMethod.GET)
-	public String generate(HttpServletRequest request, Model model) {
-		Workflow workflow = new Workflow("TestWorkflowAgain", "A new test workflow again.");
-
-		workflow.setStates(Workflow.getBasicStates());
-
-		if (workflowService.verify(workflow)) {
-			workflowService.save(workflow);
-		}
-		return navigateToFrame("workflows", model);
-	}
-
-	@RequestMapping(value = "/delete/workflow", method = RequestMethod.GET)
-	public String deleteAll(HttpServletRequest request, Model model) {
-
-		for (Workflow workflow : workflowService.selectAll()) {
-			try {
-				workflowService.delete(workflow);
-			} catch (EntityNotDeletableException e) {
-				e.printStackTrace();
-			}
+	@RequestMapping(value = DELETE_WORKFLOW, method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam("id") Long workflowId, HttpServletRequest request, Model model) {
+		// TODO better exception handling :)
+		try {
+			workflowService.deleteById(workflowId);
+		} catch (EntityNotDeletableException e) {
+			e.printStackTrace();
 		}
 
-		return navigateToFrame("workflows", model);
+		return redirectToFrame(WORKFLOWS);
 	}
 
 	@Override

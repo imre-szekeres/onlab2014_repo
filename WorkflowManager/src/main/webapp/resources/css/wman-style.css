@@ -315,8 +315,7 @@
 	
 	position: relative;
 	float: left;
-	margin-top: 20px;
-	margin-right: 40px;
+	margin: 20px 40px;
 	
 	background-color: white;
 }
@@ -338,6 +337,10 @@
 	
 	color: white;
 	background-color: #428BCA;
+}
+
+.workflow-id {
+	display: none;
 }
 
 /* little buttons :) */
@@ -382,3 +385,16 @@
 }
 
 /* END   Workflows */
+
+/* General */
+.no-decor-link {
+	text-decoration: blink;
+}
+
+.no-decor-link:hover {
+	text-decoration: blink;
+}
+
+.no-decor-link:active {
+	text-decoration: blink;
+}

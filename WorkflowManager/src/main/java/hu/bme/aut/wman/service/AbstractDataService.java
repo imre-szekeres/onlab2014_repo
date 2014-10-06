@@ -65,12 +65,13 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * @throws EntityNotDeletableException
 	 */
 	public void delete(T entity) throws EntityNotDeletableException {
-		if (isDetached(entity)) {
-			em.remove(entity);
-		} else {
-			T managedEntity = em.merge(entity);
-			em.remove(managedEntity);
-		}
+		// TODO: investigate why it is not working... But it is not so importent now
+		// if (isDetached(entity)) {
+		// em.remove(entity);
+		// } else {
+		T managedEntity = em.merge(entity);
+		em.remove(managedEntity);
+		// }
 	}
 
 	/**
