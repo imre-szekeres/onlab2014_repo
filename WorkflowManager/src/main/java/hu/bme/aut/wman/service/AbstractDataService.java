@@ -64,12 +64,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * @throws EntityNotDeletableException
 	 */
 	public void delete(T entity) throws EntityNotDeletableException {
-		if (isDetached(entity)) {
-			em.remove(entity);
-		} else {
-			T managedEntity = em.merge(entity);
-			em.remove(managedEntity);
-		}
+		em.remove(em.merge(entity));
 	}
 
 	/**

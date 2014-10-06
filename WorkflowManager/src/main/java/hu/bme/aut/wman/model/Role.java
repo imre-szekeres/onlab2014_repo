@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
@@ -25,7 +24,9 @@ import javax.validation.constraints.NotNull;
 														"WHERE d.domain.name = :domainName "+
 														    "AND d.user.id = :userID "+
 															"AND r MEMBER OF d.userRoles "),
-	@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r WHERE r.domain.name = :domainName ")
+	@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
+													"WHERE d.name = :domainName "+
+														    "AND r MEMBER OF d.roles")
 })
 public class Role extends AbstractEntity {
 
@@ -41,16 +42,8 @@ public class Role extends AbstractEntity {
 	private String name;
 	
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Domain domain;
-
-	@NotNull
 	@ManyToMany(targetEntity = ActionType.class, fetch = FetchType.EAGER)
 	private Set<ActionType> actionTypes;
-
-	@NotNull
-	@ManyToMany(targetEntity = hu.bme.aut.wman.model.DomainAssignment.class, fetch = FetchType.EAGER)
-	private Set<DomainAssignment> domainAssignments;
 
 	@NotNull
 	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Privilege.class, fetch = FetchType.EAGER)
@@ -64,10 +57,8 @@ public class Role extends AbstractEntity {
 	public Role(String name, Domain domain) {
 		super();
 		this.name = name;
-		this.domain = domain;
 		this.actionTypes = new HashSet<ActionType>();
 		this.privileges = new HashSet<Privilege>();
-		this.domainAssignments = new HashSet<DomainAssignment>();
 	}
 
 	/**
@@ -83,22 +74,6 @@ public class Role extends AbstractEntity {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	
-
-	/**
-	 * @return the domain
-	 */
-	public Domain getDomain() {
-		return domain;
-	}
-
-	/**
-	 * @param domain the domain to set
-	 */
-	public void setDomain(Domain domain) {
-		this.domain = domain;
 	}
 
 	/**
@@ -185,37 +160,10 @@ public class Role extends AbstractEntity {
 		return false;
 	}
 
-	/**
-	 * @return the domainAssignments
-	 */
-	public Set<DomainAssignment> getDomainAssignments() {
-		return domainAssignments;
-	}
-
-	/**
-	 * @param domainAssignments the domainAssignments to set
-	 */
-	public void setDomainAssignments(Set<DomainAssignment> domainAssignments) {
-		this.domainAssignments = domainAssignments;
-	}
-	
-	/**
-	 * @param domainAssignment
-	 * */
-	public boolean addDomainAssignment(DomainAssignment domainAssignment) {
-		return this.domainAssignments.add(domainAssignment);
-	}
-	
-	/**
-	 * @param domainAssignment
-	 * */
-	public boolean removeDomainAssignmnet(DomainAssignment domainAssignment) {
-		return this.domainAssignments.remove(domainAssignment);
-	}
 	
 
 	/**
-	 * @see {@link java.lang.Object#hashCode()}
+	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
@@ -223,11 +171,6 @@ public class Role extends AbstractEntity {
 		int result = super.hashCode();
 		result = prime * result
 				+ ((actionTypes == null) ? 0 : actionTypes.hashCode());
-		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
-		result = prime
-				* result
-				+ ((domainAssignments == null) ? 0 : domainAssignments
-						.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result
 				+ ((privileges == null) ? 0 : privileges.hashCode());
@@ -235,7 +178,7 @@ public class Role extends AbstractEntity {
 	}
 
 	/**
-	 * @see {@link java.lang.Object#equals(java.lang.Object)}
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -250,16 +193,6 @@ public class Role extends AbstractEntity {
 			if (other.actionTypes != null)
 				return false;
 		} else if (!actionTypes.equals(other.actionTypes))
-			return false;
-		if (domain == null) {
-			if (other.domain != null)
-				return false;
-		} else if (!domain.equals(other.domain))
-			return false;
-		if (domainAssignments == null) {
-			if (other.domainAssignments != null)
-				return false;
-		} else if (!domainAssignments.equals(other.domainAssignments))
 			return false;
 		if (name == null) {
 			if (other.name != null)

@@ -74,9 +74,10 @@ public class User extends AbstractEntity {
 	@Deprecated
 	public User() {
 		super();
+		this.domainAssignments = new HashSet<DomainAssignment>();
 	}
 
-	public User(String username, String password, String email, String description, DomainAssignment domainAssignment) {
+	public User(String username, String password, String email, String description) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -85,7 +86,6 @@ public class User extends AbstractEntity {
 		this.comments = new ArrayList<Comment>();
 		
 		this.domainAssignments = new HashSet<DomainAssignment>();
-		this.domainAssignments.add(domainAssignment);
 		
 		// TODO: elaborate ?
 		//this.projectAssignmnets = new HashSet<ProjectAssignment>();

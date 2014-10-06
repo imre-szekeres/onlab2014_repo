@@ -15,8 +15,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 

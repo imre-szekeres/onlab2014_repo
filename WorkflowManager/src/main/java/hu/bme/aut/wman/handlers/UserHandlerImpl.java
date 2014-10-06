@@ -13,8 +13,6 @@ import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 
-import java.util.Map;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -40,9 +38,9 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	
 
 	@Override
-	public User createUser(User user, String initialRole) {
+	public User createUser(User user, String initialRole, String domain) {
 		Role initial = roleService.selectByName(initialRole);
-		return assignUser(user, initial);
+		return assignUser(user, initial, domain);
 	}
 
 	@Override
@@ -58,45 +56,40 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	}
 
 	@Override
-	public boolean addRole(long userID, String role) {
+	public boolean addRole(long userID, String role, String domain) {
 		Role r = roleService.selectByName(role);
-		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, r.getDomain().getName());
+		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, domain);
 		
 		boolean isSucceeded = da.addUserRole(r);
 		domainAssignmentService.save(da);
-		roleService.save(r);
 		return isSucceeded;
 	}
 
 	@Override
-	public boolean removeRole(long userID, String role) {
+	public boolean removeRole(long userID, String role, String domain) {
 		Role r = roleService.selectByName(role);
-		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, r.getDomain().getName());
+		DomainAssignment da = domainAssignmentService.selectByDomainFor(userID, domain);
 		
 		boolean isSucceeded = da.removeUserRole(r);
 		domainAssignmentService.save(da);
-		roleService.save(r);
 		return isSucceeded;
 	}
 
 	@Override
-	public User assignUser(long userID, String role) {
+	public User assignUser(long userID, String role, String domain) {
 		User user = userService.selectById(userID);
 		Role r = roleService.selectByName(role);
-		return assignUser(user, r);
+		return assignUser(user, r, domain);
 	}
 	
-	private User assignUser(User user, Role role) {
-		Domain domain = role.getDomain();
-		DomainAssignment assignment = new DomainAssignment(user, domain, role);
+	private User assignUser(User user, Role role, String domain) {
+		Domain d = domainService.selectByName(domain);
+		DomainAssignment assignment = new DomainAssignment(user, d, role);
 		
 		user.addDomainAssignment(assignment);
-		domain.addDomainAssignment(assignment);
-		role.addDomainAssignment(assignment);
-		
+		d.addDomainAssignment(assignment);
 		userService.save(user);
-		domainService.save(domain);
-		roleService.save(role);
+		domainService.save(d);
 		domainAssignmentService.save(assignment);
 		return user;
 	}
@@ -114,21 +107,9 @@ public class UserHandlerImpl implements UserHandlerLocal {
 		user.removeDomainAssignment(da);
 		d.removeDomainAssignment(da);
 		
-		for(Role r : da.getUserRoles()) {
-			r.removeDomainAssignmnet(da);
-			roleService.save(r);
-		}
-		
 		userService.save(user);
 		domainService.save(d);
 		domainAssignmentService.delete(da);
 		return user;
 	}
-
-	@Override
-	public Map<String, String> validate(User user, String otherPassword,
-			boolean isRegistered) {
-		return userService.validate(user, otherPassword, isRegistered);
-	}
-
 }

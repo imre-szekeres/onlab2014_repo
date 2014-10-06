@@ -37,7 +37,7 @@ public class DomainAssignment extends AbstractEntity {
 	private Domain domain;
 	
 	@NotNull
-	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Role.class, mappedBy = "domainAssignments", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> userRoles;
 	
 	public DomainAssignment() {
@@ -99,22 +99,14 @@ public class DomainAssignment extends AbstractEntity {
 	 * @param role
 	 * */
 	public boolean addUserRole(Role role) {
-		if (this.userRoles.add(role)) {
-			role.addDomainAssignment(this);
-			return true;
-		}
-		return false;
+		return this.userRoles.add(role);
 	}
 	
 	/**
 	 * @param role
 	 * */
 	public boolean removeUserRole(Role role) {
-		if (this.userRoles.remove(role)) {
-			role.removeDomainAssignmnet(this);
-			return true;
-		}
-		return false;
+		return this.userRoles.remove(role);
 	}
 
 	/**

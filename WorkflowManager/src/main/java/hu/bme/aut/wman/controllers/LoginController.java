@@ -89,10 +89,10 @@ public class LoginController extends AbstractController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
-		Map<String, String> validationErrors = userHandler.validate(user, request.getParameter("password-again"), true);
+		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"), true);
 		if (validationErrors.size() <= 0) {
 			
-			userHandler.createUser(user, "System Reader");
+			userHandler.createUser(user, "System Reader", "System");
 			request.getSession().setAttribute("subject", user);
 			
 			LOGGER.info("user: " + user.getUsername() + " registered as System Reader");

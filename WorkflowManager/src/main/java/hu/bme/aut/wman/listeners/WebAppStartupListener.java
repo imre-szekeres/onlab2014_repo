@@ -55,37 +55,33 @@ public class WebAppStartupListener
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
 		LOGGER.debug("WebAppStartupListener.onApplicationEvent: start");
 		
-		Role role;
-		LOGGER.debug("role -- System Administrator check..");
-		if ((role = roleService.selectByName("System Administrator")) == null) {
-			role = new Role("System Administrator");
-			roleService.save(role);
+		try {
+			Role role;
+			LOGGER.debug("role -- System Administrator check..");
+			if ((role = roleService.selectByName("System Administrator")) != null) {
+				roleService.delete(role);
+				
+				LOGGER.debug("role -- " + role.getName() + " was removed..");
+			}
 			
-			LOGGER.debug("role -- " + role.getName() + " was created..");
-		}
-		
-		User sudoer;
-		LOGGER.debug("user -- sudoer check..");
-		if ((sudoer = userService.selectByName("sudoer")) == null) {
-			sudoer = new User("sudoer", 
-					   		  "sudoer7", 
-					   		  "sudoer7@workflowmanager.org.com",
-					   		  role,
-					   		  "A humble administrator of the application to test and make it work, and mantain its functionality.");
-			userService.save(sudoer);
+			User sudoer;
+			LOGGER.debug("user -- sudoer check..");
+			if ((sudoer = userService.selectByName("sudoer")) != null) {
+				/*sudoer = new User("sudoer", 
+						   		  "sudoer7", 
+						   		  "sudoer7@workflowmanager.org.com",
+						   		  "A humble administrator of the application to test and make it work, and mantain its functionality.");*/
+				userService.delete(sudoer);	
+				LOGGER.debug("user -- " + sudoer.getUsername() + " was removed..");
+			}
 			
-			role.addUser(sudoer);
-			roleService.save(role);
-			
-			LOGGER.debug("user -- " + sudoer.getUsername() + " was created as a " + role.getName());
-		}
-		
-		LOGGER.debug("role -- Reader check..");
-		if ((role = roleService.selectByName("Reader")) == null) {
-			role = new Role("Reader");
-			roleService.save(role);
-			
-			LOGGER.debug("role -- " + role.getName() + " was created..");
+			LOGGER.debug("role -- Reader check..");
+			if ((role = roleService.selectByName("Reader")) != null) {
+				roleService.delete(role);
+				LOGGER.debug("role -- " + role.getName() + " was removed..");
+			}
+		} catch(Exception e) {
+			LOGGER.fatal("ERROR during startup", e);
 		}
 	}
 }

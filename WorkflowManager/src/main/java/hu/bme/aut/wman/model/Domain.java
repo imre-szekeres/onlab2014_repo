@@ -3,8 +3,10 @@
  */
 package hu.bme.aut.wman.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -28,11 +30,11 @@ public class Domain extends AbstractEntity {
 	private String name;
 	
 	@NotNull
-	@OneToMany(mappedBy = "domain")
+	@OneToMany(cascade = CascadeType.REMOVE)
 	private Set<Role> roles;
 	
 	@NotNull
-	@OneToMany(mappedBy = "domain")
+	@OneToMany(mappedBy = "domain", cascade = CascadeType.REMOVE)
 	private Set<Workflow> workflows;
 		
 	@NotNull
@@ -47,11 +49,23 @@ public class Domain extends AbstractEntity {
 		super();
 	}
 	
+	public Domain(String name) {
+		super();
+		this.name = name;
+		this.roles = new HashSet<>();
+		this.workflows = new HashSet<>();
+		this.actionTypes = new HashSet<>();
+		this.domainAssignments = new HashSet<>();
+	}
+	
 	// TODO: the setting of role names is the RESPONSIBILITY of the Service layer..
 	public Domain(String name, Set<Role> initialRoles) {
 		super();
 		this.name = name;
 		this.roles = initialRoles;
+		this.workflows = new HashSet<>();
+		this.actionTypes = new HashSet<>();
+		this.domainAssignments = new HashSet<>();
 	}
 
 	/**
@@ -127,6 +141,34 @@ public class Domain extends AbstractEntity {
 	}
 	
 	/**
+	 * @return the roles
+	 */
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+	
+	/**
+	 * @param role
+	 * */
+	public boolean addRole(Role role) {
+		return this.roles.add(role);
+	}
+	
+	/**
+	 * @param role
+	 * */
+	public boolean removeRole(Role role) {
+		return this.roles.remove(role);
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -140,6 +182,7 @@ public class Domain extends AbstractEntity {
 				+ ((domainAssignments == null) ? 0 : domainAssignments
 						.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		result = prime * result
 				+ ((workflows == null) ? 0 : workflows.hashCode());
 		return result;
@@ -171,6 +214,11 @@ public class Domain extends AbstractEntity {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
 			return false;
 		if (workflows == null) {
 			if (other.workflows != null)
