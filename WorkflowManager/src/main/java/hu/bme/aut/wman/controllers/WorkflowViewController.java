@@ -22,7 +22,6 @@ public class WorkflowViewController extends AbstractController {
 
 	@RequestMapping(value = WORKFLOWS, method = RequestMethod.GET)
 	public String workflowsView(Model model, HttpServletRequest request) {
-		activeTabKey = NAV_PREFIX + WORKFLOWS;
 
 		model.addAttribute("message", "My workflows");
 		return navigateToFrame("workflows", model);
@@ -30,7 +29,6 @@ public class WorkflowViewController extends AbstractController {
 
 	@RequestMapping(value = NEW_WORKFLOW, method = RequestMethod.GET)
 	public String newWorkflowView(Model model, HttpServletRequest request) {
-		activeTabKey = NAV_PREFIX + NEW_WORKFLOW;
 
 		model.addAttribute("message", "Create new workflow");
 		return navigateToFrame("new_workflow", model);
