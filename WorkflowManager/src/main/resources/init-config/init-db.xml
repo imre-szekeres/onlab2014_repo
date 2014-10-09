@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities>
+    <privileges>
+        <privilege name='Create User' />
+        <privilege name='Create Domain' />
+        <privilege name='Create Role' />
+        <privilege name='Create Workflow' />
+        <privilege name='Create Project' />
+        <privilege name='Create ActionType' />
+		<!-- Everyone creates HistoryEntries.. wether they like it or not -->
+		<!-- Comments are created based on ProjectAssignments -->
+        
+        <privilege name='Assign User' /><!-- to Domain -->
+        <privilege name='Assign Role' /><!-- to User -->
+        <privilege name='Assign Privilege' /><!-- to Role -->
+        <privilege name='Assign Project' /><!-- to User -->
+        <privilege name='Assign ActionType' /><!-- to Role -->
+        
+        <privilege name='View User' />
+        <privilege name='View Domain' />
+        <privilege name='View Role' />
+        <privilege name='View Privilege' />
+        <privilege name='View Workflow' />
+        <privilege name='View Project' />
+        <privilege name='View ActionType' />
+        <privilege name='View HistoryEntry' />
+    </privileges>
+    
+    <roles>
+		<role name='Administrator' domain='System' />
+    </roles>
+    
+    <domains>
+		<domain name='System' />
+    </domains>
+    
+    <users>
+		<user name='sudoer' password='sudoer7' domain='System'>
+			<roles>
+				<role name='Administrator' />
+			</roles>
+		</user>
+    </users>
+</entities>

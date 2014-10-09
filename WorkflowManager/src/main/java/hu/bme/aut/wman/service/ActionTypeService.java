@@ -25,6 +25,7 @@ public class ActionTypeService extends AbstractDataService<ActionType> {
 	RoleService roleService;
 
 	// TODO we marked it as complex, but I don't remember why :(
+	// TODO: why do we have to override it if it only calls the method in super?
 	@Override
 	public void save(ActionType entity) {
 		super.save(entity);
