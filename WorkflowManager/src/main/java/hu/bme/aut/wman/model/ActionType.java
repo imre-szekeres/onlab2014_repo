@@ -1,13 +1,7 @@
 package hu.bme.aut.wman.model;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -33,8 +27,6 @@ public class ActionType extends AbstractEntity {
 	@ManyToOne
 	private Domain domain;
 
-	@ManyToMany(targetEntity = Role.class, mappedBy = "actionTypes", fetch = FetchType.EAGER)
-	private Set<Role> roles;
 
 	@Deprecated
 	public ActionType() {
@@ -52,40 +44,6 @@ public class ActionType extends AbstractEntity {
 
 	public void setActionTypeName(String actionTypeName) {
 		this.actionTypeName = actionTypeName;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-	/**
-	 * Add {@link Role} to this ActionType
-	 * 
-	 * @param roles
-	 *            {@link Role} to add
-	 */
-	public void addRoles(Collection<Role> roles) {
-		this.roles.addAll(roles);
-		for (Role role : roles) {
-			role.addActionType(this);
-		}
-	}
-
-	/**
-	 * Remove {@link Role} from this ActionType
-	 * 111
-	 * @param roles
-	 *            {@link Role} to remove
-	 */
-	public void removeRoles(List<Role> roles) {
-		this.roles.removeAll(roles);
-		for (Role role : roles) {
-			role.removeActionType(this);
-		}
 	}
 
 	/**
@@ -112,7 +70,6 @@ public class ActionType extends AbstractEntity {
 		result = prime * result
 				+ ((actionTypeName == null) ? 0 : actionTypeName.hashCode());
 		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
-		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		return result;
 	}
 
@@ -137,11 +94,6 @@ public class ActionType extends AbstractEntity {
 			if (other.domain != null)
 				return false;
 		} else if (!domain.equals(other.domain))
-			return false;
-		if (roles == null) {
-			if (other.roles != null)
-				return false;
-		} else if (!roles.equals(other.roles))
 			return false;
 		return true;
 	}
