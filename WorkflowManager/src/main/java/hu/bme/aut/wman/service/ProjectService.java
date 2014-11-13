@@ -9,6 +9,7 @@ import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Transition;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
+import hu.bme.aut.wman.view.objects.ProjectVO;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -17,32 +18,37 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
 /**
  * Helps make operations with <code>Project</code>.
- * 
+ *
  * @version "%I%, %G%"
  */
 @Stateless
 @LocalBean
 public class ProjectService extends AbstractDataService<Project> {
 
-	@EJB(mappedName = "java:module/TransitionService")
+	//	@EJB(mappedName = "java:module/TransitionService")
+	@Inject
 	TransitionService transitionService;
-	@EJB(mappedName = "java:module/ProjectAssignmentService")
+	//	@EJB(mappedName = "java:module/ProjectAssignmentService")
+	@Inject
 	ProjectAssignmentService projectAssignmentService;
-	@EJB(mappedName = "java:module/UserService")
+	//	@EJB(mappedName = "java:module/UserService")
+	@Inject
 	UserService userService;
-	@EJB(mappedName = "java:module/CommentService")
+	//	@EJB(mappedName = "java:module/CommentService")
+	@Inject
 	CommentService commentService;
+	//	@EJB(mappedName = "java:module/WorkflowService")
+	@Inject
+	WorkflowService workflowService;
 
 	// private Validator validator;
 
@@ -75,6 +81,24 @@ public class ProjectService extends AbstractDataService<Project> {
 	// return validator.validateValue(Project.class, "description", description).size() == 0;
 	// }
 
+	//	@Override
+	//	public void save(Project entity) {
+	//		//		entity.getWorkflow().addProject(entity);
+	//		super.save(entity);
+	//	}
+
+	public void save(ProjectVO projectVO) {
+		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
+		Project project = new Project();
+		project.setName(projectVO.getName());
+		project.setWorkflow(workflow);
+		project.setDescription(projectVO.getDescription());
+		// TODO set current user
+		project.setActive(true);
+
+		super.save(project);
+	}
+
 	/**
 	 * You can not delete projects, only closing is allowed.
 	 * NOTE: If you call this method, it will not delete the project either!
@@ -86,13 +110,13 @@ public class ProjectService extends AbstractDataService<Project> {
 
 	/**
 	 * Closes the project.
-	 * 
+	 *
 	 * @param project
 	 */
 	public void close(Project project) {
-		if (!project.isActive()) {
+		if (!project.isActive())
 			return;
-		} else {
+		else {
 			if (isDetached(project)) {
 				project = attach(project);
 			}
@@ -101,14 +125,23 @@ public class ProjectService extends AbstractDataService<Project> {
 	}
 
 	/**
+	 * Finds and closes the project by id.
+	 *
+	 * @param projectId
+	 */
+	public void closeById(Long projectId) {
+		close(selectById(projectId));
+	}
+
+	/**
 	 * Reopens the project. It means it will be active.
-	 * 
+	 *
 	 * @param project
 	 */
 	public void reopen(Project project) {
-		if (project.isActive()) {
+		if (project.isActive())
 			return;
-		} else {
+		else {
 			if (isDetached(project)) {
 				project = attach(project);
 			}
@@ -118,14 +151,14 @@ public class ProjectService extends AbstractDataService<Project> {
 
 	/**
 	 * Sets the owner on the project.
-	 * 
+	 *
 	 * @param project
 	 * @param newOwner
 	 */
 	public void setOwnerOnProject(Project project, User newOwner) {
-		if (project.getOwner() == newOwner) {
+		if (project.getOwner() == newOwner)
 			return;
-		} else {
+		else {
 			if (isDetached(project)) {
 				project = attach(project);
 			}
@@ -135,7 +168,7 @@ public class ProjectService extends AbstractDataService<Project> {
 
 	/**
 	 * Executes the given action on the project. The project will go from the current state into an other.
-	 * 
+	 *
 	 * @param project
 	 * @param action
 	 *            to execute
@@ -154,14 +187,13 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (!transitions.isEmpty()) {
 			project.setCurrentState(transitions.iterator().next().getNextState());
 			save(project);
-		} else {
+		} else
 			throw new IllegalArgumentException("There is no transition with this " + action + " from the " + currentState + " on " + project + ".");
-		}
 	}
 
 	/**
 	 * Adds a user to the given project.
-	 * 
+	 *
 	 * @param projectID
 	 * @param userID
 	 */
@@ -174,7 +206,7 @@ public class ProjectService extends AbstractDataService<Project> {
 
 	/**
 	 * Removes a user from the given project.
-	 * 
+	 *
 	 * @param projectId
 	 * @param userID
 	 * @throws EntityNotDeletableException
@@ -196,7 +228,7 @@ public class ProjectService extends AbstractDataService<Project> {
 
 	/**
 	 * Creates a comment on the project by the user with the message.
-	 * 
+	 *
 	 * @param project
 	 * @param user
 	 * @param commentMessage

@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Workflow
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
@@ -36,8 +36,8 @@ public class Workflow extends AbstractEntity {
 	@OneToMany(mappedBy = "workflow", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<State> states = new ArrayList<State>();
 
-	@OneToMany(mappedBy = "workflow")
-	private List<Project> projects = new ArrayList<Project>();
+	//	@OneToMany(mappedBy = "workflow")
+	//	private List<Project> projects = new ArrayList<Project>();
 
 	public Workflow() {
 	}
@@ -58,29 +58,28 @@ public class Workflow extends AbstractEntity {
 	public State getInitialState() {
 		// Search the root of the state hierarchy
 		for (State state : states) {
-			if (state.isInitial()) {
+			if (state.isInitial())
 				return state;
-			}
 		}
 		// Should never happen
-		throw new IllegalArgumentException("There is not intial state for workflow: " + this.id);
+		throw new IllegalArgumentException("There is not intial state for workflow: " + id);
 	}
 
 	public List<State> getStates() {
 		return states;
 	}
 
-	public List<Project> getProjects() {
-		return projects;
-	}
+	//	public List<Project> getProjects() {
+	//		return projects;
+	//	}
 
 	public void setStates(List<State> states) {
 		this.states = states;
 	}
 
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
-	}
+	//	public void setProjects(List<Project> projects) {
+	//		this.projects = projects;
+	//	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -90,29 +89,29 @@ public class Workflow extends AbstractEntity {
 		this.description = description;
 	}
 
-	/**
-	 * Add {@link Project} to this Workflow
-	 * 
-	 * @param project
-	 *            {@link Project} to add
-	 */
-	public void addProject(Project project) {
-		projects.add(project);
-	}
+	//	/**
+	//	 * Add {@link Project} to this Workflow
+	//	 *
+	//	 * @param project
+	//	 *            {@link Project} to add
+	//	 */
+	//	public void addProject(Project project) {
+	//		projects.add(project);
+	//	}
 
-	/**
-	 * Remove {@link Project} from this Workflow
-	 * 
-	 * @param project
-	 *            {@link Project} to remove
-	 */
-	public boolean removeProject(Project project) {
-		return projects.remove(project);
-	}
+	//	/**
+	//	 * Remove {@link Project} from this Workflow
+	//	 *
+	//	 * @param project
+	//	 *            {@link Project} to remove
+	//	 */
+	//	public boolean removeProject(Project project) {
+	//		return projects.remove(project);
+	//	}
 
 	/**
 	 * Checks if this workflow contains all the states given as argument.
-	 * 
+	 *
 	 * @param states
 	 *            that are checked if they are contained already by this <code>Workflow</code>
 	 * @return true if and only if all the states are contained
@@ -124,7 +123,7 @@ public class Workflow extends AbstractEntity {
 	/**
 	 * Returns the pre-definit collection of <code>State</code>s that every and
 	 * each <code>Workflow</code> has like Initial.
-	 * 
+	 *
 	 * @return basic states that every <code>Workflow</code> has by default.
 	 * */
 	public static List<State> getBasicStates() {
@@ -152,23 +151,18 @@ public class Workflow extends AbstractEntity {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (!(obj instanceof Workflow)) {
+		if (!(obj instanceof Workflow))
 			return false;
-		}
 		Workflow other = (Workflow) obj;
 		if (id == null) {
-			if (other.id != null) {
+			if (other.id != null)
 				return false;
-			}
-		} else if (!id.equals(other.id)) {
+		} else if (!id.equals(other.id))
 			return false;
-		}
 		return true;
 	}
 

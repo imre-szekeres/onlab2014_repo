@@ -25,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WorkflowViewController extends AbstractController {
 
-	public static final String INDEX = "/index";
 	public static final String WORKFLOWS = "/workflows";
 	public static final String NEW_WORKFLOW = "/new/workflow";
 	public static final String DELETE_WORKFLOW = "/delete/workflow";

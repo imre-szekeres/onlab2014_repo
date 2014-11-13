@@ -7,7 +7,7 @@
     </div>
 	
 	<div id='side-menu-buttons'>
-		<a href=''>
+		<a href='${ param.appRoot }/projects?active=true'>
 			<div id='projects-button' class='side-menu-button'>
 				<span class="glyphicon glyphicon-tasks side-menu-icon"/>
 				<div class='side-menu-title'>Projects</div>
