@@ -17,11 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -35,13 +33,13 @@ import com.google.common.collect.Collections2;
 @LocalBean
 public class ProjectService extends AbstractDataService<Project> {
 
-	@EJB(mappedName = "java:module/TransitionService")
+	@Inject
 	TransitionService transitionService;
-	@EJB(mappedName = "java:module/ProjectAssignmentService")
+	@Inject
 	ProjectAssignmentService projectAssignmentService;
-	@EJB(mappedName = "java:module/UserService")
+	@Inject
 	UserService userService;
-	@EJB(mappedName = "java:module/CommentService")
+	@Inject
 	CommentService commentService;
 
 	// private Validator validator;

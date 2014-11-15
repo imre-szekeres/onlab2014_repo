@@ -206,76 +206,121 @@
 /* END   WM-Content */
 
 /* BEGIN Side Menu */
-#side-menu-wrapper {
+#side-menu-bar {
 	left: 0px;
-	position: absolute;
+	top: 0px;
+	position: fixed;
 	
 	height: 100%;
-	width: 150px;
+	width: 120px;
+
+	background-color: white;
+}
+
+#side-menu-wrapper {
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	
+	height: 100%;
+	width: 130px;
 	
 	background-color: #428BCA;
 }
 
-#side-menu-bar a:link{
+#side-menu-buttons a:link{
 	text-decoration: none;
-	color: white;
+	color: #428BCA;
 }
-#side-menu-bar a:visited {
+#side-menu-buttons a:visited {
 	text-decoration: none;
-	color: white;
+	color: #428BCA;
 }
-#side-menu-bar a:hover {
+#side-menu-buttons a:hover {
 	text-decoration: none;
-	color: white;
+	color: #428BCA;
 }
-#side-menu-bar a:active {
+#side-menu-buttons a:active {
 	text-decoration: none;
-	color: white;
+	color: #428BCA;
 }
 
 #home-href-wrapper {
-	width: 150px;
+	width: 120px;
 	height: 50px;
+	margin: 20px 0px;
 	vertical-align: center;
+	text-align: center;
 }
 
-#home-href {
-	margin:	0px 4px;
+#home-href-wrapper>a {
 	font-size: 15px;
+	color: #428BCA;
+	padding: 20px 0px;
+	line-height: normal;
+	text-decoration: blink;
 }
 
 .side-menu-icon {
-	font-size: 50px;
+	font-size: 30px;
 	color:inherit;
-	padding-left: 10px;
+	padding-left: 5px;
 }
 
 .side-menu-title {
 	font-size: 15px;
-	color:inherit;
+	color: inherit;
 	padding-top: 5px;
 }
 
 #side-menu-buttons {
-	margin-top: 25px;
+	margin-top: 10px;
 }
 
 .side-menu-button {
-	margin: 75px 35px;
-	color: white;
+	margin: 30px 0px;
+	padding: 10px 0px;
+	color: #428BCA;
+	text-align: center;
 }
 
 .side-menu-button:hover {
-	color: #FF9933;
+	color: white;
 	cursor: pointer;
+	
+	background-color: #428BCA;
 }
 /* END   Side Menu */
 
 /* BEGIN Top Menu */
 #top-menu-wrapper {
-	left: 150px;
+	left: 130px;
 	position: absolute;
 	
 	height: 50px;
 }
+
+/* tab color */
+.nav-tabs>li>a { 
+	/*background-color: white;*/
+	color: #428BCA;
+}
+
+#top-menu-link {
+	border-radius: 0%;
+}
+
+/* active tab color */
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  color: #428BCA;
+  /*background-color: #428BCA;*/
+}
+
+/* hover tab color */
+.nav-tabs>li>a:hover { 
+	/*background-color: #428BCA;
+	color: white;*/
+}
 /* END   Top Menu */
+
+/* purple:  #8142C9 */
