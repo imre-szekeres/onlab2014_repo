@@ -87,7 +87,9 @@ public class ProjectViewController extends AbstractController {
 
 		projectService.closeById(projectId);
 
-		return redirectToFrame(PROJECTS);
+		ModelAndView view = redirectToFrame(PROJECTS);
+		view.setViewName(view.getViewName() + "?active=true");
+		return view;
 	}
 
 	@Override

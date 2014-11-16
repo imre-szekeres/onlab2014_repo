@@ -9,4 +9,5 @@
 <script src='${ param.appRoot }/resources/js/jquery-1.11.0.min.js' ></script>
 <script src='${ param.appRoot }/resources/js/jquery-ui-1.10.4.min.js' ></script>
 <script src='${ param.appRoot }/resources/js/bootstrap.min.js' ></script>
+<script src='${ param.appRoot }/resources/js/wmsrc.js' ></script>
 <title>${ param.title }</title>

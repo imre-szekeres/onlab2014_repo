@@ -37,10 +37,17 @@
 	$( "div.project-wrapper" )
 		.mouseenter(function() {
 			var name = $(this).find('div.project-id').text();
-			$(this).find('div.project-name').append( "<a id='delete-button' class='no-decor-link' href='delete/project?id="+name+"'><div class='delete-button'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></div></a>" +
+			var isActive = getUrlParameter('active');
+			var div = $(this).find('div.project-name');
+			
+			if (isActive == 'true') {
+				div.append( "<a id='close-button' class='no-decor-link' href='close/project?id="+name+"'><div class='close-button'><span class='glyphicon glyphicon-ok' style='line-height: 26px;'></div></a>" +
 							"<a id='edit-button' class='no-decor-link' href=''><div class='edit-button'><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></div></a>" +
-							"<a id='open-button' class='no-decor-link' href=''><div class='open-button'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></div></a>" +
-							"<a id='close-button' href=''><div class='close-button'><span class='glyphicon glyphicon-remove' style='line-height: 26px;'></div></a>");
+							"<a id='open-button' class='no-decor-link' href=''><div class='open-button'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></div></a>" );
+			} else {
+				div.append( "<a id='edit-button' class='no-decor-link' href=''><div style='top:-40px' class='edit-button'><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></div></a>" +
+							"<a id='open-button' class='no-decor-link' href=''><div style='top:-70px' class='open-button'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></div></a>" );
+			}
 		})
 		.mouseleave(function() {
 			$("#delete-button").remove();

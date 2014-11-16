@@ -51,7 +51,8 @@
 	$( "div.workflow-wrapper" )
 		.mouseenter(function() {
 			var name = $(this).find('div.workflow-id').text();
-			$(this).find('div.workflow-name').append( "<a id='delete-button' class='no-decor-link' href='delete/workflow?id="+name+"'><div class='delete-button'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></div></a>" +
+			$(this).find('div.workflow-name').append( 
+							"<a id='delete-button' class='no-decor-link' href='delete/workflow?id="+name+"'><div class='delete-button'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></div></a>" +
 							"<a id='edit-button' href=''><div class='edit-button'><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></div></a>" +
 							"<a id='open-button' href=''><div class='open-button'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></div></a>" );
 		})

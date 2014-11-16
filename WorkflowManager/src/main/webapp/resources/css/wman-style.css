@@ -347,7 +347,7 @@
 
 /* END   Workflows */
 
-/* little buttons :) */
+/* BEGIN little buttons :) */
 .delete-button {
 	position: relative;
 	top: -40px;
@@ -387,10 +387,12 @@
 	line-height: 30;
 	background-color: #428BCA;
 }
+
+/* On projects */
 .close-button {
 	position: relative;
-	top: -130px;
-	left: 80px;
+	top: -40px;
+	left: 290px;
 
 	border-radius: 50%;
 	width: 30px;
@@ -398,8 +400,10 @@
 	z-index: 1001;
 	color: white;
 	line-height: 30;
-	background-color: #FF8C1B;
+	background-color: #00B300 ;
 }
+
+/* END little buttons :) */
 
 /* BEGIN Projects */
 .project-wrapper {

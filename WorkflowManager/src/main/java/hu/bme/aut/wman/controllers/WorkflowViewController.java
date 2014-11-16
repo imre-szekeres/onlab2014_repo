@@ -1,7 +1,9 @@
 package hu.bme.aut.wman.controllers;
 
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Workflow;
+import hu.bme.aut.wman.service.StateService;
 import hu.bme.aut.wman.service.WorkflowService;
 
 import java.util.HashMap;
@@ -31,6 +33,8 @@ public class WorkflowViewController extends AbstractController {
 
 	@EJB(mappedName = "java:module/WorkflowService")
 	private WorkflowService workflowService;
+	@EJB(mappedName = "java:module/StateService")
+	private StateService stateService;
 
 	@RequestMapping(value = WORKFLOWS, method = RequestMethod.GET)
 	public String workflowsView(Model model, HttpServletRequest request) {
@@ -53,6 +57,10 @@ public class WorkflowViewController extends AbstractController {
 	public ModelAndView postNewWorkflow(@ModelAttribute("workflow") Workflow workflow, HttpServletRequest request, Model model) {
 
 		workflow.setStates(Workflow.getBasicStates());
+
+		for (State state : workflow.getStates()) {
+			state.setWorkflow(workflow);
+		}
 
 		if (workflowService.verify(workflow)) {
 			workflowService.save(workflow);
