@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -28,7 +26,11 @@ import javax.validation.constraints.Size;
 @Table(name = "WM_USER")
 @NamedQueries({
 	@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectID"),
-	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r WHERE r.name=:roleName AND u MEMBER OF r.users ")
+	// TODO:
+	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r, DomainAssignment d "+ 
+												   "WHERE r.name=:roleName "+
+												       "AND d MEMBER OF u.domainAssignments "+
+												   	   "AND r MEMBER OF d.userRoles ")
 })
 public class User extends AbstractEntity {
 
@@ -38,7 +40,7 @@ public class User extends AbstractEntity {
 	public static final String PR_PASSWORD = "password";
 	public static final String PR_EMAIL = "email";
 	public static final String PR_DESCRIPTION = "description";
-	public static final String PR_ROLES = "roles";
+	public static final String PR_DOMAIN_ASSIGNMENTS = "domainAssignments";
 	public static final String PR_COMMENTS = "comments";
 	public static final String PR_PROJECT_ASSIGNMENTS = "projectAssignments";
 
@@ -59,49 +61,36 @@ public class User extends AbstractEntity {
 	private String description;
 
 	@NotNull
-	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Role.class, fetch = FetchType.EAGER)
-	private Set<Role> roles;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private Set<DomainAssignment> domainAssignments;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
+	// TODO: elaborate ?
 	// @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	// private Set<ProjectAssignment> projectAssignments;
 
 	@Deprecated
 	public User() {
 		super();
-		this.roles = new HashSet<Role>();
+		this.domainAssignments = new HashSet<DomainAssignment>();
 	}
 
-	public User(String userName, String password, String email, Role role) {
-		this(userName, password, email, role, "");
-	}
-
-	public User(String userName, String password, String email, Set<Role> roles) {
-		this(userName, password, email, roles, "");
-	}
-
-	public User(String userName, String password, String email, Role role, String description) {
-		this(userName, password, email, description);
-		this.roles = new java.util.HashSet<Role>();
-		this.roles.add(role);
-	}
-
-	public User(String userName, String password, String email, Set<Role> roles, String description) {
-		this(userName, password, email, description);
-		this.roles = roles;
-	}
-
-	protected User(String username, String password, String email, String description) {
+	public User(String username, String password, String email, String description) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.description = description;
 		this.comments = new ArrayList<Comment>();
-		// this.projectAssignments = new java.util.HashSet<ProjectAssignment>();
+		
+		this.domainAssignments = new HashSet<DomainAssignment>();
+		
+		// TODO: elaborate ?
+		//this.projectAssignmnets = new HashSet<ProjectAssignment>();
 	}
+
 
 	public String getUsername() {
 		return username;
@@ -115,13 +104,10 @@ public class User extends AbstractEntity {
 		return comments;
 	}
 
+	// TODO: elaborate ?
 	// public Set<ProjectAssignment> getProjectAssignments() {
 	// return projectAssignments;
 	// }
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
 
 	public void setUsername(String username) {
 		this.username = username;
@@ -154,20 +140,7 @@ public class User extends AbstractEntity {
 	 *            {@link Comment} to add
 	 */
 	public void addComment(Comment comment) {
-		if (comments == null) {
-			comments = new ArrayList<Comment>();
-		}
 		this.comments.add(comment);
-	}
-
-	/**
-	 * Add {@link Role} to this User
-	 * 
-	 * @param role
-	 *            {@link Role} to add
-	 */
-	public void addRole(Role role) {
-		this.roles.add(role);
 	}
 
 	// /**
@@ -182,10 +155,6 @@ public class User extends AbstractEntity {
 	// }
 	// this.projectAssignments.add(assignment);
 	// }
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
 
 	// public void setProjectAssignments(Set<ProjectAssignment>
 	// projectAssignments) {
@@ -208,16 +177,104 @@ public class User extends AbstractEntity {
 	 */
 	public boolean removeComment(Comment comment) {
 		return comments.remove(comment);
+	}	
+
+	/**
+	 * @return the domainAssignments
+	 */
+	public Set<DomainAssignment> getDomainAssignments() {
+		return domainAssignments;
 	}
 
 	/**
-	 * Remove {@link Role} from this User
-	 * 
-	 * @param role
-	 *            {@link Role} to remove
+	 * @param domainAssignments the domainAssignments to set
 	 */
-	public boolean removeRole(Role role) {
-		return roles.remove(role);
+	public void setDomainAssignments(Set<DomainAssignment> domainAssignments) {
+		this.domainAssignments = domainAssignments;
+	}
+
+	/**
+	 * @param domainAssignment
+	 * @return true if domainAssignment was added successfully
+	 * */
+	public boolean addDomainAssignment(DomainAssignment domainAssignment) {
+		return this.domainAssignments.add(domainAssignment);
+	}
+	
+	/**
+	 * @param domainAssignment
+	 * @return true if domainAssignment was removed successfully
+	 * */
+	public boolean removeDomainAssignment(DomainAssignment domainAssignment) {
+		return this.domainAssignments.remove(domainAssignment);
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((comments == null) ? 0 : comments.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime
+				* result
+				+ ((domainAssignments == null) ? 0 : domainAssignments
+						.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof User))
+			return false;
+		User other = (User) obj;
+		if (comments == null) {
+			if (other.comments != null)
+				return false;
+		} else if (!comments.equals(other.comments))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (domainAssignments == null) {
+			if (other.domainAssignments != null)
+				return false;
+		} else if (!domainAssignments.equals(other.domainAssignments))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 
 	// /**
@@ -230,6 +287,8 @@ public class User extends AbstractEntity {
 	// return projectAssignments.remove(assignment);
 	// }
 
+	
+	// TODO: PUT IT INTO BUSINESS LOGIC!!
 	/**
 	 * Checks whether the <code>User</code> has any <code>Role</code> with the
 	 * given name.
@@ -237,7 +296,7 @@ public class User extends AbstractEntity {
 	 * @param name
 	 * @return true only if any of the roles has a name like the passed argument
 	 * */
-	public boolean hasRole(String name) {
+	/*public boolean hasRole(String name) {
 		if (name == null) {
 			return true;
 		}
@@ -247,51 +306,16 @@ public class User extends AbstractEntity {
 			}
 		}
 		return false;
-	}
+	}*/
 
 	// TODO: comment
-	public boolean hasPrivilege(String name) {
+	/*public boolean hasPrivilege(String name) {
 		for (Role r : roles) {
 			if (r.hasPrivilege(name)) {
 				return true;
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof User)) {
-			return false;
-		}
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		return true;
-	}
+	}*/
+	
 }

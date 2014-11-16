@@ -3,10 +3,9 @@
  */
 package hu.bme.aut.wman.controllers;
 
-import org.apache.log4j.Logger;
-import hu.bme.aut.wman.model.Role;
+import hu.bme.aut.wman.handlers.UserHandlerLocal;
 import hu.bme.aut.wman.model.User;
-import hu.bme.aut.wman.service.RoleService;
+import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.UserService;
 
 import java.util.Map;
@@ -14,6 +13,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,9 +35,9 @@ public class LoginController extends AbstractController {
 
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
-	
-	@EJB(mappedName = "java:module/RoleService")
-	private RoleService roleService;
+
+	@EJB(mappedName = "java:module/UserHandlerImpl")
+	private UserHandlerLocal userHandler;
 
 
 	
@@ -67,7 +67,7 @@ public class LoginController extends AbstractController {
 
 		User user = doAuthenticate(subject);
 		if (user != null) {
-			request.getSession().setAttribute("subject", user);
+			request.getSession().setAttribute("subject", new SecurityToken(user.getId()));
 			
 			LOGGER.info("user: " + user.getUsername() + " logged in");
 			return redirectTo(APP_ROOT);
@@ -91,16 +91,11 @@ public class LoginController extends AbstractController {
 	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
 		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"), true);
 		if (validationErrors.size() <= 0) {
-			Role reader = roleService.selectByName("Reader");
-			user.addRole(reader);
 			
-			userService.save(user);
-			
-			reader.addUser(user);
-			roleService.save(reader);
+			userHandler.createUser(user, "System Reader", "System");
 			request.getSession().setAttribute("subject", user);
 			
-			LOGGER.info("user: " + user.getUsername() + " registered as " + reader.getName());
+			LOGGER.info("user: " + user.getUsername() + " registered as System Reader");
 			return redirectTo("/");
 		}
 		model.addAttribute("validationErrors", validationErrors);

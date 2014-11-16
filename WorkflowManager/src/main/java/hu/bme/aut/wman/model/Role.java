@@ -7,7 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for Entity: Role
@@ -16,37 +18,45 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @SuppressWarnings("serial")
-@NamedQuery(name = "Role.findByActionType", query = "SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes")
+@NamedQueries({
+	@NamedQuery(name = "Role.findByActionType", query = "SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes"),
+	@NamedQuery(name = "Role.findByAssignment", query = "SELECT r FROM Role r, DomainAssignment d "+
+														"WHERE d.domain.name = :domainName "+
+														    "AND d.user.id = :userID "+
+															"AND r MEMBER OF d.userRoles "),
+	@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
+													"WHERE d.name = :domainName "+
+														    "AND r MEMBER OF d.roles")
+})
 public class Role extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_ACTIONTYPE = "Role.findByActionType";
 
 	public static final String PR_NAME = "name";
+	public static final String PR_DOMAIN = "domain";
 	public static final String PR_ACTION_TYPES = "actionTypes";
-	public static final String PR_USERS = "users";
+	public static final String PR_DOMAIN_ASSIGNMENTS = "domainAssognments";
 	public static final String PR_PRIVILEGS = "privileges";
 
 	@Column(unique = true)
 	private String name;
-
+	
+	@NotNull
 	@ManyToMany(targetEntity = ActionType.class, fetch = FetchType.EAGER)
 	private Set<ActionType> actionTypes;
 
-	@ManyToMany(targetEntity = hu.bme.aut.wman.model.User.class, mappedBy = "roles", fetch = FetchType.EAGER)
-	private Set<User> users;
-
+	@NotNull
 	@ManyToMany(targetEntity = hu.bme.aut.wman.model.Privilege.class, fetch = FetchType.EAGER)
 	private Set<Privilege> privileges;
 
 	@Deprecated
 	public Role() {
-		this("");
+		super();
 	}
 
-	public Role(String name) {
+	public Role(String name, Domain domain) {
 		super();
 		this.name = name;
-		this.users = new HashSet<User>();
 		this.actionTypes = new HashSet<ActionType>();
 		this.privileges = new HashSet<Privilege>();
 	}
@@ -64,35 +74,6 @@ public class Role extends AbstractEntity {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * @return the users
-	 */
-	public Set<User> getUsers() {
-		return users;
-	}
-
-	/**
-	 * Add {@link User} to this Role
-	 * 
-	 * @param user
-	 *            the {@link User} to add
-	 * @return true if the {@link User} is added
-	 */
-	public boolean addUser(User user) {
-		return this.users.add(user);
-	}
-
-	/**
-	 * Remove {@link User} from this Role
-	 * 
-	 * @param user
-	 *            the {@link User} to remove
-	 * @return true if the {@link User} is removed
-	 */
-	public boolean removeUser(User user) {
-		return this.users.remove(user);
 	}
 
 	/**
@@ -179,14 +160,20 @@ public class Role extends AbstractEntity {
 		return false;
 	}
 
+	
+
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		int result = super.hashCode();
+		result = prime * result
+				+ ((actionTypes == null) ? 0 : actionTypes.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((privileges == null) ? 0 : privileges.hashCode());
 		return result;
 	}
 
@@ -195,23 +182,28 @@ public class Role extends AbstractEntity {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (!super.equals(obj))
 			return false;
-		}
-		if (!(obj instanceof Role)) {
+		if (!(obj instanceof Role))
 			return false;
-		}
 		Role other = (Role) obj;
-		if (id == null) {
-			if (other.id != null) {
+		if (actionTypes == null) {
+			if (other.actionTypes != null)
 				return false;
-			}
-		} else if (!id.equals(other.id)) {
+		} else if (!actionTypes.equals(other.actionTypes))
 			return false;
-		}
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (privileges == null) {
+			if (other.privileges != null)
+				return false;
+		} else if (!privileges.equals(other.privileges))
+			return false;
 		return true;
 	}
 
