@@ -34,19 +34,14 @@ import com.google.common.collect.Collections2;
 @LocalBean
 public class ProjectService extends AbstractDataService<Project> {
 
-	//	@EJB(mappedName = "java:module/TransitionService")
 	@Inject
 	TransitionService transitionService;
-	//	@EJB(mappedName = "java:module/ProjectAssignmentService")
 	@Inject
 	ProjectAssignmentService projectAssignmentService;
-	//	@EJB(mappedName = "java:module/UserService")
 	@Inject
 	UserService userService;
-	//	@EJB(mappedName = "java:module/CommentService")
 	@Inject
 	CommentService commentService;
-	//	@EJB(mappedName = "java:module/WorkflowService")
 	@Inject
 	WorkflowService workflowService;
 

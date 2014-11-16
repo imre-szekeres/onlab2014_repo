@@ -61,14 +61,16 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project")
 	private List<HistoryEntry> historyEntries;
 
+	// TODO: elaborate ?
 	// @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	// private Set<ProjectAssignment> projectAssignments;
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
+	/* TODO: ugyanugy "Serializable" ugyanakkor 4x kevesebb helyet foglal */
 	@NotNull
-	private Boolean active = true;
+	private boolean active = true;
 
 	//FIXME just for test
 	//	@NotNull

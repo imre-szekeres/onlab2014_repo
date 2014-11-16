@@ -20,6 +20,9 @@
           <property name='basename' value='messages' />
     </bean>
     
+    <bean id='webAppStartupListener'
+          class='hu.bme.aut.wman.listeners.WebAppStartupListener' />
+    
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
 </beans>

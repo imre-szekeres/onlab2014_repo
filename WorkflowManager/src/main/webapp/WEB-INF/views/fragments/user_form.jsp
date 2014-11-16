@@ -12,95 +12,81 @@
         
         <fieldset>
         <div id='user-form-input-positioner' class='pos-rel' >
-        <c:if test='${ not empty validationErrors or not empty validationErrors.username}' >
-	        <c:set var='usernameClass' value='has-error' />
-	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.username }</span>
-	            </div>
+	        <div id='username-row' class='user-form-row form-group ${ not empty validationErrors and not empty validationErrors.username ? "has-error" : "" }' >
+	            <label class='control-label col-md-1 user-form-label-row' for='username' >
+	                <spring:message code='user.form.username.label' />
+	            </label>
+	            <div class='col-md-3 user-form-input-row'>
+	                <form:input id='username' path='username' type='text' class='form-control' />
+	            </div> 
+	            <c:if test='${ not empty validationErrors and not empty validationErrors.username }' >
+                    <div class='col-md-4'>
+                        <span class='text-danger error-message-label' >${ validationErrors.username }</span>
+                    </div>
+                </c:if>
 	        </div>
-        </c:if>
-        <div id='username-row' class='user-form-row form-group ${ usernameClass }' >
-            <label class='control-label col-lg-4' for='username' >
-                <spring:message code='user.form.username.label' />
-            </label>
-            <div class='col-lg-8'>
-                <form:input id='username' path='username' type='text' class='form-control' />
-            </div> 
-        </div>
-        
-        <c:if test='${ not empty validationErrors or not empty validationErrors.password }' >
-	        <c:set var='passwordClass' value='has-error' />
-	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.password }</span>
+	        
+	        <div id='password-row' class='user-form-row form-group ${ not empty validationErrors and not empty validationErrors.password ? "has-error" : "" }' >
+	            <label class='control-label col-md-1 user-form-label-row' for='password' >
+	                <spring:message code='user.form.password.label' />
+	            </label>
+	            <div class='col-md-3  user-form-input-row'>
+	                <form:input id='password' path='password' type='password' class='form-control' />
 	            </div>
+                <c:if test='${ not empty validationErrors and not empty validationErrors.password }' >
+	                <div class='col-md-4'>
+	                     <span class='text-danger error-message-label' >${ validationErrors.password }</span>
+	                </div>
+	            </c:if>
 	        </div>
-        </c:if>
-        <div id='password-row' class='user-form-row form-group ${ passwordClass }' >
-            <label class='control-label col-lg-4' for='password' >
-                <spring:message code='user.form.password.label' />
-            </label>
-            <div class='col-lg-8'>
-                <form:input id='password' path='password' type='password' class='form-control' />
-            </div> 
-        </div>
-        
-        <c:if test='${ not empty validationErrors or not empty validationErrors.passwordAgain }' >
-	        <c:set var='passwordAgainClass' value='has-error' />
-	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.passwordAgain }</span>
+	        
+	        <div id='password-again-row' class='user-form-row form-group ${ not empty validationErrors and not empty validationErrors.confirmPassword ? "has-error" : "" }' >
+	            <label class='control-label col-md-1 user-form-label-row' for='passwordAgain' >
+	                <spring:message code='user.form.passwordConfirm.label' />
+	            </label>
+	            <div class='col-md-3 user-form-input-row'>
+	                <input id='password-again' name='password-again' type='password' class='form-control' />
 	            </div>
+	            <c:if test='${ not empty validationErrors and not empty validationErrors.confirmPassword }' >
+	                <div class='col-md-4'>
+	                    <span class='text-danger error-message-label' >${ validationErrors.confirmPassword }</span>
+	                </div>
+	            </c:if> 
 	        </div>
-        </c:if>
-        <div id='password-again-row' class='user-form-row form-group ${ passwordAgainClass }' >
-            <label class='control-label col-lg-4' for='passwordAgain' >
-                <spring:message code='user.form.passwordConfirm.label' />
-            </label>
-            <div class='col-lg-8'>
-                <input id='password-again' name='password-again' type='password' class='form-control' />
-            </div> 
-        </div>
-        
-        <c:if test='${ not empty validationErrors or not empty validationErrors.email }' >
-	        <c:set var='emailClass' value='has-error' />
-	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.email }</span>
+	        
+	        <div id='email-row' class='user-form-row form-group ${ not empty validationErrors and not empty validationErrors.email ? "has-error" : "" }' >
+	            <label class='control-label col-md-1 user-form-label-row' for='email' >
+	                <spring:message code='user.form.email.label' />
+	            </label>
+	            <div class='col-md-3 user-form-input-row'>
+	                <form:input id='email' path='email' type='text' class='form-control' /> 
 	            </div>
+	            <c:if test='${ not empty validationErrors and not empty validationErrors.email }' >
+	                <div class='col-md-4'>
+	                    <span class='text-danger error-message-label' >${ validationErrors.email }</span>
+	                </div>
+	            </c:if>
 	        </div>
-        </c:if>
-        <div id='email-row' class='user-form-row form-group ${ emailClass }' >
-            <label class='control-label col-lg-4' for='email' >
-                <spring:message code='user.form.email.label' />
-            </label>
-            <div class='col-lg-8'>
-                <form:input id='email' path='email' type='text' class='form-control' /> 
-            </div>
-        </div>
-        
-        <c:if test='${ not empty validationErrors or not empty validationErrors.description}' >
-	        <c:set var='descriptionClass' value='has-error' />
-	        <div class='user-form-row'>
-	            <div class='error-message-wrapper'>
-	                <span class='error-message' >${ validationErrors.description }</span>
+	        
+	        <div id='description-row' class='user-form-row form-group ${ not empty validationErrors and not empty validationErrors.description ? "has-error" : "" }' >
+	            <label class='control-label col-md-1 user-form-label-row' for='description' >
+	                <spring:message code='user.form.description.label' />
+	            </label>
+	            <div class='col-md-3 user-form-input-row'>
+	                <form:textarea id='description' path='description' type='text' class='form-control' />
 	            </div>
+	            <c:if test='${ not empty validationErrors and not empty validationErrors.description }' >
+	                <div class='col-md-4'>
+	                    <span class='text-danger error-message-label' >${ validationErrors.description }</span>
+	                </div>
+	            </c:if> 
 	        </div>
-        </c:if>
-        <div id='description-row' class='user-form-row form-group ${ descriptionClass }' >
-            <label class='control-label col-lg-4' for='description' >
-                <spring:message code='user.form.description.label' />
-            </label>
-            <div class='col-lg-8'>
-                <form:textarea id='description' path='description' type='text' class='form-control' />
-            </div> 
-        </div>
         </div>
         
         <div class='user-form-row form-row form-group'>
-            <div id='user-from-submit-wrapper' class='col-lg-12 pos-rel'>
-                <input type='submit' id='register-submit' class='btn btn-primary btn-block pos-rel' value='${ param.submitButtonValue }' />
+            <div id='user-from-submit-wrapper' class='col-md-8 pos-rel'>
+                <input type='submit' id='user-form-submit' class='btn btn-primary pos-rel' value='${ param.submitButtonValue }' />
+                <input type='button' id='user-form-cancel'  class='btn btn-warning pos-rel'  value='Cancel' onclick='onUserFormCancel(event)' />
             </div>
         </div>
         </fieldset>
