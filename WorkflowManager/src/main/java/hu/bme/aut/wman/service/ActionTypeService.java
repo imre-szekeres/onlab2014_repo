@@ -2,16 +2,14 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
-import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.Transition;
 
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Helps make operations with <code>ActionTypes</code>.
@@ -22,12 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 @LocalBean
 public class ActionTypeService extends AbstractDataService<ActionType> {
 
-	@EJB(mappedName = "java:module/TransitionService")
+	@Inject
 	TransitionService transitionService;
-	@EJB(mappedName = "java:module/RoleService")
+	@Inject
 	RoleService roleService;
 
 	// TODO we marked it as complex, but I don't remember why :(
+	// TODO: why do we have to override it if it only calls the method in super?
 	@Override
 	public void save(ActionType entity) {
 		super.save(entity);
@@ -51,39 +50,6 @@ public class ActionTypeService extends AbstractDataService<ActionType> {
 			super.delete(entity);
 		}
 	};
-
-	/**
-	 * Add roles to the actionType.
-	 * 
-	 * @param actionType
-	 * @param roles
-	 */
-	public void addRoles(ActionType actionType, List<Role> roles) {
-		if (isDetached(actionType)) {
-			actionType = attach(actionType);
-		}
-		actionType.addRoles(roles);
-
-		for (Role role : roles) {
-			roleService.save(role);
-		}
-	}
-
-	/**
-	 * Remove roles from the actionType.
-	 * 
-	 * @param actionType
-	 * @param roles
-	 */
-	public void removeRoles(ActionType actionType, List<Role> roles) {
-		actionType.removeRoles(roles);
-
-		for (Role role : roles) {
-			roleService.save(role);
-		}
-
-		save(actionType);
-	}
 
 	@Override
 	protected Class<ActionType> getEntityClass() {

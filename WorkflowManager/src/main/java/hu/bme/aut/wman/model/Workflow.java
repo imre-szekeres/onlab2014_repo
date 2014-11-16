@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,6 +34,10 @@ public class Workflow extends AbstractEntity {
 	@Size(min = 16, max = 512)
 	private String description;
 
+	@NotNull
+	@ManyToOne
+	private Domain domain;
+	
 	@OneToMany(mappedBy = "workflow", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<State> states = new ArrayList<State>();
 
@@ -42,9 +47,10 @@ public class Workflow extends AbstractEntity {
 	public Workflow() {
 	}
 
-	public Workflow(String name, String description) {
+	public Workflow(String name, String description, Domain domain) {
 		this.name = name;
 		this.description = description;
+		this.domain = domain;
 	}
 
 	public String getName() {
@@ -136,14 +142,22 @@ public class Workflow extends AbstractEntity {
 		return basicStates;
 	}
 
+
+
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		int result = super.hashCode();
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((projects == null) ? 0 : projects.hashCode());
+		result = prime * result + ((states == null) ? 0 : states.hashCode());
 		return result;
 	}
 
@@ -152,23 +166,38 @@ public class Workflow extends AbstractEntity {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (!super.equals(obj))
 			return false;
-		}
-		if (!(obj instanceof Workflow)) {
+		if (!(obj instanceof Workflow))
 			return false;
-		}
 		Workflow other = (Workflow) obj;
-		if (id == null) {
-			if (other.id != null) {
+		if (description == null) {
+			if (other.description != null)
 				return false;
-			}
-		} else if (!id.equals(other.id)) {
+		} else if (!description.equals(other.description))
 			return false;
-		}
+		if (domain == null) {
+			if (other.domain != null)
+				return false;
+		} else if (!domain.equals(other.domain))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (projects == null) {
+			if (other.projects != null)
+				return false;
+		} else if (!projects.equals(other.projects))
+			return false;
+		if (states == null) {
+			if (other.states != null)
+				return false;
+		} else if (!states.equals(other.states))
+			return false;
 		return true;
 	}
 

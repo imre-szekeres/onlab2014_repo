@@ -12,11 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 /**
  * Helps make operations with <code>State</code>.
@@ -29,11 +27,11 @@ public class StateService extends AbstractDataService<State> {
 
 	// private Validator validator;
 
-	@EJB(mappedName = "java:module/ActionTypeService")
+	@Inject
 	ActionTypeService actionTypeService;
-	@EJB(mappedName = "java:module/TransitionService")
+	@Inject
 	TransitionService transitionService;
-	@EJB(mappedName = "java:module/ProjectService")
+	@Inject
 	ProjectService projectService;
 
 	// @PostConstruct

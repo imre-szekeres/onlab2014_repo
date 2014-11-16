@@ -11,6 +11,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	BeanValidationTestSuite.class,
 	UserPrivilegesBeanchmarkTest.class
 })
 public class WorkflowManagerModelTestSuite {
