@@ -27,9 +27,18 @@
 		</div>
 	</c:if>
     
-	<div id='content-wrapper' class="panel panel-default">
-        <jsp:include page='${ pageName }.jsp' />
-    </div> 
+	<c:choose>
+		<c:when test='${not empty navigationTabs}'>
+			<div id='content-wrapper' class="panel panel-default content-wrapper-class">
+				<jsp:include page='${ pageName }.jsp' />
+			</div> 
+		</c:when>
+		<c:otherwise>
+			<div id='content-wrapper' class="content-wrapper-class" style='top:0px'>
+				<jsp:include page='${ pageName }.jsp' />
+			</div> 
+		</c:otherwise>
+	</c:choose>
     
     <div id='footer-wrapper' >
     </div>

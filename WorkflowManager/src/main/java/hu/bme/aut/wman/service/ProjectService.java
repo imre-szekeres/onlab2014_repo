@@ -9,7 +9,7 @@ import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Transition;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
-import hu.bme.aut.wman.view.objects.ProjectVO;
+import hu.bme.aut.wman.view.objects.NewProjectVO;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -82,7 +82,7 @@ public class ProjectService extends AbstractDataService<Project> {
 	//		super.save(entity);
 	//	}
 
-	public void save(ProjectVO projectVO) {
+	public void save(NewProjectVO projectVO) {
 		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
 		Project project = new Project();
 		project.setName(projectVO.getName());

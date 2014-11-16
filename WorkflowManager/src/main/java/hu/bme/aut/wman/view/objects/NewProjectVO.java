@@ -1,12 +1,12 @@
 package hu.bme.aut.wman.view.objects;
 
 
-public class ProjectVO {
+public class NewProjectVO {
 	private String name;
 	private String description;
 	private Long workflowId;
 
-	public ProjectVO(){};
+	public NewProjectVO(){};
 
 	public String getName() {
 		return name;

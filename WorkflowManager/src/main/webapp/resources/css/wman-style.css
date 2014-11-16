@@ -196,15 +196,12 @@
 
 
 /* BEGIN WM-Content */
-#content-wrapper {
+.content-wrapper-class {
 	position: absolute;
 	top: 50px;
 	left: 150px;
 	
 	width: calc(100% - 240px);
-	
-	/*width:auto;
-	height:auto;*/
 	
 	margin-top: 10px;
 	margin-left: 30px;
@@ -329,7 +326,7 @@
 /* purple:  #8142C9  dark: #5700B3 */
 
 /* BEGIN Workflows */
-.workflow-wrapper {
+.workflows-wrapper {
 	width: 350px;
 	
 	position: relative;
@@ -339,16 +336,16 @@
 	background-color: white;
 }
 
-.workflow-description {
+.workflows-description {
 	width: 350px;
 	color: black;
 }
 
-.workflow-wrapper a {
+.workflows-wrapper a {
 	text-decoration: blink;
 }
 
-.workflow-name {
+.workflows-name {
     width: 350px;
 	height: 30px;
 	text-align: center;
@@ -358,7 +355,7 @@
 	background-color: #428BCA;
 }
 
-.workflow-id {
+.workflows-id {
 	display: none;
 }
 
@@ -423,7 +420,7 @@
 /* END little buttons :) */
 
 /* BEGIN Projects */
-.project-wrapper {
+.projects-wrapper {
 	width: 350px;
 	
 	position: relative;
@@ -433,16 +430,16 @@
 	background-color: white;
 }
 
-.project-description {
+.projects-description {
 	width: 350px;
 	color: black;
 }
 
-.project-wrapper a {
+.projects-wrapper a {
 	text-decoration: blink;
 }
 
-.project-name {
+.projects-name {
     width: 350px;
 	height: 30px;
 	text-align: center;
@@ -452,11 +449,37 @@
 	background-color: #428BCA;
 }
 
-.project-id {
+.projects-id {
 	display: none;
 }
 
 /* END Projects */
+
+/* BEGIN Workflow */
+#workflow-content-wrapper {
+}
+
+#workflow-header {
+	margin-bottom: 20px;
+}
+
+#workflow-description {
+	float: left;
+	width: 50%;
+	height: 150px;
+}
+
+#workflow-projects {
+	height: 150px;
+}
+
+.workflow-name {
+	display: inline;
+	vertical-align: middle;
+	
+	margin-right: 40px;
+}
+/* END Workflow */
 
 /* General */
 .no-decor-link {
@@ -469,4 +492,18 @@
 
 .no-decor-link:active {
 	text-decoration: blink;
+}
+
+.header-button {
+	margin: 0px 5px;
+}
+
+.button-text {
+	margin-left: 5px;
+}
+
+.double-panel-left {
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+	margin-right: 15px;
 }

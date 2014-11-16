@@ -34,7 +34,8 @@ public class Workflow extends AbstractEntity {
 	@Size(min = 16, max = 512)
 	private String description;
 
-	@NotNull
+	// FIXME just for test
+	//	@NotNull
 	@ManyToOne
 	private Domain domain;
 
@@ -151,7 +152,6 @@ public class Workflow extends AbstractEntity {
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((states == null) ? 0 : states.hashCode());
 		return result;
 	}
 

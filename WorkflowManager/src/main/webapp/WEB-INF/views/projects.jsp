@@ -4,11 +4,11 @@
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 
-<div id="project-content-wrapper" class="panel-body">
+<div id="projects-content-wrapper" class="panel-body">
 	<c:forEach var="project" items="${projects}">
-		<div class="panel-group project-wrapper" id="accordion${project.id}">
+		<div class="panel-group projects-wrapper" id="accordion${project.id}">
 			<div class="panel panel-default">
-				<div class="panel-heading project-name" style="background-color: #5700B3; color: white; line-height:30px;">
+				<div class="panel-heading projects-name" style="background-color: #5700B3; color: white; line-height:30px;">
 					<h4 class="panel-title">
 						<a data-toggle="collapse" data-parent="#accordion${project.id}" href="#collapse${project.id}">
 							${project.name}
@@ -16,16 +16,16 @@
 					</h4>
 				</div>
 				<div id="collapse${project.id}" class="panel-collapse collapse">
-					<div class="panel-body project-description">
+					<div class="panel-body projects-description">
 						${project.description}
 					</div>
-					<div class="panel-body project-workflow">
+					<div class="panel-body projects-workflow">
 						Workflow: ${project.workflow.name} <br/>
 						State: ${project.currentState.name} <br/>
 						Owner: ${project.owner.name} 
 					</div>
 				</div>
-				<div class="project-id">
+				<div class="projects-id">
 					${project.id}
 				</div>
 			</div>
@@ -34,11 +34,11 @@
 </div>
 	
 <script language="javascript">
-	$( "div.project-wrapper" )
+	$( "div.projects-wrapper" )
 		.mouseenter(function() {
-			var name = $(this).find('div.project-id').text();
+			var name = $(this).find('div.projects-id').text();
 			var isActive = getUrlParameter('active');
-			var div = $(this).find('div.project-name');
+			var div = $(this).find('div.projects-name');
 			
 			if (isActive == 'true') {
 				div.append( "<a id='close-button' class='no-decor-link' href='close/project?id="+name+"'><div class='close-button'><span class='glyphicon glyphicon-ok' style='line-height: 26px;'></div></a>" +

@@ -4,7 +4,7 @@ import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.Workflow;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.WorkflowService;
-import hu.bme.aut.wman.view.objects.ProjectVO;
+import hu.bme.aut.wman.view.objects.NewProjectVO;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -62,14 +62,14 @@ public class ProjectViewController extends AbstractController {
 			worfklowNamesById.put(workflow.getId(), workflow.getName());
 		}
 
-		model.addAttribute("project", new ProjectVO());
+		model.addAttribute("project", new NewProjectVO());
 		model.addAttribute("availableWorkflows", worfklowNamesById);
 		model.addAttribute("message", "Create new project");
 		return navigateToFrame("new_project", model);
 	}
 
 	@RequestMapping(value = NEW_PROJECT, method = RequestMethod.POST)
-	public ModelAndView postNewWorkflow(@ModelAttribute("project") ProjectVO projectVO, HttpServletRequest request, Model model) {
+	public ModelAndView postNewWorkflow(@ModelAttribute("project") NewProjectVO projectVO, HttpServletRequest request, Model model) {
 
 		// project.setStates(Workflow.getBasicStates());
 

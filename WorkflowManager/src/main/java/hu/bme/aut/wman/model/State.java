@@ -235,7 +235,6 @@ public class State extends AbstractEntity {
 		result = prime * result + ((historyEntries == null) ? 0 : historyEntries.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((workflow == null) ? 0 : workflow.hashCode());
 		return result;
 	}
 
