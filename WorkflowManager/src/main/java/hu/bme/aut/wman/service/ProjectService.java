@@ -94,14 +94,15 @@ public class ProjectService extends AbstractDataService<Project> {
 		super.save(project);
 	}
 
+	// TODO
 	/**
 	 * You can not delete projects, only closing is allowed.
-	 * NOTE: If you call this method, it will not delete the project either!
+	 * NOTE: If you call this method, it will not delete the project either! OR will :D We should discuss it again
 	 */
-	@Override
-	@Deprecated
-	public void delete(Project entity) throws EntityNotDeletableException {
-	};
+	//	@Override
+	//	@Deprecated
+	//	public void delete(Project entity) throws EntityNotDeletableException {
+	//	};
 
 	/**
 	 * Closes the project.

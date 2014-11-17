@@ -75,6 +75,17 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	}
 
 	/**
+	 * Deletes the entity from the database by its ID.
+	 *
+	 * @param id
+	 *            of the entity to delete
+	 * @throws EntityNotDeletableException
+	 */
+	public void deleteById(Long id) throws EntityNotDeletableException {
+		delete(selectById(id));
+	}
+
+	/**
 	 * Returns all of the entities, which represented by the Entity class.
 	 *
 	 * @return list of the result

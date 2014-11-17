@@ -54,7 +54,7 @@ public class Project extends AbstractEntity {
 	@OneToOne(fetch = FetchType.EAGER)
 	private State currentState;
 
-	@NotNull
+	//	@NotNull
 	@ManyToOne
 	private Workflow workflow;
 
@@ -71,7 +71,6 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project")
 	private List<BlobFile> files;
 
-	/* TODO: ugyanugy "Serializable" ugyanakkor 4x kevesebb helyet foglal */
 	@NotNull
 	private boolean active = true;
 

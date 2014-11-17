@@ -67,19 +67,6 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	}
 
 	/**
-	 * Deletes the workflow.
-	 * You can not delete a workflow, if there is at least one <b>active</b> project in with that workflow.
-	 *
-	 * @param workflowId
-	 *            the id of the workflow to delete
-	 * @throws EntityNotDeletableException
-	 *             if you can not delete that workflow for same reason
-	 */
-	public void deleteById(Long workflowId) throws EntityNotDeletableException {
-		delete(selectById(workflowId));
-	}
-
-	/**
 	 * Adds the states to the workflow.
 	 *
 	 * @param workflow
