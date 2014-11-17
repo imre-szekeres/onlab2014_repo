@@ -89,6 +89,7 @@ public class WorkflowsViewController extends AbstractController {
 		Map<String, String> navMap = new HashMap<>();
 		navMap.put(NAV_PREFIX + WORKFLOWS, "Workflows");
 		navMap.put(NAV_PREFIX + NEW_WORKFLOW, "Create new workflow");
+		navMap.put(NAV_PREFIX + ActionsViewController.ACTIONS, "Manage actions");
 		return navMap;
 	}
 

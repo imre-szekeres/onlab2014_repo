@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for Entity: ActionType
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
@@ -15,20 +15,17 @@ import javax.validation.constraints.NotNull;
 public class ActionType extends AbstractEntity {
 
 	public static final String PR_NAME = "actionTypeName";
-	public static final String PR_ROLES = "roles";
 	public static final String PR_DOMAIN = "domain";
-	
 
 	@NotNull
 	@Column(unique = true)
 	private String actionTypeName;
-	
-	@NotNull
+
+	// FIXME just for testing
+	//	@NotNull
 	@ManyToOne
 	private Domain domain;
 
-
-	@Deprecated
 	public ActionType() {
 		super();
 	}

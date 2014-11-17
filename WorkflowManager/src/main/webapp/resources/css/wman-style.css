@@ -535,6 +535,42 @@
 }
 /* END Project */
 
+/* BEGIN Actions */
+.actions-wrapper {
+	width: 600px;
+	
+	position: relative;
+	float: left;
+	margin: 20px 40px;
+	
+	background-color: white;
+}
+
+.actions-description {
+	width: 600px;
+	color: black;
+}
+
+.actions-wrapper a {
+	text-decoration: blink;
+}
+
+.actions-name {
+    width: 600px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	
+	color: white;
+	background-color: #428BCA;
+}
+
+.actions-id {
+	display: none;
+}
+
+/* END Actions */
+
 /* General */
 .no-decor-link {
 	text-decoration: blink;
