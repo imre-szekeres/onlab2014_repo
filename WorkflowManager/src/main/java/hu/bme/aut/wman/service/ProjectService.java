@@ -112,9 +112,9 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (!project.isActive())
 			return;
 		else {
-			if (isDetached(project)) {
-				project = attach(project);
-			}
+			//			if (isDetached(project)) {
+			project = attach(project);
+			//			}
 			project.setActive(false);
 		}
 	}

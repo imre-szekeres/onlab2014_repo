@@ -68,6 +68,9 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
+	@OneToMany(mappedBy = "project")
+	private List<BlobFile> files;
+
 	/* TODO: ugyanugy "Serializable" ugyanakkor 4x kevesebb helyet foglal */
 	@NotNull
 	private boolean active = true;
@@ -265,8 +268,8 @@ public class Project extends AbstractEntity {
 		return active;
 	}
 
-	public void setActive(Boolean active) {
-		this.active = active;
+	public Boolean getActive() {
+		return active;
 	}
 
 	public User getOwner() {
@@ -275,5 +278,17 @@ public class Project extends AbstractEntity {
 
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+
+	public List<BlobFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<BlobFile> files) {
+		this.files = files;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

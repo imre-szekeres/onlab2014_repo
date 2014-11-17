@@ -5,9 +5,7 @@
  * */
 package hu.bme.aut.wman.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -61,8 +59,8 @@ public class State extends AbstractEntity {
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<HistoryEntry> historyEntries;
 
-	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	private List<BlobFile> files;
+	//	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	//	private List<BlobFile> files;
 
 	// @ManyToOne
 	// @JoinColumn
@@ -82,7 +80,7 @@ public class State extends AbstractEntity {
 		workflow = null;
 		this.initial = initial;
 		historyEntries = new HashSet<>();
-		files = new ArrayList<>();
+		//		files = new ArrayList<>();
 		// this.children = new ArrayList<>();
 	}
 
@@ -134,13 +132,13 @@ public class State extends AbstractEntity {
 	// this.nextStates = nextStates;
 	// }
 
-	public List<BlobFile> getFiles() {
-		return files;
-	}
-
-	public void setFiles(List<BlobFile> files) {
-		this.files = files;
-	}
+	//	public List<BlobFile> getFiles() {
+	//		return files;
+	//	}
+	//
+	//	public void setFiles(List<BlobFile> files) {
+	//		this.files = files;
+	//	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -231,7 +229,7 @@ public class State extends AbstractEntity {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((files == null) ? 0 : files.hashCode());
+		//		result = prime * result + ((files == null) ? 0 : files.hashCode());
 		result = prime * result + ((historyEntries == null) ? 0 : historyEntries.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());

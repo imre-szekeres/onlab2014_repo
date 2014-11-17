@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation to store files in database
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
@@ -25,7 +25,7 @@ public class BlobFile extends AbstractEntity {
 
 	@NotNull
 	@ManyToOne
-	private State state;
+	private Project project;
 
 	@Lob
 	private byte[] content;
@@ -35,10 +35,10 @@ public class BlobFile extends AbstractEntity {
 		super();
 	}
 
-	public BlobFile(String fileName, byte[] content, State state) {
+	public BlobFile(String fileName, byte[] content, Project project) {
 		this.fileName = fileName;
 		this.content = content;
-		this.state = state;
+		this.setProject(project);
 	}
 
 	public String getFileName() {
@@ -53,13 +53,6 @@ public class BlobFile extends AbstractEntity {
 		return content;
 	}
 
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
 
 	public void setContent(byte[] content)
 	{
@@ -76,14 +69,18 @@ public class BlobFile extends AbstractEntity {
 	@Override
 	public boolean equals(Object object) {
 		if (!(object instanceof BlobFile))
-		{
 			return false;
-		}
 		BlobFile other = (BlobFile) object;
-		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))
-		{
+		if ((id == null && other.id != null) || (id != null && !id.equals(other.id)))
 			return false;
-		}
 		return true;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 }

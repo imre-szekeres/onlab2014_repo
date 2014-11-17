@@ -5,7 +5,6 @@ import hu.bme.aut.wman.model.Workflow;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.StateService;
 import hu.bme.aut.wman.service.WorkflowService;
-import hu.bme.aut.wman.view.objects.WorkflowVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,9 @@ public class WorkflowViewController extends AbstractController {
 		Workflow workflow = workflowService.selectById(workflowId);
 		List<Project> projects = projectService.selectAllByWorkflowName(workflow.getName());
 
-		model.addAttribute("workflowVO", new WorkflowVO(workflow, projects));
+		//		model.addAttribute("workflowVO", new WorkflowVO(workflow, projects));
+		model.addAttribute("workflow", workflow);
+		model.addAttribute("projects", projects);
 		model.addAttribute("message", "Workflow " + workflow.getName());
 		return navigateToFrame("workflow", model);
 	}

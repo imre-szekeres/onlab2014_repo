@@ -6,9 +6,9 @@
 
 <div id="workflow-content-wrapper">
 	<div id="workflow-header" class="content-header">
-		<h3 class='workflow-name'> <strong>Workflow:</strong> ${workflowVO.workflow.name} </h3>
+		<h3 class='workflow-name'> <strong>Workflow:</strong> ${workflow.name} </h3>
 		<a role='button' class='btn btn-primary header-button'> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <span class='button-text'>Edit</span> </a>
-		<a href='delete/workflow?id=${workflowVO.workflow.id}' role='button' class='btn btn-danger header-button'> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <span class='button-text'>Delete</span> </a>
+		<a href='delete/workflow?id=${workflow.id}' role='button' class='btn btn-danger header-button'> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <span class='button-text'>Delete</span> </a>
 	</div>
 	<div id="workflow-properties-panel" >
 		<div id="workflow-description" class="panel panel-default double-panel-left">
@@ -16,7 +16,7 @@
 				<h3 class="panel-title">Description</h3>
 			</div>
 			<div class="panel-body text-justify">
-				${workflowVO.workflow.description}
+				${workflow.description}
 			</div>
 		</div>
 		<div id="workflow-projects" class="panel panel-default">
@@ -25,9 +25,9 @@
 			</div>
 			<div class="panel-body">
 				<ul class="list-unstyled">
-				<c:forEach var="project" items="${workflowVO.projects}">
-					<li> ${project.name} </li>
-				</c:forEach>
+					<c:forEach var="project" items="${projects}">
+						<li> ${project.name} </li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>
@@ -37,7 +37,7 @@
 			<h3 class="panel-title">States</h3>
 		</div>
 		<div id='workflow-states' class="panel-body">
-			<c:forEach var="state" items="${workflowVO.workflow.states}">
+			<c:forEach var="state" items="${workflow.states}">
 				${state.name}</br>
 			</c:forEach>
 		</div>
