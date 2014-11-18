@@ -4,38 +4,54 @@
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 
-<div id="actions-content-wrapper" class="panel-body">
-	<div id='actions-header'>
-		<strong>Actions</strong>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-action-modal">
-			 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
-		</button>
-	</div>
 
-	<c:forEach var="action" items="${actions}">
-		<div class="panel-group actions-wrapper" id="accordion${action.id}">
-			<div class="panel panel-default">
-				<div class="panel-heading actions-name" style="background-color: #5700B3; color: white; line-height:30px;">
-					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion${action.id}" href="#collapse${action.id}">
-							${action.actionTypeName}
-						</a>
-					</h4>
-				</div>
-				<div id="collapse${action.id}" class="panel-collapse collapse actions-description">
-					<div class="panel-body">
-						<c:forEach var="role" items="${actionsMap['action.id']}">
-							${role.name}
-						</c:forEach>
+
+<div id='actions-header'>
+	<h3><strong>Actions</strong></h3>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-action-modal">
+		 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
+	</button>
+</div>
+
+
+<c:if test='${empty actions}'>
+	<div id='actions-empty-wrapper' class='list-empty-warning'>
+		<div class="list-empty-warning-header">
+			Ooops, we can't find any action.
+		</div>
+		<div class="list-empty-warning-body">
+			You don't have any action yet. Click on the "New" button to create one.
+		</div>
+	</div>
+</c:if>
+
+<c:if test='${not empty actions}'>
+	<div id="actions-content-wrapper" class="panel panel-default panel-body">
+		<c:forEach var="action" items="${actions}">
+			<div class="panel-group actions-wrapper" id="accordion${action.id}">
+				<div class="panel panel-default">
+					<div class="panel-heading actions-name" style="background-color: #5700B3; color: white; line-height:30px;">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion${action.id}" href="#collapse${action.id}">
+								${action.actionTypeName}
+							</a>
+						</h4>
+					</div>
+					<div id="collapse${action.id}" class="panel-collapse collapse actions-description">
+						<div class="panel-body">
+							<c:forEach var="role" items="${actionsMap['action.id']}">
+								${role.name}
+							</c:forEach>
+						</div>
+					</div>
+					<div class="actions-id">
+						${action.id}
 					</div>
 				</div>
-				<div class="actions-id">
-					${action.id}
-				</div>
 			</div>
-		</div>
-	</c:forEach>
-</div>
+		</c:forEach>
+	</div>
+</c:if>
 
 <div class="modal fade" id="new-action-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">

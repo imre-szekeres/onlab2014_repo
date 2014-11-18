@@ -4,7 +4,7 @@
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 
-<div id='new-workflow-wrapper' class='panel-body'>
+<div id='new-workflow-wrapper' class='panel panel-default panel-body'>
 	<form:form id='new-workflow-form' modelAttribute='workflow' method='POST' action='/WorkflowManager/new/workflow' class='form-horizontal'>
 		<div class='form-group'>
 			<label for='input-name' class='col-sm-2 control-label'>Name</label>

@@ -4,29 +4,42 @@
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 
-<div id="workflows-content-wrapper" class="panel-body">
-	<c:forEach var="workflow" items="${workflows}">
-		<div class="panel-group workflows-wrapper" id="accordion${workflow.id}">
-			<div class="panel panel-default">
-				<div class="panel-heading workflows-name" style="background-color: #5700B3; color: white; line-height:30px;">
-					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion${workflow.id}" href="#collapse${workflow.id}">
-							${workflow.name}
-						</a>
-					</h4>
-				</div>
-				<div id="collapse${workflow.id}" class="panel-collapse collapse workflows-description">
-					<div class="panel-body">
-						${workflow.description}
+<c:if test='${empty workflows}'>
+	<div id='workflows-empty-wrapper' class='list-empty-warning'>
+		<div class="list-empty-warning-header">
+			Ooops, we can't find any workflow.
+		</div>
+		<div class="list-empty-warning-body">
+			You don't have any workflow yet. Click <a role='button' href="new/workflow" class='btn btn-link inline-link'>here</a> to create one...
+		</div>
+	</div>
+</c:if>
+
+<c:if test='${not empty workflows}'>
+	<div id="workflows-content-wrapper" class="panel panel-default panel-body">
+		<c:forEach var="workflow" items="${workflows}">
+			<div class="panel-group workflows-wrapper" id="accordion${workflow.id}">
+				<div class="panel panel-default">
+					<div class="panel-heading workflows-name" style="background-color: #5700B3; color: white; line-height:30px;">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion${workflow.id}" href="#collapse${workflow.id}">
+								${workflow.name}
+							</a>
+						</h4>
+					</div>
+					<div id="collapse${workflow.id}" class="panel-collapse collapse workflows-description">
+						<div class="panel-body">
+							${workflow.description}
+						</div>
+					</div>
+					<div class="workflows-id">
+						${workflow.id}
 					</div>
 				</div>
-				<div class="workflows-id">
-					${workflow.id}
-				</div>
 			</div>
-		</div>
-	</c:forEach>
-</div>
+		</c:forEach>
+	</div>
+</c:if>
 	
 <script language="javascript">
 	$( "div.workflows-wrapper" )

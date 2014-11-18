@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.controllers;
 
+import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
@@ -38,6 +39,7 @@ public class ProjectsViewController extends AbstractController {
 	public static final String PROJECTS = "/projects";
 	public static final String NEW_PROJECT = "/new/project";
 	public static final String CLOSE_PROJECT = "/close/project";
+	public static final String DELETE_PROJECT = "/delete/project";
 
 	@EJB(mappedName = "java:module/ProjectService")
 	private ProjectService projectService;
@@ -112,6 +114,20 @@ public class ProjectsViewController extends AbstractController {
 
 		ModelAndView view = redirectToFrame(PROJECTS);
 		view.setViewName(view.getViewName() + "?active=true");
+		return view;
+	}
+
+	@RequestMapping(value = DELETE_PROJECT, method = RequestMethod.GET)
+	public ModelAndView deleteWorkflow(@RequestParam("id") Long projectId, HttpServletRequest request, Model model) {
+		// TODO better exception handling :)
+		try {
+			projectService.deleteById(projectId);
+		} catch (EntityNotDeletableException e) {
+			e.printStackTrace();
+		}
+
+		ModelAndView view = redirectToFrame(PROJECTS);
+		view.setViewName(view.getViewName() + "?active=false");
 		return view;
 	}
 
