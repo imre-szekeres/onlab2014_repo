@@ -4,7 +4,18 @@
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 
-<div id='new-project-wrapper' class='panel-body'>
+<c:if test='${empty availableWorkflows}'>
+	<div id='workflows-empty-wrapper' class='list-empty-warning'>
+		<div class="list-empty-warning-header">
+			There isn't any workflow.
+		</div>
+		<div class="list-empty-warning-body">
+			You don't have any workflow yet. Click <a role='button' href="workflow" class='btn btn-link inline-link'>here</a> to create one...
+		</div>
+	</div>
+</c:if>
+
+<div id='new-project-wrapper' class='panel panel-default panel-body'>
 	<form:form id='new-project-form' modelAttribute='project' method='POST' action='/WorkflowManager/new/project' class='form-horizontal'>
 		<div class='form-group'>
 			<label for='input-name' class='col-sm-1 control-label' style='text-align:left;'>Name</label>
@@ -27,9 +38,15 @@
 		</div>
 		<div class='form-group'>
 			<div class='col-sm-2'>
-				<input type='submit' class='btn btn-primary' value='Create'/>
+				<c:choose>
+					<c:when test='${empty availableWorkflows}'>
+						<input type='submit' class='btn btn-primary' value='Create' disabled="true"/>
+					</c:when>
+					<c:otherwise>
+						<input type='submit' class='btn btn-primary' value='Create'/>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
-		
     </form:form>
 </div>

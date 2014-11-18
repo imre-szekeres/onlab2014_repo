@@ -29,7 +29,7 @@
     
 	<c:choose>
 		<c:when test='${not empty navigationTabs}'>
-			<div id='content-wrapper' class="panel panel-default content-wrapper-class">
+			<div id='content-wrapper' class="content-wrapper-class">
 				<jsp:include page='${ pageName }.jsp' />
 			</div> 
 		</c:when>

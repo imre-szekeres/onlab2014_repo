@@ -567,3 +567,34 @@
 .panel-body-section{
 	margin-bottom: 15px;
 }
+
+/* list empty warning div */
+.list-empty-warning {
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: #D4D9DE;
+	border-left-color: #f0ad4e;
+	border-left-width: 6px;
+	border-style: solid;
+
+	padding: 10px 30px;
+	min-height: 75px;
+	margin: 15px 0px;
+}
+
+.list-empty-warning-header {
+	font-size: 18px;
+	color: #f0ad4e;
+	margin-bottom: 10px;
+}
+
+.list-empty-warning-body {
+	margin-bottom: 10px;
+}
+
+/* Extends btn-link in bootstrap to get inline link in text */
+.inline-link {
+	margin:0px; 
+	padding:0px;
+	vertical-align:initial;
+}
