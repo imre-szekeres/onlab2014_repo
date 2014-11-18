@@ -1,9 +1,14 @@
 package hu.bme.aut.wman.controllers;
 
+import hu.bme.aut.wman.view.objects.ErrorMessageVO;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Maps;
 
@@ -17,7 +22,7 @@ public class AbstractController {
 
 	/**
 	 * Navigates to the given content page in the frame.
-	 * 
+	 *
 	 * @param pageName
 	 *            content page name, without .jsp extension
 	 * @param model
@@ -29,9 +34,14 @@ public class AbstractController {
 		return navigateTo(FRAME, pageName, model);
 	}
 
+	public String navigateToFrame(String pageName, Model model, List<ErrorMessageVO> errorList) {
+		model.addAttribute("navigationTabs", getNavigationTabs());
+		return navigateTo(FRAME, pageName, model, errorList);
+	}
+
 	/**
 	 * Navigates to the given content page with or without the frame
-	 * 
+	 *
 	 * @param to
 	 *            the frame to navigate to
 	 * @param pageName
@@ -41,19 +51,38 @@ public class AbstractController {
 	 * @return a string, where we should navigate.
 	 */
 	public String navigateTo(String to, String pageName, Model model) {
+		return navigateTo(to, pageName, model, new ArrayList<ErrorMessageVO>());
+	}
+
+	public String navigateTo(String to, String pageName, Model model, List<ErrorMessageVO> errorList) {
+		Object errorsRaw = model.asMap().get("errorList");
+		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
+		if (errorsRaw != null) {
+			errors = (List<ErrorMessageVO>) errorsRaw;
+		}
+		if (!errors.isEmpty()) {
+			errors.addAll(errorList);
+		}
+
+		model.addAttribute("errorList", errors);
 		model.addAttribute("pageName", pageName);
 		return to;
 	}
 
 	/**
 	 * Redirects to the frame
-	 * 
+	 *
 	 * @return a string, with we should redirect
 	 */
-	public ModelAndView redirectToFrame(String pageSuffix) {
+	public ModelAndView redirectToFrame(String pageSuffix, List<ErrorMessageVO> errorList, RedirectAttributes redirectAttributes) {
 		ModelAndView modelAndView = new ModelAndView("redirect:" + pageSuffix);
-		modelAndView.addObject("navigationTabs", getNavigationTabs());
+		//		modelAndView.addObject("navigationTabs", getNavigationTabs());
+		redirectAttributes.addFlashAttribute("errorList", errorList);
 		return modelAndView;
+	}
+
+	public ModelAndView redirectToFrame(String pageSuffix, RedirectAttributes redirectAttributes) {
+		return redirectToFrame(pageSuffix, new ArrayList<ErrorMessageVO>(), redirectAttributes);
 	}
 
 	/**
@@ -61,13 +90,14 @@ public class AbstractController {
 	 *            redirects here
 	 * @return a string, with we should redirect
 	 */
+	@Deprecated
 	public String redirectTo(String to) {
 		return "redirect:" + to;
 	}
 
 	/**
 	 * The navigation tabs in the wm_frame, you should overide it if you want any tab.
-	 * 
+	 *
 	 * @return A map, where the keys are the links on the tabs, and the values are the display name in the tab.
 	 */
 	public Map<String, String> getNavigationTabs() {

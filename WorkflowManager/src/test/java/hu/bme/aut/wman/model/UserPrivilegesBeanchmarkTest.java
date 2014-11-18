@@ -29,32 +29,31 @@ public class UserPrivilegesBeanchmarkTest {
 	public UserPrivilegesBeanchmarkTest(Benchmarkable engine) {
 		this.engine = engine;
 	}
-	
-	
+
+
 	@Parameters
 	public static Collection<Object[]> data() {
 		Benchmarkable simple = new SimpleBenchmarker() {
-			
+
 			@Override
-			@SuppressWarnings("deprecation")
 			public void setup() {
-				this.user = new User();
+				user = new User();
 				Domain d = new Domain("System");
 				Role admin = new Role("System Administrator", d);
 				Privilege createUser = new Privilege("Create User");
 				Privilege visitPage = new Privilege("Visit Page");
 				Privilege removeRole = new Privilege("Remove Role");
-				
+
 				admin.addPrivilege(createUser);
 				admin.addPrivilege(visitPage);
 				admin.addPrivilege(removeRole);
-				
-				this.user.addDomainAssignment(new DomainAssignment(this.user, d, admin));
+
+				user.addDomainAssignment(new DomainAssignment(user, d, admin));
 			}
-			
+
 			@Override
 			protected void doExecute() throws Exception {
-				if(hasPrivilege(this.user, "Simple Privilege", "System"))
+				if(hasPrivilege(user, "Simple Privilege", "System"))
 					throw new Exception();
 			}
 
@@ -62,18 +61,18 @@ public class UserPrivilegesBeanchmarkTest {
 			public double exeute() throws Exception {
 				return super.execute();
 			}
-			
+
 			private boolean hasPrivilege(User user, final String privilege, final String domain) {
 				DomainAssignment da = new ArrayList<DomainAssignment>(Collections2.filter(user.getDomainAssignments(), new Predicate<DomainAssignment>() {
-					
+
 					@Override
 					public boolean apply(DomainAssignment da) {
 						return da.getDomain().getName().equals(domain);
 					}
 				})).get(0);
-				
+
 				Collection<Role> roles = Collections2.filter(da.getUserRoles(), new Predicate<Role>() {
-					
+
 					@Override
 					public boolean apply(Role role) {
 						return role.hasPrivilege(privilege);
@@ -81,15 +80,15 @@ public class UserPrivilegesBeanchmarkTest {
 				});
 				return (roles.size() > 0);
 			}
-			
+
 			private User user;
 		};
 		return Arrays.asList(new Object[][] {{ simple }});
 	}
-	
+
 	@Test
 	public void simpleBenchmark() {
-		
+
 		try {
 			double result = engine.exeute();
 			System.out.println(StringUtils.build("Average runtime: ", Double.toString(result), " ms"));
@@ -98,6 +97,6 @@ public class UserPrivilegesBeanchmarkTest {
 			fail();
 		}
 	}
-	
+
 	private Benchmarkable engine;
 }

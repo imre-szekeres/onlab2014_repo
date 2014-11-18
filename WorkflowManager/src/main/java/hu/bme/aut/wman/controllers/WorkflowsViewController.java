@@ -6,7 +6,9 @@ import hu.bme.aut.wman.model.Workflow;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.StateService;
 import hu.bme.aut.wman.service.WorkflowService;
+import hu.bme.aut.wman.view.objects.ErrorMessageVO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @version "%I%, %G%"
@@ -57,7 +60,7 @@ public class WorkflowsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = NEW_WORKFLOW, method = RequestMethod.POST)
-	public ModelAndView postNewWorkflow(@ModelAttribute("workflow") Workflow workflow, HttpServletRequest request, Model model) {
+	public ModelAndView postNewWorkflow(@ModelAttribute("workflow") Workflow workflow, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		workflow.setStates(Workflow.getBasicStates());
 
@@ -69,19 +72,20 @@ public class WorkflowsViewController extends AbstractController {
 			workflowService.save(workflow);
 		}
 
-		return redirectToFrame(WORKFLOWS);
+		return redirectToFrame(WORKFLOWS, redirectAttributes);
 	}
 
 	@RequestMapping(value = DELETE_WORKFLOW, method = RequestMethod.GET)
-	public ModelAndView deleteWorkflow(@RequestParam("id") Long workflowId, HttpServletRequest request, Model model) {
-		// TODO better exception handling :)
+	public ModelAndView deleteWorkflow(@RequestParam("id") Long workflowId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
+
 		try {
 			workflowService.deleteById(workflowId);
 		} catch (EntityNotDeletableException e) {
-			e.printStackTrace();
+			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
 		}
 
-		return redirectToFrame(WORKFLOWS);
+		return redirectToFrame(WORKFLOWS, errors, redirectAttributes);
 	}
 
 	@Override

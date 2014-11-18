@@ -39,9 +39,32 @@
 			</div> 
 		</c:otherwise>
 	</c:choose>
-    
-    <div id='footer-wrapper' >
-    </div>
-    
+
+	<c:if test='${not empty errorList}'>
+		<div id='main-error-panel' class='error-panel'>
+			<div class="error-panel-header">
+				Error occurred
+			</div>
+			<div class="error-panel-body">
+				<c:forEach var="errorMessage" items="${errorList}">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" onclick="errorClosed();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<strong>${errorMessage.title}</strong> ${errorMessage.message}
+						</div>
+				</c:forEach>
+			</div>
+		</div>
+	</c:if>
+   
+
+	<script language="javascript">
+		function errorClosed() {
+			var errorCount = $('#main-error-panel > .error-panel-body').children().size();
+			if (errorCount <= 1) {
+				$("#main-error-panel").remove()
+			}
+		}
+	</script>
+   
 </body>
 </html>

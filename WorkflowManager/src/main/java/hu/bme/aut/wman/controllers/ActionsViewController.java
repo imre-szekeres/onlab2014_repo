@@ -5,6 +5,7 @@ import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.service.ActionTypeService;
 import hu.bme.aut.wman.service.RoleService;
+import hu.bme.aut.wman.view.objects.ErrorMessageVO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @version "%I%, %G%"
@@ -64,45 +66,25 @@ public class ActionsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = NEW_ACTION, method = RequestMethod.POST)
-	public ModelAndView postNewWorkflow(@ModelAttribute("action") ActionType action, HttpServletRequest request, Model model) {
+	public ModelAndView postNewWorkflow(@ModelAttribute("action") ActionType action, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		actionTypeService.save(action);
 
-		return redirectToFrame(ACTIONS);
+		return redirectToFrame(ACTIONS, redirectAttributes);
 	}
 
 	@RequestMapping(value = DELETE_ACTION, method = RequestMethod.GET)
-	public ModelAndView deleteWorkflow(@RequestParam("id") Long actionId, HttpServletRequest request, Model model) {
-		// TODO better exception handling :)
+	public ModelAndView deleteWorkflow(@RequestParam("id") Long actionId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
+
 		try {
 			actionTypeService.deleteById(actionId);
 		} catch (EntityNotDeletableException e) {
-			e.printStackTrace();
+			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
 		}
 
-		return redirectToFrame(ACTIONS);
+		return redirectToFrame(ACTIONS, errors, redirectAttributes);
 	}
-
-	//	@RequestMapping(value = "/generate/roles", method = RequestMethod.GET)
-	//	public String asd(Model model, HttpServletRequest request) {
-	//
-	//		Role r = new Role("Role1", null);
-	//		roleService.save(r);
-	//
-	//		r = new Role("Role2", null);
-	//		roleService.save(r);
-	//
-	//		r = new Role("Role3", null);
-	//		roleService.save(r);
-	//
-	//		r = new Role("Role4", null);
-	//		roleService.save(r);
-	//
-	//		r = new Role("Role5", null);
-	//		roleService.save(r);
-	//
-	//		return navigateToFrame("workflows", model);
-	//	}
 
 	@Override
 	public Map<String, String> getNavigationTabs() {

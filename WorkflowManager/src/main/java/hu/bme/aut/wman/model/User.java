@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: User
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
@@ -27,10 +27,10 @@ import javax.validation.constraints.Size;
 @NamedQueries({
 	@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectID"),
 	// TODO:
-	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r, DomainAssignment d "+ 
-												   "WHERE r.name=:roleName "+
-												       "AND d MEMBER OF u.domainAssignments "+
-												   	   "AND r MEMBER OF d.userRoles ")
+	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r, DomainAssignment d "+
+			"WHERE r.name=:roleName "+
+			"AND d MEMBER OF u.domainAssignments "+
+			"AND r MEMBER OF d.userRoles ")
 })
 public class User extends AbstractEntity {
 
@@ -71,10 +71,9 @@ public class User extends AbstractEntity {
 	// @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	// private Set<ProjectAssignment> projectAssignments;
 
-	@Deprecated
 	public User() {
 		super();
-		this.domainAssignments = new HashSet<DomainAssignment>();
+		domainAssignments = new HashSet<DomainAssignment>();
 	}
 
 	public User(String username, String password, String email, String description) {
@@ -83,10 +82,10 @@ public class User extends AbstractEntity {
 		this.password = password;
 		this.email = email;
 		this.description = description;
-		this.comments = new ArrayList<Comment>();
-		
-		this.domainAssignments = new HashSet<DomainAssignment>();
-		
+		comments = new ArrayList<Comment>();
+
+		domainAssignments = new HashSet<DomainAssignment>();
+
 		// TODO: elaborate ?
 		//this.projectAssignmnets = new HashSet<ProjectAssignment>();
 	}
@@ -135,12 +134,12 @@ public class User extends AbstractEntity {
 
 	/**
 	 * Add {@link Comment} to this User
-	 * 
+	 *
 	 * @param comment
 	 *            {@link Comment} to add
 	 */
 	public void addComment(Comment comment) {
-		this.comments.add(comment);
+		comments.add(comment);
 	}
 
 	// /**
@@ -171,13 +170,13 @@ public class User extends AbstractEntity {
 
 	/**
 	 * Remove {@link Comment} from this User
-	 * 
+	 *
 	 * @param comment
 	 *            {@link Comment} to remove
 	 */
 	public boolean removeComment(Comment comment) {
 		return comments.remove(comment);
-	}	
+	}
 
 	/**
 	 * @return the domainAssignments
@@ -198,17 +197,17 @@ public class User extends AbstractEntity {
 	 * @return true if domainAssignment was added successfully
 	 * */
 	public boolean addDomainAssignment(DomainAssignment domainAssignment) {
-		return this.domainAssignments.add(domainAssignment);
+		return domainAssignments.add(domainAssignment);
 	}
-	
+
 	/**
 	 * @param domainAssignment
 	 * @return true if domainAssignment was removed successfully
 	 * */
 	public boolean removeDomainAssignment(DomainAssignment domainAssignment) {
-		return this.domainAssignments.remove(domainAssignment);
+		return domainAssignments.remove(domainAssignment);
 	}
-	
+
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -287,12 +286,12 @@ public class User extends AbstractEntity {
 	// return projectAssignments.remove(assignment);
 	// }
 
-	
+
 	// TODO: PUT IT INTO BUSINESS LOGIC!!
 	/**
 	 * Checks whether the <code>User</code> has any <code>Role</code> with the
 	 * given name.
-	 * 
+	 *
 	 * @param name
 	 * @return true only if any of the roles has a name like the passed argument
 	 * */
@@ -317,5 +316,5 @@ public class User extends AbstractEntity {
 		}
 		return false;
 	}*/
-	
+
 }

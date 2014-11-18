@@ -8,6 +8,7 @@ import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.service.WorkflowService;
+import hu.bme.aut.wman.view.objects.ErrorMessageVO;
 import hu.bme.aut.wman.view.objects.NewProjectVO;
 
 import java.util.AbstractMap;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Maps;
 
@@ -76,7 +78,7 @@ public class ProjectsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = NEW_PROJECT, method = RequestMethod.POST)
-	public ModelAndView postNewProject(@ModelAttribute("project") NewProjectVO projectVO, HttpServletRequest request, Model model) {
+	public ModelAndView postNewProject(@ModelAttribute("project") NewProjectVO projectVO, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		// project.setStates(Workflow.getBasicStates());
 
@@ -102,31 +104,32 @@ public class ProjectsViewController extends AbstractController {
 		projectService.save(project);
 		// }
 
-		ModelAndView view = redirectToFrame(PROJECTS);
+		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=true");
 		return view;
 	}
 
 	@RequestMapping(value = CLOSE_PROJECT, method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam("id") Long projectId, HttpServletRequest request, Model model) {
+	public ModelAndView delete(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		projectService.closeById(projectId);
 
-		ModelAndView view = redirectToFrame(PROJECTS);
+		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=true");
 		return view;
 	}
 
 	@RequestMapping(value = DELETE_PROJECT, method = RequestMethod.GET)
-	public ModelAndView deleteWorkflow(@RequestParam("id") Long projectId, HttpServletRequest request, Model model) {
-		// TODO better exception handling :)
+	public ModelAndView deleteWorkflow(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
+
 		try {
 			projectService.deleteById(projectId);
 		} catch (EntityNotDeletableException e) {
-			e.printStackTrace();
+			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
 		}
 
-		ModelAndView view = redirectToFrame(PROJECTS);
+		ModelAndView view = redirectToFrame(PROJECTS, errors, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=false");
 		return view;
 	}

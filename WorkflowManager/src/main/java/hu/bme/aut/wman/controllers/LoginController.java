@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * 
+ *
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
 @Controller
 public class LoginController extends AbstractController {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(LoginController.class);
 
 	public static final String APP_ROOT = "/";
@@ -40,7 +40,7 @@ public class LoginController extends AbstractController {
 	private UserHandlerLocal userHandler;
 
 
-	
+
 	@RequestMapping(value = APP_ROOT, method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request) {
 
@@ -55,7 +55,6 @@ public class LoginController extends AbstractController {
 	@RequestMapping(value = LOGIN, method = RequestMethod.GET)
 	public String getLogin(Model model) {
 
-		@SuppressWarnings("deprecation")
 		User subject = new User();
 		model.addAttribute("subject", subject);
 		return navigateTo(LOGIN, "login", model);
@@ -68,7 +67,7 @@ public class LoginController extends AbstractController {
 		User user = doAuthenticate(subject);
 		if (user != null) {
 			request.getSession().setAttribute("subject", new SecurityToken(user.getId()));
-			
+
 			LOGGER.info("user: " + user.getUsername() + " logged in");
 			return redirectTo(APP_ROOT);
 		}
@@ -91,10 +90,10 @@ public class LoginController extends AbstractController {
 	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
 		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"), true);
 		if (validationErrors.size() <= 0) {
-			
+
 			userHandler.createUser(user, "System Reader", "System");
 			request.getSession().setAttribute("subject", user);
-			
+
 			LOGGER.info("user: " + user.getUsername() + " registered as System Reader");
 			return redirectTo("/");
 		}

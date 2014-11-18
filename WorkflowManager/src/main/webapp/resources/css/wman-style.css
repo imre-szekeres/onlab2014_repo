@@ -196,7 +196,7 @@
 
 
 /* BEGIN WM-Content */
-.content-wrapper-class {
+#content-wrapper{
 	position: absolute;
 	top: 50px;
 	left: 150px;
@@ -322,6 +322,22 @@
   color: black;
 }
 /* END   Top Menu */
+
+/* BEGIN Main error panel */
+#main-error-panel {
+	position: absolute;
+	top: calc(100% - 200px);
+	left: 150px;
+	
+	z-index: 1002;
+	
+	width: calc(100% - 240px);
+	
+	margin-top: 10px;
+	margin-left: 30px;
+	margin-right: 50px
+}
+/* END   Main error panel */
 
 /* purple:  #8142C9  dark: #5700B3 */
 
@@ -537,7 +553,7 @@
 
 /* BEGIN Actions */
 .actions-wrapper {
-	width: 600px;
+	width: 450px;
 	
 	position: relative;
 	float: left;
@@ -547,7 +563,7 @@
 }
 
 .actions-description {
-	width: 600px;
+	width: 450px;
 	color: black;
 }
 
@@ -556,7 +572,7 @@
 }
 
 .actions-name {
-    width: 600px;
+    width: 450px;
 	height: 30px;
 	text-align: center;
 	line-height: 30px;
@@ -604,8 +620,8 @@
 	margin-bottom: 15px;
 }
 
-/* list empty warning div */
-.list-empty-warning {
+/* BEGIN warning panel */
+.warning-panel {
 	border-width: 1px;
 	border-radius: 5px;
 	border-color: #D4D9DE;
@@ -618,15 +634,44 @@
 	margin: 15px 0px;
 }
 
-.list-empty-warning-header {
+.warning-panel-header {
 	font-size: 18px;
 	color: #f0ad4e;
 	margin-bottom: 10px;
 }
 
-.list-empty-warning-body {
+.warning-panel-body {
 	margin-bottom: 10px;
 }
+
+/* END warning panel */
+
+/* BEGIN error panel */
+
+.error-panel {
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: #D4D9DE;
+	border-left-color: #d9534f;
+	border-left-width: 6px;
+	border-style: solid;
+
+	padding: 10px 30px;
+	min-height: 150px;
+	margin: 15px 0px;
+}
+
+.error-panel-header {
+	font-size: 18px;
+	color: #d9534f;
+	margin-bottom: 10px;
+}
+
+.error-panel-body {
+	margin-bottom: 10px;
+}
+
+/* END error panel */
 
 /* Extends btn-link in bootstrap to get inline link in text */
 .inline-link {

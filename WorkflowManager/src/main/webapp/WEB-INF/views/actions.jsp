@@ -15,11 +15,11 @@
 
 
 <c:if test='${empty actions}'>
-	<div id='actions-empty-wrapper' class='list-empty-warning'>
-		<div class="list-empty-warning-header">
+	<div id='actions-empty-wrapper' class='warning-panel'>
+		<div class="warning-panel-header">
 			Ooops, we can't find any action.
 		</div>
-		<div class="list-empty-warning-body">
+		<div class="warning-panel-body">
 			You don't have any action yet. Click on the "New" button to create one.
 		</div>
 	</div>

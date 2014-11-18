@@ -5,11 +5,11 @@
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 
 <c:if test='${empty workflows}'>
-	<div id='workflows-empty-wrapper' class='list-empty-warning'>
-		<div class="list-empty-warning-header">
+	<div id='workflows-empty-wrapper' class='warning-panel'>
+		<div class="warning-panel-header">
 			Ooops, we can't find any workflow.
 		</div>
-		<div class="list-empty-warning-body">
+		<div class="warning-panel-body">
 			You don't have any workflow yet. Click <a role='button' href="new/workflow" class='btn btn-link inline-link'>here</a> to create one...
 		</div>
 	</div>

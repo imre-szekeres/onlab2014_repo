@@ -5,8 +5,8 @@
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 
 <c:if test='${empty projects}'>
-	<div id='projects-empty-wrapper' class='list-empty-warning'>
-		<div class="list-empty-warning-header">
+	<div id='projects-empty-wrapper' class='warning-panel'>
+		<div class="warning-panel-header">
 			Ooops, we can't find any
 			<strong>
 				<c:choose>
@@ -20,7 +20,7 @@
 			</strong>
 			project.
 		</div>
-		<div class="list-empty-warning-body">
+		<div class="warning-panel-body">
 			You don't have any 
 			<c:choose>
 				<c:when test='${param.active}'>
