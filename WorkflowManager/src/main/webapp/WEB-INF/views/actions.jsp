@@ -83,7 +83,7 @@
 		.mouseenter(function() {
 			var name = $(this).find('div.actions-id').text();
 			$(this).find('div.actions-name').append( 
-							"<a id='delete-button' class='no-decor-link' href='delete/action?id="+name+"'><div class='delete-button' style='left:540px;'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></div></a>");
+							"<div id='delete-button'  class='delete-button' style='left:390px;'><a class='no-decor-link little-button-link' href='delete/action?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>");
 		})
 		.mouseleave(function() {
 			$("#delete-button").remove();

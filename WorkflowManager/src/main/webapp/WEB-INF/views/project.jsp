@@ -9,9 +9,20 @@
 		<h3 class='project-name'> <strong>Project:</strong> ${project.name} </h3>
 		<a role='button' class='btn btn-primary header-button'> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <span class='button-text'>Edit</span> </a>
 		<c:if test='${project.active}'>
-			<a href='close/project?id=${project.id}' role='button' class='btn btn-success header-button'> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class='button-text'>Close</span> </a>
+			<a href='close/project?id=${project.id}' role='button' class='btn btn-warning header-button'> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class='button-text'>Close</span> </a>
 		</c:if>
 	</div>
+	
+	<c:if test='${empty actions}'>
+		<div id='project-no-more-action' class='info-panel'>
+			<div class="info-panel-header">
+				There can be no more action done.
+			</div>
+			<div class="info-panel-body">
+				There are no further actions available from this state of the project. Would you like to close it?
+			</div>
+		</div>
+	</c:if>
 	
 	<div id="project-properties-panel" class='panel panel-default'>
 		<div class="panel-heading">
@@ -46,14 +57,23 @@
 			<div id="project-actions" class='panel-body-section'>
 				<strong>Do: </strong>
 				<div class="btn-group">
-					<button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<c:forEach var="action" items="${actions}">
-							<li> <a href="#"> ${action.name} </a> </li>
-						</c:forEach>
-					</ul>
+					<c:choose>
+						<c:when test='${not empty actions}'>
+							<button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<c:forEach var="action" items="${actions}">
+									<li> <a href="#"> ${action.name} </a> </li>
+								</c:forEach>
+							</ul>
+						</c:when>
+						<c:otherwise>
+							<button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" disabled="true">
+								Action <span class="caret"></span>
+							</button> 
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>

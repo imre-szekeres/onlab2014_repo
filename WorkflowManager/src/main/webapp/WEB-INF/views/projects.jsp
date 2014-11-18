@@ -73,13 +73,13 @@
 			var div = $(this).find('div.projects-name');
 			
 			if (isActive == 'true') {
-				div.append( "<a id='close-button' class='no-decor-link' href='close/project?id="+name+"'><div class='close-button'><span class='glyphicon glyphicon-remove' style='line-height: 26px;'></div></a>" +
-							"<a id='edit-button' class='no-decor-link' href=''><div class='edit-button'><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></div></a>" +
-							"<a id='open-button' class='no-decor-link' href='project?id="+name+"'><div class='open-button'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></div></a>" );
+				div.append( "<div id='close-button' class='close-button'><a class='no-decor-link little-button-link' href='close/project?id="+name+"'><span class='glyphicon glyphicon-remove' style='line-height: 26px;'></a></div>" +
+							"<div id='edit-button' class='edit-button'><a class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></a></div>" +
+							"<div id='open-button' class='open-button'><a class='no-decor-link little-button-link' href='project?id="+name+"'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></a></div>" );
 			} else {
-				div.append( "<a id='close-button' class='no-decor-link' href='delete/project?id="+name+"'><div class='delete-button'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></div></a>" +
-							"<a id='edit-button' class='no-decor-link' href=''><div class='edit-button'><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></div></a>" +
-							"<a id='open-button' class='no-decor-link' href='project?id="+name+"'><div class='open-button'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></div></a>" );
+				div.append( "<div id='delete-button' class='delete-button'><a class='no-decor-link little-button-link' href='delete/project?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>" +
+							"<div id='edit-button' class='edit-button'><a class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></a></div>" +
+							"<div id='open-button' class='open-button'><a class='no-decor-link little-button-link' href='project?id="+name+"'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></a></div>" );
 			}
 		})
 		.mouseleave(function() {

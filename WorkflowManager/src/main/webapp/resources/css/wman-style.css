@@ -378,59 +378,87 @@
 /* END   Workflows */
 
 /* BEGIN little buttons :) */
-.delete-button {
+#delete-button {
 	position: relative;
 	top: -40px;
 	left: 290px;
+	
+	width: 30px;
+	height: 30px;
+}
 
+.delete-button {
 	border-radius: 50%;
 	width: 30px;
 	height: 30px;
 	z-index: 1001;
-	color: white;
 	line-height: 30;
 	background-color: #C72626;
+	
+	margin: 0px;
 }
-.edit-button {
+#edit-button {
 	position: relative;
 	top: -70px;
 	left: 0px;
+	
+	width: 30px;
+	height: 30px;
+}
 
+.edit-button {
 	border-radius: 50%;
 	width: 30px;
 	height: 30px;
 	z-index: 1001;
-	color: white;
 	line-height: 30;
 	background-color: #428BCA;
+	
+	margin: 0px;
 }
-.open-button {
+#open-button {
 	position: relative;
 	top: -100px;
 	left: 40px;
+	
+	width: 30px;
+	height: 30px;
+}
 
+.open-button {
 	border-radius: 50%;
 	width: 30px;
 	height: 30px;
 	z-index: 1001;
-	color: white;
 	line-height: 30;
 	background-color: #428BCA;
+	
+	margin: 0px;
 }
 
 /* On projects */
-.close-button {
+#close-button {
 	position: relative;
 	top: -40px;
 	left: 290px;
+	
+	width: 30px;
+	height: 30px;
+}
 
+.close-button {
 	border-radius: 50%;
 	width: 30px;
 	height: 30px;
 	z-index: 1001;
-	color: white;
 	line-height: 30;
-	background-color: #FF8C1B;
+	background-color: #f0ad4e;
+	
+	margin: 0px;
+}
+
+.little-button-link {
+	color: white;
 }
 
 /* END little buttons :) */
@@ -672,6 +700,33 @@
 }
 
 /* END error panel */
+
+/* BEGIN info panel */
+
+.info-panel {
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: #D4D9DE;
+	border-left-color: #5bc0de;
+	border-left-width: 6px;
+	border-style: solid;
+
+	padding: 10px 30px;
+	min-height: 75px;
+	margin: 15px 0px;
+}
+
+.info-panel-header {
+	font-size: 18px;
+	color: #5bc0de;
+	margin-bottom: 10px;
+}
+
+.info-panel-body {
+	margin-bottom: 10px;
+}
+
+/* END info panel */
 
 /* Extends btn-link in bootstrap to get inline link in text */
 .inline-link {

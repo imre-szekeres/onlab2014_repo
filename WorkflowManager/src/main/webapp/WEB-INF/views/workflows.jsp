@@ -46,9 +46,9 @@
 		.mouseenter(function() {
 			var name = $(this).find('div.workflows-id').text();
 			$(this).find('div.workflows-name').append( 
-							"<a id='delete-button' class='no-decor-link' href='delete/workflow?id="+name+"'><div class='delete-button'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></div></a>" +
-							"<a id='edit-button' href=''><div class='edit-button'><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></div></a>" +
-							"<a id='open-button' class='no-decor-link' href='workflow?id="+name+"'><div class='open-button'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></div></a>" );
+							"<div id='delete-button' class='delete-button'><a class='no-decor-link little-button-link' href='delete/workflow?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>" +
+							"<div id='edit-button' class='edit-button'><a class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></a></div>" +
+							"<div id='open-button' class='open-button'><a class='no-decor-link little-button-link' href='workflow?id="+name+"'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></a></div>" );
 		})
 		.mouseleave(function() {
 			$("#delete-button").remove();
