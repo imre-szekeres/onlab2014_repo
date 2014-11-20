@@ -75,4 +75,9 @@ public class Privilege extends AbstractEntity {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		return "Privilege -- " + name;
+	}
 }

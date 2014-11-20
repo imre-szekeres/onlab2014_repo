@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 /**
@@ -17,6 +19,9 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("serial")
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Domain.findByName", query = "SELECT d FROM Domain d WHERE d.name = :domainName ")
+})
 public class Domain extends AbstractEntity {
 	
 	public static final String PR_NAME = "name";
@@ -226,5 +231,10 @@ public class Domain extends AbstractEntity {
 		} else if (!workflows.equals(other.workflows))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "Domain -- " + name;
 	}
 }

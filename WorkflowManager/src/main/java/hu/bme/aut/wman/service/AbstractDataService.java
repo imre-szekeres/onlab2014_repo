@@ -150,7 +150,8 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * @return if the entity is new or was persisted before.
 	 */
 	public boolean isNew(T entity) {
-		return entity.getId() == null;
+		return entity.getId() == null && 
+				(em.find(entity.getClass(), entity.getId()) == null);
 	}
 
 	/**

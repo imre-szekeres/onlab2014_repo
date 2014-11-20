@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities>
+	<domains>
+		<domain name='System' removable='false' />
+    </domains>
+    
+    <privileges>
+        <privilege name='Create User' removable='false' />
+        <privilege name='Create Domain' removable='false' />
+        <privilege name='Create Role' removable='false' />
+        <privilege name='Create Workflow' removable='false' />
+        <privilege name='Create Project' removable='false' />
+        <privilege name='Create ActionType' removable='false' />
+		<!-- Everyone creates HistoryEntries.. wether they like it or not -->
+		<!-- Comments are created based on ProjectAssignments -->
+        
+        <privilege name='Assign User' removable='false' /><!-- to Domain -->
+        <privilege name='Assign Role' removable='false' /><!-- to User -->
+        <privilege name='Assign Privilege' removable='false' /><!-- to Role -->
+        <privilege name='Assign Project' removable='false' /><!-- to User -->
+        <privilege name='Assign ActionType' removable='false' /><!-- to Workflow -->
+        
+        <privilege name='View User' removable='false' />
+        <privilege name='View Domain' removable='false' />
+        <privilege name='View Role' removable='false' />
+        <privilege name='View Privilege' removable='false' />
+        <privilege name='View Workflow' removable='false' />
+        <privilege name='View Project' removable='false' />
+        <privilege name='View ActionType' removable='false' />
+        <privilege name='View HistoryEntry' removable='false' />
+    </privileges>
+    
+    <roles>
+		<role name='Viewer' domain='System' removable='false' >
+			<privilege name='Create Domain' removable='false' />
+			
+			<privilege name='View Domain' removable='false' />
+			<privilege name='View Workflow' removable='false' />
+			<privilege name='View Project' removable='false' />
+		</role>
+		
+		<role name='Developer' domain='System' import='Viewer' removable='false' >
+			<privilege name='View Role' removable='false' />
+			<privilege name='View Privilege' removable='false' />
+			<privilege name='View ActionType' removable='false' />
+		</role>
+		
+		<role name='Manager' domain='System' import='Developer' removable='false' >
+			<privilege name='Create Workflow' removable='false' />
+			<privilege name='Create Project' removable='false' />
+			<privilege name='Create ActionType' removable='false' />
+			
+			
+			<privilege name='Assign User' removable='false' />
+			<privilege name='Assign ActionType' removable='false' />
+			<privilege name='Assign Project' removable='false' />
+			<privilege name='Assign Role' removable='false' />
+			
+			<privilege name='View User' removable='false' />			
+		</role>
+		
+		<role name='Administrator' domain='System' import='Manager' removable='false' >
+			<privilege name='Create User' removable='false' />
+			<privilege name='Create Role' removable='false' />
+			
+			<privilege name='Assign Privilege' removable='false' />
+			
+			<privilege name='View HistoryEntry' removable='false' />
+		</role>
+    </roles>
+    
+    <users>
+		<user name='sudoer' password='sudoer7' 
+		      removable='false' 
+		      description='I am just a humble administrator of Workflow Manager webapplication to create, test and refine functionality.' >
+			<role name='Administrator' domain='System' removable='false' />
+		</user>
+    </users>
+</entities>

@@ -318,4 +318,8 @@ public class User extends AbstractEntity {
 		return false;
 	}*/
 	
+	@Override
+	public String toString() {
+		return "user -- " + username;
+	}
 }
