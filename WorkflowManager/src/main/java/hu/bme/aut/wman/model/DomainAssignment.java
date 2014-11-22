@@ -21,6 +21,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "DomainAssignment.findByDomain", query = "SELECT da FROM DomainAssignment da WHERE da.domain.name = :domainName "),
+	@NamedQuery(name = "DomainAssignment.findByUserID", query = "SELECT da FROM DomainAssignment da WHERE da.user.id = :userID "),
 	@NamedQuery(name = "DomainAssignment.findByDomainFor", query = "SELECT da FROM DomainAssignment da "+ 
 																   "WHERE da.user.id = :userID "+
 																		 "AND da.domain.name = :domainName "),

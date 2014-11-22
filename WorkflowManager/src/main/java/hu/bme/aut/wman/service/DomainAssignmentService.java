@@ -27,6 +27,12 @@ public class DomainAssignmentService extends AbstractDataService<DomainAssignmen
 		return callNamedQuery("DomainAssignment.findByDomain", parameters);
 	}
 	
+	public List<DomainAssignment> selectByUserID(long userID) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<>(1);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		return callNamedQuery("DomainAssignment.findByUserID", parameters);
+	}
+	
 	public DomainAssignment selectByDomainFor(long userID, String domain) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<>(2);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));

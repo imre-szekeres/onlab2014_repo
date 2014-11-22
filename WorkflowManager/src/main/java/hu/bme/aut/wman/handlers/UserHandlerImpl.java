@@ -47,8 +47,8 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	public User removeUser(long userID) throws Exception {
 		User user = userService.selectById(userID);
 		
-		for(DomainAssignment da : user.getDomainAssignments()) {
-			deassignUser(user, da);
+		for(DomainAssignment da : domainAssignmentService.selectByUserID(userID)) {
+			domainAssignmentService.delete( da );
 		}
 		
 		userService.delete(user);
@@ -84,10 +84,8 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	
 	private User assignUser(User user, Role role, String domain) {
 		Domain d = domainService.selectByName(domain);
-		DomainAssignment assignment = new DomainAssignment(user, d, role);
+		DomainAssignment assignment = new DomainAssignment(user, d, role);		
 		
-		user.addDomainAssignment(assignment);
-		d.addDomainAssignment(assignment);
 		userService.save(user);
 		domainService.save(d);
 		domainAssignmentService.save(assignment);
@@ -103,9 +101,6 @@ public class UserHandlerImpl implements UserHandlerLocal {
 	
 	private User deassignUser(User user, DomainAssignment da) throws EntityNotDeletableException {
 		Domain d = da.getDomain();
-		
-		user.removeDomainAssignment(da);
-		d.removeDomainAssignment(da);
 		
 		userService.save(user);
 		domainService.save(d);
