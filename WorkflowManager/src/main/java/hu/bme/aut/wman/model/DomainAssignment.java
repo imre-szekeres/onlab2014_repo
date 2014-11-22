@@ -3,8 +3,8 @@
  */
 package hu.bme.aut.wman.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +24,10 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "DomainAssignment.findByDomainFor", query = "SELECT da FROM DomainAssignment da "+ 
 																   "WHERE da.user.id = :userID "+
 																		 "AND da.domain.name = :domainName "),
-	@NamedQuery(name = "DomainAssignment.findByUser", query = "SELECT da FROM DomainAssignment da WHERE da.user.username = :username ")
+	@NamedQuery(name = "DomainAssignment.findByUsernameFor", query = "SELECT da FROM DomainAssignment da "+ 
+																	 "WHERE da.user.username = :username "+
+																		 "AND da.domain.name = :domainName "),
+	@NamedQuery(name = "DomainAssignment.findAllByUser", query = "SELECT da FROM DomainAssignment da WHERE da.user.username = :username ")
 })
 public class DomainAssignment extends AbstractEntity {
 
@@ -38,7 +41,7 @@ public class DomainAssignment extends AbstractEntity {
 	
 	@NotNull
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<Role> userRoles;
+	private List<Role> userRoles;
 	
 	public DomainAssignment() {
 		super();
@@ -49,7 +52,7 @@ public class DomainAssignment extends AbstractEntity {
 		this.user = user;
 		this.domain = domain;
 		
-		this.userRoles = new HashSet<Role>();
+		this.userRoles = new ArrayList<>();
 		this.userRoles.add(role);
 	}
 
@@ -84,14 +87,14 @@ public class DomainAssignment extends AbstractEntity {
 	/**
 	 * @return the userRoles
 	 */
-	public Set<Role> getUserRoles() {
+	public List<Role> getUserRoles() {
 		return userRoles;
 	}
 
 	/**
 	 * @param userRoles the userRoles to set
 	 */
-	public void setUserRoles(Set<Role> userRoles) {
+	public void setUserRoles(List<Role> userRoles) {
 		this.userRoles = userRoles;
 	}
 	

@@ -31,7 +31,7 @@
     </privileges>
     
     <roles>
-		<role name='Viewer' domain='System' removable='false' >
+		<role name='System Viewer' domain='System' import='' removable='false' >
 			<privilege name='Create Domain' removable='false' />
 			
 			<privilege name='View Domain' removable='false' />
@@ -39,13 +39,13 @@
 			<privilege name='View Project' removable='false' />
 		</role>
 		
-		<role name='Developer' domain='System' import='Viewer' removable='false' >
+		<role name='System Developer' domain='System' import='System Viewer' removable='false' >
 			<privilege name='View Role' removable='false' />
 			<privilege name='View Privilege' removable='false' />
 			<privilege name='View ActionType' removable='false' />
 		</role>
 		
-		<role name='Manager' domain='System' import='Developer' removable='false' >
+		<role name='System Manager' domain='System' import='System Developer' removable='false' >
 			<privilege name='Create Workflow' removable='false' />
 			<privilege name='Create Project' removable='false' />
 			<privilege name='Create ActionType' removable='false' />
@@ -59,7 +59,7 @@
 			<privilege name='View User' removable='false' />			
 		</role>
 		
-		<role name='Administrator' domain='System' import='Manager' removable='false' >
+		<role name='System Administrator' domain='System' import='System Manager' removable='false' >
 			<privilege name='Create User' removable='false' />
 			<privilege name='Create Role' removable='false' />
 			
@@ -70,10 +70,36 @@
     </roles>
     
     <users>
-		<user name='sudoer' password='sudoer7' 
+		<user name='sudoer' 
+		      password='sudoer7' 
 		      removable='false' 
+		      email='sudoer@workflowmanager.com' 
 		      description='I am just a humble administrator of Workflow Manager webapplication to create, test and refine functionality.' >
-			<role name='Administrator' domain='System' removable='false' />
+			<role name='System Administrator' domain='System' removable='false' />
+		</user>
+		
+		<user name='manager' 
+		      password='manager7' 
+		      removable='false' 
+		      email='manager@workflowmanager.com' 
+		      description='I am just a humble Manager of Workflow Manager webapplication to create, test and refine functionality.' >
+			<role name='System Manager' domain='System' removable='false' />
+		</user>
+		
+		<user name='developer' 
+		      password='developer7' 
+		      removable='false' 
+		      email='developer@workflowmanager.com' 
+		      description='I am just a humble Developer of Workflow Manager webapplication to create, test and refine functionality.' >
+			<role name='System Developer' domain='System' removable='false' />
+		</user>
+		
+		<user name='viewer7' 
+		      password='viewer77' 
+		      removable='false' 
+		      email='viewer7@workflowmanager.com' 
+		      description='I am just a humble Viewer of Workflow Manager webapplication to create, test and refine functionality.' >
+			<role name='System Viewer' domain='System' removable='false' />
 		</user>
     </users>
 </entities>

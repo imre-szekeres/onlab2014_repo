@@ -3,12 +3,15 @@
  */
 package hu.bme.aut.wman.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,8 +38,8 @@ public class Domain extends AbstractEntity {
 	private String name;
 	
 	@NotNull
-	@OneToMany(cascade = CascadeType.REMOVE)
-	private Set<Role> roles;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Role> roles;
 	
 	@NotNull
 	@OneToMany(mappedBy = "domain", cascade = CascadeType.REMOVE)
@@ -45,10 +48,7 @@ public class Domain extends AbstractEntity {
 	@NotNull
 	@OneToMany(mappedBy = "domain")
 	private Set<ActionType> actionTypes;
-	
-	@NotNull
-	@OneToMany(mappedBy = "domain")
-	private Set<DomainAssignment> domainAssignments;
+
 	
 	public Domain() {
 		super();
@@ -57,20 +57,18 @@ public class Domain extends AbstractEntity {
 	public Domain(String name) {
 		super();
 		this.name = name;
-		this.roles = new HashSet<>();
+		this.roles = new ArrayList<>();
 		this.workflows = new HashSet<>();
 		this.actionTypes = new HashSet<>();
-		this.domainAssignments = new HashSet<>();
 	}
 	
 	// TODO: the setting of role names is the RESPONSIBILITY of the Service layer..
-	public Domain(String name, Set<Role> initialRoles) {
+	public Domain(String name, List<Role> initialRoles) {
 		super();
 		this.name = name;
 		this.roles = initialRoles;
 		this.workflows = new HashSet<>();
 		this.actionTypes = new HashSet<>();
-		this.domainAssignments = new HashSet<>();
 	}
 
 	/**
@@ -114,48 +112,18 @@ public class Domain extends AbstractEntity {
 	public void setActionTypes(Set<ActionType> actionTypes) {
 		this.actionTypes = actionTypes;
 	}
-
-	/**
-	 * @return the domainAssignments
-	 */
-	public Set<DomainAssignment> getDomainAssignments() {
-		return domainAssignments;
-	}
-
-	/**
-	 * @param domainAssignments the domainAssignments to set
-	 */
-	public void setDomainAssignments(Set<DomainAssignment> domainAssignments) {
-		this.domainAssignments = domainAssignments;
-	}
-
-	/**
-	 * @param domainAssignment
-	 * @return true if domainAssignment was added successfully
-	 * */
-	public boolean addDomainAssignment(DomainAssignment domainAssignment) {
-		return this.domainAssignments.add(domainAssignment);
-	}
-	
-	/**
-	 * @param domainAssignment
-	 * @return true if domainAssignment was removed successfully
-	 * */
-	public boolean removeDomainAssignment(DomainAssignment domainAssignment) {
-		return this.domainAssignments.remove(domainAssignment);
-	}
 	
 	/**
 	 * @return the roles
 	 */
-	public Set<Role> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
 	/**
 	 * @param roles the roles to set
 	 */
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 	
@@ -164,6 +132,17 @@ public class Domain extends AbstractEntity {
 	 * */
 	public boolean addRole(Role role) {
 		return this.roles.add(role);
+	}
+	
+	/**
+	 * @param roleName
+	 * */
+	public Role roleOf(String roleName) {
+		for(Role r : roles) {
+			if (r.getName().equals( roleName ))
+				return r;
+		}
+		return null;
 	}
 	
 	/**
@@ -182,10 +161,6 @@ public class Domain extends AbstractEntity {
 		int result = super.hashCode();
 		result = prime * result
 				+ ((actionTypes == null) ? 0 : actionTypes.hashCode());
-		result = prime
-				* result
-				+ ((domainAssignments == null) ? 0 : domainAssignments
-						.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		result = prime * result
@@ -210,11 +185,6 @@ public class Domain extends AbstractEntity {
 				return false;
 		} else if (!actionTypes.equals(other.actionTypes))
 			return false;
-		if (domainAssignments == null) {
-			if (other.domainAssignments != null)
-				return false;
-		} else if (!domainAssignments.equals(other.domainAssignments))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -232,7 +202,7 @@ public class Domain extends AbstractEntity {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Domain -- " + name;

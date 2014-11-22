@@ -1,9 +1,7 @@
 package hu.bme.aut.wman.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,7 +27,7 @@ import javax.validation.constraints.Size;
 	// TODO:
 	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r, DomainAssignment d "+
 			"WHERE r.name=:roleName "+
-			"AND d MEMBER OF u.domainAssignments "+
+			"AND d.user = u "+
 			"AND r MEMBER OF d.userRoles ")
 })
 public class User extends AbstractEntity {
@@ -60,10 +58,6 @@ public class User extends AbstractEntity {
 	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 chars.")
 	private String description;
 
-	@NotNull
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private Set<DomainAssignment> domainAssignments;
-
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
@@ -73,7 +67,6 @@ public class User extends AbstractEntity {
 
 	public User() {
 		super();
-		domainAssignments = new HashSet<DomainAssignment>();
 	}
 
 	public User(String username, String password, String email, String description) {
@@ -82,9 +75,7 @@ public class User extends AbstractEntity {
 		this.password = password;
 		this.email = email;
 		this.description = description;
-		comments = new ArrayList<Comment>();
-
-		domainAssignments = new HashSet<DomainAssignment>();
+		comments = new ArrayList<>();
 
 		// TODO: elaborate ?
 		//this.projectAssignmnets = new HashSet<ProjectAssignment>();
@@ -178,35 +169,16 @@ public class User extends AbstractEntity {
 		return comments.remove(comment);
 	}
 
-	/**
-	 * @return the domainAssignments
-	 */
-	public Set<DomainAssignment> getDomainAssignments() {
-		return domainAssignments;
-	}
+	// /**
+	// * Remove {@link ProjectAssignment} from this User
+	// *
+	// * @param projectAssignment
+	// * {@link ProjectAssignment} to remove
+	// */
+	// public boolean removeProjectAssignment(ProjectAssignment assignment) {
+	// return projectAssignments.remove(assignment);
+	// }
 
-	/**
-	 * @param domainAssignments the domainAssignments to set
-	 */
-	public void setDomainAssignments(Set<DomainAssignment> domainAssignments) {
-		this.domainAssignments = domainAssignments;
-	}
-
-	/**
-	 * @param domainAssignment
-	 * @return true if domainAssignment was added successfully
-	 * */
-	public boolean addDomainAssignment(DomainAssignment domainAssignment) {
-		return domainAssignments.add(domainAssignment);
-	}
-
-	/**
-	 * @param domainAssignment
-	 * @return true if domainAssignment was removed successfully
-	 * */
-	public boolean removeDomainAssignment(DomainAssignment domainAssignment) {
-		return domainAssignments.remove(domainAssignment);
-	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
@@ -219,10 +191,6 @@ public class User extends AbstractEntity {
 				+ ((comments == null) ? 0 : comments.hashCode());
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
-		result = prime
-				* result
-				+ ((domainAssignments == null) ? 0 : domainAssignments
-						.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
@@ -253,11 +221,6 @@ public class User extends AbstractEntity {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (domainAssignments == null) {
-			if (other.domainAssignments != null)
-				return false;
-		} else if (!domainAssignments.equals(other.domainAssignments))
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -275,17 +238,6 @@ public class User extends AbstractEntity {
 			return false;
 		return true;
 	}
-
-	// /**
-	// * Remove {@link ProjectAssignment} from this User
-	// *
-	// * @param projectAssignment
-	// * {@link ProjectAssignment} to remove
-	// */
-	// public boolean removeProjectAssignment(ProjectAssignment assignment) {
-	// return projectAssignments.remove(assignment);
-	// }
-
 
 	// TODO: PUT IT INTO BUSINESS LOGIC!!
 	/**

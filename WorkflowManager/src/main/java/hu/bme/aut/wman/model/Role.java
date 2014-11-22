@@ -54,7 +54,7 @@ public class Role extends AbstractEntity {
 		super();
 	}
 
-	public Role(String name, Domain domain) {
+	public Role(String name) {
 		super();
 		this.name = name;
 		this.actionTypes = new HashSet<ActionType>();
