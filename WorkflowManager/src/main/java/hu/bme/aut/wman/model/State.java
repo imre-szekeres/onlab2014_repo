@@ -5,15 +5,12 @@
  * */
 package hu.bme.aut.wman.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,14 +19,14 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for Entity: State
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:id"),
-		@NamedQuery(name = "State.findInitialInWorkflow", query = "SELECT s FROM State s WHERE s.workflow.id=:id and s.initial=true"),
+	@NamedQuery(name = "State.findByWorkflowId", query = "SELECT s FROM State s WHERE s.workflow.id=:id"),
+	@NamedQuery(name = "State.findInitialInWorkflow", query = "SELECT s FROM State s WHERE s.workflow.id=:id and s.initial=true"),
 })
 public class State extends AbstractEntity {
 
@@ -54,7 +51,6 @@ public class State extends AbstractEntity {
 	private boolean initial;
 
 	@ManyToOne
-	@JoinColumn
 	private Workflow workflow;
 
 	// @OneToMany(mappedBy = "parentState", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
@@ -63,8 +59,8 @@ public class State extends AbstractEntity {
 	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<HistoryEntry> historyEntries;
 
-	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	private List<BlobFile> files;
+	//	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	//	private List<BlobFile> files;
 
 	// @ManyToOne
 	// @JoinColumn
@@ -81,10 +77,10 @@ public class State extends AbstractEntity {
 	public State(String name, String description, boolean initial) {
 		this.name = name;
 		this.description = description;
-		this.workflow = null;
+		workflow = null;
 		this.initial = initial;
-		this.historyEntries = new HashSet<>();
-		this.files = new ArrayList<>();
+		historyEntries = new HashSet<>();
+		//		files = new ArrayList<>();
 		// this.children = new ArrayList<>();
 	}
 
@@ -136,13 +132,13 @@ public class State extends AbstractEntity {
 	// this.nextStates = nextStates;
 	// }
 
-	public List<BlobFile> getFiles() {
-		return files;
-	}
-
-	public void setFiles(List<BlobFile> files) {
-		this.files = files;
-	}
+	//	public List<BlobFile> getFiles() {
+	//		return files;
+	//	}
+	//
+	//	public void setFiles(List<BlobFile> files) {
+	//		this.files = files;
+	//	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -162,7 +158,7 @@ public class State extends AbstractEntity {
 
 	/**
 	 * Add {@link HistoryEntry} to this State
-	 * 
+	 *
 	 * @param historyEntry
 	 *            {@link HistoryEntry} to add
 	 */
@@ -172,7 +168,7 @@ public class State extends AbstractEntity {
 
 	/**
 	 * Remove {@link HistoryEntry} from this State
-	 * 
+	 *
 	 * @param historyEntry
 	 *            {@link HistoryEntry} to remove
 	 */
@@ -233,40 +229,32 @@ public class State extends AbstractEntity {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((files == null) ? 0 : files.hashCode());
+		//		result = prime * result + ((files == null) ? 0 : files.hashCode());
 		result = prime * result + ((historyEntries == null) ? 0 : historyEntries.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((workflow == null) ? 0 : workflow.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		State other = (State) obj;
 		if (id == null) {
-			if (other.id != null) {
+			if (other.id != null)
 				return false;
-			}
-		} else if (!id.equals(other.id)) {
+		} else if (!id.equals(other.id))
 			return false;
-		}
 		if (name == null) {
-			if (other.name != null) {
+			if (other.name != null)
 				return false;
-			}
-		} else if (!name.equals(other.name)) {
+		} else if (!name.equals(other.name))
 			return false;
-		}
 		// if (parent == null) {
 		// if (other.parent != null) {
 		// return false;
@@ -275,12 +263,10 @@ public class State extends AbstractEntity {
 		// return false;
 		// }
 		if (workflow == null) {
-			if (other.workflow != null) {
+			if (other.workflow != null)
 				return false;
-			}
-		} else if (!workflow.equals(other.workflow)) {
+		} else if (!workflow.equals(other.workflow))
 			return false;
-		}
 		return true;
 	}
 

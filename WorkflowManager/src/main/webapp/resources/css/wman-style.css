@@ -196,12 +196,16 @@
 
 
 /* BEGIN WM-Content */
-#content-wrapper {
+#content-wrapper{
 	position: absolute;
 	top: 50px;
 	left: 150px;
+	
+	width: calc(100% - 240px);
+	
 	margin-top: 10px;
 	margin-left: 30px;
+	margin-right: 50px
 }
 /* END   WM-Content */
 
@@ -210,6 +214,7 @@
 	left: 0px;
 	top: 0px;
 	position: fixed;
+	z-index: 101;
 	
 	height: 100%;
 	width: 120px;
@@ -221,6 +226,7 @@
 	left: 0px;
 	top: 0px;
 	position: fixed;
+	z-index: 100;
 	
 	height: 100%;
 	width: 130px;
@@ -255,7 +261,7 @@
 
 #home-href-wrapper>a {
 	font-size: 15px;
-	color: #428BCA;
+	color: black;
 	padding: 20px 0px;
 	line-height: normal;
 	text-decoration: blink;
@@ -294,16 +300,17 @@
 
 /* BEGIN Top Menu */
 #top-menu-wrapper {
+	top: 0px;
 	left: 130px;
-	position: absolute;
+	position: fixed;
+	z-index: 99;
 	
 	height: 50px;
 }
 
 /* tab color */
 .nav-tabs>li>a { 
-	/*background-color: white;*/
-	color: #428BCA;
+	color: black;
 }
 
 #top-menu-link {
@@ -312,15 +319,418 @@
 
 /* active tab color */
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
-  color: #428BCA;
-  /*background-color: #428BCA;*/
-}
-
-/* hover tab color */
-.nav-tabs>li>a:hover { 
-	/*background-color: #428BCA;
-	color: white;*/
+  color: black;
 }
 /* END   Top Menu */
 
-/* purple:  #8142C9 */
+/* BEGIN Main error panel */
+#main-error-panel {
+	position: absolute;
+	top: calc(100% - 200px);
+	left: 150px;
+	
+	z-index: 1002;
+	
+	width: calc(100% - 240px);
+	
+	margin-top: 10px;
+	margin-left: 30px;
+	margin-right: 50px
+}
+/* END   Main error panel */
+
+/* purple:  #8142C9  dark: #5700B3 */
+
+/* BEGIN Workflows */
+.workflows-wrapper {
+	width: 350px;
+	
+	position: relative;
+	float: left;
+	margin: 20px 40px;
+	
+	background-color: white;
+}
+
+.workflows-description {
+	width: 350px;
+	color: black;
+}
+
+.workflows-wrapper a {
+	text-decoration: blink;
+}
+
+.workflows-name {
+    width: 350px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	
+	color: white;
+	background-color: #428BCA;
+}
+
+.workflows-id {
+	display: none;
+}
+
+/* END   Workflows */
+
+/* BEGIN little buttons :) */
+#delete-button {
+	position: relative;
+	top: -40px;
+	left: 290px;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.delete-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #C72626;
+	
+	margin: 0px;
+}
+#edit-button {
+	position: relative;
+	top: -70px;
+	left: 0px;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.edit-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #428BCA;
+	
+	margin: 0px;
+}
+#open-button {
+	position: relative;
+	top: -100px;
+	left: 40px;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.open-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #428BCA;
+	
+	margin: 0px;
+}
+
+/* On projects */
+#close-button {
+	position: relative;
+	top: -40px;
+	left: 290px;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.close-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #f0ad4e;
+	
+	margin: 0px;
+}
+
+.little-button-link {
+	color: white;
+}
+
+/* END little buttons :) */
+
+/* BEGIN Projects */
+.projects-wrapper {
+	width: 350px;
+	
+	position: relative;
+	float: left;
+	margin: 20px 40px;
+	
+	background-color: white;
+}
+
+.projects-description {
+	width: 350px;
+	color: black;
+}
+
+.projects-wrapper a {
+	text-decoration: blink;
+}
+
+.projects-name {
+    width: 350px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	
+	color: white;
+	background-color: #428BCA;
+}
+
+.projects-id {
+	display: none;
+}
+
+/* END Projects */
+
+/* BEGIN Workflow */
+#workflow-content-wrapper {
+}
+
+#workflow-header {
+	margin-bottom: 20px;
+}
+
+#workflow-description {
+	height: 150px;
+}
+
+#workflow-projects {
+	height: 150px;
+}
+
+.workflow-name {
+	display: inline;
+	vertical-align: middle;
+	
+	margin-right: 40px;
+}
+/* END Workflow */
+
+/* BEGIN Project */
+#project-content-wrapper {
+}
+
+#project-header {
+	margin-bottom: 20px;
+}
+
+#project-base-properties {
+	float: left;
+	width: 50%;
+}
+
+#project-workflow {
+}
+
+#project-history {
+	height: 300px;
+}
+
+#project-attachments {
+	height: 300px;
+}
+
+.project-name {
+	display: inline;
+	vertical-align: middle;
+	
+	margin-right: 40px;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    /*background: white;*/
+    cursor: inherit;
+    display: block;
+}
+
+#comment-input {
+	resize: none;
+}
+/* END Project */
+
+/* BEGIN Actions */
+.actions-wrapper {
+	width: 450px;
+	
+	position: relative;
+	float: left;
+	margin: 20px 40px;
+	
+	background-color: white;
+}
+
+.actions-description {
+	width: 450px;
+	color: black;
+}
+
+.actions-wrapper a {
+	text-decoration: blink;
+}
+
+.actions-name {
+    width: 450px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	
+	color: white;
+	background-color: #428BCA;
+}
+
+.actions-id {
+	display: none;
+}
+
+/* END Actions */
+
+/* General */
+.no-decor-link {
+	text-decoration: blink;
+}
+
+.no-decor-link:hover {
+	text-decoration: blink;
+}
+
+.no-decor-link:active {
+	text-decoration: blink;
+}
+
+.header-button {
+	margin: 0px 5px;
+}
+
+.button-text {
+	margin-left: 5px;
+}
+
+.double-panel-left {
+	float: left;
+	width: 50%;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+	margin-right: 15px;
+}
+
+.panel-body-section{
+	margin-bottom: 15px;
+}
+
+/* BEGIN warning panel */
+.warning-panel {
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: #D4D9DE;
+	border-left-color: #f0ad4e;
+	border-left-width: 6px;
+	border-style: solid;
+
+	padding: 10px 30px;
+	min-height: 75px;
+	margin: 15px 0px;
+}
+
+.warning-panel-header {
+	font-size: 18px;
+	color: #f0ad4e;
+	margin-bottom: 10px;
+}
+
+.warning-panel-body {
+	margin-bottom: 10px;
+}
+
+/* END warning panel */
+
+/* BEGIN error panel */
+
+.error-panel {
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: #D4D9DE;
+	border-left-color: #d9534f;
+	border-left-width: 6px;
+	border-style: solid;
+
+	padding: 10px 30px;
+	min-height: 150px;
+	margin: 15px 0px;
+}
+
+.error-panel-header {
+	font-size: 18px;
+	color: #d9534f;
+	margin-bottom: 10px;
+}
+
+.error-panel-body {
+	margin-bottom: 10px;
+}
+
+/* END error panel */
+
+/* BEGIN info panel */
+
+.info-panel {
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: #D4D9DE;
+	border-left-color: #5bc0de;
+	border-left-width: 6px;
+	border-style: solid;
+
+	padding: 10px 30px;
+	min-height: 75px;
+	margin: 15px 0px;
+}
+
+.info-panel-header {
+	font-size: 18px;
+	color: #5bc0de;
+	margin-bottom: 10px;
+}
+
+.info-panel-body {
+	margin-bottom: 10px;
+}
+
+/* END info panel */
+
+/* Extends btn-link in bootstrap to get inline link in text */
+.inline-link {
+	margin:0px; 
+	padding:0px;
+	vertical-align:initial;
+}

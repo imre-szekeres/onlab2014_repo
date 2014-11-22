@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Workflow
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
@@ -34,19 +34,18 @@ public class Workflow extends AbstractEntity {
 	@Size(min = 16, max = 512)
 	private String description;
 
-	@NotNull
+	// FIXME just for test
+	//	@NotNull
 	@ManyToOne
 	private Domain domain;
-	
+
 	@OneToMany(mappedBy = "workflow", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<State> states = new ArrayList<State>();
 
-	@OneToMany(mappedBy = "workflow")
-	private List<Project> projects = new ArrayList<Project>();
+	//	@OneToMany(mappedBy = "workflow")
+	//	private List<Project> projects = new ArrayList<Project>();
 
-	@Deprecated
 	public Workflow() {
-		super();
 	}
 
 	public Workflow(String name, String description, Domain domain) {
@@ -66,29 +65,28 @@ public class Workflow extends AbstractEntity {
 	public State getInitialState() {
 		// Search the root of the state hierarchy
 		for (State state : states) {
-			if (state.isInitial()) {
+			if (state.isInitial())
 				return state;
-			}
 		}
 		// Should never happen
-		throw new IllegalArgumentException("There is not intial state for workflow: " + this.id);
+		throw new IllegalArgumentException("There is not intial state for workflow: " + id);
 	}
 
 	public List<State> getStates() {
 		return states;
 	}
 
-	public List<Project> getProjects() {
-		return projects;
-	}
+	//	public List<Project> getProjects() {
+	//		return projects;
+	//	}
 
 	public void setStates(List<State> states) {
 		this.states = states;
 	}
 
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
-	}
+	//	public void setProjects(List<Project> projects) {
+	//		this.projects = projects;
+	//	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -98,29 +96,29 @@ public class Workflow extends AbstractEntity {
 		this.description = description;
 	}
 
-	/**
-	 * Add {@link Project} to this Workflow
-	 * 
-	 * @param project
-	 *            {@link Project} to add
-	 */
-	public void addProject(Project project) {
-		projects.add(project);
-	}
+	//	/**
+	//	 * Add {@link Project} to this Workflow
+	//	 *
+	//	 * @param project
+	//	 *            {@link Project} to add
+	//	 */
+	//	public void addProject(Project project) {
+	//		projects.add(project);
+	//	}
 
-	/**
-	 * Remove {@link Project} from this Workflow
-	 * 
-	 * @param project
-	 *            {@link Project} to remove
-	 */
-	public boolean removeProject(Project project) {
-		return projects.remove(project);
-	}
+	//	/**
+	//	 * Remove {@link Project} from this Workflow
+	//	 *
+	//	 * @param project
+	//	 *            {@link Project} to remove
+	//	 */
+	//	public boolean removeProject(Project project) {
+	//		return projects.remove(project);
+	//	}
 
 	/**
 	 * Checks if this workflow contains all the states given as argument.
-	 * 
+	 *
 	 * @param states
 	 *            that are checked if they are contained already by this <code>Workflow</code>
 	 * @return true if and only if all the states are contained
@@ -131,12 +129,11 @@ public class Workflow extends AbstractEntity {
 
 	/**
 	 * Returns the pre-definit collection of <code>State</code>s that every and
-	 * each <code>Workflow</code> has like Initial, Paused, Closed.
-	 * 
+	 * each <code>Workflow</code> has like Initial.
+	 *
 	 * @return basic states that every <code>Workflow</code> has by default.
 	 * */
-	public static List<State> getBasicStates(Workflow workflow) {
-		// The initialState has no parent state -> null
+	public static List<State> getBasicStates() {
 		State initialState = new State("Initial state",
 				"This is the first state, when a project is created.", true);
 		// Create the basic states list
@@ -147,9 +144,6 @@ public class Workflow extends AbstractEntity {
 
 
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -158,22 +152,16 @@ public class Workflow extends AbstractEntity {
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result
-				+ ((projects == null) ? 0 : projects.hashCode());
-		result = prime * result + ((states == null) ? 0 : states.hashCode());
 		return result;
 	}
 
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (!super.equals(obj))
 			return false;
-		if (!(obj instanceof Workflow))
+		if (getClass() != obj.getClass())
 			return false;
 		Workflow other = (Workflow) obj;
 		if (description == null) {
@@ -190,11 +178,6 @@ public class Workflow extends AbstractEntity {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
-			return false;
-		if (projects == null) {
-			if (other.projects != null)
-				return false;
-		} else if (!projects.equals(other.projects))
 			return false;
 		if (states == null) {
 			if (other.states != null)

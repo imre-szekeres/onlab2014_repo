@@ -17,14 +17,14 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Projects
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name"),
-		@NamedQuery(name = "Project.findProjectsForUser", query = "SELECT p FROM Project p, ProjectAssignment pa WHERE pa.user.username = :username AND pa.project = p")
+	@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name"),
+	@NamedQuery(name = "Project.findProjectsForUser", query = "SELECT p FROM Project p, ProjectAssignment pa WHERE pa.user.username = :username AND pa.project = p")
 })
 public class Project extends AbstractEntity {
 
@@ -34,6 +34,8 @@ public class Project extends AbstractEntity {
 	public static final String PR_NAME = "name";
 	public static final String PR_CURRENT_STATE = "currentState";
 	public static final String PR_DESCRIPTION = "description";
+	public static final String PR_ACTIVE = "active";
+	public static final String PR_OWNER = "owner";
 	public static final String PR_WORKFLOW = "workflow";
 	public static final String PR_COMMENTS = "comments";
 	public static final String PR_PROJECT_ASSIGNMENTS = "projectAssignments";
@@ -47,11 +49,12 @@ public class Project extends AbstractEntity {
 	@Size(min = 13, max = 512)
 	private String description;
 
-	@NotNull
+	// FIXME just for test
+	//	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
 	private State currentState;
 
-	@NotNull
+	//	@NotNull
 	@ManyToOne
 	private Workflow workflow;
 
@@ -65,27 +68,27 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
-	/* TODO: ugyanugy "Serializable" ugyanakkor 4x kevesebb helyet foglal */
+	@OneToMany(mappedBy = "project")
+	private List<BlobFile> files;
+
 	@NotNull
 	private boolean active = true;
 
-	@NotNull
+	//FIXME just for test
+	//	@NotNull
 	private User owner;
 
-	@Deprecated
 	public Project() {
-		super();
 	}
 
 	public Project(String name, String description, Workflow workflow, User owner) {
 		this.name = name;
 		this.description = description;
 		this.workflow = workflow;
-		this.workflow.addProject(this);
-		this.currentState = this.workflow.getInitialState();
+		currentState = this.workflow.getInitialState();
 		// this.projectAssignments = new HashSet<>();
-		this.historyEntries = new ArrayList<>();
-		this.comments = new ArrayList<>();
+		historyEntries = new ArrayList<>();
+		comments = new ArrayList<>();
 		this.owner = owner;
 	}
 
@@ -147,7 +150,7 @@ public class Project extends AbstractEntity {
 
 	/**
 	 * Add {@link HistoryEntry} to this Project
-	 * 
+	 *
 	 * @param historyEntry
 	 *            {@link HistoryEntry} to add
 	 */
@@ -173,7 +176,7 @@ public class Project extends AbstractEntity {
 
 	/**
 	 * Remove {@link HistoryEntry} from this Project
-	 * 
+	 *
 	 * @param historyEntry
 	 *            {@link HistoryEntry} to remove
 	 */
@@ -208,7 +211,7 @@ public class Project extends AbstractEntity {
 
 	/**
 	 * Add {@link Comment} to this Project
-	 * 
+	 *
 	 * @param comment
 	 *            {@link Comment} to add
 	 */
@@ -221,7 +224,7 @@ public class Project extends AbstractEntity {
 
 	/**
 	 * Remove {@link Comment} from this Project
-	 * 
+	 *
 	 * @param comment
 	 *            {@link Comment} to remove
 	 */
@@ -245,23 +248,18 @@ public class Project extends AbstractEntity {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (!(obj instanceof Project)) {
+		if (!(obj instanceof Project))
 			return false;
-		}
 		Project other = (Project) obj;
 		if (id == null) {
-			if (other.id != null) {
+			if (other.id != null)
 				return false;
-			}
-		} else if (!id.equals(other.id)) {
+		} else if (!id.equals(other.id))
 			return false;
-		}
 		return true;
 	}
 
@@ -269,8 +267,8 @@ public class Project extends AbstractEntity {
 		return active;
 	}
 
-	public void setActive(Boolean active) {
-		this.active = active;
+	public Boolean getActive() {
+		return active;
 	}
 
 	public User getOwner() {
@@ -279,5 +277,17 @@ public class Project extends AbstractEntity {
 
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+
+	public List<BlobFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<BlobFile> files) {
+		this.files = files;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

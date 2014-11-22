@@ -27,14 +27,44 @@
 		</div>
 	</c:if>
     
-    <div id='content-wrapper'>
-        <jsp:include page='${ pageName }.jsp' >
-            <jsp:param name='appRoot' value='${ appRoot }' />
-        </jsp:include>
-    </div> 
-    
-    <div id='footer-wrapper' >
-    </div>
-    
+	<c:choose>
+		<c:when test='${not empty navigationTabs}'>
+			<div id='content-wrapper' class="content-wrapper-class">
+				<jsp:include page='${ pageName }.jsp' />
+			</div> 
+		</c:when>
+		<c:otherwise>
+			<div id='content-wrapper' class="content-wrapper-class" style='top:0px'>
+				<jsp:include page='${ pageName }.jsp' />
+			</div> 
+		</c:otherwise>
+	</c:choose>
+
+	<c:if test='${not empty errorList}'>
+		<div id='main-error-panel' class='error-panel'>
+			<div class="error-panel-header">
+				Error occurred
+			</div>
+			<div class="error-panel-body">
+				<c:forEach var="errorMessage" items="${errorList}">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" onclick="errorClosed();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<strong>${errorMessage.title}</strong> ${errorMessage.message}
+						</div>
+				</c:forEach>
+			</div>
+		</div>
+	</c:if>
+   
+
+	<script language="javascript">
+		function errorClosed() {
+			var errorCount = $('#main-error-panel > .error-panel-body').children().size();
+			if (errorCount <= 1) {
+				$("#main-error-panel").remove()
+			}
+		}
+	</script>
+   
 </body>
 </html>

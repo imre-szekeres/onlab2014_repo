@@ -20,9 +20,9 @@ import javax.persistence.criteria.Root;
 
 /**
  * Abstract class, which implements and helps with the basic CRUD operations and queries.
- * 
+ *
  * @version "%I%, %G%"
- * 
+ *
  * @param <T>
  *            The Entity to use in the operations
  */
@@ -33,7 +33,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 
 	/**
 	 * Saves the given entity. Persist if it is a new entity, merge if it is not.
-	 * 
+	 *
 	 * @param entity
 	 *            to save
 	 */
@@ -43,11 +43,12 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 		} else {
 			em.merge(entity);
 		}
+		System.out.println("entity saved");
 	}
 
 	/**
 	 * Attaches an detached entity to the persistence context.
-	 * 
+	 *
 	 * @param entity
 	 *            to attach
 	 * @return the attached entity
@@ -58,18 +59,35 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 
 	/**
 	 * Deletes the entity from the database.
-	 * 
+	 *
 	 * @param entity
 	 *            to delete
 	 * @throws EntityNotDeletableException
 	 */
 	public void delete(T entity) throws EntityNotDeletableException {
-		em.remove(em.merge(entity));
+		// TODO: investigate why it is not working... But it is not so importent now
+		// if (isDetached(entity)) {
+		// em.remove(entity);
+		// } else {
+		T managedEntity = em.merge(entity);
+		em.remove(managedEntity);
+		// }
+	}
+
+	/**
+	 * Deletes the entity from the database by its ID.
+	 *
+	 * @param id
+	 *            of the entity to delete
+	 * @throws EntityNotDeletableException
+	 */
+	public void deleteById(Long id) throws EntityNotDeletableException {
+		delete(selectById(id));
 	}
 
 	/**
 	 * Returns all of the entities, which represented by the Entity class.
-	 * 
+	 *
 	 * @return list of the result
 	 */
 	public List<T> selectAll() {
@@ -83,7 +101,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 
 	/**
 	 * Returns the Entity which has the specified ID.
-	 * 
+	 *
 	 * @param id
 	 *            of the entity
 	 * @return the result entity
@@ -93,16 +111,15 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, id));
 		Iterator<T> results = selectByParameters(parameterList).iterator();
 
-		if (results.hasNext()) {
+		if (results.hasNext())
 			return results.next();
-		} else {
+		else
 			throw new NoSuchElementException("There is not entity with id: " + id + "in class: " + getEntityClass().getSimpleName());
-		}
 	}
 
 	/**
 	 * Returns the result list of the query. The parameters will connected with <b>AND</b> in the query's WHERE part.
-	 * 
+	 *
 	 * @param parameters
 	 *            of the query, connected with AND
 	 * @return result list of the executed query
@@ -115,7 +132,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 
 	/**
 	 * Support calling named queries. You can find the named query's name in the entity classes
-	 * 
+	 *
 	 * @param queryName
 	 *            the name of the query in the specific entity class
 	 * @param parameters
@@ -155,7 +172,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param entity
 	 *            to examine
 	 * @return if the entity is detached from the persistence context or not.

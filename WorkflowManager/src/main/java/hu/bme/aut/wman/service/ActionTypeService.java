@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 /**
  * Helps make operations with <code>ActionTypes</code>.
- * 
+ *
  * @version "%I%, %G%"
  */
 @Stateless
@@ -35,7 +35,7 @@ public class ActionTypeService extends AbstractDataService<ActionType> {
 	/**
 	 * Deletes the ActionType.
 	 * You can not delete an ActionType, if there is at least one transition which using this ActionType.
-	 * 
+	 *
 	 * @param entity
 	 *            the ActionType to delete
 	 * @throws EntityNotDeletableException
@@ -44,12 +44,25 @@ public class ActionTypeService extends AbstractDataService<ActionType> {
 	@Override
 	public void delete(ActionType entity) throws EntityNotDeletableException {
 		List<Transition> relatedTransitions = transitionService.selectByActionTypeId(entity.getId());
-		if (relatedTransitions.size() > 0) {
+		if (relatedTransitions.size() > 0)
 			throw new EntityNotDeletableException("There is " + relatedTransitions.size() + " project(s), which are in this state.");
-		} else {
+		else {
 			super.delete(entity);
 		}
 	};
+
+	/**
+	 * Deletes the ActionType.
+	 * You can not delete a ActionType, if there is at least one <b>active</b> project in with that ActionType.
+	 *
+	 * @param actionTypeId
+	 *            the id of the ActionType to delete
+	 * @throws EntityNotDeletableException
+	 *             if you can not delete that ActionType for same reason
+	 */
+	public void deleteById(Long actionTypeId) throws EntityNotDeletableException {
+		delete(selectById(actionTypeId));
+	}
 
 	@Override
 	protected Class<ActionType> getEntityClass() {
