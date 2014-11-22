@@ -54,7 +54,7 @@ public class Role extends AbstractEntity {
 		super();
 	}
 
-	public Role(String name, Domain domain) {
+	public Role(String name) {
 		super();
 		this.name = name;
 		this.actionTypes = new HashSet<ActionType>();
@@ -209,6 +209,6 @@ public class Role extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return name;
+		return "Role -- " + name;
 	}
 }

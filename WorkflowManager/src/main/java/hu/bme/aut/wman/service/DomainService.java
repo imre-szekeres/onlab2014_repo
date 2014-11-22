@@ -24,7 +24,7 @@ public class DomainService extends AbstractDataService<Domain> {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domain));
 		
-		List<Domain> domains = callNamedQuery("Domian.findByName", parameters);
+		List<Domain> domains = callNamedQuery("Domain.findByName", parameters);
 		return (domains.size() > 0) ? domains.get(0) : null;
 	}
 	
