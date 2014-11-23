@@ -3,6 +3,8 @@
  */
 package hu.bme.aut.wman.model;
 
+import hu.bme.aut.wman.view.DragNDroppable;
+
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
@@ -12,7 +14,7 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("serial")
 @Entity
-public class Privilege extends AbstractEntity {
+public class Privilege extends AbstractEntity implements DragNDroppable {
 
 	public static final String PR_NAME = "name";
 	public static final String PR_ROLES = "roles";
@@ -79,5 +81,13 @@ public class Privilege extends AbstractEntity {
 	@Override
 	public String toString() {
 		return "Privilege -- " + name;
+	}
+	
+	public String getValue() {
+		return name;
+	}
+	
+	public String getLabel() {
+		return name;
 	}
 }

@@ -31,6 +31,7 @@ import javax.validation.constraints.NotNull;
 public class Role extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_ACTIONTYPE = "Role.findByActionType";
+	public static final String NQ_FIND_BY_DOMAIN = "Role.findByDomain";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";

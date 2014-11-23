@@ -33,6 +33,12 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 		List<Role> results = selectByParameters(parameterList);
 		return (results.size() > 0) ? results.get(0) : null;
 	}
+	
+	public List<Role> selectByDomain(String domainName) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domainName));
+		return callNamedQuery(Role.NQ_FIND_BY_DOMAIN, parameterList);
+	}
 
 	/**
 	 * @param actionType

@@ -23,6 +23,9 @@ import javax.inject.Inject;
 @Stateless
 public class DomainService extends AbstractDataService<Domain> {
 
+	public static final String DEFAULT_DOMAIN = "System";
+	public static final String DEFAULT_ROLE = "System Viewer";
+	
 	@Inject
 	private DomainAssignmentService domainAssignmentService;
 	
@@ -46,5 +49,4 @@ public class DomainService extends AbstractDataService<Domain> {
 			domainAssignmentService.delete( da );
 		super.delete( domain );
 	}
-
 }

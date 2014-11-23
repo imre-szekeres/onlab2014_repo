@@ -54,6 +54,7 @@ public class AbstractController {
 		return navigateTo(to, pageName, model, new ArrayList<ErrorMessageVO>());
 	}
 
+	@SuppressWarnings("unchecked")
 	public String navigateTo(String to, String pageName, Model model, List<ErrorMessageVO> errorList) {
 		Object errorsRaw = model.asMap().get("errorList");
 		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
