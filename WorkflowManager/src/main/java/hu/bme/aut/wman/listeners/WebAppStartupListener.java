@@ -106,7 +106,7 @@ public class WebAppStartupListener
 		XMLEventReader eventReader = null;
 		InputStream resource = null;
 		try {
-			
+
 			resource = new FileInputStream(XML_DB_CONFIG);
 			eventReader = inputFactory.createXMLEventReader(resource);
 			LOGGER.debug("processing " + XML_DB_CONFIG);
@@ -135,6 +135,17 @@ public class WebAppStartupListener
 			roleService.delete( r );
 	}
 	
+	private final void clearUsers() throws Exception {
+		List<User> users = userService.selectAll();
+		for(User u : users) {
+			List<DomainAssignment> assignments = domainAssignmentService.selectByUserID( u.getId() );
+			for(DomainAssignment da : assignments) {
+				domainAssignmentService.delete( da );
+			}
+			userService.delete( u );
+		}
+	}
+	
 	private final void printDB() {
 		LOGGER.debug("printing database..");
 		List<Domain> domains = domainService.selectAll();
@@ -142,16 +153,34 @@ public class WebAppStartupListener
 		List<Role> roles = roleService.selectAll();
 		List<User> users = userService.selectAll();
 		
-		printAs(domains, "Domains:");
-		printAs(privileges, "Privileges:");
-		printAs(roles, "Roles:");
-		printAs(users, "Users:");
+		printAs(domains, "Domains: ");
+		printAs(privileges, "Privileges: ");
+		printAs(roles, "Roles: ");
+		printUsers();
 	}
 	
 	private final <T extends AbstractEntity> void printAs(List<T> entities, String title) {
-		LOGGER.debug(title);
+		LOGGER.debug(title + String.format("(%d)", entities.size()));
 		for(T entity : entities) 
 			LOGGER.debug("\t" + entity.toString());
+	}
+	
+	private final void printUsers() {
+		List<User> users = userService.selectAll();
+		LOGGER.debug("Users: " + String.format("(%d)", users.size()));
+		for(User u : users)
+			print(u);
+	}
+	
+	private final void print(User user) {
+		List<DomainAssignment> assignments = domainAssignmentService.selectByUserID( user.getId() );
+		LOGGER.debug("\t" + user.toString());
+		for(DomainAssignment da : assignments) {
+			LOGGER.debug("\t\tin " + da.getDomain().toString() + " has");
+			for(Role r : da.getUserRoles()) {
+				LOGGER.debug("\t\t\t" + r.toString());
+			}
+		}
 	}
 	
 	private final void tryReadingElement(XMLEventReader reader) throws Exception {
@@ -375,7 +404,7 @@ public class WebAppStartupListener
 				if (Boolean.valueOf( removable ))
 					removables.add( u );
 				else {
-					Map<String, String> names = parseRoleNames(reader);
+					Map<String, String> names = parseRoleNames(username, reader);
 					
 					for(String name : names.keySet()) {
 						Domain domain = domainOf(domains, names.get(name));
@@ -397,15 +426,15 @@ public class WebAppStartupListener
 		
 		if (da == null)
 			da = new DomainAssignment(user, domain, role);
-		else
+		else if (!da.getUserRoles().contains( role ))
 			da.addUserRole( role );
 		assignments.add( da );
 		LOGGER.debug(user.toString() + " was added to " + domain.toString() + " as " + role.toString());
 	}
 	
-	private final Map<String, String> parseRoleNames(XMLEventReader reader) throws Exception {
+	private final Map<String, String> parseRoleNames(String username, XMLEventReader reader) throws Exception {
 		Map<String, String> names = new HashMap<>(1);
-		
+
 		/* reading roles until the terminating </user> tag.. */
 		while (canReadMore("user", reader)) {
 			XMLEvent event = reader.nextEvent();
@@ -414,10 +443,15 @@ public class WebAppStartupListener
 				StartElement role = event.asStartElement();
 				
 				String removable = role.getAttributeByName( REMOVABLE ).getValue();
-				if (!Boolean.valueOf( removable )) {
-					String name = role.getAttributeByName(NAME).getValue();
-					String domain = role.getAttributeByName( DOMAIN ).getValue();
+				String name = role.getAttributeByName(NAME).getValue();
+				String domain = role.getAttributeByName( DOMAIN ).getValue();
+				if (!Boolean.valueOf( removable ))
 					names.put(name, domain);
+				else {
+					DomainAssignment da = domainAssignmentService.selectByDomainFor(username, domain);
+					Role r = roleService.selectByName(name);
+					da.removeUserRole( r );
+					domainAssignmentService.save( da );
 				}
 			}
 		}
