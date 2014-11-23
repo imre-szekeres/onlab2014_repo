@@ -26,11 +26,17 @@ import javax.validation.constraints.NotNull;
 															"AND r MEMBER OF d.userRoles "),
 	@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
 													"WHERE d.name = :domainName "+
-														    "AND r MEMBER OF d.roles")
+														    "AND r MEMBER OF d.roles"),
+    @NamedQuery(name = "Role.findByDomainAndName", query = "SELECT r FROM Role r, Domain d "+
+														   "WHERE d.name = :domainName "+
+														          "AND r.name = :roleName " +
+															      "AND r MEMBER OF d.roles ")
 })
 public class Role extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_ACTIONTYPE = "Role.findByActionType";
+	public static final String NQ_FIND_BY_DOMAIN = "Role.findByDomain";
+	public static final String NQ_FIND_BY_DOMAIN_AND_NAME = "Role.findByDomainAndName";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";

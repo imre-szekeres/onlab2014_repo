@@ -13,8 +13,8 @@ import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 /**
  * @author Imre Szekeres
@@ -23,16 +23,16 @@ import javax.ejb.Stateless;
 @Stateless
 public class UserHandlerImpl implements UserHandlerLocal {
 	
-	@EJB(mappedName="java:module/UserService")
+	@Inject
 	private UserService userService;
 	
-	@EJB(mappedName="java:module/RoleService")
+	@Inject
 	private RoleService roleService;
 	
-	@EJB(mappedName="java:module/DomainService")
+	@Inject
 	private DomainService domainService;
 	
-	@EJB(mappedName="java:module/DomainAssignmentService")
+	@Inject
 	private DomainAssignmentService domainAssignmentService;
 	
 	

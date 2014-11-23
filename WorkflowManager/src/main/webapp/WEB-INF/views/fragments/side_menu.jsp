@@ -28,14 +28,14 @@
 			</div>
 		</a>
 		
-		<a href=''>
+		<a href='${ param.appRoot }/admin'>
 			<div id='admin-button' class='side-menu-button'>
 				<span class='glyphicon glyphicon-cog side-menu-icon'/>
 				<div class='side-menu-title'>Administration</div>
 			</div>
 		</a>
 		
-		<a href=''>
+		<a href='${ param.appRoot }/logout'>
 			<div id='log-out-button' class='side-menu-button'>
 				<span class='glyphicon glyphicon-off side-menu-icon'/>
 				<div class='side-menu-title'>Logout</div>

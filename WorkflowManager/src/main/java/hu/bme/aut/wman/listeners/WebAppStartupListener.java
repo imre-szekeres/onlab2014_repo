@@ -4,7 +4,6 @@
 package hu.bme.aut.wman.listeners;
 
 
-import hu.bme.aut.wman.handlers.UserHandlerLocal;
 import hu.bme.aut.wman.model.AbstractEntity;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
@@ -89,9 +88,6 @@ public class WebAppStartupListener
 	@EJB(mappedName = "java:module/DomainAssignmentService")
 	private DomainAssignmentService domainAssignmentService;
 	
-	@EJB(mappedName = "java:module/UserHandlerImpl")
-	private UserHandlerLocal userHandler;
-	
 	
 	static {
 		PropertyConfigurator.configure( LOG4J_PROPERTIES );
@@ -148,12 +144,10 @@ public class WebAppStartupListener
 	
 	private final void printDB() {
 		LOGGER.debug("printing database..");
-		List<Domain> domains = domainService.selectAll();
 		List<Privilege> privileges = privilegeService.selectAll();
 		List<Role> roles = roleService.selectAll();
-		List<User> users = userService.selectAll();
 		
-		printAs(domains, "Domains: ");
+		printDomains();
 		printAs(privileges, "Privileges: ");
 		printAs(roles, "Roles: ");
 		printUsers();
@@ -180,6 +174,21 @@ public class WebAppStartupListener
 			for(Role r : da.getUserRoles()) {
 				LOGGER.debug("\t\t\t" + r.toString());
 			}
+		}
+	}
+	
+	private final void printDomains() {
+		List<Domain> domains = domainService.selectAll();
+		LOGGER.debug("Domains: " + String.format("(%d)", domains.size()));
+		for(Domain d : domains)
+			print(d);
+	}
+	
+	private final void print(Domain domain) {
+		List<Role> roles = domain.getRoles();
+		LOGGER.debug("\t" + domain.toString());
+		for(Role r : roles) {
+			LOGGER.debug("\t\t" + r.toString());
 		}
 	}
 	
@@ -303,10 +312,14 @@ public class WebAppStartupListener
 				
 				Role r = roleService.selectByName(roleName);
 				r = (r == null) ? new Role(roleName) : r;
+				Domain d = domainOf(domains, domain);
 
 				LOGGER.debug("\t" + r.toString() + " was found");
 				if (Boolean.valueOf(removable)) {
 					removables.add(r);
+					d.removeRole( r );
+					domainService.save( d );
+					LOGGER.debug(r.toString() + " was removed from " + d.toString());
 				} else {
 					
 					Set<Privilege> inherited = privilegesOf(parent, roles);
@@ -322,16 +335,19 @@ public class WebAppStartupListener
 						LOGGER.debug("\t" + p.toString() + " was parsed and added to " + r.toString());
 					}
 					
+					roleService.save( r );
+					LOGGER.debug(r.toString() + " was inserted");
+					
 					roles.put(roleName, r);
-					Domain d = domainOf(domains, domain);
-					d.addRole( r );
-					domainService.save( d );
-					LOGGER.debug(r.toString() + " was added to " + d.toString());
+					if (!d.getRoles().contains( r )) {
+						d.addRole( r );
+						domainService.save( d );
+						LOGGER.debug(r.toString() + " was was added to " + d.toString());
+					}
 				}
 			}
 		}
 		removeAll(removables, roleService);
-		insertAll(new ArrayList<Role>(roles.values()), roleService);
 	}
 	
 	private final Privilege privilegeOf(Map<String, Privilege> privileges, String privilegeName) throws Exception {
