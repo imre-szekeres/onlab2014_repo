@@ -144,12 +144,10 @@ public class WebAppStartupListener
 	
 	private final void printDB() {
 		LOGGER.debug("printing database..");
-		List<Domain> domains = domainService.selectAll();
 		List<Privilege> privileges = privilegeService.selectAll();
 		List<Role> roles = roleService.selectAll();
-		List<User> users = userService.selectAll();
 		
-		printAs(domains, "Domains: ");
+		printDomains();
 		printAs(privileges, "Privileges: ");
 		printAs(roles, "Roles: ");
 		printUsers();
@@ -176,6 +174,21 @@ public class WebAppStartupListener
 			for(Role r : da.getUserRoles()) {
 				LOGGER.debug("\t\t\t" + r.toString());
 			}
+		}
+	}
+	
+	private final void printDomains() {
+		List<Domain> domains = domainService.selectAll();
+		LOGGER.debug("Domains: " + String.format("(%d)", domains.size()));
+		for(Domain d : domains)
+			print(d);
+	}
+	
+	private final void print(Domain domain) {
+		List<Role> roles = domain.getRoles();
+		LOGGER.debug("\t" + domain.toString());
+		for(Role r : roles) {
+			LOGGER.debug("\t\t" + r.toString());
 		}
 	}
 	
