@@ -2,8 +2,6 @@
 <entities>
 	<domains>
 		<domain name='System' removable='false' />
-		<domain name='System2' removable='true' />
-		<domain name='Crimson-Varkonyi' removable='true' />
     </domains>
     
     <privileges>
