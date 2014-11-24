@@ -6,6 +6,7 @@ package hu.bme.aut.wman.controllers;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.service.DomainService;
+import hu.bme.aut.wman.service.RoleService;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,8 @@ public class DomainsController extends AbstractController {
 	
 	@EJB(mappedName = "java:module/DomainService")
 	private DomainService domainService;
+	@EJB(mappedName = "java:module/RoleService")
+	private RoleService roleService;
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
@@ -39,8 +42,15 @@ public class DomainsController extends AbstractController {
 		if (errors.isEmpty()) {
 			List<Role> defaults = domainService.selectByName(DomainService.DEFAULT_DOMAIN).getRoles();
 			
-			for(Role role : defaults)
-				newDomain.addRole(role);
+			for(Role role : defaults) {
+				int lastIndex = role.getName().lastIndexOf(" ");
+				String roleName = role.getName().substring(lastIndex);
+				Role newRole = new Role(newDomain.getName() + roleName);
+				
+				newRole.setPrivileges( role.getPrivileges() );
+				roleService.save( newRole );
+				newDomain.addRole( newRole );
+			}
 			
 			domainService.save( newDomain );
 		} else {
