@@ -6,12 +6,15 @@ package hu.bme.aut.wman.service;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
+import hu.bme.aut.wman.service.validation.DomainValidator;
+import hu.bme.aut.wman.service.validation.ValidationEngine;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -28,6 +31,22 @@ public class DomainService extends AbstractDataService<Domain> {
 	
 	@Inject
 	private DomainAssignmentService domainAssignmentService;
+
+	
+	private ValidationEngine<Domain> validator;
+
+	@PostConstruct
+	public void setup() {
+		validator = new DomainValidator();
+	}
+	
+	public Map<String, String> validate(Domain domain) {
+		Map<String, String> errors = validator.validate( domain );
+		if (selectByName(domain.getName()) != null)
+			errors.put("name", "Domain " + domain.getName() + " already exists!");
+		return errors;
+	}
+	
 	
 	public Domain selectByName(String domain) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);

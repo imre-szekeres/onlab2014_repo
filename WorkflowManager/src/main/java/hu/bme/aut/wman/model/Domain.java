@@ -52,6 +52,9 @@ public class Domain extends AbstractEntity {
 	
 	public Domain() {
 		super();
+		this.roles = new ArrayList<>();
+		this.workflows = new HashSet<>();
+		this.actionTypes = new HashSet<>();
 	}
 	
 	public Domain(String name) {

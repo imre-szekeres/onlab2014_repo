@@ -7,33 +7,52 @@
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
+<div id='roles-list-panel' class='panel panel-default' >
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
     <c:forEach var='domain' items='${ domains }' >  
         <c:forEach var='role' items='${ domain.roles }' >
             
-            <div class='panel panel-default' >
-                <div class='panel-heading' role='tab' id='role-${ role.id }-heading' >
+            <div class='panel panel-default admin-role-panel' >
+                <div class='panel-heading' role='tab' id='role-${ role.id }-heading' title='in domain ${ domain.name }' data-toggle='tooltip' data-placement='right' >
                     <h3 class='panel-title'>
-                        <a data-toggle='collapse' data-parent='#admin-roles-content-wrapper' href='collapse-${ role.id }' > ${ role.name } </a>
+                        <a class='collapsed' 
+                           aria-expanded='false' 
+                           aria-controls='collapse-${ role.id }' 
+                           data-toggle='collapse' 
+                           data-parent='#admin-roles-content-wrapper' 
+                           href='#collapse-${ role.id }' >${ role.name }</a>
                     </h3>
                 </div>
                 <div id='collapse-${ role.id }' class='panel-collapse collapse in' role='tabpanel' 
                      aria-labelledby='role-${ role.id }-heading' >
-                    <div class='panel-body' ></div>
+                    <div class='list-group privileges-list-group' >
+                    
+	                    <div class='privilege-list-wrapper' >
+	                    <c:forEach var='privilege' items='${ role.privileges }' >
+	                        <div class='privilege-row' >
+	                           ${ privilege.name }
+	                        </div>
+	                    </c:forEach>
+	                    </div>
+                    
+                    </div>
                 </div>
             </div>
             
         </c:forEach>
     </c:forEach>
 </div>
+</div>
 
 <div id='admin-roles-create-wrapper' >
-    <button class='btn btn-primary' id='create-role-trigger' data-toggle='modal' data-target='#new-role-modal' >Create Role</button>
+    <button class='btn btn-primary' id='create-role-trigger' data-toggle='modal' data-target='#new-role-modal' >
+        <span class="glyphicon glyphicon-plus new-role-icon" aria-hidden="true" ></span> Create Role
+    </button>
 </div>
 
 <div class='modal fade' id='new-role-modal' tabindex='-1' role='dialog' aria-labelledby='#new-role-label' aria-hidden='true' >
     
-    <form:form modelAttribute='newRole' action='${ appRoot }/roles/create' method='POST' id='new-role-form' class='form-horizontal' >
+    <form:form modelAttribute='newRole' action='${ appRoot }/${ createRoleAction }' method='POST' id='new-role-form' class='form-horizontal' >
     <div class='modal-dialog' >
     <div class='modal-content' >
         <div class='modal-header' >
@@ -119,7 +138,7 @@
         </div>
 
         <div class='modal-footer' >
-            <button type='submit' class='btn btn-primary' onclick='submitNewRoleForm(event)' >Submit</button>
+            <button type='submit' class='btn btn-primary' onclick='submitNewRoleForm(event)' >Create</button>
             <button type='button' class='btn btn-default' data-dismiss='modal' >Cancel</button>
         </div>
     </div>
@@ -196,4 +215,6 @@
     }
 
     $('#create-role-trigger').click( onCreateClick );
+    $('.collapse').collapse();
+    $('[data-toggle="tooltip"]').tooltip();
 </script>
