@@ -4,8 +4,8 @@
 
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 
-<c:set var='elementRowClass' value="${ empty elementRowClass ? '' : elementRowClass }" />
-<c:set var='elementBodyClass' value="${ empty elementBodyClass ? '' : elementBodyClass }" />
+<c:set var='elementRowClass' value="${  (empty elementRowClass)  ? '' : elementRowClass  }" />
+<c:set var='elementBodyClass' value="${ (empty elementBodyClass) ? '' : elementBodyClass }" />
 
 <c:forEach var='element' items='${ elements }'>
     

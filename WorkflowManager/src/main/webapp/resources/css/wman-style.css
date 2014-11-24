@@ -308,6 +308,11 @@
 	height: 50px;
 }
 
+#top-menu-bar {
+	z-index: 11;
+	background-color: white;
+}
+
 /* tab color */
 .nav-tabs>li>a { 
 	color: black;
@@ -736,6 +741,20 @@
 }
 
 /* BEGIN Admin Roles */
+#roles-list-panel {
+	width: 700px;
+	height: 600px;
+}
+
+#admin-roles-content-wrapper {
+	width: 698px;
+	height: 599px;
+	overflow-y: auto;
+	overflow-x: auto;
+	
+	padding: 31px;
+}
+
 #new-role-modal .modal-dialog {
 	width: 813px;
 	height: 720px;
@@ -786,7 +805,6 @@
 #privileges-dnd-source-content {
 	width: 100%;
 	height: 100%;
-	
 	left: -26px;
 }
 
@@ -802,6 +820,92 @@
 #privileges-dnd-source-panel-wrapper .panel-body {
 	padding: 0;
 }
+
+/*.admin-role-panel:nth-child(even) {
+	position: relative;
+	top: -42px;
+	left: 230px;
+}*/
+
+.admin-role-panel {
+	width: 210px;
+}
+
+.admin-role-panel .panel-heading .panel-collapse {
+	width: 210px;
+}
+
+.admin-role-panel .panel-heading {
+	padding: 0;
+	height: 35px;
+	
+	background-color: #6600CC;
+}
+
+.admin-domain-panel .panel-heading {
+	background-color: #5cb85c;
+}
+
+.admin-role-panel .panel-title {
+	width: 100%;
+	height: 100%;
+}
+
+.admin-role-panel .panel-heading:hover {
+	background-color: #9933FF;
+}
+
+.admin-domain-panel .panel-heading:hover {
+	background-color: #6CBF6C;
+}
+
+.admin-role-panel .panel-title a{
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	
+	height: 35px;
+	line-height: 35px;
+	vertical-align: middle;
+	text-align: center;
+	cursor: pointer;
+	
+	text-decoration: none;
+	color: white;
+}
+
+.privileges-list-group {
+	margin: 0;
+}
+
+.privilege-list-wrapper {
+	width: 100%;
+	height: auto;
+	max-height: 310px;
+	overflow: auto;
+	
+	padding: 2px;
+}
+
+.privilege-row {
+	width: 100%;
+
+	line-height: 21px;
+	text-align: center;
+	vertical-align: middle;
+	
+	display: inline-block;
+	color: #FF9900;
+	background-color: rgb(245, 245, 245);
+	
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
+
+.role-row {
+	color: #5700b3;
+}
+
 /* END   Admin Roles */
 
 
@@ -810,8 +914,6 @@
 	width: 295px;
 	height: 25px;
 	
-	/*border-top: 1px solid #777;
-	border-bottom: 1px solid #777;*/
 	background-color: #eee;
 	
 	margin-top: 2px;
@@ -826,12 +928,13 @@
 	line-height: 25px;
 	text-align: center;
 	vertical-align: middle;
-	color: #5700b3;
 }
 
 .privilege-row {
 }
 
 .privilege-body {
+	/* color: #5700b3; */
+	color: #FF9900;
 }
 /* END   darg-n-drop */

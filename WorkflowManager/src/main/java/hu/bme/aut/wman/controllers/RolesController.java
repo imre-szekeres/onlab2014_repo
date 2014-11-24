@@ -36,8 +36,8 @@ public class RolesController extends AbstractController {
 
 	private static final Logger LOGGER = Logger.getLogger( RolesController.class );
 	
-	public static final String ROLES_ROOT = "/roles";
-	public static final String ROLES_CREATE = ROLES_ROOT + "/create";
+	public static final String ROOT_URL = "/roles";
+	public static final String CREATE = ROOT_URL + "/create";
 	
 
 	@EJB(mappedName = "java:module/RoleService")
@@ -51,7 +51,7 @@ public class RolesController extends AbstractController {
 	
 	
 	@SuppressWarnings("deprecation")
-	@RequestMapping(value = ROLES_CREATE, method = RequestMethod.POST)
+	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createRole(@ModelAttribute("newRole")RoleTransferObject newRole, Model model, HttpServletRequest request) {
 		String roleName = newRole.getRoleName();
 		String domainName  = newRole.getDomainName();
@@ -78,8 +78,14 @@ public class RolesController extends AbstractController {
 		} else {
 			model.addAttribute("errorMessages", errors);
 		}
-
-		model.addAttribute("message", "createRole reached");
-		return redirectTo(AdminViewController.ROLES_ROOT);
+		return redirectTo(AdminViewController.ROLES);
+	}
+	
+	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
+	public String listRoles(Model model, HttpServletRequest request) {
+		String domain = request.getParameter("domain");
+		model.addAttribute("elements", roleService.selectByDomain(domain));
+		model.addAttribute("elementBodyClass", "role-body");
+		return "fragments/dnd_elements";
 	}
 }

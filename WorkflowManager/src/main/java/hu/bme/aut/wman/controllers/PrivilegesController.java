@@ -19,14 +19,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class PrivilegesController {
 
-	public static final String ASYNC_SELECT  = "/async/privileges";
+	public static final String ROOT_URL  = "/privileges";
 	
 	@EJB(mappedName = "java:module/PrivilegeService")
 	private PrivilegeService privilegeService;
 	
-	@RequestMapping(value = ASYNC_SELECT, method = RequestMethod.GET)
-	public String listPrivilegesAsync(Model model) {
+	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
+	public String listPrivileges(Model model) {
 		model.addAttribute("elements", privilegeService.selectAll());
+		model.addAttribute("elementBodyClass", "privilege-body");
 		return "fragments/dnd_elements";
 	}
 }
