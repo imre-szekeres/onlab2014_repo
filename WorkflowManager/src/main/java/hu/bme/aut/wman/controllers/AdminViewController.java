@@ -5,6 +5,7 @@ package hu.bme.aut.wman.controllers;
 
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.service.DomainService;
+import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.view.objects.transfer.RoleTransferObject;
 
@@ -45,6 +46,8 @@ public class AdminViewController extends AbstractController {
 	private RoleService roleService;
 	@EJB(mappedName = "java:module/DomainService")
 	private DomainService domainService;
+	@EJB(mappedName = "java:module/PrivilegeService")
+	private PrivilegeService privilegeService;
 
 	
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
@@ -70,6 +73,12 @@ public class AdminViewController extends AbstractController {
 		return navigateToFrame("admin_domains", model);
 	}
 
+	@RequestMapping(value = PRIVILEGES, method = RequestMethod.GET)
+	public String adminPrivileges(Model model) {
+		model.addAttribute("privileges", privilegeService.selectAll());
+		return navigateToFrame("admin_privileges", model);
+	}
+	
 	@Override
 	public Map<String, String> getNavigationTabs() {
 		return NAVIGATION_TABS;

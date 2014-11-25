@@ -904,6 +904,10 @@
 	background-color: #5cb85c;
 }
 
+.admin-privilege-panel .panel-heading {
+	background-color: #428bca;
+}
+
 .admin-role-panel .panel-title {
 	width: 100%;
 	height: 100%;
@@ -915,6 +919,10 @@
 
 .admin-domain-panel .panel-heading:hover {
 	background-color: #6CBF6C;
+}
+
+.admin-privilege-panel .panel-heading:hover {
+	background-color: #5bc0de;
 }
 
 .admin-role-panel .panel-title a{
@@ -953,7 +961,7 @@
 	vertical-align: middle;
 	
 	display: inline-block;
-	color: #FF9900;
+	color: #428bca;
 	background-color: rgb(245, 245, 245);
 	
 	margin-top: 1px;
@@ -993,7 +1001,8 @@
 
 .privilege-body {
 	/* color: #5700b3; */
-	color: #FF9900;
+	/*color: #FF9900; */
+	color: #428bca;
 }
 /* END   darg-n-drop */
 
