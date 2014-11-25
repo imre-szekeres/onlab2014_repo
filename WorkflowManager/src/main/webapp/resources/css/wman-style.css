@@ -635,6 +635,37 @@
 #comment-input {
 	resize: none;
 }
+
+.attachment-list {
+}
+
+.attachment-row {
+	padding: 10px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #D4D9DE;
+}
+
+.attachment-li :hover{
+	background-color: #ddd;
+}
+
+.attachment-input-wrapper {
+	padding-right: 15px;
+	padding-bottom: 30px;
+	margin-bottom: 0px !important;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #D4D9DE;
+}
+
+.btn-clear-hover-primary:hover {
+	background-color: #3071a9;
+}
+
+.btn-clear-hover-danger:hover {
+	background-color: #c9302c;
+}
 /* END Project */
 
 /* BEGIN Actions */

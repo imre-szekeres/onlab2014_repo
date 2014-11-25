@@ -68,7 +68,7 @@ public class Project extends AbstractEntity {
 	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Comment> comments = new ArrayList<Comment>();
 
-	@OneToMany(mappedBy = "project")
+	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<BlobFile> files;
 
 	@NotNull
