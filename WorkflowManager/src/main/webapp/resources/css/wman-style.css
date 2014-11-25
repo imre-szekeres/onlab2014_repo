@@ -372,8 +372,13 @@
 	text-align: center;
 	line-height: 30px;
 	
-	color: white;
-	background-color: #428BCA;
+	color: white !important;
+	background-color: #5700B3 !important;
+}
+
+
+.workflows-name:hover {
+	background-color: #9933FF !important;
 }
 
 .workflows-id {
@@ -402,6 +407,11 @@
 	
 	margin: 0px;
 }
+
+.delete-button:hover {
+	color: #861919;
+}
+
 #edit-button {
 	position: relative;
 	top: -70px;
@@ -421,6 +431,11 @@
 	
 	margin: 0px;
 }
+
+.edit-button:hover {
+	color: #235581;
+}
+
 #open-button {
 	position: relative;
 	top: -100px;
@@ -439,6 +454,10 @@
 	background-color: #428BCA;
 	
 	margin: 0px;
+}
+
+.open-button:hover {
+	color: #235581;
 }
 
 /* On projects */
@@ -462,8 +481,37 @@
 	margin: 0px;
 }
 
+.close-button:hover {
+	color: #C67B10;
+}
+
+/* On projects */
+#reopen-button {
+	position: relative;
+	top: -130px;
+	left: 250px;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.reopen-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #5cb85c;
+	
+	margin: 0px;
+}
+
+.reopen-button:hover {
+	color: #347934;
+}
+
 .little-button-link {
-	color: white;
+	color: inherit !important;
 }
 
 /* END little buttons :) */
@@ -494,8 +542,13 @@
 	text-align: center;
 	line-height: 30px;
 	
-	color: white;
-	background-color: #428BCA;
+	color: white !important;
+	background-color: #5700B3 !important;
+}
+
+
+.projects-name:hover {
+	background-color: #9933FF !important;
 }
 
 .projects-id {
@@ -610,8 +663,13 @@
 	text-align: center;
 	line-height: 30px;
 	
-	color: white;
-	background-color: #428BCA;
+	color: white !important;
+	background-color: #5700B3 !important;
+}
+
+
+.actions-name:hover {
+	background-color: #9933FF !important;
 }
 
 .actions-id {

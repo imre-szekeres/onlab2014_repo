@@ -40,6 +40,7 @@ public class ProjectsViewController extends AbstractController {
 
 	public static final String PROJECTS = "/projects";
 	public static final String NEW_PROJECT = "/new/project";
+	public static final String REOPEN_PROJECT = "/reopen/project";
 	public static final String CLOSE_PROJECT = "/close/project";
 	public static final String DELETE_PROJECT = "/delete/project";
 
@@ -84,12 +85,11 @@ public class ProjectsViewController extends AbstractController {
 
 		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
 
-		// FIXME
 		User user = null;
 		try {
-			user = userService.selectById(((SecurityToken) request.getSession().getAttribute("securityToken")).getUserID());
+			user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 		} catch (NullPointerException e) {
-
+			// TODO what to do? We don't have authorized user??
 		}
 
 		Project project = new Project();
@@ -116,6 +116,16 @@ public class ProjectsViewController extends AbstractController {
 
 		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=true");
+		return view;
+	}
+
+	@RequestMapping(value = REOPEN_PROJECT, method = RequestMethod.GET)
+	public ModelAndView reopen(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+
+		projectService.reopenById(projectId);
+
+		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
+		view.setViewName(view.getViewName() + "?active=false");
 		return view;
 	}
 

@@ -20,9 +20,9 @@
 		<c:forEach var="workflow" items="${workflows}">
 			<div class="panel-group workflows-wrapper" id="accordion${workflow.id}">
 				<div class="panel panel-default">
-					<div class="panel-heading workflows-name" style="background-color: #5700B3; color: white; line-height:30px;">
+					<div class="panel-heading workflows-name">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion${workflow.id}" href="#collapse${workflow.id}">
+							<a data-toggle="collapse" style="text-decoration: blink;" data-parent="#accordion${workflow.id}" href="#collapse${workflow.id}">
 								${workflow.name}
 							</a>
 						</h4>

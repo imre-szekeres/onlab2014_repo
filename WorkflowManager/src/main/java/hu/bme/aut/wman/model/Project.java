@@ -76,6 +76,7 @@ public class Project extends AbstractEntity {
 
 	//FIXME just for test
 	//	@NotNull
+	@ManyToOne
 	private User owner;
 
 	public Project() {

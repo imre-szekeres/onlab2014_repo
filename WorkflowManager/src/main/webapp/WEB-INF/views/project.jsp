@@ -9,8 +9,15 @@
 		<h3 class='project-name'> <strong>Project:</strong> ${project.name} </h3>
 		<a role='button' class='btn btn-primary header-button'> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <span class='button-text'>Edit</span> </a>
 		<c:if test='${project.active}'>
-			<a href='close/project?id=${project.id}' role='button' class='btn btn-warning header-button'> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class='button-text'>Close</span> </a>
 		</c:if>
+		<c:choose>
+			<c:when test='${project.active}'>
+				<a href='close/project?id=${project.id}' role='button' class='btn btn-warning header-button'> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <span class='button-text'>Close</span> </a>
+			</c:when>
+			<c:otherwise>
+				<a href='reopen/project?id=${project.id}' role='button' class='btn btn-warning header-button'> <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> <span class='button-text'>Reopen</span> </a>
+			</c:otherwise>
+		</c:choose>
 	</div>
 	
 	<c:if test='${empty actions}'>
@@ -34,7 +41,7 @@
 				<p>${project.description}</p>
 			</div>
 			<div id="project-owner" class='panel-body-section'>
-				<strong>Owner:</strong> ${project.owner.name}
+				<strong>Owner:</strong> ${project.owner.username}
 			</div>
 			<div id="project-active" class='panel-body-section'>
 				<c:choose>

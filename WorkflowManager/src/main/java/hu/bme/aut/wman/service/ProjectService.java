@@ -113,6 +113,7 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (!project.isActive())
 			return;
 		else {
+			// FIXME
 			//			if (isDetached(project)) {
 			project = attach(project);
 			//			}
@@ -138,11 +139,21 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (project.isActive())
 			return;
 		else {
-			if (isDetached(project)) {
-				project = attach(project);
-			}
+			// FIXME
+			//			if (isDetached(project)) {
+			project = attach(project);
+			//			}
 			project.setActive(true);
 		}
+	}
+
+	/**
+	 * Finds and opens the project by id.
+	 *
+	 * @param projectId
+	 */
+	public void reopenById(Long projectId) {
+		reopen(selectById(projectId));
 	}
 
 	/**
