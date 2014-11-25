@@ -996,3 +996,14 @@
 	color: #FF9900;
 }
 /* END   darg-n-drop */
+
+/* BEGIN comments on project */
+.project-comment-body{
+	width: 100%;
+	
+	border-bottom-width: 1px;
+	border-bottom-color: #D4D9DE;
+	border-bottom-style: solid;
+	
+}
+/* END comments on project */

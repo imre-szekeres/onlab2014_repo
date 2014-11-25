@@ -65,8 +65,8 @@ public class Project extends AbstractEntity {
 	// @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	// private Set<ProjectAssignment> projectAssignments;
 
-	@OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
-	private List<Comment> comments;
+	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Comment> comments = new ArrayList<Comment>();
 
 	@OneToMany(mappedBy = "project")
 	private List<BlobFile> files;

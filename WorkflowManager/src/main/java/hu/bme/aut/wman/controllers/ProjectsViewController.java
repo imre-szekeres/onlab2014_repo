@@ -80,9 +80,6 @@ public class ProjectsViewController extends AbstractController {
 
 	@RequestMapping(value = NEW_PROJECT, method = RequestMethod.POST)
 	public ModelAndView postNewProject(@ModelAttribute("project") NewProjectVO projectVO, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-
-		// project.setStates(Workflow.getBasicStates());
-
 		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
 
 		User user = null;

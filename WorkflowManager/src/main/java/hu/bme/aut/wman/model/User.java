@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -58,8 +59,8 @@ public class User extends AbstractEntity {
 	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 chars.")
 	private String description;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<Comment> comments;
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Comment> comments = new ArrayList<Comment>();
 
 	// TODO: elaborate ?
 	// @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
@@ -130,6 +131,9 @@ public class User extends AbstractEntity {
 	 *            {@link Comment} to add
 	 */
 	public void addComment(Comment comment) {
+		//		if (comments == null) {
+		//			setComments( new ArrayList<Comment>());
+		//		}
 		comments.add(comment);
 	}
 
@@ -187,8 +191,8 @@ public class User extends AbstractEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((comments == null) ? 0 : comments.hashCode());
+		//		result = prime * result
+		//				+ ((comments == null) ? 0 : comments.hashCode());
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
@@ -268,7 +272,7 @@ public class User extends AbstractEntity {
 		}
 		return false;
 	}*/
-	
+
 	@Override
 	public String toString() {
 		return "user -- " + username;

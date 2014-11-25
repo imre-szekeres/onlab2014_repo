@@ -240,12 +240,15 @@ public class ProjectService extends AbstractDataService<Project> {
 	 * @param user
 	 * @param commentMessage
 	 */
-	public void commentOnProject(Project project, User user, String commentMessage) {
+	public void commentOnProject(Long projectId, User user, String commentMessage) {
+		Project project = selectById(projectId);
+
 		Comment comment = new Comment(user, project, commentMessage);
 		comment.setPostDate(new Date());
 
 		commentService.save(comment);
 		userService.save(user);
+		project.addComment(comment);
 		save(project);
 	}
 

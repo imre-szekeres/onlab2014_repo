@@ -15,7 +15,8 @@
 				<a href='close/project?id=${project.id}' role='button' class='btn btn-warning header-button'> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <span class='button-text'>Close</span> </a>
 			</c:when>
 			<c:otherwise>
-				<a href='reopen/project?id=${project.id}' role='button' class='btn btn-warning header-button'> <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> <span class='button-text'>Reopen</span> </a>
+				<a href='reopen/project?id=${project.id}' role='button' class='btn btn-success header-button'> <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> <span class='button-text'>Reopen</span> </a>
+				<a href='delete/project?id=${project.id}' role='button' class='btn btn-danger header-button'> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <span class='button-text'>Delete</span> </a>
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -129,18 +130,25 @@
 		<div class="panel-heading">
 			<h3 class="panel-title">Comments</h3>
 		</div>
-		<div id='project-comments' class="panel-body">
-			<ul class="list-unstyled">
-				<c:forEach var="comment" items="${project.comments}">
-					<li> <strong> ${comment.postDate} - ${comment.user.name} </strong> ${comment.description}</li>
-				</c:forEach>
-			</ul>
+		<div id='project-comments'>
+			<c:forEach var="comment" items="${project.comments}">
+				<div class="project-comment-body panel-body">
+					<div class="project-comment-inform">
+						<strong>${comment.user.username}</strong> <span style="color:#9A9A9A;">- ${comment.postDate}<span>
+					</div>
+					<div class="project-comment-message">
+						${comment.description}
+					</div>
+				</div>
+			</c:forEach>
 		</div>
-		<div id='project-add-comment' class="panel-body">
-			<span class="form-group"> Write a comment: </span>
-			<textarea id='comment-input' class="form-control"> </textarea>
-			<input id="comment-btn" class="btn btn-primary" type="submit" value="Comment"/>
-		</div>
+		<form:form id='add-comment-form' modelAttribute='commentMessage' method='POST' action='/WorkflowManager/comment/project?id=${project.id}' class='form-horizontal'>
+			<div id='project-add-comment' class="panel-body">
+				<span class="form-group"> Write a comment: </span>
+				<form:textarea id='comment-input' class='form-control' path='value' placeholder='Write your comment here.' rows='4' style='resize:none;width:400px;' value='TestDescription for test project' />
+				<input id="comment-btn" class="btn btn-primary" type="submit" value="Comment"/>
+			</div>
+		</form:form>
 	</div>
 </div>
 	
