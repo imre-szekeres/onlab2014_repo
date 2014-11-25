@@ -104,22 +104,29 @@
 			<div class="panel-heading">
 				<h3 class="panel-title">Attachments</h3>
 			</div>
-			<div class="panel-body">
-				<div id="project-file-chooser" class='panel-body-section'>
-					<strong>Select a file: </strong>
-					<div class="input-group">
-						<span class="input-group-btn">
-							<span class="btn-primary btn btn-default btn-file">Browse<input id="input-attachment" type="file"> </span>
-						</span>
-						<span class="input-group-btn">
-							<span class="btn btn-default btn-file" style="border-radius:0px;">Upload<input id="input-attachment" type="file"> </span>
-						</span>
-						<input id="attachment-placeholder" type="text" class="form-control" readonly="true" placeholder="file">
+			<div class="panel-body" style="padding-right:0px;">
+				<form:form id='upload-file-form' method='POST' commandName="fileUploadVO" action='/WorkflowManager/project/upload?id=${project.id}' enctype="multipart/form-data" class='form-horizontal'>
+					<div id="project-file-chooser" class='attachment-input-wrapper panel-body-section'>
+						<strong>Select a file: </strong>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn-primary btn btn-default btn-file">Browse<form:input id="input-attachment" type="file" path="file"/> </span>
+							</span>
+							<span class="input-group-btn">
+								<input class="btn btn-default btn-file" style="border-radius:0px;" id="input-attachment-submit" type="submit" Value="Upload">
+							</span>
+							<input id="attachment-placeholder" type="text" class="form-control" readonly="true" placeholder="file">
+						</div>
 					</div>
-				</div>
-				<ul class="list-unstyled" class='panel-body-section'>
+				</form:form>
+				<ul class='list-unstyled panel-body-section attachment-list'>
 					<c:forEach var="file" items="${project.files}">
-						<li> ${file.name} [DOWNLOAD BUTTON] </li>
+						<li class="attachment-li"> 
+							<div class="attachment-row"> ${file.fileName} 
+								<a href='download/file?id=${file.id}' role='button' class='btn btn-primary header-button btn-clear-hover-primary'><span class="glyphicon glyphicon-download btn-clear-hover-primary" aria-hidden="true"></span></a>
+								<a href='delete/file?id=${file.id}&projectId=${project.id}' role='button' class='btn btn-danger header-button btn-clear-hover-danger'><span class="glyphicon glyphicon-trash btn-clear-hover-danger" aria-hidden="true"></span></a>
+							</div>
+						</li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -142,7 +149,7 @@
 				</div>
 			</c:forEach>
 		</div>
-		<form:form id='add-comment-form' modelAttribute='commentMessage' method='POST' action='/WorkflowManager/comment/project?id=${project.id}' class='form-horizontal'>
+		<form:form id='add-comment-form' modelAttribute='commentMessage' method='POST' action='/WorkflowManager/project/comment?id=${project.id}' class='form-horizontal'>
 			<div id='project-add-comment' class="panel-body">
 				<span class="form-group"> Write a comment: </span>
 				<form:textarea id='comment-input' class='form-control' path='value' placeholder='Write your comment here.' rows='4' style='resize:none;width:400px;' value='TestDescription for test project' />

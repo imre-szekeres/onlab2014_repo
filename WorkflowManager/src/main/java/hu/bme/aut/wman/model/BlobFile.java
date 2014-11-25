@@ -24,6 +24,9 @@ public class BlobFile extends AbstractEntity {
 	private String fileName;
 
 	@NotNull
+	private String contentType;
+
+	@NotNull
 	@ManyToOne
 	private Project project;
 
@@ -35,8 +38,9 @@ public class BlobFile extends AbstractEntity {
 		super();
 	}
 
-	public BlobFile(String fileName, byte[] content, Project project) {
+	public BlobFile(String fileName, String contentType, byte[] content, Project project) {
 		this.fileName = fileName;
+		this.contentType = contentType;
 		this.content = content;
 		this.setProject(project);
 	}
@@ -82,5 +86,13 @@ public class BlobFile extends AbstractEntity {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 }

@@ -8,6 +8,7 @@ import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.TransitionService;
 import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.view.objects.FileUploadVO;
 import hu.bme.aut.wman.view.objects.StringWrapperVO;
 
 import java.util.HashMap;
@@ -36,7 +37,7 @@ import com.google.common.collect.Lists;
 public class ProjectViewController extends AbstractController {
 
 	public static final String PROJECT = "/project";
-	public static final String COMMENT_ON_PROJECT = "/comment/project";
+	public static final String COMMENT_ON_PROJECT = "/project/comment";
 
 	@EJB(mappedName = "java:module/ProjectService")
 	private ProjectService projectService;
@@ -63,6 +64,7 @@ public class ProjectViewController extends AbstractController {
 		model.addAttribute("actions", actions);
 		model.addAttribute("message", "Project " + project.getName());
 		model.addAttribute("commentMessage", new StringWrapperVO());
+		model.addAttribute("fileUploadVO", new FileUploadVO());
 		return navigateToFrame("project", model);
 	}
 
