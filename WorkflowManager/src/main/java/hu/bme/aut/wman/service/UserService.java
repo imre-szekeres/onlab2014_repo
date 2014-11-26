@@ -32,10 +32,10 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		validator = new UserValidator();
 	}
 
-	public Map<String, String> validate(User user, String otherPassword, boolean isRegistered) {
+	public Map<String, String> validate(User user, String otherPassword, boolean isCreated) {
 		Map<String, String> errors = validator.validate(user);
-		if (isRegistered) {
-			validateUsernameSingularity(user, errors);
+		if (isCreated) {
+			unicityOf(user, errors);
 		} else {
 			validateOldPassword(user, errors);
 		}
@@ -43,7 +43,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		return errors;
 	}
 
-	private void validateUsernameSingularity(User user, Map<String, String> errors) {
+	private void unicityOf(User user, Map<String, String> errors) {
 		if (selectByName(user.getUsername()) != null) {
 			errors.put("username", "Given username already exists.");
 		}

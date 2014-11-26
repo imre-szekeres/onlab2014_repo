@@ -19,6 +19,7 @@ public class AbstractController {
 
 	public static final String FRAME = "wman_frame";
 	public static final String NAV_PREFIX = "/WorkflowManager";
+	public static final String ERRORS_MAP = "validationErrors";
 
 	/**
 	 * Navigates to the given content page in the frame.

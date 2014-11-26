@@ -3,6 +3,8 @@
  */
 package hu.bme.aut.wman.model;
 
+import hu.bme.aut.wman.view.DragNDroppable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +27,7 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
 	@NamedQuery(name = "Domain.findByName", query = "SELECT d FROM Domain d WHERE d.name = :domainName ")
 })
-public class Domain extends AbstractEntity {
+public class Domain extends AbstractEntity implements DragNDroppable {
 	
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";
@@ -209,5 +211,15 @@ public class Domain extends AbstractEntity {
 	@Override
 	public String toString() {
 		return "Domain -- " + name;
+	}
+
+	@Override
+	public String getValue() {
+		return this.name;
+	}
+
+	@Override
+	public String getLabel() {
+		return this.name;
 	}
 }

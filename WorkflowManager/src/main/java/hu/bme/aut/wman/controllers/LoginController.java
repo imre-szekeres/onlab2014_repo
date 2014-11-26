@@ -91,7 +91,7 @@ public class LoginController extends AbstractController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
 		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"), true);
-		if (validationErrors.size() <= 0) {
+		if (validationErrors.isEmpty()) {
 
 			userHandler.createUser(user, DomainService.DEFAULT_ROLE, DomainService.DEFAULT_DOMAIN);
 			request.getSession().setAttribute("subject", user);
@@ -99,7 +99,7 @@ public class LoginController extends AbstractController {
 			LOGGER.info("user: " + user.getUsername() + " registered as System Reader");
 			return redirectTo(APP_ROOT);
 		}
-		model.addAttribute("validationErrors", validationErrors);
+		model.addAttribute(AbstractController.ERRORS_MAP, validationErrors);
 		return "login";
 	}
 	

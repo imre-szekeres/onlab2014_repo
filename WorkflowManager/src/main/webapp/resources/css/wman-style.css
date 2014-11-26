@@ -72,6 +72,7 @@
 
 #sign-in-error-message {
 	top: -32px;
+	font-size: 13px;
 }
 
 .app-name {
@@ -865,10 +866,9 @@
 	left: -1px;
 	overflow-y: scroll;
 	overflow-x: auto;
-}
-
-#privileges-dnd-input-content {
-	left: -24px;
+	padding: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 
 #privileges-dnd-target-panel {
@@ -883,12 +883,14 @@
 }
 
 #privileges-dnd-source-wrapper {
-	top: 1px;
 	width: 316px;
 	height: 433px;
 	
 	overflow-y: scroll;
 	overflow-x: auto;
+	padding: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 
 #privileges-dnd-source-content {
@@ -910,24 +912,31 @@
 	padding: 0;
 }
 
-/*.admin-role-panel:nth-child(even) {
-	position: relative;
-	top: -42px;
-	left: 230px;
-}*/
 
 .admin-role-panel {
-	width: 210px;
+	/*width: 210px;*/
+	width: auto;
+	min-width: 210px;
+	display: inline-block;
 }
 
 .admin-role-panel .panel-heading .panel-collapse {
-	width: 210px;
+	/*width: 210px;*/
+	width: auto;
+	min-width: 210px;
+	display: inline-block;
+}
+
+.admin-role-panel .list-group {
+	width: inherit;
 }
 
 .admin-role-panel .panel-heading {
 	padding: 0;
 	height: 35px;
 	
+	padding-left: 13px;
+	padding-right: 13px;
 	background-color: #6600CC;
 }
 
@@ -936,6 +945,10 @@
 }
 
 .admin-privilege-panel .panel-heading {
+	background-color: #E57200; /*#428bca;*/
+}
+
+.admin-user-panel .panel-heading {
 	background-color: #428bca;
 }
 
@@ -953,6 +966,10 @@
 }
 
 .admin-privilege-panel .panel-heading:hover {
+	background-color: #EA8E33; /*#5bc0de;*/
+}
+
+.admin-user-panel .panel-heading:hover {
 	background-color: #5bc0de;
 }
 
@@ -992,7 +1009,7 @@
 	vertical-align: middle;
 	
 	display: inline-block;
-	color: #428bca;
+	color: #E57200;
 	background-color: rgb(245, 245, 245);
 	
 	margin-top: 1px;
@@ -1005,10 +1022,59 @@
 
 /* END   Admin Roles */
 
+/* BEGIN admin users */
+.new-user-container {
+	width: 320px;
+	left: -190px;
+}
+.hidden-row {
+	display: none;
+}
+
+#new-user-form .new-user-input {
+	position: relative;
+	top: -5px;
+}
+
+
+
+#new-user-modal .modal-dialog {
+	width: 800px;
+	height: 810px;
+}
+
+#new-user-modal .modal-content {
+	height: 790px;
+}
+
+#new-user-modal .modal-body {
+	height: 670px;
+}
+
+
+#new-user-modal #privileges-dnd-source-panel-wrapper {
+	top: -676px;
+	left: 402px;
+}
+
+#new-user-modal #privileges-dnd-source-wrapper {
+	height: 354px;
+}
+
+#new-user-modal #privileges-dnd-target-panel {
+	left: 15px;
+	width: 675px;
+}
+
+#new-user-modal #privileges-dnd-input-wrapper {
+	height: 180px;
+}
+
+/* END   admin users */
 
 /* BEGIN darg-n-drop */
 .drag-n-drop-row {
-	width: 295px;
+	width: 100%;
 	height: 25px;
 	
 	background-color: #eee;
@@ -1033,8 +1099,13 @@
 .privilege-body {
 	/* color: #5700b3; */
 	/*color: #FF9900; */
-	color: #428bca;
+	color: #E57200;
 }
+
+.role-body {
+	color: #5700b3;
+}
+
 /* END   darg-n-drop */
 
 /* BEGIN comments on project */

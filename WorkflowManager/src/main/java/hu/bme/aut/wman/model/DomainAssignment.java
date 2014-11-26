@@ -46,6 +46,7 @@ public class DomainAssignment extends AbstractEntity {
 	
 	public DomainAssignment() {
 		super();
+		this.userRoles = new ArrayList<>();
 	}
 	
 	public DomainAssignment(User user, Domain domain, Role role) {
