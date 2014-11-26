@@ -57,7 +57,7 @@
         <button type='button' class='close' data-dismiss='modal'>
             <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
         </button>
-        <h4 class='modal-title' id='new-role-label' >Create Domain</h4>
+        <h4 class='modal-title' id='new-role-label' ><span class='glyphicon glyphicon-tower' ></span> Create Domain</h4>
     </div>
 
     <div class='modal-body' >
@@ -85,10 +85,10 @@
                     </c:choose>
                 </div>
                 <div class='col-sm-2'>
-                    <button type='submit' class='btn btn-success' onclick='submitNewDomainForm(event)' >Create</button>
+                    <button id='new-domain-submit' type='submit' class='btn btn-success submit-row-btn new-domain-input' onclick='submitNewDomainForm(event)' >Create</button>
                 </div>
                 <div class='col-sm-2'>
-                    <button type='button' class='btn btn-default' data-dismiss='modal' >Cancel</button>
+                    <button type='button' class='btn btn-default submit-row-btn new-domain-input' data-dismiss='modal' >Cancel</button>
                 </div>
             </div>
         </fieldset>

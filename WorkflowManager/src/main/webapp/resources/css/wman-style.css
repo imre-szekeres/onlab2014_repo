@@ -1019,6 +1019,20 @@
 	color: #5700b3;
 }
 
+.new-domain-input {
+	position: relative;
+	top: -5px;
+}
+
+.submit-row-btn {
+	position: relative;
+	left: 51px;
+}
+
+#new-domain-submit {
+	left: 71px;
+}
+
 /* END   Admin Roles */
 
 /* BEGIN admin users */
@@ -1034,7 +1048,6 @@
 	position: relative;
 	top: -5px;
 }
-
 
 
 #new-user-modal .modal-dialog {
