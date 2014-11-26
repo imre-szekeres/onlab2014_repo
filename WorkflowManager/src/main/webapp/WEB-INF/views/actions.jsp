@@ -38,10 +38,24 @@
 						</h4>
 					</div>
 					<div id="collapse${action.id}" class="panel-collapse collapse actions-description">
-						<div class="panel-body">
-							<c:forEach var="role" items="${actionsMap['action.id']}">
-								${role.name}
-							</c:forEach>
+						<div id="role-wrapper-${action.id}" class="panel-body roles-wrapper">
+							<c:set var="id" value="${action.id}"/>
+							<div id="added-roles-${action.id}" class="added-roles">
+								<ul class='list-unstyled'>
+									<c:forEach var="role" items="${rolesOnActionsMap[id]}">
+										<li id="added-roles-${action.id}-${role.id}" data-actionid="${action.id}" data-roleid="${role.id}" class="action-dragable"  style="padding:5px;"> ${role.name} </li>
+									</c:forEach>
+										<li class="placeholder-add-action"></li>
+								</ul>
+							</div>
+							<div id="not-added-roles-${action.id}" class="not-added-roles">
+								<ul class='list-unstyled'>
+									<c:forEach var="role" items="${rolesToAddMap[id]}">
+										<li id="added-roles-${action.id}-${role.id}" data-actionid="${action.id}" data-roleid="${role.id}" class="action-dragable" style="padding:5px;"> ${role.name} </li>
+									</c:forEach>
+										<li class="placeholder-remove-action"> </li>
+								</ul>
+							</div>
 						</div>
 					</div>
 					<div class="actions-id">
@@ -77,17 +91,114 @@
 		</form:form>
 	</div>
 </div>
+
+<script language="javascript">
+	$(function() {
+		$( ".not-added-roles ul" ).children('li').each(function() {
+			var containmentId = "#role-wrapper-"+$(this).data('actionid');
+			$(this).draggable({
+						appendTo: "body",
+						revert: "invalid",
+						containment: containmentId,
+						cancel: ".placeholder",
+						zIndex: 1001,
+						opacity: 0.7
+					});
+		});
+		$( ".placeholder-add-action" ).droppable({
+			activeClass: "action-droppable",
+			hoverClass: "action-droppable-hover",
+			accept: ":not(.ui-sortable-helper)",
+			drop: function( event, ui ) {
+				var parent = $( this ).parent();
+				$( this ).detach();
+				var actionId = ui.draggable[0].attributes['data-actionid'].value;
+				var roleId = ui.draggable[0].attributes['data-roleid'].value;
+				$( "#added-roles-"+actionId+"-"+roleId ).remove();
+				var containmentId = "#role-wrapper-"+actionId;
+				$( "<li id='added-roles-"+actionId+"-"+roleId+"' data-actionid='"+actionId+"' data-roleid='"+roleId+"' class='action-dragable' style='padding:5px;'></li>" )
+					.text( ui.draggable.text() )
+					.appendTo( parent )
+					.draggable({
+						appendTo: "body",
+						revert: "invalid",
+						containment: containmentId
+					});
+				
+				$.ajax({
+					type: "post",
+					url: "http://localhost:8080/WorkflowManager/action/add/role",
+					cache: false,    
+					data:'actionid=' + actionId + "&roleid=" + roleId,
+					success: function(response){
+					},
+					error: function(){
+					}
+				});
+				$(this).appendTo(parent);
+			}
+		});
+	});
+	
+	$(function() {
+		$( ".added-roles ul" ).children('li').each(function() {
+			var containmentId = "#role-wrapper-"+$(this).data('actionid');
+			$(this).draggable({
+						appendTo: "body",
+						revert: "invalid",
+						containment: containmentId,
+						cancel: ".placeholder",
+						zIndex: 1001,
+						opacity: 0.7
+					});
+		});
+		$( ".placeholder-remove-action" ).droppable({
+			activeClass: "action-droppable",
+			hoverClass: "action-droppable-hover",
+			accept: ":not(.ui-sortable-helper)",
+			drop: function( event, ui ) {
+				var parent = $( this ).parent();
+				$( this ).detach();
+				var actionId = ui.draggable[0].attributes['data-actionid'].value;
+				var roleId = ui.draggable[0].attributes['data-roleid'].value;
+				$( "#added-roles-"+actionId+"-"+roleId ).remove();
+				var containmentId = "#role-wrapper-"+actionId;
+				$( "<li id='added-roles-"+actionId+"-"+roleId+"' data-actionid='"+actionId+"' data-roleid='"+roleId+"' class='action-dragable' style='padding:5px;'></li>" )
+					.text( ui.draggable.text() )
+					.appendTo( parent )
+					.draggable({
+						appendTo: "body",
+						revert: "invalid",
+						containment: containmentId
+					});
+				
+				$.ajax({
+					type: "post",
+					url: "http://localhost:8080/WorkflowManager/action/remove/role",
+					cache: false,    
+					data:'actionid=' + actionId + "&roleid=" + roleId,
+					success: function(response){
+					},
+					error: function(){
+					}
+				});
+				$(this).appendTo(parent);
+			}
+		});
+	});
+</script>
 	
 <script language="javascript">
 	$( "div.actions-wrapper" )
 		.mouseenter(function() {
-			var name = $(this).find('div.actions-id').text();
-			$(this).find('div.actions-name').append( 
-							"<div id='delete-button'  class='delete-button' style='left:390px;'><a class='no-decor-link little-button-link' href='delete/action?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>");
+			var deleteButton = $("#delete-button").get(0);
+			if (!deleteButton) { 
+				var name = $(this).find('div.actions-id').text();
+				$(this).find('div.actions-name').append( 
+								"<div id='delete-button'  class='delete-button' style='left:390px;'><a class='no-decor-link little-button-link' href='delete/action?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>");
+			}
 		})
 		.mouseleave(function() {
 			$("#delete-button").remove();
-			$("#edit-button").remove();
-			$("#open-button").remove();
 		});
 </script>

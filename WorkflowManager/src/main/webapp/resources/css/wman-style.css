@@ -707,6 +707,46 @@
 	display: none;
 }
 
+.added-roles {
+	width: calc(50% - 15px);
+	float: left;
+	margin-right:15px;
+}
+
+.not-added-roles {
+	width:50%;
+	float:right;
+	padding-left: 15px;
+}
+
+.action-dragable:hover {
+	background-color: #E5E5E5;
+}
+
+.action-dragable.ui-draggable-dragging {
+	background-color: white;
+}
+
+.action-dragable {
+	cursor: move;
+}
+
+.action-droppable {
+	background-color: white;
+	
+	border-style: dashed;
+	border-width: 1px;
+	border-color: black;
+}
+
+.action-droppable-hover{
+	background-color: #5bc0de;
+}
+
+.placeholder-add-action, .placeholder-remove-action{
+	padding:5px;
+	height:32px;
+}
 /* END Actions */
 
 /* General */

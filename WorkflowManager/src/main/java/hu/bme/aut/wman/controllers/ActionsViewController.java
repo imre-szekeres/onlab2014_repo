@@ -33,6 +33,8 @@ public class ActionsViewController extends AbstractController {
 	public static final String ACTIONS = "/actions";
 	public static final String NEW_ACTION = "/new/action";
 	public static final String DELETE_ACTION = "/delete/action";
+	public static final String ACTION_ADD_ROLE = "/action/add/role";
+	public static final String ACTION_REMOVE_ROLE = "/action/remove/role";
 
 	@EJB(mappedName = "java:module/ActionTypeService")
 	private ActionTypeService actionTypeService;
@@ -45,23 +47,21 @@ public class ActionsViewController extends AbstractController {
 		List<ActionType> allActions = actionTypeService.selectAll();
 		List<Role> allRoles = roleService.selectAll();
 
-		Map<Long, List<Role>> rolesByActionTypeIds = new HashMap<Long, List<Role>>();
+		Map<Long, List<Role>> rolesByActionTypeIdsAdded = new HashMap<Long, List<Role>>();
+		Map<Long, List<Role>> rolesByActionTypeIdsAddable = new HashMap<Long, List<Role>>();
 
-		for (Role role : allRoles) {
-			for (ActionType actionType : role.getActionTypes()) {
-				List<Role> roles = rolesByActionTypeIds.get(actionType.getId());
-				if (roles==null) {
-					roles = new ArrayList<Role>();
-				}
-
-				roles.add(role);
-				rolesByActionTypeIds.put(actionType.getId(), roles);
-			}
+		for (ActionType actionType : allActions) {
+			List<Role> addedActions = roleService.selectByActionType(actionType);
+			rolesByActionTypeIdsAdded.put(actionType.getId(), addedActions);
+			List<Role> notAddedActions = new ArrayList<Role>(allRoles);
+			notAddedActions.removeAll(addedActions);
+			rolesByActionTypeIdsAddable.put(actionType.getId(), notAddedActions);
 		}
 
 		model.addAttribute("actions", allActions);
 		model.addAttribute("newAction", new ActionType());
-		model.addAttribute("rolesMap", rolesByActionTypeIds);
+		model.addAttribute("rolesOnActionsMap", rolesByActionTypeIdsAdded);
+		model.addAttribute("rolesToAddMap", rolesByActionTypeIdsAddable);
 		return navigateToFrame("actions", model);
 	}
 
@@ -84,6 +84,28 @@ public class ActionsViewController extends AbstractController {
 		}
 
 		return redirectToFrame(ACTIONS, errors, redirectAttributes);
+	}
+
+	@RequestMapping(value = ACTION_ADD_ROLE, method = RequestMethod.POST)
+	public void addRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
+		Long actionId = Long.parseLong(request.getParameter("actionid"));
+		Long roleId = Long.parseLong(request.getParameter("roleid"));
+
+		Role role = roleService.selectById(roleId);
+		role.addActionType(actionTypeService.selectById(actionId));
+		roleService.save(role);
+	}
+
+	@RequestMapping(value = ACTION_REMOVE_ROLE, method = RequestMethod.POST)
+	public void removeRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
+		Long actionId = Long.parseLong(request.getParameter("actionid"));
+		Long roleId = Long.parseLong(request.getParameter("roleid"));
+
+		Role role = roleService.selectById(roleId);
+		role.removeActionType(actionTypeService.selectById(actionId));
+		roleService.save(role);
 	}
 
 	@Override
