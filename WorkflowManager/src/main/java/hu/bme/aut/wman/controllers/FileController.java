@@ -68,7 +68,6 @@ public class FileController extends AbstractController{
 		BlobFile file = blobFileService.selectById(fileId);
 		byte[] content = file.getContent();
 
-		//		String mimeType = file.getContentType();
 		response.setContentType(file.getContentType());
 		response.setContentLength(content.length);
 
@@ -83,9 +82,6 @@ public class FileController extends AbstractController{
 
 		outStream.close();
 
-		//		ModelAndView view = redirectToFrame("project", redirectAttributes);
-		//		view.setViewName("redirect:/project?id=" + projectId);
-		//		return view;
 	}
 
 	@RequestMapping(value = DELETE_FILE, method = RequestMethod.GET)
