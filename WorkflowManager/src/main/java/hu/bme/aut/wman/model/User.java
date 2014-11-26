@@ -45,18 +45,18 @@ public class User extends AbstractEntity {
 	@NotNull
 	@Size(min = 5, max = 16, message = "must be between 5 and 16 chars.")
 	@Column(unique = true)
-	private String username;
+	protected String username;
 
 	@NotNull
 	@Size(min = 7, max = 32, message = "must be between 7 and 32 chars.")
-	private String password;
+	protected String password;
 
 	@NotNull
 	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid format.")
-	private String email;
+	protected String email;
 
 	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 chars.")
-	private String description;
+	protected String description;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Comment> comments;

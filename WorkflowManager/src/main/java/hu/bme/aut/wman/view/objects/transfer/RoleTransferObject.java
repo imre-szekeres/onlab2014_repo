@@ -3,8 +3,6 @@
  */
 package hu.bme.aut.wman.view.objects.transfer;
 
-import hu.bme.aut.wman.utils.StringUtils;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,6 +65,6 @@ public class RoleTransferObject {
 	}
 
 	public List<String> privileges() {
-		return StringUtils.removeEmpty( Arrays.asList(privileges.split("\\|")) );
+		return Arrays.asList(privileges.split("\\|"));
 	}
 }

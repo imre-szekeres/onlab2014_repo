@@ -61,7 +61,7 @@
     </div>
 
     <div class='modal-body' >
-        <form:form modelAttribute='newDomain' action='${ appRoot }/${ createDomainAction }' method='POST' id='new-domain-form' class='form-vretical' >
+        <form:form modelAttribute='newDomain' action='${ appRoot }${ createDomainAction }' method='POST' id='new-domain-form' class='form-vretical' >
         <fieldset>
             <div class='from-group'>
             </div>
@@ -71,7 +71,18 @@
                     <spring:message code='domain.form.name.label' ></spring:message>
                 </label>
                 <div class='col-sm-5'>
-                    <form:input id='domain-name' path='name' type='text' class='form-control new-domain-input' ></form:input>
+                    <c:choose >
+                        <c:when test='${ not empty validationErrors and not empty validationErrors.name }' >
+                                
+                            <span class='has-error' title='${ validationErrors.name }' data-toggle='tooltip' >
+                               <form:input id='domain-name' path='name' type='text' class='form-control new-domain-input' ></form:input>
+                            </span>
+                                
+                        </c:when>
+                        <c:otherwise>
+                            <form:input id='domain-name' path='name' type='text' class='form-control new-domain-input' ></form:input>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <div class='col-sm-2'>
                     <button type='submit' class='btn btn-success' onclick='submitNewDomainForm(event)' >Create</button>
@@ -100,3 +111,12 @@
     
     $('.collapse').collapse();
 </script>
+
+<c:if test='${ not empty validationErrors }' >
+<script>
+    $('#create-domain-trigger').trigger('click');
+    $('.has-error').tooltip({
+        placement: 'top'
+    });
+</script>
+</c:if>

@@ -52,7 +52,7 @@ public class RolesController extends AbstractController {
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
-	public String createRole(@ModelAttribute("newRole")RoleTransferObject newRole, Model model, HttpServletRequest request) {
+	public String createRole(@ModelAttribute("newRole") RoleTransferObject newRole, Model model, HttpServletRequest request) {
 		String roleName = newRole.getRoleName();
 		String domainName  = newRole.getDomainName();
 		
@@ -62,6 +62,10 @@ public class RolesController extends AbstractController {
 		if (errors.isEmpty()) {
 			User subject = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 			List<String> privileges = newRole.privileges();
+			
+			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
+			LOGGER.debug("parsed (" + privileges.size() + ") privileges for role " + roleName);
+			
 			for(String s : privileges) {
 				Privilege p = privilegeService.selectByName(s);
 				LOGGER.debug(p.toString() + " was found");
@@ -75,10 +79,19 @@ public class RolesController extends AbstractController {
 			d.addRole(role);
 			domainService.save( d );
 			LOGGER.info(role.toString() + " was added to " + d.toString());
-		} else {
-			model.addAttribute("errorMessages", errors);
+			return redirectTo(AdminViewController.ROLES);
 		}
-		return redirectTo(AdminViewController.ROLES);
+
+		model.addAttribute(AbstractController.ERRORS_MAP, errors);
+		AdminViewController.setAdminRolesContent(model, domainService);
+		model.addAttribute("pageName", "admin_roles");
+		reset(newRole, model);
+		return AbstractController.FRAME;
+	}
+	
+	public static final void reset(RoleTransferObject newRole, Model model) {
+		newRole.setPrivileges("");
+		model.addAttribute("newRole", newRole);
 	}
 	
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)

@@ -52,7 +52,7 @@
 
 <div class='modal fade' id='new-role-modal' tabindex='-1' role='dialog' aria-labelledby='#new-role-label' aria-hidden='true' >
     
-    <form:form modelAttribute='newRole' action='${ appRoot }/${ createRoleAction }' method='POST' id='new-role-form' class='form-horizontal' >
+    <form:form modelAttribute='newRole' action='${ appRoot }${ createRoleAction }' method='POST' id='new-role-form' class='form-horizontal' >
     <div class='modal-dialog' >
     <div class='modal-content' >
         <div class='modal-header' >
@@ -67,14 +67,22 @@
             <fieldset>
                 
                 <div class='form-group' >
-                </div>
-                
-                <div class='form-group' >
                     <label class='control-label col-sm-2' for='role-name' >
                         <spring:message code='role.form.name.label' ></spring:message>
                     </label>
                     <div class='col-sm-4'>
-                        <form:input id='role-name' path='roleName' type='text' class='form-control new-role-input' ></form:input>
+                        <c:choose >
+                            <c:when test='${ not empty validationErrors and not empty validationErrors.name }' >
+                                
+                                <span class='has-error' title='${ validationErrors.name }' data-toggle='tooltip' >
+                                    <form:input id='role-name' path='roleName' type='text' class='form-control new-role-input' ></form:input>
+                                </span>
+                                
+                            </c:when>
+                            <c:otherwise>
+                                <form:input id='role-name' path='roleName' type='text' class='form-control new-role-input' ></form:input>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
                 
@@ -83,11 +91,26 @@
                         <spring:message code='role.form.domain.label' ></spring:message>
                     </label>
                     <div class='col-sm-4' >
-                        <form:select id='role-domain' path="domainName" class='form-control new-role-input' >
-                            <c:forEach var='domain' items='${ domains }' >
-                                <form:option value='${ domain.name }' >${ domain.name }</form:option>
-                            </c:forEach>
-                        </form:select>
+                        <c:choose >
+                            <c:when test='${ not empty validationErrors and not empty validationErrors.domain }' >
+                                
+                                <span class='has-error' title='${ validationErrors.domain }' data-toggle='tooltip' >
+                                    <form:select id='role-domain' path="domainName" class='form-control new-role-input' >
+	                                    <c:forEach var='domain' items='${ domains }' >
+	                                        <form:option value='${ domain.name }' >${ domain.name }</form:option>
+	                                    </c:forEach>
+	                                </form:select>
+                                </span>
+                                
+                            </c:when>
+                            <c:otherwise>
+                                <form:select id='role-domain' path="domainName" class='form-control new-role-input' >
+		                            <c:forEach var='domain' items='${ domains }' >
+		                                <form:option value='${ domain.name }' >${ domain.name }</form:option>
+		                            </c:forEach>
+                                </form:select>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
                 
@@ -102,14 +125,12 @@
                          ondragover='allowDrop(event)' ondrop='onInputDrop(event)' >
                         <div class='panel-heading'>
                             <strong>
-                                <spring:message code='role.form.privileges.label' ></spring:message>
+                                <spring:message code='role.form.privileges.label' ></spring:message> <span id='role-name-placeholder'></span>
                             </strong>    
                         </div>
                         
                         <div class='panel-body'>
-                            <div id='privileges-dnd-input-wrapper' class='col-sm-6 pos-rel' >
-                                <div id='privileges-dnd-input-content' class='col-sm-6 pos-rel input-content' >
-                                </div>
+                            <div id='privileges-dnd-input-wrapper' class='col-sm-6 pos-rel input-content' >
                             </div>
                         </div>
                     </div>
@@ -128,9 +149,7 @@
                     </div>
                     
                     <div class='panel-body'>
-                        <div id='privileges-dnd-source-wrapper' class='col-sm-6 pos-rel' >
-                            <div id='privileges-dnd-source-content' class='col-sm-6 pos-rel source-content' >
-                            </div>
+                        <div id='privileges-dnd-source-wrapper' class='col-sm-6 pos-rel source-content' >
                         </div>
                     </div>
                 </div>
@@ -151,8 +170,12 @@
     var url_root = "${ selectPrivilegesUrl }";
     var $_avail_privs = 'None';
     var $_priv_src_wrapper = $('#privileges-dnd-source-wrapper');
+    var $_priv_input_wrapper = $('#privileges-dnd-input-wrapper');
     
     var $_privs_in = $('#role-privileges');
+
+    var $_rname_plh = $('#role-name-placeholder');
+    var $_rolename_in = $('#role-name');
 
     function submitNewRoleForm(event) {
     	$('#new-role-form').submit();
@@ -166,17 +189,16 @@
     		method: "GET",
     		success: function(data) {
     			$_target = data;
-    		    $_priv_src_wrapper.find('.source-content').html( data );
+    		    $_priv_src_wrapper.html( data );
     		}
     	});
     }
     
     function onCreateClick(event) {
-    	console.log("role create triggered");
     	if ($_avail_privs == 'None') {
     		queryPrivileges($_avail_privs);
     	} else {
-    		$_priv_src_wrapper.find('.source-content').html( $_avail_privs );
+    		$_priv_src_wrapper.html( $_avail_privs );
     	}
     }
     
@@ -186,7 +208,7 @@
     
     function onInputDrop(event) {
     	var sourceID = event.dataTransfer.getData("elementID");
-    	$(document.getElementById( sourceID )).appendTo($(event.target).find('.input-content'));
+    	$(document.getElementById( sourceID )).appendTo( $_priv_input_wrapper );
     	
     	var value = $_privs_in.val();
     	var not_contains = value.indexOf(sourceID) < 0;
@@ -201,7 +223,7 @@
     
     function onSourceDrop(event) {
     	var sourceID = event.dataTransfer.getData("elementID");
-    	$(document.getElementById( sourceID )).appendTo($_priv_src_wrapper.find('.source-content'));
+    	$(document.getElementById( sourceID )).appendTo( $_priv_src_wrapper );
     	
     	var value = $_privs_in.val();
     	value = value.replace(sourceID, '');
@@ -216,5 +238,22 @@
 
     $('#create-role-trigger').click( onCreateClick );
     $('.collapse').collapse();
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip({
+    	placement: 'top'
+    });
+    
+    $_rname_plh.html( $_rolename_in.val() );
+    $_rolename_in.keyup(function() {
+    	$_rname_plh.html( $_rolename_in.val() );
+    });
+    
 </script>
+
+<c:if test='${ not empty validationErrors }' >
+<script>
+    $('#create-role-trigger').trigger('click');
+    $('.has-error').tooltip({
+    	placement: 'top'
+    });
+</script>
+</c:if>

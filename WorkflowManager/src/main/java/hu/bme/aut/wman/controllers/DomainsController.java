@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,7 @@ public class DomainsController extends AbstractController {
 
 	public static final String ROOT_URL = "/domains";
 	public static final String CREATE = ROOT_URL + "/create";
+	public static final String NAMES = ROOT_URL + "/names";
 	
 	@EJB(mappedName = "java:module/DomainService")
 	private DomainService domainService;
@@ -53,9 +55,26 @@ public class DomainsController extends AbstractController {
 			}
 			
 			domainService.save( newDomain );
-		} else {
-			model.addAttribute("errorMessages", errors);
+			return redirectTo(AdminViewController.DOMAINS);
 		}
-		return redirectTo(AdminViewController.DOMAINS);
+
+		model.addAttribute(AbstractController.ERRORS_MAP, errors);
+		AdminViewController.setAdminDomainsContent(model, domainService);
+		model.addAttribute("pageName", "admin_domains");
+		return "wman_frame";
+	}
+	
+	@RequestMapping(value = NAMES, method = RequestMethod.GET)
+	public String listDomainNames(Model model, HttpServletRequest request) {
+		List<Domain> domains = domainService.selectAll();
+		model.addAttribute("options", domains);
+		return "fragments/option_list";
+	}
+	
+	public static final String[] namesOf(List<Domain> domains) {
+		String[] names = new String[domains.size()];
+		for(int i = 0; i < names.length; ++i)
+			names[i] = domains.get( i ).getName();
+		return names;
 	}
 }
