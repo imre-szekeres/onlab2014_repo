@@ -39,9 +39,9 @@
 		<c:forEach var="project" items="${projects}">
 			<div class="panel-group projects-wrapper" id="accordion${project.id}">
 				<div class="panel panel-default">
-					<div class="panel-heading projects-name" style="background-color: #5700B3; color: white; line-height:30px;">
+					<div class="projects-name panel-heading" >
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion${project.id}" href="#collapse${project.id}">
+							<a data-toggle="collapse" style="text-decoration: blink;" data-parent="#accordion${project.id}" href="#collapse${project.id}">
 								${project.name}
 							</a>
 						</h4>
@@ -53,7 +53,7 @@
 						<div class="panel-body projects-workflow">
 							Workflow: ${project.workflow.name} <br/>
 							State: ${project.currentState.name} <br/>
-							Owner: ${project.owner.name} 
+							Owner: ${project.owner.username} 
 						</div>
 					</div>
 					<div class="projects-id">
@@ -78,8 +78,9 @@
 							"<div id='open-button' class='open-button'><a class='no-decor-link little-button-link' href='project?id="+name+"'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></a></div>" );
 			} else {
 				div.append( "<div id='delete-button' class='delete-button'><a class='no-decor-link little-button-link' href='delete/project?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>" +
-							"<div id='edit-button' class='edit-button'><a class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></a></div>" +
-							"<div id='open-button' class='open-button'><a class='no-decor-link little-button-link' href='project?id="+name+"'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></a></div>" );
+							"<div id='edit-button' class='edit-button'><a class='little-button-link no-decor-link ' href=''><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></a></div>" +
+							"<div id='open-button' class='open-button'><a class='no-decor-link little-button-link' href='project?id="+name+"'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></a></div>" +
+							"<div id='reopen-button' class='reopen-button'><a class='no-decor-link little-button-link' href='reopen/project?id="+name+"'><span class='glyphicon glyphicon-repeat' style='line-height: 26px;'></a></div>");
 			}
 		})
 		.mouseleave(function() {
@@ -87,5 +88,6 @@
 			$("#close-button").remove();
 			$("#edit-button").remove();
 			$("#open-button").remove();
+			$("#reopen-button").remove();
 		});
 </script>

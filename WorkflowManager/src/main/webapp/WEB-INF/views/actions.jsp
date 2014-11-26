@@ -30,9 +30,9 @@
 		<c:forEach var="action" items="${actions}">
 			<div class="panel-group actions-wrapper" id="accordion${action.id}">
 				<div class="panel panel-default">
-					<div class="panel-heading actions-name" style="background-color: #5700B3; color: white; line-height:30px;">
+					<div class="panel-heading actions-name">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion${action.id}" href="#collapse${action.id}">
+							<a data-toggle="collapse" style="text-decoration: blink;" data-parent="#accordion${action.id}" href="#collapse${action.id}">
 								${action.actionTypeName}
 							</a>
 						</h4>

@@ -113,6 +113,7 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (!project.isActive())
 			return;
 		else {
+			// FIXME
 			//			if (isDetached(project)) {
 			project = attach(project);
 			//			}
@@ -138,11 +139,21 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (project.isActive())
 			return;
 		else {
-			if (isDetached(project)) {
-				project = attach(project);
-			}
+			// FIXME
+			//			if (isDetached(project)) {
+			project = attach(project);
+			//			}
 			project.setActive(true);
 		}
+	}
+
+	/**
+	 * Finds and opens the project by id.
+	 *
+	 * @param projectId
+	 */
+	public void reopenById(Long projectId) {
+		reopen(selectById(projectId));
 	}
 
 	/**
@@ -229,12 +240,15 @@ public class ProjectService extends AbstractDataService<Project> {
 	 * @param user
 	 * @param commentMessage
 	 */
-	public void commentOnProject(Project project, User user, String commentMessage) {
+	public void commentOnProject(Long projectId, User user, String commentMessage) {
+		Project project = selectById(projectId);
+
 		Comment comment = new Comment(user, project, commentMessage);
 		comment.setPostDate(new Date());
 
 		commentService.save(comment);
 		userService.save(user);
+		project.addComment(comment);
 		save(project);
 	}
 

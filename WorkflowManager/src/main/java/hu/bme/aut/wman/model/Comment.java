@@ -9,16 +9,18 @@ import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * Entity implementation class for Entity: Comment
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Comment.findByUser", query = "SELECT c FROM Comment c " + "WHERE c.user.username=:userName"),
-		@NamedQuery(name = "Comment.findByProject", query = "SELECT c FROM Comment c " + "WHERE c.project.id=:id") })
+	@NamedQuery(name = "Comment.findByUser", query = "SELECT c FROM Comment c " + "WHERE c.user.username=:userName"),
+	@NamedQuery(name = "Comment.findByProject", query = "SELECT c FROM Comment c " + "WHERE c.project.id=:id") })
 public class Comment extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_USER_NAME = "Comment.findByUser";
@@ -41,6 +43,7 @@ public class Comment extends AbstractEntity {
 	private Project project;
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date postDate;
 
 	@Deprecated
@@ -52,7 +55,7 @@ public class Comment extends AbstractEntity {
 		this.setUser(user);
 		this.setProject(project);
 		this.description = description;
-		this.postDate = new Date();
+		postDate = new Date();
 	}
 
 	public String getDescription() {
@@ -98,10 +101,9 @@ public class Comment extends AbstractEntity {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Comment)) {
+		if (!(o instanceof Comment))
 			return false;
-		}
-		return (((Comment) o).id).equals(this.id);
+		return (((Comment) o).id).equals(id);
 	}
 
 	@Override
