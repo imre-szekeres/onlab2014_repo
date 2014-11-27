@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 /**
  * @author Imre Szekeres
  * @version "%I%, %G%"
@@ -39,6 +40,7 @@ public class Domain extends AbstractEntity implements DragNDroppable {
 
 	@Column(unique = true)
 	@NotNull
+	@Size(min = 5, max = 32, message = "must be between 5 and 32 chars.")
 	private String name;
 	
 	@NotNull

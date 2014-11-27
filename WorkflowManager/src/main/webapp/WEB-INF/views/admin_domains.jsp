@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core'        prefix='c' %>
-<%@ taglib uri='http://www.springframework.org/tags'      prefix='spring' %>   
-<%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
@@ -20,71 +18,80 @@
 </div>
 
 <div class='modal fade' id='new-domain-modal' tabindex='-1' role='dialog' aria-labelledby='#new-role-label' aria-hidden='true' >
-<div class='modal-dialog'>
-<div class='modal-content'>
+    <script>
+       var form_included = false;
+    </script>
 
-    <div class='modal-header' >
-        <button type='button' class='close' data-dismiss='modal'>
-            <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
-        </button>
-        <h4 class='modal-title' id='new-role-label' ><span class='glyphicon glyphicon-tower' ></span> Create Domain</h4>
-    </div>
-
-    <div class='modal-body' >
-        <form:form modelAttribute='newDomain' action='${ appRoot }${ createDomainAction }' method='POST' id='new-domain-form' class='form-vretical' >
-        <fieldset>
-            <div class='from-group'>
-            </div>
-            
-            <div class='form-group'>
-                <label class='control-label col-sm-2 domain-name-label' for='domain-name' >
-                    <spring:message code='domain.form.name.label' ></spring:message>
-                </label>
-                <div class='col-sm-5'>
-                    <c:choose >
-                        <c:when test='${ not empty validationErrors and not empty validationErrors.name }' >
-                                
-                            <span class='has-error' title='${ validationErrors.name }' data-toggle='tooltip' >
-                               <form:input id='domain-name' path='name' type='text' class='form-control new-domain-input' ></form:input>
-                            </span>
-                                
-                        </c:when>
-                        <c:otherwise>
-                            <form:input id='domain-name' path='name' type='text' class='form-control new-domain-input' ></form:input>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <div class='col-sm-2'>
-                    <button id='new-domain-submit' type='submit' class='btn btn-success submit-row-btn new-domain-input' onclick='submitNewDomainForm(event)' >Create</button>
-                </div>
-                <div class='col-sm-2'>
-                    <button type='button' class='btn btn-default submit-row-btn new-domain-input' data-dismiss='modal' >Cancel</button>
-                </div>
-            </div>
-        </fieldset>
-        </form:form>
-    </div>
-
-    <div class='modal-footer' >
-    </div>
-
-</div>
-</div>
+    <c:if test='${ not empty validationErrors }' >
+        
+        <jsp:include page='fragments/domain_form_modal.jsp'>
+            <jsp:param name='formType' value='${ formType }' />
+        </jsp:include>
+        <script>
+            var form_included = true;
+        </script>
+        
+    </c:if>
 </div>
 
 
 <script>
+
+    var cform_url = "${ appRoot }${ selectCreateFormUrl }";
+    
+    var $_ndomain_modal = $('#new-domain-modal');
+    var $_cdomain_trigger = $('#create-domain-trigger');
+    var current_form = 'None';
     
     function submitNewDomainForm(event) {
     	$('#new-domain-form').submit();
     }
     
+    function requestCreateForm($_modal) {
+    	$.ajax({
+    		url: cform_url,
+    		dataType: 'html',
+    		method: 'GET',
+    		success: function(data) {
+    			$_modal.empty();
+    			$(data).appendTo( $_modal );
+    			current_form = 'create';
+    		}
+    	});
+    }
+    
     $('.collapse').collapse();
+    $_cdomain_trigger.click(function() {
+    	if (current_form != 'create' && !form_included)
+    		requestCreateForm($_ndomain_modal);
+    });
+    
+    $.each($('.edit-icon-href'), function(index, href) {
+        var $_href = $(href);
+        $_href.click(function(event) {
+            
+            event.preventDefault();
+            var url_ = $_href.attr('href');
+            $.ajax({
+                url: url_,
+                dataType: 'html',
+                method: 'GET',
+                success: function(data) {
+                	$_ndomain_modal.empty();
+                    $(data).appendTo( $_ndomain_modal );
+                    form_included = true;
+                    current_form = 'update';
+                    $_cdomain_trigger.trigger('click');
+                    form_included = false;
+                }
+            });
+        });
+    });
 </script>
 
 <c:if test='${ not empty validationErrors }' >
 <script>
-    $('#create-domain-trigger').trigger('click');
+    $_cdomain_trigger.trigger('click');
     $('.has-error').tooltip({
         placement: 'top'
     });

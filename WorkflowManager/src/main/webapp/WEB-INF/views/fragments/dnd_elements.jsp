@@ -9,7 +9,7 @@
 
 <c:forEach var='element' items='${ elements }'>
     
-    <div class='drag-n-drop-row ${ elementRowClass }' id='${ element.value }' >
+    <div class='drag-n-drop-row ${ elementRowClass }' id='${ element.value }' name='${ element.value }' >
         <div class='drag-n-drop-body ${ elementBodyClass }' draggable='true' ondragstart='onElementDragged(event)' >
             <c:out value='${ element.label }' />
         </div>

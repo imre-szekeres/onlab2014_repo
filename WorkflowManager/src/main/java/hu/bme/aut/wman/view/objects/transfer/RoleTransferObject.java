@@ -3,7 +3,11 @@
  */
 package hu.bme.aut.wman.view.objects.transfer;
 
+import hu.bme.aut.wman.model.Privilege;
+import hu.bme.aut.wman.model.Role;
+
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,15 +16,38 @@ import java.util.List;
  */
 public class RoleTransferObject {
 
+	private long id;
 	private String roleName;
 	private String domainName;
 	private String privileges;
 
+	public RoleTransferObject(Role role, String domainName) {
+		this.id = role.getId();
+		this.roleName = role.getName();
+		this.domainName = domainName;
+		this.privileges = privilegesStringOf(role.getPrivileges());
+	}
+	
 	public RoleTransferObject() {
 		super();
 		roleName = domainName = privileges = "";
+		id = -1L;
 	}
 
+
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return the roleName
@@ -66,5 +93,13 @@ public class RoleTransferObject {
 
 	public List<String> privileges() {
 		return Arrays.asList(privileges.split("\\|"));
+	}
+	
+	public static final String privilegesStringOf(Collection<Privilege> privileges) {
+		StringBuffer buffer = new StringBuffer();
+		for(Privilege p : privileges) {
+			buffer.append(p.getName() + "|");
+		}
+		return buffer.substring(0, buffer.length() - 1).toString();
 	}
 }
