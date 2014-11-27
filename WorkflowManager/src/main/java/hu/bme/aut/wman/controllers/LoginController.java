@@ -96,7 +96,7 @@ public class LoginController extends AbstractController {
 			userHandler.createUser(user, DomainService.DEFAULT_ROLE, DomainService.DEFAULT_DOMAIN);
 			request.getSession().setAttribute("subject", user);
 
-			LOGGER.info("user: " + user.getUsername() + " registered as System Reader");
+			LOGGER.info("user: " + user.getUsername() + " registered as " + DomainService.DEFAULT_ROLE);
 			return redirectTo(APP_ROOT);
 		}
 		model.addAttribute(AbstractController.ERRORS_MAP, validationErrors);

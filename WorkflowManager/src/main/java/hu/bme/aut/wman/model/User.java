@@ -56,7 +56,7 @@ public class User extends AbstractEntity {
 	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid format.")
 	protected String email;
 
-	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 chars.")
+	@Size(min = 32, max = 250, message = "must be between 32 and 250 chars.")
 	protected String description;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
