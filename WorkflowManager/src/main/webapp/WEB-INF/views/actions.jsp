@@ -7,8 +7,8 @@
 
 
 <div id='actions-header'>
-	<h3><strong>Actions</strong></h3>
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-action-modal">
+	<h3 class="actions-header"><strong>Actions</strong></h3>
+	<button type="button" class="btn btn-primary actions-new-btn" data-toggle="modal" data-target="#new-action-modal">
 		 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
 	</button>
 </div>
@@ -41,6 +41,7 @@
 						<div id="role-wrapper-${action.id}" class="panel-body roles-wrapper">
 							<c:set var="id" value="${action.id}"/>
 							<div id="added-roles-${action.id}" class="added-roles">
+								<strong>Can do it:</strong>
 								<ul class='list-unstyled'>
 									<c:forEach var="role" items="${rolesOnActionsMap[id]}">
 										<li id="added-roles-${action.id}-${role.id}" data-actionid="${action.id}" data-roleid="${role.id}" class="action-dragable"  style="padding:5px;"> ${role.name} </li>
@@ -49,6 +50,7 @@
 								</ul>
 							</div>
 							<div id="not-added-roles-${action.id}" class="not-added-roles">
+								<strong>Can't do it:</strong>
 								<ul class='list-unstyled'>
 									<c:forEach var="role" items="${rolesToAddMap[id]}">
 										<li id="added-roles-${action.id}-${role.id}" data-actionid="${action.id}" data-roleid="${role.id}" class="action-dragable" style="padding:5px;"> ${role.name} </li>
@@ -76,12 +78,14 @@
 					<h4 class="modal-title" id="myModalLabel">New action</h4>
 				</div>
 				<div class="modal-body">
+					<div class="actions-new-form-wrapper">
 						<div class='form-group'>
-							<label for='input-new-action-name' class='control-label'>Name</label>
+							<label for='input-new-action-name' class='control-label' style="padding-bottom:5px;">Name</label>
 							<div>
 								<form:input id='new-action-name' path='actionTypeName' placeholder='Name of the action' value='TestAction'/>
 							</div>
 						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -122,13 +126,15 @@
 					.draggable({
 						appendTo: "body",
 						revert: "invalid",
-						containment: containmentId
+						containment: containmentId,
+						zIndex: 1001,
+						opacity: 0.7
 					});
 				
 				$.ajax({
 					type: "post",
 					url: "http://localhost:8080/WorkflowManager/action/add/role",
-					cache: false,    
+					cache: false,
 					data:'actionid=' + actionId + "&roleid=" + roleId,
 					success: function(response){
 					},
@@ -169,13 +175,15 @@
 					.draggable({
 						appendTo: "body",
 						revert: "invalid",
-						containment: containmentId
+						containment: containmentId,
+						zIndex: 1001,
+						opacity: 0.7
 					});
 				
 				$.ajax({
 					type: "post",
 					url: "http://localhost:8080/WorkflowManager/action/remove/role",
-					cache: false,    
+					cache: false,
 					data:'actionid=' + actionId + "&roleid=" + roleId,
 					success: function(response){
 					},

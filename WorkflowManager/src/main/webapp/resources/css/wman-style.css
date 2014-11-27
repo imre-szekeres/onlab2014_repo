@@ -747,6 +747,19 @@
 	padding:5px;
 	height:32px;
 }
+
+.actions-new-btn {
+	vertical-align: baseline;
+	margin-bottom: 15px;
+}
+
+.actions-header {
+	display:inline;
+}
+
+.actions-new-form-wrapper {
+	margin-left: 15px;
+}
 /* END Actions */
 
 /* General */

@@ -15,12 +15,14 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -87,6 +89,7 @@ public class ActionsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = ACTION_ADD_ROLE, method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
 	public void addRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		Long actionId = Long.parseLong(request.getParameter("actionid"));
@@ -98,6 +101,7 @@ public class ActionsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = ACTION_REMOVE_ROLE, method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
 	public void removeRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		Long actionId = Long.parseLong(request.getParameter("actionid"));
