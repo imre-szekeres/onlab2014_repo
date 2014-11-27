@@ -22,8 +22,7 @@
                     </h3>
                     <c:if test='${ domain.name ne "System" }' >
                         <wman:iconRow parentId='role-${ role.id }-heading' 
-                                      editPath='#1' 
-                                      detailsPath='#2' 
+                                      editPath='${ appRoot }${ selectUpdateFormUrl }?role=${ role.id }' 
                                       deletePath='${ appRoot }${ deleteRoleAction }?role=${ role.id }' 
                                       iconRowClass='role-icon-row' />
                     </c:if>

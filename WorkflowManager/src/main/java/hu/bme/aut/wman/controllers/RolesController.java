@@ -12,8 +12,10 @@ import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.transfer.RoleTransferObject;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +42,10 @@ public class RolesController extends AbstractController {
 	
 	public static final String ROOT_URL = "/roles";
 	public static final String CREATE = ROOT_URL + "/create";
+	public static final String CREATE_FORM = CREATE + "/form";
+	
+	public static final String UPDATE = ROOT_URL + "/update";
+	public static final String UPDATE_FORM = UPDATE + "/form";
 	public static final String DELETE = ROOT_URL + "/delete";
 	
 
@@ -55,7 +61,7 @@ public class RolesController extends AbstractController {
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
-	public String createRole(@ModelAttribute("newRole") RoleTransferObject newRole, Model model, HttpServletRequest request) {
+	public String createRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpServletRequest request) {
 		String roleName = newRole.getRoleName();
 		String domainName  = newRole.getDomainName();
 		
@@ -81,7 +87,9 @@ public class RolesController extends AbstractController {
 			Domain d = domainService.selectByName(domainName);
 			d.addRole(role);
 			domainService.save( d );
-			LOGGER.info(role.toString() + " was added to " + d.toString());
+			String message = role.toString() + " was added to " + d.toString();
+			LOGGER.info(message);
+			flash(message, Severity.INFO, model);
 			return redirectTo(AdminViewController.ROLES);
 		}
 
@@ -90,6 +98,62 @@ public class RolesController extends AbstractController {
 		model.addAttribute("pageName", "admin_roles");
 		reset(newRole, model);
 		return AbstractController.FRAME;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
+	public String updateRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
+		String roleName = newRole.getRoleName();
+		String domainName  = newRole.getDomainName();
+		
+		Role role = roleService.selectById(newRole.getId());
+		Map<String, String> errors = roleService.validate(role, domainName);
+		
+		if (errors.isEmpty()) {
+			User subject = userService.selectById(((SecurityToken) session.getAttribute("subject")).getUserID());
+			List<String> privileges = newRole.privileges();
+			
+			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
+			LOGGER.debug("parsed (" + privileges.size() + ") privileges for role " + roleName);
+			
+			role.setPrivileges(new HashSet<Privilege>());
+			for(String s : privileges) {
+				Privilege p = privilegeService.selectByName(s);
+				LOGGER.debug(p.toString() + " was found");
+				role.addPrivilege( p );
+				LOGGER.debug(p.toString() + " was addoed to " + role.toString());
+			}
+			roleService.save(role);
+			String message = role.toString() + " was updated";
+			LOGGER.info(message + " by " + subject.getUsername());
+			flash(message, Severity.INFO, model);
+			return redirectTo(AdminViewController.ROLES);
+		}
+
+		model.addAttribute(AbstractController.ERRORS_MAP, errors);
+		AdminViewController.setAdminRolesContent(model, domainService);
+		model.addAttribute("pageName", "admin_roles");
+		reset(newRole, model);
+		return AbstractController.FRAME;
+	}
+	
+	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
+	public String requestCreateForm(Model model) {
+		model.addAttribute("role", new RoleTransferObject());
+		model.addAttribute("domains", domainService.selectAll());
+		model.addAttribute("postRoleAction", RolesController.CREATE);
+		return "fragments/role_form_modal";
+	}
+	
+	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
+	public String requestUpdateForm(@RequestParam("role") long roleID, Model model) {
+		Role role = roleService.selectById(roleID);
+		Domain domain = domainService.selectByRoleID(roleID);
+		model.addAttribute("role", new RoleTransferObject(role, domain.getName()));
+		model.addAttribute("domains", domainService.selectAll());
+		model.addAttribute("postRoleAction", RolesController.UPDATE);
+		model.addAttribute("formType", "update");
+		return "fragments/role_form_modal";
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -102,30 +166,33 @@ public class RolesController extends AbstractController {
 			SecurityToken token = (SecurityToken) session.getAttribute("subject");
 			User subject = userService.selectById(token.getUserID());
 			
-			tryRemove(role, domain, subject, session, model);
+			tryRemove(role, domain, subject, model);
 		}
 		return redirectTo(AdminViewController.ROLES);
 	}
 	
-	private final void tryRemove(Role role, Domain domain, User subject, HttpSession session, Model model) {
+	private final void tryRemove(Role role, Domain domain, User subject, Model model) {
 		try {
 			if (domain == null)
 				throw new Exception("Domain does not exist!");
 
 			roleService.delete(role);
 			domain.removeRole(role);
-			domainService.save(domain);
+			domainService.save(domain); 
 			LOGGER.info(String.format("Role %s was removed from %s by %s.", role.getName(), domain.getName(), subject.getUsername()));
+			flash( String.format("Role %s was removed from %s", role.getName(), domain.getName()),
+				   Severity.INFO,
+				   model );
 		} catch(Exception e) {
-			String message = "unable to delete role " + role.getName() + ": " + e.getMessage();
-			LOGGER.error(message, e);
-			model.addAttribute("errorMessage", message);
+			String message = "unable to delete role " + role.getName();
+			LOGGER.error(message + ": " + e.getMessage(), e);
+			flash(message, Severity.ERROR, model);
 		}
 	}
 	
 	public static final void reset(RoleTransferObject newRole, Model model) {
 		newRole.setPrivileges("");
-		model.addAttribute("newRole", newRole);
+		model.addAttribute("role", newRole);
 	}
 	
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)

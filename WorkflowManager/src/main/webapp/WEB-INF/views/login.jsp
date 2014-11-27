@@ -18,16 +18,18 @@
 </head>
 <body>
     
-    <div id='sign-in-header-wrapper' class='container' >
-        <div class='row'>
-            <div class='col-md-3'></div>
-            <div class='col-md-3' id='app-name-wrapper' ><h3 class='app-name' ><strong>WorkflowManager</strong></h3></div>
-            <div class='col-md-4' id='not-part-of-it-wrapper' >
-                <span class='app-name' ><strong>Not a part of it yet?</strong></span>
+    <div id='sign-in-header-wrapper' >
+        <div id='sign-in-header-positioner' >
+            
+            <div id='sign-in-header' >
+                <span id='app-name-wrapper'>
+                    <strong><span class='glyphicon glyphicon-random' ></span> <span id='app-name' >WorkflowManager</span></strong>
+                </span>
+                <span id='not-part-of-it-yet' > Not part of it yet?  </span>
                 <button class='btn btn-warning' id='register-btn' onClick='showRegister(event)' >Register</button>
                 <button class='btn btn-default' id='sign-in-trigger-btn' data-toggle='modal' data-target='#sign-in-modal' >Sign In</button>
             </div>
-            <div class='col-md-2'></div>
+            
         </div>
     </div>
     

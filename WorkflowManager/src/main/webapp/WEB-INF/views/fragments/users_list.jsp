@@ -21,7 +21,7 @@
                     <wman:iconRow parentId='user-${ user.id }-heading' 
                                   editPath='#1' 
                                   detailsPath='#2' 
-                                  deletePath='#3' 
+                                  deletePath='${ appRoot }${ deleteUserAction }?user=${ user.id }' 
                                   iconRowClass='role-icon-row' />
                 </div>
                 <div id='collapse-${ user.id }' class='panel-collapse collapse in' role='tabpanel' 
