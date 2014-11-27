@@ -97,6 +97,7 @@ public class AdminViewController extends AbstractController {
 		model.addAttribute("domains", domainService.selectAll());
 		model.addAttribute("selectPrivilegesUrl", PrivilegesController.ROOT_URL);
 		model.addAttribute("createRoleAction", RolesController.CREATE);
+		model.addAttribute("deleteRoleAction", RolesController.DELETE);
 		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
 	

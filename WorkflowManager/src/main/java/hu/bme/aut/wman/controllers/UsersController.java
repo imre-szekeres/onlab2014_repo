@@ -7,6 +7,7 @@ import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.UserService;
@@ -17,7 +18,9 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class UsersController extends AbstractController {
+
+	private static final Logger LOGGER = Logger.getLogger( UsersController.class );
 
 	public static final String ROOT_URL = "/users";
 	public static final String CREATE = ROOT_URL + "/create";
@@ -45,15 +50,19 @@ public class UsersController extends AbstractController {
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
-	public String createUser(@ModelAttribute("newUser") UserTransferObject newUser, Model model) {
+	public String createUser(@ModelAttribute("newUser") UserTransferObject newUser, Model model, HttpSession session) {
 		User user = newUser.asUser();
 		
 		Map<String, String> errors = userService.validate(user, newUser.getConfirmPassword(), true);
 		if (errors.isEmpty()) {
+			SecurityToken token = (SecurityToken) session.getAttribute("subject");
+			User subject = userService.selectById(token.getUserID());
+
 			Domain domain = domainService.selectByName(newUser.getDomainName());
 			List<String> roles = newUser.userRoles();
 			
 			assign(user, domain, roles);
+			LOGGER.info(user.getUsername() + " was created by " + subject.getUsername());
 			return redirectTo(AdminViewController.USERS);
 		}
 		
@@ -63,8 +72,7 @@ public class UsersController extends AbstractController {
 		model.addAttribute("pageName", "admin_users");
 		return AbstractController.FRAME;
 	}
-	
-	/* TODO: check.. */
+
 	private final void assign(User user, Domain domain, List<String> roles) {
 		userService.save(user);
 		DomainAssignment da = new DomainAssignment();
@@ -76,6 +84,7 @@ public class UsersController extends AbstractController {
 		da.setUser(user);
 		da.setDomain(domain);
 		daService.save( da );
+		LOGGER.info(user.getUsername() + " was assigned to domain " + domain.getName());
 	}
 	
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)

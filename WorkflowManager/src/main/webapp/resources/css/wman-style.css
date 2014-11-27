@@ -1049,6 +1049,11 @@
 	top: -5px;
 }
 
+#new-user-form .input-group-addon {
+	position: relative;
+	top: -5px;
+}
+
 
 #new-user-modal .modal-dialog {
 	width: 800px;
@@ -1117,8 +1122,90 @@
 .role-body {
 	color: #5700b3;
 }
-
 /* END   darg-n-drop */
+
+/* BEGIN inconRow.tag */
+.icon-row {
+	width: auto;
+	display: none;
+	height: 0px;
+
+	padding-left: 21px;	
+	padding-right: 21px;
+	z-index: 11;
+}
+
+.icon-row * {
+	z-index: 11;
+}
+
+.icon-row-icon {
+	position: relative;
+	height: 0px;
+}
+
+.icon-row-icon-href {
+	position: relative;
+	text-decoration: none;
+	color: white;
+	
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+
+	border: 1px solid red;
+	border-radius: 50%;
+	padding: 6px;
+	
+	z-index: 21;
+	cursor: pointer;
+}
+
+.icon-row-icon-href:hover {
+	color: white;
+}
+
+.edit-icon, .details-icon  {
+	float: left;
+}
+
+.delete-icon {
+	float: right;
+}
+
+.details-icon, .details-icon-href {
+	position: relative;
+	left: 21px;
+}
+
+.edit-icon-href {
+	margin-right: 5px;
+	padding-left: 7px;
+}
+
+.details-icon-href {
+	padding-left: 7px;
+}
+
+.edit-icon-href, .details-icon-href {
+	background-color: #428bca;
+	border-color: #428bca;
+}
+
+.delete-icon-href {
+	background-color: #d9534f;
+	border-color: #d9534f;
+}
+
+.role-icon-row {
+	position: relative;
+	top: -56px;
+}
+
+
+
+/* END   inconRow.tag */
+
 
 /* BEGIN comments on project */
 .project-comment-body{
