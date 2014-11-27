@@ -67,11 +67,6 @@
 			
 			<privilege name='View HistoryEntry' removable='false' />
 		</role>
-
-		<!--
-		<role name='Crimson-Varkonyi Sampler'  domain='Crimson-Varkonyi' import='' removable='true' />
-		<role name='Crimson-Varkonyi Sampler2' domain='Crimson-Varkonyi' import='' removable='true' />
-		-->
     </roles>
     
     <users>
