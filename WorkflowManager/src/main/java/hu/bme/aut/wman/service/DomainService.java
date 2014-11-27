@@ -32,7 +32,6 @@ public class DomainService extends AbstractDataService<Domain> {
 	@Inject
 	private DomainAssignmentService domainAssignmentService;
 
-	
 	private ValidationEngine<Domain> validator;
 
 	@PostConstruct
@@ -53,6 +52,14 @@ public class DomainService extends AbstractDataService<Domain> {
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domain));
 		
 		List<Domain> domains = callNamedQuery("Domain.findByName", parameters);
+		return (domains.size() > 0) ? domains.get(0) : null;
+	}
+	
+	public Domain selectByRoleID(long roleID) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("roleID", roleID));
+		
+		List<Domain> domains = callNamedQuery("Domain.findByRoleID", parameters);
 		return (domains.size() > 0) ? domains.get(0) : null;
 	}
 	

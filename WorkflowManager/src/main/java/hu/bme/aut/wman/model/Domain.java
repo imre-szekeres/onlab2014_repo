@@ -25,7 +25,9 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Domain.findByName", query = "SELECT d FROM Domain d WHERE d.name = :domainName ")
+	@NamedQuery(name = "Domain.findByName", query = "SELECT d FROM Domain d WHERE d.name = :domainName "),
+	@NamedQuery(name = "Domain.findByRoleID", query = "SELECT d FROM Domain d, Role r "+
+	                                                  "WHERE r.id = :roleID AND r MEMBER OF d.roles ")
 })
 public class Domain extends AbstractEntity implements DragNDroppable {
 	

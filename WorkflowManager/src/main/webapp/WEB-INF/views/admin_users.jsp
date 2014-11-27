@@ -19,30 +19,7 @@
 
 <div id='roles-list-panel' class='panel panel-default' >
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
-    <c:forEach var='user' items='${ users }' >  
-        
-        <div class='panel panel-default admin-role-panel admin-user-panel' >
-                <div class='panel-heading' role='tab' id='user-${ user.id }-heading' >
-                    <h3 class='panel-title'>
-                        <a class='collapsed user-collapsed-href' 
-                           aria-expanded='false' 
-                           aria-controls='collapse-${ user.id }' 
-                           data-toggle='collapse' 
-                           data-parent='#admin-roles-content-wrapper' 
-                           href='#collapse-${ user.id }' 
-                           name='${ user.id }' >${ user.username }</a>
-                    </h3>
-                </div>
-                <div id='collapse-${ user.id }' class='panel-collapse collapse in' role='tabpanel' 
-                     aria-labelledby='user-${ user.id }-heading' >
-                     
-                     <div class='role-list-wrapper' requestable='true' name='${ user.id }' >
-                     </div>
-                     
-                </div>
-        </div>
-        
-    </c:forEach>
+    <jsp:include page='fragments/users_list.jsp' />
 </div>
 </div>
 
@@ -61,7 +38,7 @@
             <button type='button' class='close' data-dismiss='modal'>
                 <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
             </button>
-            <h4 class='modal-title' id='new-user-label' >Create User</h4>
+            <h4 class='modal-title' id='new-user-label' ><span class='glyphicon glyphicon-user' ></span> Create User</h4>
         </div>
         
         <div class='modal-body'>
@@ -166,7 +143,7 @@
                             </c:when>
                             <c:otherwise>
                                 <form:textarea id='description' path='description' type='text' class='form-control new-user-input' 
-                                               rows='5' cols='31' />
+                                               rows='5' cols='31' placeholder='A brief introduction.' />
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -177,8 +154,11 @@
                         <spring:message code='role.form.domain.label' ></spring:message>
                     </label>
                     <div class='${ inputColClass }'>
-                        <form:select id='domain-name-select' path='domainName' class='form-control new-user-input' >
-                        </form:select>
+                        <div class='input-group' >
+                            <span class='input-group-addon' ><span class='glyphicon glyphicon-tower' ></span></span>
+	                        <form:select id='domain-name-select' path='domainName' class='form-control new-user-input' >
+	                        </form:select>
+                        </div>
                     </div>
                 </div>
                 
@@ -192,6 +172,7 @@
                     <div id='privileges-dnd-target-panel' class='panel panel-default new-role-privileges-input-panel pos-rel' 
                          ondragover='allowDrop(event)' ondrop='onInputDrop(event)' >
                         <div class='panel-heading'>
+                            <span class='glyphicon glyphicon-screenshot' ></span>
                             <strong>
                                 <spring:message code='user.form.roles.label' ></spring:message> <span id='username-placeholder'></span>
                             </strong>    
@@ -210,6 +191,7 @@
                 <div id='privileges-dnd-source-panel' class='panel panel-default' 
                      ondragover='allowDrop(event)' ondrop='onSourceDrop(event)' >
                     <div class='panel-heading'>
+                        <span class='glyphicon glyphicon-screenshot' ></span>
                         <strong>
                             <spring:message code='roles.dnd.available.label' ></spring:message> <span id='domain-name-placeholder' ></span>
                         </strong>

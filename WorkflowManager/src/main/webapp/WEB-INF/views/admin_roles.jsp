@@ -4,43 +4,13 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core'        prefix='c' %>
 <%@ taglib uri='http://www.springframework.org/tags'      prefix='spring' %>   
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
+<%@ taglib tagdir='/WEB-INF/tags/' prefix='wman' %>
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
 <div id='roles-list-panel' class='panel panel-default' >
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
-    <c:forEach var='domain' items='${ domains }' >  
-        <c:forEach var='role' items='${ domain.roles }' >
-            
-            <div class='panel panel-default admin-role-panel' >
-                <div class='panel-heading' role='tab' id='role-${ role.id }-heading' title='in domain ${ domain.name }' data-toggle='tooltip' data-placement='right' >
-                    <h3 class='panel-title'>
-                        <a class='collapsed' 
-                           aria-expanded='false' 
-                           aria-controls='collapse-${ role.id }' 
-                           data-toggle='collapse' 
-                           data-parent='#admin-roles-content-wrapper' 
-                           href='#collapse-${ role.id }' >${ role.name }</a>
-                    </h3>
-                </div>
-                <div id='collapse-${ role.id }' class='panel-collapse collapse in' role='tabpanel' 
-                     aria-labelledby='role-${ role.id }-heading' >
-                    <div class='list-group privileges-list-group' >
-                    
-	                    <div class='privilege-list-wrapper' >
-	                    <c:forEach var='privilege' items='${ role.privileges }' >
-	                        <div class='privilege-row' >
-	                           ${ privilege.name }
-	                        </div>
-	                    </c:forEach>
-	                    </div>
-                    
-                    </div>
-                </div>
-            </div>
-            
-        </c:forEach>
-    </c:forEach>
+    <jsp:include page='fragments/roles_list.jsp' />
 </div>
 </div>
 
@@ -59,7 +29,7 @@
             <button type='button' class='close' data-dismiss='modal'>
                 <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
             </button>
-            <h4 class='modal-title' id='new-role-label' >Create Role</h4>
+            <h4 class='modal-title' id='new-role-label' ><span class='glyphicon glyphicon-screenshot' ></span> Create Role</h4>
         </div>
         
         <div class='modal-body'>
@@ -91,26 +61,29 @@
                         <spring:message code='role.form.domain.label' ></spring:message>
                     </label>
                     <div class='col-sm-4' >
-                        <c:choose >
-                            <c:when test='${ not empty validationErrors and not empty validationErrors.domain }' >
-                                
-                                <span class='has-error' title='${ validationErrors.domain }' data-toggle='tooltip' >
-                                    <form:select id='role-domain' path="domainName" class='form-control new-role-input' >
-	                                    <c:forEach var='domain' items='${ domains }' >
-	                                        <form:option value='${ domain.name }' >${ domain.name }</form:option>
-	                                    </c:forEach>
-	                                </form:select>
-                                </span>
-                                
-                            </c:when>
-                            <c:otherwise>
-                                <form:select id='role-domain' path="domainName" class='form-control new-role-input' >
-		                            <c:forEach var='domain' items='${ domains }' >
-		                                <form:option value='${ domain.name }' >${ domain.name }</form:option>
-		                            </c:forEach>
-                                </form:select>
-                            </c:otherwise>
-                        </c:choose>
+                        <div class='input-group' >
+                                <span class='input-group-addon' ><span class='glyphicon glyphicon-tower'></span></span>
+		                        <c:choose >
+		                            <c:when test='${ not empty validationErrors and not empty validationErrors.domain }' >
+		                                
+		                                <span class='has-error' title='${ validationErrors.domain }' data-toggle='tooltip' >
+		                                    <form:select id='role-domain' path="domainName" class='form-control new-role-input' >
+			                                    <c:forEach var='domain' items='${ domains }' >
+			                                        <form:option value='${ domain.name }' >${ domain.name }</form:option>
+			                                    </c:forEach>
+			                                </form:select>
+		                                </span>
+		                                
+		                            </c:when>
+		                            <c:otherwise>
+		                                <form:select id='role-domain' path="domainName" class='form-control new-role-input' >
+				                            <c:forEach var='domain' items='${ domains }' >
+				                                <form:option value='${ domain.name }' >${ domain.name }</form:option>
+				                            </c:forEach>
+		                                </form:select>
+		                            </c:otherwise>
+		                        </c:choose>
+		                 </div>
                     </div>
                 </div>
                 
@@ -124,6 +97,7 @@
                     <div id='privileges-dnd-target-panel' class='panel panel-default new-role-privileges-input-panel pos-rel' 
                          ondragover='allowDrop(event)' ondrop='onInputDrop(event)' >
                         <div class='panel-heading'>
+                            <span class='glyphicon glyphicon-flag' ></span>
                             <strong>
                                 <spring:message code='role.form.privileges.label' ></spring:message> <span id='role-name-placeholder'></span>
                             </strong>    
@@ -143,6 +117,7 @@
                 <div id='privileges-dnd-source-panel' class='panel panel-default' 
                      ondragover='allowDrop(event)' ondrop='onSourceDrop(event)' >
                     <div class='panel-heading'>
+                        <span class='glyphicon glyphicon-flag' ></span>
                         <strong>
                             <spring:message code='privileges.dnd.available.label' ></spring:message>
                         </strong>
@@ -239,7 +214,7 @@
     $('#create-role-trigger').click( onCreateClick );
     $('.collapse').collapse();
     $('[data-toggle="tooltip"]').tooltip({
-    	placement: 'top'
+    	placement: 'bottom'
     });
     
     $_rname_plh.html( $_rolename_in.val() );

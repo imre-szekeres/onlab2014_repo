@@ -68,7 +68,7 @@
 			            <c:set var='inputClass' value='${ loginError == null ? "" : "has-error"  }' />
 			                                   
 			            <div class='form-row ${ inputClass }'>
-			                <form:input id='username' path='username' type='text' value='Username' class='form:input-large form-control' />
+			                <form:input id='username' path='username' type='text' placeholder='Username' class='form:input-large form-control' />
 			            </div>
 			            <div class='form-row ${ inputClass }' >
 			                <form:input id='password' path='password' type='password' class='form:input-large form-control'/>

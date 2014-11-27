@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Imre Szekeres
@@ -38,6 +40,7 @@ public class RolesController extends AbstractController {
 	
 	public static final String ROOT_URL = "/roles";
 	public static final String CREATE = ROOT_URL + "/create";
+	public static final String DELETE = ROOT_URL + "/delete";
 	
 
 	@EJB(mappedName = "java:module/RoleService")
@@ -87,6 +90,37 @@ public class RolesController extends AbstractController {
 		model.addAttribute("pageName", "admin_roles");
 		reset(newRole, model);
 		return AbstractController.FRAME;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = DELETE, method = RequestMethod.GET)
+	public String deleteRole(@RequestParam("role") long roleID, HttpSession session, Model model) {
+		Role role = roleService.selectById(roleID);
+		Domain domain = domainService.selectByRoleID(roleID);
+		
+		if (role != null) {
+			SecurityToken token = (SecurityToken) session.getAttribute("subject");
+			User subject = userService.selectById(token.getUserID());
+			
+			tryRemove(role, domain, subject, session, model);
+		}
+		return redirectTo(AdminViewController.ROLES);
+	}
+	
+	private final void tryRemove(Role role, Domain domain, User subject, HttpSession session, Model model) {
+		try {
+			if (domain == null)
+				throw new Exception("Domain does not exist!");
+
+			roleService.delete(role);
+			domain.removeRole(role);
+			domainService.save(domain);
+			LOGGER.info(String.format("Role %s was removed from %s by %s.", role.getName(), domain.getName(), subject.getUsername()));
+		} catch(Exception e) {
+			String message = "unable to delete role " + role.getName() + ": " + e.getMessage();
+			LOGGER.error(message, e);
+			model.addAttribute("errorMessage", message);
+		}
 	}
 	
 	public static final void reset(RoleTransferObject newRole, Model model) {
