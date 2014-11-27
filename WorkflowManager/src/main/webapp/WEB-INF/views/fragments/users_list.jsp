@@ -20,7 +20,7 @@
                     </h3>
                     <wman:iconRow parentId='user-${ user.id }-heading' 
                                   editPath='#1' 
-                                  detailsPath='#2' 
+                                  detailsPath='${ appRoot }${ detailsUserAction }?user=${ user.id }' 
                                   deletePath='${ appRoot }${ deleteUserAction }?user=${ user.id }' 
                                   iconRowClass='role-icon-row' />
                 </div>

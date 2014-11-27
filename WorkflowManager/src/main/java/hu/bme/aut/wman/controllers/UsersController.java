@@ -3,11 +3,11 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
-import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
@@ -46,7 +46,9 @@ public class UsersController extends AbstractController {
 	public static final String UPDATE_FORM = UPDATE + "/form";
 	public static final String DELETE = ROOT_URL + "/delete";
 	public static final String DOMAINS = ROOT_URL + "/domains";
-	
+	public static final String PROFILE = ROOT_URL + "/profile";
+
+
 	@EJB(mappedName = "java:module/DomainAssignmentService")
 	private DomainAssignmentService daService;
 	@EJB(mappedName = "java:module/UserService")
@@ -56,7 +58,19 @@ public class UsersController extends AbstractController {
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
 
-	
+
+
+
+	@RequestMapping(value = PROFILE, method = RequestMethod.GET)
+	public String viewProfile(@RequestParam("user") long userID, Model model, HttpSession session) {
+		User user = userService.selectById(userID);
+		model.addAttribute("user", user);
+
+		boolean isEditable = userID == userIDOf(session);
+		model.addAttribute("isEditable", isEditable);
+		return navigateToFrame("user_profile", model);
+	}
+
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model) {
 		model.addAttribute("user", new UserTransferObject());
@@ -70,8 +84,8 @@ public class UsersController extends AbstractController {
 		User user = userService.selectById(userID);
 		
 		if (user != null) {
-			SecurityToken token = (SecurityToken) session.getAttribute("subject");
-			User subject = userService.selectById(token.getUserID());
+			long subjectID = userIDOf(session);
+			User subject = userService.selectById(subjectID);
 			
 			tryRemove(user, subject, model);
 		}
@@ -105,8 +119,8 @@ public class UsersController extends AbstractController {
 		
 		Map<String, String> errors = userService.validate(user, newUser.getConfirmPassword(), true);
 		if (errors.isEmpty()) {
-			SecurityToken token = (SecurityToken) session.getAttribute("subject");
-			User subject = userService.selectById(token.getUserID());
+			long subjectID = userIDOf(session);
+			User subject = userService.selectById(subjectID);
 
 			Domain domain = domainService.selectByName(newUser.getDomainName());
 			List<String> roles = newUser.userRoles();

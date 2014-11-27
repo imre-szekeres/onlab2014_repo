@@ -3,11 +3,11 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Privilege;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
-import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
@@ -61,7 +61,7 @@ public class RolesController extends AbstractController {
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
-	public String createRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpServletRequest request) {
+	public String createRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
 		String roleName = newRole.getRoleName();
 		String domainName  = newRole.getDomainName();
 		
@@ -69,7 +69,7 @@ public class RolesController extends AbstractController {
 		Map<String, String> errors = roleService.validate(role, domainName);
 		
 		if (errors.isEmpty()) {
-			User subject = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+			User subject = userService.selectById( userIDOf(session) );
 			List<String> privileges = newRole.privileges();
 			
 			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
@@ -110,7 +110,7 @@ public class RolesController extends AbstractController {
 		Map<String, String> errors = roleService.validate(role, domainName);
 		
 		if (errors.isEmpty()) {
-			User subject = userService.selectById(((SecurityToken) session.getAttribute("subject")).getUserID());
+			User subject = userService.selectById( userIDOf(session) );
 			List<String> privileges = newRole.privileges();
 			
 			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
@@ -158,13 +158,12 @@ public class RolesController extends AbstractController {
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteRole(@RequestParam("role") long roleID, HttpSession session, Model model) {
+	public String deleteRole(@RequestParam("role") long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
 		
 		if (role != null) {
-			SecurityToken token = (SecurityToken) session.getAttribute("subject");
-			User subject = userService.selectById(token.getUserID());
+			User subject = userService.selectById( userIDOf(session) );
 			
 			tryRemove(role, domain, subject, model);
 		}
