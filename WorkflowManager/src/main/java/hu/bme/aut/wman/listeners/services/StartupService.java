@@ -237,13 +237,15 @@ public class StartupService {
 				LOGGER.debug("\t" + d.toString() + " was found");
 				if (Boolean.valueOf(removable))
 					removables.add(d);
-				else 
+				else {
+					domainService.save( d );
+					d = domainService.selectByName(d.getName());
+					LOGGER.info(d.toString() + " was inserted..");
 					domains.put(domainName, d);
+				}
 			}
 		}
-		
 		removeAll(removables, domainService);
-		insertAll(new ArrayList<Domain>(domains.values()), domainService);
 	}
 	
 	private final void tryParsePrivileges(Map<String, Privilege> privileges, String localName, XMLEventReader reader) throws Exception {

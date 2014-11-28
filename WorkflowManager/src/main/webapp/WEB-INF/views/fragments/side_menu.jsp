@@ -21,7 +21,7 @@
 			</div>
 		</a>
 		
-		<a href='${ param.appRoot }/users/profile?user=${ sessionScope.securityToken.userID }'>
+		<a href='${ param.appRoot }/users/profile?user=${ sessionScope.subject.userID }'>
 			<div id='profile-button' class='side-menu-button'>
 				<span class='glyphicon glyphicon-user side-menu-icon'/>
 				<div class='side-menu-title'>Profile</div>
