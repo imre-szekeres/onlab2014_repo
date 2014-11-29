@@ -3,11 +3,11 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
-import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
@@ -64,9 +64,7 @@ public class DomainsController extends AbstractController {
 		
 		if (errors.isEmpty()) {
 			List<Role> defaults = domainService.selectByName(DomainService.DEFAULT_DOMAIN).getRoles();
-			
-			SecurityToken token = (SecurityToken) session.getAttribute("subject");
-			User subject = userService.selectById(token.getUserID());
+			User subject = userService.selectById( userIDOf(session) );
 			
 			for(Role role : defaults) {
 				int lastIndex = role.getName().lastIndexOf(" ");
@@ -100,8 +98,7 @@ public class DomainsController extends AbstractController {
 		Map<String, String> errors = domainService.validate( domain );
 		
 		if (errors.isEmpty()) {
-			SecurityToken token = (SecurityToken) session.getAttribute("subject");
-			User subject = userService.selectById(token.getUserID());
+			User subject = userService.selectById( userIDOf(session) );
 			
 			domainService.save( domain );
 			String message = "Domain " + domain.getName() + " was updated";
@@ -139,8 +136,7 @@ public class DomainsController extends AbstractController {
 		Domain domain = domainService.selectById(domainID);
 		
 		if (domain != null) {
-			SecurityToken token = (SecurityToken) session.getAttribute("subject");
-			User subject = userService.selectById(token.getUserID());
+			User subject = userService.selectById( userIDOf(session) );
 			
 			tryRemove(domain, subject, session, model);
 		}

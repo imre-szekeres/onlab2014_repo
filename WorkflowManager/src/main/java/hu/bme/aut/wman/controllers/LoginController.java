@@ -110,4 +110,25 @@ public class LoginController extends AbstractController {
 		session.setAttribute("subject", null);
 		return redirectTo(APP_ROOT);
 	}
+
+	/**
+	 * Retrieves the user ID via the passed <code>HttpSession</code>.
+	 * 
+	 * @param session
+	 * @return the user ID of the currently logged in user
+	 * */
+	public static final long userIDOf(HttpSession session) {
+		SecurityToken token = (SecurityToken) session.getAttribute("subject");
+		return (token == null) ? -1 : token.getUserID();
+	}
+
+	/**
+	 * Retrieves the user ID via the passed <code>HttpServletRequest</code>.
+	 * 
+	 * @param request
+	 * @return the user ID of the currently logged in user
+	 * */
+	public static final long userIDOf(HttpServletRequest request) {
+		return userIDOf(request.getSession());
+	}
 }

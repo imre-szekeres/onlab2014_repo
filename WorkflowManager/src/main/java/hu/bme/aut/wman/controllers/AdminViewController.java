@@ -111,6 +111,7 @@ public class AdminViewController extends AbstractController {
 		model.addAttribute("selectCreateFormUrl", UsersController.CREATE_FORM);
 		model.addAttribute("selectUpdateFormUrl", UsersController.UPDATE_FORM);
 		model.addAttribute("deleteUserAction", UsersController.DELETE);
+		model.addAttribute("detailsUserAction", UsersController.PROFILE);
 		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
 }
