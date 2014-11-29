@@ -66,7 +66,7 @@ public class RolesController extends AbstractController {
 		String domainName  = newRole.getDomainName();
 		
 		Role role = new Role(roleName);
-		Map<String, String> errors = roleService.validate(role, domainName);
+		Map<String, String> errors = roleService.validate(role, domainName, true);
 		
 		if (errors.isEmpty()) {
 			User subject = userService.selectById( userIDOf(session) );
@@ -107,7 +107,8 @@ public class RolesController extends AbstractController {
 		String domainName  = newRole.getDomainName();
 		
 		Role role = roleService.selectById(newRole.getId());
-		Map<String, String> errors = roleService.validate(role, domainName);
+		role.setName( newRole.getRoleName() );
+		Map<String, String> errors = roleService.validate(role, domainName, false);
 		
 		if (errors.isEmpty()) {
 			User subject = userService.selectById( userIDOf(session) );
@@ -133,7 +134,8 @@ public class RolesController extends AbstractController {
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		AdminViewController.setAdminRolesContent(model, domainService);
 		model.addAttribute("pageName", "admin_roles");
-		reset(newRole, model);
+		model.addAttribute("postRoleAction", RolesController.UPDATE);
+		model.addAttribute("formType", "update");
 		return AbstractController.FRAME;
 	}
 	

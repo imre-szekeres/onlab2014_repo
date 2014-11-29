@@ -37,9 +37,9 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 		validator = new RoleValidator();
 	}
 	
-	public Map<String, String> validate(Role role, String domain) {
+	public Map<String, String> validate(Role role, String domain, boolean isCreated) {
 		Map<String, String> errors = validator.validate(role);
-		if (selectByName(role.getName(), domain) != null)
+		if (selectByName(role.getName(), domain) != null && isCreated)
 			errors.put("name", "Role already exists in the given domain!");
 		if (DomainService.DEFAULT_DOMAIN.equals( domain ))
 			errors.put("domain", "Domain " + DomainService.DEFAULT_DOMAIN + " cannot be modified!");

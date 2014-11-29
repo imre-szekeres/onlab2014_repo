@@ -55,6 +55,7 @@
     		success: function(data) {
     			$_target = data;
     		    $_priv_src_wrapper.html( data );
+    		    rearrangePrivileges( $_newr_modal );
     		}
     	});
     }
@@ -104,7 +105,7 @@
     		value = sourceID;
     	
     	$_privs_in.val( value );
-    	console.log( $_privs_in.val() );
+    	console.log( $_privs_in.val() );  // TODO: remove
     }
     
     function onSourceDrop(event) {
@@ -119,6 +120,7 @@
             value = '';
 
         $_privs_in.val( value );
+        console.log( $_privs_in.val() ); // TODO: remove
     }
     
     function contains(list, value) {
@@ -130,13 +132,11 @@
     
     function rearrangePrivileges($_modal) {
     	var old_privs = $_privs_in.val().split('|');
-    	
-    	var $_html = $($_priv_src_wrapper.html());
-    	console.log($_html);
+
         for(var i = 0; i < old_privs.length; ++i) {
     		var id = old_privs[i];
     		
-    		var $_e = $_html.find("[name='" + id + "']");
+    		var $_e = $_priv_src_wrapper.find('[name="' + id + '"]');
     		$_e.appendTo( $_priv_input_wrapper );
     	}
     }
@@ -162,7 +162,6 @@
                     $(data).appendTo( $_newr_modal );
                     form_included = true;
                     current_form = 'update';
-                    rearrangePrivileges( $_newr_modal );
                     $_create_role_trigger.trigger('click');
                     form_included = false;
         		}

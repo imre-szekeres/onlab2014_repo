@@ -1178,11 +1178,12 @@
 	
 	margin-top: 2px;
 	margin-bottom: 2px;
+	cursor: move;
 }
 
 .drag-n-drop-row:hover {
 	background-color: #F8F8F8;
-	cursor: grab;
+	cursor: move;
 }
 
 .drag-n-drop-body {
@@ -1193,6 +1194,11 @@
 	line-height: 25px;
 	text-align: center;
 	vertical-align: middle;
+	cursor: move;
+}
+
+.drag-n-drop-body:hover {
+	cursor: move;
 }
 
 .privilege-row {
@@ -1286,11 +1292,41 @@
 	position: relative;
 	top: -56px;
 }
-
-
-
 /* END   inconRow.tag */
 
+/* BEGIN user profile */
+.positioner {
+	position: relative;
+	margin: 21px;
+	
+	width: 800px;
+	height: 700px;
+	padding: 13px;
+	
+	border: 1px dotted grey; /* TODO: remove */
+}
+
+#username-span {
+	height: 42px;
+	line-height: 42px;
+	display: inline-block;
+	
+	vertical-align: middle;
+	font-size: 21px;
+}
+
+.username-part {
+	float: left;
+}
+
+.button-part {
+	float: right;
+}
+
+#edit-trigger-icon {
+	margin-right: 2px;
+}
+/* END   user profile */
 
 /* BEGIN comments on project */
 .project-comment-body{

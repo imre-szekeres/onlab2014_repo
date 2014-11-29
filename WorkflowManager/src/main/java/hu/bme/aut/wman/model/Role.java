@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Role
@@ -47,6 +48,7 @@ public class Role extends AbstractEntity implements DragNDroppable {
 	public static final String PR_PRIVILEGS = "privileges";
 
 	@Column(unique = true)
+	@Size(min = 5, message = "must be longer than 5 characters")
 	private String name;
 	
 	@NotNull
