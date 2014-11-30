@@ -147,6 +147,29 @@
            requestDomainNames( $_domains_select );
    });
 
+   $.each($('.edit-icon-href'), function(index, href) {
+	   wait();
+       var $_href = $(href);
+       $_href.click(function(event) {
+           
+           event.preventDefault();
+           var url_ = $_href.attr('href');
+           $.ajax({
+               url: url_,
+               dataType: 'html',
+               method: 'GET',
+               success: function(data) {
+                   $_nuser_modal.empty();
+                   $(data).appendTo( $_nuser_modal );
+                   form_included = true;
+                   current_form = 'update';
+                   $_create_user_trigger.trigger('click');
+                   form_included = false;
+                   nowait();
+               }
+           });
+       });
+   });
 </script>
 
 <c:if test='${ not empty validationErrors }' >

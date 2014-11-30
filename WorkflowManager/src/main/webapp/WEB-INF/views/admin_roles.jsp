@@ -45,8 +45,17 @@
     function submitNewRoleForm(event) {
     	$('#new-role-form').submit();
     }
+
+    function wait() {
+        $_newr_modal.css('cursor', 'wait');
+    }
+    
+    function nowait() {
+        $_newr_modal.css('cursor', 'auto');
+    }
     
     function queryPrivileges($_target) {
+    	wait();
     	var url_ = privileges_url;
     	$.ajax({
     		url: url_,
@@ -56,6 +65,7 @@
     			$_target = data;
     		    $_priv_src_wrapper.html( data );
     		    rearrangePrivileges( $_newr_modal );
+    		    nowait();
     		}
     	});
     }
@@ -69,6 +79,7 @@
     }
     
     function requestCreateForm() {
+    	wait();
     	$.ajax({
     		url: create_form_url,
     		dataType: 'html',
@@ -78,6 +89,7 @@
     			$(data).appendTo( $_newr_modal );
     			requestPrivileges();
     			current_form = 'create';
+    			nowait();
     		}
     	});
     }
@@ -146,6 +158,7 @@
     });
     
     $.each($('.edit-icon-href'), function(index, href) {
+    	wait();
     	var $_href = $(href);
         $_href.click(function(event) {
         	
@@ -162,6 +175,7 @@
                     current_form = 'update';
                     $_create_role_trigger.trigger('click');
                     form_included = false;
+                    nowait();
         		}
         	});
         });

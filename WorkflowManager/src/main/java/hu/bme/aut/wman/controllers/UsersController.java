@@ -12,6 +12,7 @@ import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.utils.parsers.JsonParser;
 import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.transfer.UserTransferObject;
 
@@ -62,6 +63,8 @@ public class UsersController extends AbstractController {
 	private DomainService domainService;
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
+	@EJB(mappedName = "java:module/UserRolesParser")
+	private JsonParser<String, List<String>> parser;
 
 
 
@@ -86,12 +89,41 @@ public class UsersController extends AbstractController {
 	public String requestCreateForm(Model model) {
 		model.addAttribute("user", new UserTransferObject());
 		model.addAttribute("postUserAction", UsersController.CREATE);
+		model.addAttribute("assignments", "{}");
 		return "fragments/user_form_modal";
+	}
+	
+	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
+	public String requestUpdateForm(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
+		model.addAttribute("user", new UserTransferObject(userService.selectById(userID)));
+		model.addAttribute("postUserAction", UsersController.UPDATE);
+		
+		Map<String, List<String>> assignments = daService.assignmentsOf(userID);		
+		model.addAttribute("assignments", tryStringifyAssignments(assignments, parser));
+		model.addAttribute("formType", "update");
+		return "fragments/user_form_modal";
+	}
+	
+	/**
+	 * Stringifies the given <code>Map</code> into a JSON <code>String</code>.
+	 * 
+	 * @param assignments
+	 * @param parser
+	 * @param model
+	 * @return the {@link Map} containing the values
+	 * */
+	private static final String tryStringifyAssignments(Map<String, List<String>> assignments, JsonParser<String, List<String>> parser) {
+		try {
+			return parser.stringify( assignments );
+		} catch(Exception e) {
+			LOGGER.error("Exception while stringifying assignments Map: " + e.getMessage(), e);
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteRole(@RequestParam("user") long userID, HttpSession session, Model model) {
+	public String deleteUser(@RequestParam("user") long userID, HttpSession session, Model model) {
 		User user = userService.selectById(userID);
 		
 		if (user != null) {
@@ -134,15 +166,25 @@ public class UsersController extends AbstractController {
 		if (errors.isEmpty()) {
 			long subjectID = userIDOf(session);
 			User subject = userService.selectById(subjectID);
-
-			Domain domain = domainService.selectByName(newUser.getDomainName());
-			List<String> roles = newUser.userRoles();
+			Map<String, List<String>> assignments = tryParseAssignments(newUser.getUserRoles(), parser);
 			
-			assign(user, domain, roles, model);
-			assignToDefault(user, domain);
-			String message = user.getUsername() + " was created";
-			LOGGER.info(message + " by " + subject.getUsername());
-			flash(message, Severity.INFO, model);
+			if (assignments != null) {
+
+				Domain domain = null;
+				for(String domainName : assignments.keySet()) {
+					domain = domainService.selectByName( domainName );
+					assign(user, domain, assignments.get( domainName ), model);
+				}
+				assignToDefault(user, domain);
+
+				String message = user.getUsername() + " was created";
+				LOGGER.info(message + " by " + subject.getUsername());
+				flash(message, Severity.INFO, model);
+			}
+			else {
+				LOGGER.error("Unable to process the given JSON String: " + newUser.getUserRoles());
+				flash("Some errors occurred during the creation of user " + newUser.getUsername(), Severity.ERROR, model);
+			}
 			return redirectTo(AdminViewController.USERS);
 		}
 		
@@ -153,7 +195,24 @@ public class UsersController extends AbstractController {
 		model.addAttribute("pageName", "admin_users");
 		return AbstractController.FRAME;
 	}
-	
+
+	/**
+	 * Parses the given JSON <code>String</code> into a <code>Map</code>.
+	 * 
+	 * @param json
+	 * @param parser
+	 * @param model
+	 * @return the {@link Map} containing the values
+	 * */
+	private static final Map<String, List<String>> tryParseAssignments(String json, JsonParser<String, List<String>> parser) {
+		try {
+			return parser.parse( json );
+		} catch(Exception e) {
+			LOGGER.error("Exception while parsing JSON String: " + e.getMessage(), e);
+		}
+		return null;
+	}
+
 	private final void assignToDefault(User user, Domain domain) {
 		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), DomainService.DEFAULT_DOMAIN);
 		

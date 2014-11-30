@@ -3,10 +3,13 @@
  */
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
+import hu.bme.aut.wman.model.Role;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +52,29 @@ public class DomainAssignmentService extends AbstractDataService<DomainAssignmen
 		List<DomainAssignment> assignments = callNamedQuery("DomainAssignment.findByUsernameFor", parameters);
 		
 		return (assignments.size() > 0) ? assignments.get(0) : null;
+	}
+
+	/**
+	 * Obtains all the <code>Domain</code> names and all the <code>Role</code> names the <code>User</code> 
+	 * specified by its user id has.
+	 * 
+	 * @param userID
+	 * @return a {@link Map} containing its {@link Role}s ordered by the {@link Domain}s they are defined in
+	 * */
+	public final Map<String, List<String>> assignmentsOf(long userID) {
+		List<DomainAssignment> assignments = selectByUserID( userID );
+		Map<String, List<String>> results = new HashMap<>();
+		if (assignments.isEmpty())
+			return results;
+		
+		List<String> roles;
+		for(DomainAssignment da : assignments) {
+			roles = new ArrayList<>();
+			for(Role r : da.getUserRoles())
+				roles.add( r.getName() );
+			results.put(da.getDomain().getName(), roles);
+		}
+		return results;
 	}
 	
 	@Override

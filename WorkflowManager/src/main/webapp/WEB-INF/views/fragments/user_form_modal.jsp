@@ -7,6 +7,25 @@
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
+<c:set var='formType' value="${ empty formType ? 'create' : formType }" />
+<c:set var='formType' value='${ not empty param.formType ? param.formType : formType }' />
+
+<c:choose >
+<c:when test="${ formType eq 'create' }" >
+    
+    <c:set var='formTitle' value="Create User" />
+    <c:set var='submitText' value='Create' />
+    
+</c:when>
+<c:otherwise>
+    
+    <c:set var='formTitle' value="Update User" />
+    <c:set var='submitText' value='Update' />
+    <c:set var='inputPanelClass' value='update-dnr-input-panel' />
+    <c:set var='sourcePanelClass' value='update-dnr-source-panel' />
+
+</c:otherwise>
+</c:choose>
 
 <c:set var='labelColClass' value='col-sm-3' />
 <c:set var='inputColClass' value='col-sm-9' />
@@ -25,13 +44,18 @@
             <button type='button' class='close' data-dismiss='modal'>
                 <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
             </button>
-            <h4 class='modal-title' id='new-user-label' ><span class='glyphicon glyphicon-user' ></span> Create User</h4>
+            <h4 class='modal-title' id='new-user-label' ><span class='glyphicon glyphicon-user' ></span> ${ formTitle }</h4>
         </div>
         
         <div class='modal-body'>
             <div id='new-user-form-fieldset-wrapper' class='container new-user-container pos-rel' >
             <fieldset>
 
+                <div hidden='true' >
+                    <form:input path='id' type='hidden' readonly='true' ></form:input>
+                </div>
+
+<c:if test='${ formType eq "create" }'>
                 <div class='form-group row new-user-row'>
                     <label class='control-label ${ labelColClass }' for='username' >
                         <spring:message code='user.form.username.label' ></spring:message>
@@ -135,7 +159,8 @@
                         </c:choose>
                     </div>
                 </div>
-                
+</c:if>
+
                 <div class='form-group row new-user-row'>
                     <label class='control-label ${ labelColClass }' for='domain-name-select' >
                         <spring:message code='role.form.domain.label' ></spring:message>
@@ -156,7 +181,7 @@
                 </div>
                 
                 <div class='form-group row new-user-row' >
-                    <div id='privileges-dnd-target-panel' class='panel panel-default new-role-privileges-input-panel pos-rel' 
+                    <div id='privileges-dnd-target-panel' class='panel panel-default new-role-privileges-input-panel pos-rel ${ inputPanelClass }' 
                          ondragover='allowDrop(event)' ondrop='onInputDrop(event)' >
                         <div class='panel-heading'>
                             <span class='glyphicon glyphicon-screenshot' ></span>
@@ -174,7 +199,7 @@
             </fieldset>
             </div>
             
-            <div id='privileges-dnd-source-panel-wrapper' class='pos-rel' >
+            <div id='privileges-dnd-source-panel-wrapper' class='pos-rel ${ sourcePanelClass }' >
                 <div id='privileges-dnd-source-panel' class='panel panel-default' 
                      ondragover='allowDrop(event)' ondrop='onSourceDrop(event)' >
                     <div class='panel-heading'>
@@ -194,7 +219,7 @@
         </div>
         
         <div class='modal-footer'>
-            <button type='submit' class='btn btn-primary' onclick='submitNewUserForm(event)' >Create</button>
+            <button type='submit' class='btn btn-primary' onclick='submitNewUserForm(event)' >${ submitText }</button>
             <button type='button' class='btn btn-default' data-dismiss='modal' >Cancel</button>
         </div>
     </form:form>
@@ -214,9 +239,13 @@
 	var $_roles_in = $('#user-roles');
 	var $_nuser_from = $('#new-user-form');
 	
-	var domains_n_roles = JSON.parse('{}');
+	var domains_n_roles = JSON.parse('${ assignments }');
 
+	console.log( domains_n_roles );
+	
 	function submitNewUserForm(event) {
+	    var json_str = JSON.stringify( domains_n_roles );
+	    $_roles_in.val( json_str );
 	    $_nuser_form.submit();
 	}
 
