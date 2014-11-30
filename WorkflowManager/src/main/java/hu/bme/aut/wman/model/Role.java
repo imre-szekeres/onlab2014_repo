@@ -23,13 +23,20 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @NamedQueries({
 	@NamedQuery(name = "Role.findByActionType", query = "SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes"),
+
 	@NamedQuery(name = "Role.findByAssignment", query = "SELECT r FROM Role r, DomainAssignment d "+
 														"WHERE d.domain.name = :domainName "+
 														    "AND d.user.id = :userID "+
 															"AND r MEMBER OF d.userRoles "),
+
 	@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
 													"WHERE d.name = :domainName "+
 														    "AND r MEMBER OF d.roles"),
+
+    @NamedQuery(name = "Role.findNamesByDomain", query = "SELECT r.name FROM Role r, Domain d "+
+														 "WHERE d.name = :domainName "+
+														    "AND r MEMBER OF d.roles"),
+
     @NamedQuery(name = "Role.findByDomainAndName", query = "SELECT r FROM Role r, Domain d "+
 														   "WHERE d.name = :domainName "+
 														          "AND r.name = :roleName " +
@@ -39,6 +46,7 @@ public class Role extends AbstractEntity implements DragNDroppable {
 
 	public static final String NQ_FIND_BY_ACTIONTYPE = "Role.findByActionType";
 	public static final String NQ_FIND_BY_DOMAIN = "Role.findByDomain";
+	public static final String NQ_FIND_NAMES_BY_DOMAIN = "Role.findNamesByDomain";
 	public static final String NQ_FIND_BY_DOMAIN_AND_NAME = "Role.findByDomainAndName";
 
 	public static final String PR_NAME = "name";

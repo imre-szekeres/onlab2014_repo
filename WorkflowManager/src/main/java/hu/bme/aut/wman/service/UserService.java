@@ -32,6 +32,9 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	private ValidationEngine<User> validator;
 	private ValidationEngine<User> passwordValidator;
 
+	/**
+	 * Initializes the validation mechanism used.
+	 * */
 	@PostConstruct
 	public void setup() {
 		validator = new UserValidator();
@@ -53,9 +56,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	 * */
 	private void unicityOf(User user, Map<String, String> errors) {
 		User other = selectByName(user.getUsername());
-		Long userID = Long.valueOf(user.getId());
-		Long otherID = Long.valueOf(other.getId());
-		if ((other != null) && (!otherID.equals( userID ))) {
+		if ((other != null) && (!other.getId().equals( user.getId() ))) {
 			errors.put("username", "Given username already exists.");
 		}
 	}

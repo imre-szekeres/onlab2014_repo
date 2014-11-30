@@ -27,10 +27,15 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "Domain.findByName", query = "SELECT d FROM Domain d WHERE d.name = :domainName "),
+	@NamedQuery(name = "Domain.findAllNames", query = "SELECT d.name FROM Domain d "),
 	@NamedQuery(name = "Domain.findByRoleID", query = "SELECT d FROM Domain d, Role r "+
 	                                                  "WHERE r.id = :roleID AND r MEMBER OF d.roles ")
 })
 public class Domain extends AbstractEntity implements DragNDroppable {
+
+	public static final String NQ_FIND_BY_NAME = "Domain.findByName";
+	public static final String NQ_FIND_ALL_NAMES = "Domain.findAllNames";
+	public static final String NQ_FIND_BY_ROLE_ID = "Domain.findByRoleID";
 	
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";
