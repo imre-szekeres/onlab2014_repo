@@ -207,13 +207,89 @@
 	var $_dname_plh = $('#domain-name-placeholder');
 	var $_username_in = $('#username');
 	var $_uname_plh = $('#username-placeholder');
-	
-	
+
 	var $_avail_roles = 'None';
 	var $_roles_src_wrapper = $('#privileges-dnd-source-wrapper');
 	var $_roles_input_wrapper = $('#privileges-dnd-input-wrapper');
 	var $_roles_in = $('#user-roles');
 	var $_nuser_from = $('#new-user-form');
+	
+	var domains_n_roles = JSON.parse('{}');
+
+	function submitNewUserForm(event) {
+	    $_nuser_form.submit();
+	}
+
+	function appendValue(value, key, dict) {
+		if (!dict[ key ])
+			dict[ key ] = JSON.parse('[]');
+		dict[ key ].push( value );
+		return true;
+	}
+	
+	function removeValue(value, key, dict) {
+		if (!dict[ key ])
+			return true;
+
+		$.each(dict[ key ], function(index, val) {
+			if (val == value)
+				dict[ key ].splice(index, 1);
+		});
+
+		if (dict[ key ].length <= 0)
+			delete dict[ key ];
+		return true;
+	}
+
+	function hasDuplicate(selector, $_to, owner) {
+	    return $_to.find( selector ).length > 0;
+	}
+	
+	function onInputDrop(event) {
+	    var sourceID = event.dataTransfer.getData("elementID");
+	    var selector = '[id="' + sourceID  + '"]';
+	    var $_element = $_roles_src_wrapper.find( selector );
+	    var current_owner = $_domains_select.val();
+
+	    if (($_element.attr('owner') == current_owner) && 
+	    		hasDuplicate(selector, $_roles_input_wrapper)) {
+	    	$_roles_input_wrapper.find( selector ).remove();
+
+	    } else {
+	    	appendValue(sourceID, current_owner, domains_n_roles);
+	    }
+
+	    $_element.appendTo( $_roles_input_wrapper );
+	    
+	    console.log('id: ' + $_element.attr('id'));
+	    console.log(domains_n_roles);
+	}
+	
+	function appendToSource($_element, $_source, current_owner, dict) {
+	    if ($_element.attr('owner') == current_owner) {
+	    	$_element.appendTo( $_source );
+	    	removeValue($_element.attr('id').trim(), current_owner, dict);
+	    }
+	}
+	   
+	function onSourceDrop(event) {
+	    var sourceID = event.dataTransfer.getData("elementID");
+	    var selector = '[id="' + sourceID  + '"]';
+	    var $_element = $_roles_input_wrapper.find( selector );
+	    var current_owner = $_domains_select.val();
+
+	    if (($_element.attr('owner') == current_owner) && 
+	    		hasDuplicate(selector, $_roles_src_wrapper)) {
+	    	$_roles_input_wrapper.find( selector ).remove();
+	    	removeValue($_element.attr('id'), $_element.attr('owner'), domains_n_roles);
+
+	    } else {
+	    	appendToSource($_element, $_roles_src_wrapper, current_owner, domains_n_roles);
+	    }
+	    
+	    console.log('id: ' + $_element.attr('id'));
+        console.log(domains_n_roles);
+	}
 
 	$_domains_select.change(function(event) {
 	    requestRolesFor( $(this).val() );

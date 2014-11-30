@@ -77,9 +77,7 @@ public class RolesController extends AbstractController {
 			
 			for(String s : privileges) {
 				Privilege p = privilegeService.selectByName(s);
-				LOGGER.debug(p.toString() + " was found");
-				role.addPrivilege( p );
-				LOGGER.debug(p.toString() + " was addoed to " + role.toString());
+				assign(role, p);
 			}
 			roleService.save(role);
 			LOGGER.info(role.toString() + " was created by " + subject.getUsername());
@@ -120,9 +118,7 @@ public class RolesController extends AbstractController {
 			role.setPrivileges(new HashSet<Privilege>());
 			for(String s : privileges) {
 				Privilege p = privilegeService.selectByName(s);
-				LOGGER.debug(p.toString() + " was found");
-				role.addPrivilege( p );
-				LOGGER.debug(p.toString() + " was addoed to " + role.toString());
+				assign(role, p);
 			}
 			roleService.save(role);
 			String message = role.toString() + " was updated";
@@ -138,29 +134,43 @@ public class RolesController extends AbstractController {
 		model.addAttribute("formType", "update");
 		return AbstractController.FRAME;
 	}
+
+	/**
+	 * Assigns the given <code>Privilege</code> to the given <code>Role</code> instance and logs the operation.
+	 * 
+	 * @param role
+	 * @param privilege
+	 * */
+	private final void assign(Role role, Privilege privilege) {
+		if (privilege != null) {
+			LOGGER.debug(privilege.toString() + " was found");
+			role.addPrivilege( privilege );
+			LOGGER.debug(privilege.toString() + " was addoed to " + role.toString());
+		}
+	}
 	
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model) {
 		model.addAttribute("role", new RoleTransferObject());
-		model.addAttribute("domains", domainService.selectAll());
+		model.addAttribute("domains", DroppableName.namesOf(domainService.selectAllNames(), ""));
 		model.addAttribute("postRoleAction", RolesController.CREATE);
 		return "fragments/role_form_modal";
 	}
 	
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
-	public String requestUpdateForm(@RequestParam("role") long roleID, Model model) {
+	public String requestUpdateForm(@RequestParam(value = "role", defaultValue = "-1") long roleID, Model model) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
 		model.addAttribute("role", new RoleTransferObject(role, domain.getName()));
-		model.addAttribute("domains", domainService.selectAll());
+		model.addAttribute("domains", DroppableName.namesOf(domainService.selectAllNames(), ""));
 		model.addAttribute("postRoleAction", RolesController.UPDATE);
 		model.addAttribute("formType", "update");
 		return "fragments/role_form_modal";
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteRole(@RequestParam("role") long roleID, Model model, HttpSession session) {
+	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
 		
@@ -190,16 +200,31 @@ public class RolesController extends AbstractController {
 			flash(message, Severity.ERROR, model);
 		}
 	}
-	
+
+	/**
+	 * Resets the given <code>RoleTransferObject</code> into a state where it contains no privileges and 
+	 * puts it into the <code>Mode</code> instance (as an attribute) passed as argument.
+	 * 
+	 * @param newRole
+	 * @param model
+	 * */
 	public static final void reset(RoleTransferObject newRole, Model model) {
 		newRole.setPrivileges("");
 		model.addAttribute("role", newRole);
 	}
-	
+
+	/**
+	 * Lists the <code>Role</code> instances assigned to the given <code>Domain</code> as its name 
+	 * as Drag-n-Drop elements.
+	 * 
+	 * @param domain
+	 * @param model
+	 * @return the name of the JSP that generates Html output from the values passed
+	 * */
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
 	public String listRoles(@RequestParam("domain") String domain, Model model) {
 		List<String> roleNames = roleService.selectNamesByDomain(domain);
-		model.addAttribute("elements", DroppableName.namesOf( roleNames ));
+		model.addAttribute("elements", DroppableName.namesOf(roleNames, domain));
 		model.addAttribute("elementBodyClass", "role-body");
 		return "fragments/dnd_elements";
 	}

@@ -184,19 +184,19 @@ public class UsersController extends AbstractController {
 	}
 	
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)
-	public String listDomains(@RequestParam("userID") long userID, Model model) {
+	public String listDomains(@RequestParam(value = "userID", defaultValue = "-1") long userID, Model model) {
 		model.addAttribute("assignments", daService.selectByUserID(userID));
 		return "fragments/user_role_list";
 	}
 	
 	@RequestMapping(value = DOMAINS_AND_ROLES, method = RequestMethod.GET)
-	public String requestDomainsAndRoles(@RequestParam("user") long userID, Model model) {
+	public String requestDomainsAndRoles(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
 		model.addAttribute("assignments", daService.selectByUserID(userID));
 		return "fragments/domains_n_roles_table";
 	}
 	
 	@RequestMapping(value = UPDATE_DETAILS_FORM, method = RequestMethod.GET)
-	public String requestDetailsForm(@RequestParam("user") long userID, Model model) {
+	public String requestDetailsForm(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
 		User user = userService.selectById(userID);
 		setUpdateDetailsAttributes(new UserTransferObject( user ), model);
 		return "fragments/user_details_form";
@@ -246,18 +246,40 @@ public class UsersController extends AbstractController {
 		setProfileAttributes(user, model, session);
 		return navigateToFrame("user_profile", model);
 	} 
-	
+
+	/**
+	 * Sets the general attribute values in the given <code>Model</code> instance required for the view corresponding to
+	 * the update mechanism(s) to render properly.
+	 * 
+	 * @param updated
+	 * @param errors
+	 * */
 	public static final void setUpdateDetailsAttributes(UserTransferObject updated, Model model) {
 		model.addAttribute("updated", updated);
 		model.addAttribute("updateDetailsAction", UsersController.UPDATE_DETAILS);
 		model.addAttribute("updatePasswordAction", UsersController.UPDATE_PASSWORD);
 	}
-	
+
+	/**
+	 * Sets the general attribute values in the given <code>Model</code> instance required for the view corresponding to
+	 * the update mechanism(s) to render properly with the given collection of errors.
+	 * 
+	 * @param updated
+	 * @param errors
+	 * @param model
+	 * */
 	public static final void setUpdateDetailsAttributes(UserTransferObject updated, Map<String, String> errors, Model model) {
 		setUpdateDetailsAttributes(updated, model);
 		model.addAttribute("validationErrors", errors);
 	}
-	
+
+	/**
+	 * Resets the given <code>UserTransferObject</code> into a state where it contains no domain-role
+	 * assignments and puts it into the <code>Mode</code> instance (as an attribute) passed as argument.
+	 * 
+	 * @param newUser
+	 * @param model
+	 * */
 	public static final void reset(UserTransferObject newUser, Model model) {
 		newUser.setUserRoles("");
 		model.addAttribute("user", newUser);

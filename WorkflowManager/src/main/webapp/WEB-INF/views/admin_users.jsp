@@ -49,13 +49,19 @@
    var create_form_url = "${ appRoot }${ selectCreateFormUrl }";
    var current_form = 'None';
 
-   function submitNewUserForm(event) {
-	   $_nuser_form.submit();
+
+
+   function wait() {
+	   $_nuser_modal.css('cursor', 'wait');
    }
    
-   
+   function nowait() {
+       $_nuser_modal.css('cursor', 'auto');
+   }
+
    function requestUserRolesFor( $_list_wrapper ) {
 	   var url_ = da_root + "?userID=" + $_list_wrapper.attr('name');
+	   wait();
 	   $.ajax({
 		   url: url_,
 		   dataType: "html",
@@ -65,21 +71,24 @@
 			   $_list_wrapper.attr('requestable', 'false');
 			   $_list_wrapper.parent().parent().find('.collapse').collapse('show');
 			   $('[data-toggle="tooltip"]').tooltip();
+			   nowait();
 		   }
 	   });
    }
 
    function requestDomainNames($_domains_select) {
-	    $.ajax({
-	    	url: dnames_root,
-	    	dataType: 'html',
-	    	method: 'GET',
-	    	success: function(data) {
-	    		$_domains_select.empty();
-	    		$(data).appendTo( $_domains_select );
-	    		$_domains_select.trigger('change');
-	    	}
-	    });
+	   wait();
+	   $.ajax({
+	   	   url: dnames_root,
+	       dataType: 'html',
+	       method: 'GET',
+	       success: function(data) {
+	    	   $_domains_select.empty();
+	    	   $(data).appendTo( $_domains_select );
+	    	   $_domains_select.trigger('change');
+	    	   nowait();
+	       }
+	   });
    }
    
    $('.user-collapsed-href').click(function(event) {
@@ -95,38 +104,9 @@
        event.preventDefault();
    }
    
-   function onInputDrop(event) {
-       var sourceID = event.dataTransfer.getData("elementID");
-       $(document.getElementById( sourceID )).appendTo( $_roles_input_wrapper );
-       
-       var value = $_roles_in.val();
-       var not_contains = value.indexOf(sourceID) < 0;
-       if (value && not_contains)
-           value += "|" + sourceID;
-       else if (not_contains)
-           value = sourceID;
-       
-       $_roles_in.val( value );
-       console.log( $_roles_in.val() );
-   }
-   
-   function onSourceDrop(event) {
-       var sourceID = event.dataTransfer.getData("elementID");
-       $(document.getElementById( sourceID )).appendTo( $_roles_src_wrapper );
-       
-       var value = $_roles_in.val();
-       value = value.replace(sourceID, '');
-       value = value.replace('||', '|');
-       
-       if (value.trim() == '|')
-           value = '';
-
-       $_roles_in.val( value );
-       console.log( $_roles_in.val() );
-   }
-   
    function requestRolesFor(domain) {
 	   var url_ = roles_url + "?domain=" + domain;
+	   wait();
 	   $.ajax({
 		   url: url_,
 		   dataType: 'html',
@@ -134,11 +114,13 @@
 		   success: function(data) {
 			   $_roles_src_wrapper.empty();
 			   $(data).appendTo( $_roles_src_wrapper );
+			   nowait();
 		   }
 	   });
    }
    
    function requestCreateForm($_modal) {
+	   wait();
        $.ajax({
            url: create_form_url,
            dataType: 'html',
@@ -151,6 +133,7 @@
                if ($_domains_select.find('option').length < 1) {
                    requestDomainNames( $_domains_select );
                }
+               nowait();
            }
        });
    }
