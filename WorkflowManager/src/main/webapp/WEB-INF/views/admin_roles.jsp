@@ -4,7 +4,7 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core'        prefix='c' %>
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
-<div id='roles-list-panel' class='panel panel-default' >
+<div id='roles-list-panel' class='panel panel-default admin-panel role-panel' >
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
     <jsp:include page='fragments/roles_list.jsp' />
 </div>
@@ -105,7 +105,6 @@
     		value = sourceID;
     	
     	$_privs_in.val( value );
-    	console.log( $_privs_in.val() );  // TODO: remove
     }
     
     function onSourceDrop(event) {
@@ -120,7 +119,6 @@
             value = '';
 
         $_privs_in.val( value );
-        console.log( $_privs_in.val() ); // TODO: remove
     }
     
     function contains(list, value) {

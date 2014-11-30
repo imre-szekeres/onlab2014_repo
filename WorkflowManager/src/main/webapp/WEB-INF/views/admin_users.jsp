@@ -8,7 +8,7 @@
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
 
-<div id='roles-list-panel' class='panel panel-default' >
+<div id='roles-list-panel' class='panel panel-default admin-panel user-panel' >
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
     <jsp:include page='fragments/users_list.jsp' />
 </div>

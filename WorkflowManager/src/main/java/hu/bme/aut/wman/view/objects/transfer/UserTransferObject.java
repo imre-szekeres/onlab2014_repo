@@ -18,6 +18,7 @@ public class UserTransferObject extends User {
 	 * 
 	 */
 	private static final long serialVersionUID = -5868958621058535692L;
+	private String oldPassword;
 	private String confirmPassword;
 	private String domainName;
 	private String userRoles;
@@ -25,9 +26,38 @@ public class UserTransferObject extends User {
 
 	public UserTransferObject() {
 		super("", "", "", "");
-		this.confirmPassword = this.domainName = this.userRoles = "";
+		this.oldPassword = this.confirmPassword = this.domainName = this.userRoles = "";
+		super.id = -1L;
 	}
-	
+
+	public UserTransferObject(User user) {
+		super(user.getUsername(), "", user.getEmail(), user.getDescription());
+		super.id = user.getId();
+	    this.oldPassword = this.confirmPassword = this.domainName = this.userRoles = "";
+	}
+
+
+	/**
+	 * @param id
+	 * */
+	public void setId(long id) {
+		super.id = id;
+	}
+
+	/**
+	 * @return the oldPassword
+	 */
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	/**
+	 * @param oldPassword the oldPassword to set
+	 */
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
 	/**
 	 * @return the confirmPassword
 	 */
@@ -74,6 +104,9 @@ public class UserTransferObject extends User {
 		return Arrays.asList(userRoles.split("\\|"));
 	}
 	
+	/**
+	 * @return a User represented by this transfer object
+	 * */
 	public User asUser() {
 		return new User(username, password, email, description);
 	}

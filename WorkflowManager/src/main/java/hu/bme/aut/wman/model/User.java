@@ -27,13 +27,16 @@ import javax.validation.constraints.Size;
 	@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectID"),
 	// TODO:
 	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r, DomainAssignment d "+
-			"WHERE r.name=:roleName "+
-			"AND d.user = u "+
-			"AND r MEMBER OF d.userRoles ")
+												   "WHERE r.name=:roleName "+
+												       "AND d.user = u "+
+													   "AND r MEMBER OF d.userRoles "),
+    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u " +
+											      "WHERE u.username = :username "),
 })
 public class User extends AbstractEntity {
 
 	public static final String NQ_FIND_USERS_FOR_PROJECT = "User.findUsersForProject";
+	public static final String NQ_FIND_BY_NAME = "User.findByName";
 
 	public static final String PR_NAME = "username";
 	public static final String PR_PASSWORD = "password";
@@ -42,21 +45,22 @@ public class User extends AbstractEntity {
 	public static final String PR_DOMAIN_ASSIGNMENTS = "domainAssignments";
 	public static final String PR_COMMENTS = "comments";
 	public static final String PR_PROJECT_ASSIGNMENTS = "projectAssignments";
+	
 
 	@NotNull
-	@Size(min = 5, max = 16, message = "must be between 5 and 16 chars.")
+	@Size(min = 5, max = 16, message = "must be between 5 and 16 characters.")
 	@Column(unique = true)
 	protected String username;
 
 	@NotNull
-	@Size(min = 7, max = 32, message = "must be between 7 and 32 chars.")
+	@Size(min = 7, max = 32, message = "must be between 7 and 32 characters.")
 	protected String password;
 
 	@NotNull
 	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid format.")
 	protected String email;
 
-	@Size(min = 32, max = 250, message = "must be between 32 and 250 chars.")
+	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 characters.")
 	protected String description;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
@@ -65,7 +69,7 @@ public class User extends AbstractEntity {
 	// TODO: elaborate ?
 	// @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	// private Set<ProjectAssignment> projectAssignments;
-
+	
 	public User() {
 		super();
 	}
@@ -81,7 +85,6 @@ public class User extends AbstractEntity {
 		// TODO: elaborate ?
 		//this.projectAssignmnets = new HashSet<ProjectAssignment>();
 	}
-
 
 	public String getUsername() {
 		return username;
