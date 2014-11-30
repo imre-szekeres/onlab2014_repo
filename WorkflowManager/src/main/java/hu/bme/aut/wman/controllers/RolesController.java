@@ -12,6 +12,7 @@ import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.view.DroppableName;
 import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.transfer.RoleTransferObject;
 
@@ -20,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -197,9 +197,9 @@ public class RolesController extends AbstractController {
 	}
 	
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
-	public String listRoles(Model model, HttpServletRequest request) {
-		String domain = request.getParameter("domain");
-		model.addAttribute("elements", roleService.selectByDomain(domain));
+	public String listRoles(@RequestParam("domain") String domain, Model model) {
+		List<String> roleNames = roleService.selectNamesByDomain(domain);
+		model.addAttribute("elements", DroppableName.namesOf( roleNames ));
 		model.addAttribute("elementBodyClass", "role-body");
 		return "fragments/dnd_elements";
 	}

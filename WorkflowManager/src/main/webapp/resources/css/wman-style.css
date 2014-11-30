@@ -942,19 +942,19 @@
 }
 
 .privilege-panel {
-	border-left-color: #f0ad4e;
+	border-left-color: rgb(221, 221, 221); /*#f0ad4e;*/
 }
 
 .user-panel {
-	border-left-color: #428bca;
+	border-left-color: rgb(221, 221, 221); /*#428bca;*/
 }
 
 .domain-panel {
-	border-left-color: #5cb85c;
+	border-left-color: rgb(221, 221, 221); /*#5cb85c;*/
 }
 
 .role-panel {
-	border-left-color: #663399;
+	border-left-color: rgb(221, 221, 221); /*#663399;*/
 }
 
 /* END   admin-all */

@@ -9,19 +9,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Represents a <code>Use</code> instance, handles the data transmission between client- and server-side in
+ * a manner that the revealing of the password(s) are minimized.
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
 public class UserTransferObject extends User {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -5868958621058535692L;
 	private String oldPassword;
 	private String confirmPassword;
 	private String domainName;
-	private String userRoles;
+	private String userRoles; /* TODO: change to assignmentsJson */
 
 
 	public UserTransferObject() {

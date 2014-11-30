@@ -146,6 +146,25 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 		return namedQuery.getResultList();
 	}
 
+	/**
+	 * Support calling <code>NamedQuery</code>s in a more flexible manner, for all kinds
+	 * of types of results.
+	 * 
+	 * @param queryName
+	 * @param parameters
+	 * @param cls the expected type of result(s)
+	 * 
+	 * @return the list of results
+	 * @see {@link AbstractDataService#callNamedQuery(String, List)}
+	 * */
+	protected <E> List<E> callNamedQuery(String queryName, List<Entry<String, Object>> parameters, Class<E> cls) {
+		TypedQuery<E> namedQuery = em.createNamedQuery(queryName, cls);
+		for (Entry<String, Object> entry : parameters) {
+			namedQuery.setParameter(entry.getKey(), entry.getValue());
+		}
+		return namedQuery.getResultList();
+	}
+
 	private CriteriaQuery<T> buildCriteriaByParameters(List<Entry<String, Object>> parameters) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> buildedCriteriaQuery = builder.createQuery(getEntityClass());

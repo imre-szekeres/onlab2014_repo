@@ -36,6 +36,7 @@ import javax.validation.constraints.Size;
 public class User extends AbstractEntity {
 
 	public static final String NQ_FIND_USERS_FOR_PROJECT = "User.findUsersForProject";
+	public static final String NQ_FIND_USERS_OF = "User.findUsersOf";
 	public static final String NQ_FIND_BY_NAME = "User.findByName";
 
 	public static final String PR_NAME = "username";

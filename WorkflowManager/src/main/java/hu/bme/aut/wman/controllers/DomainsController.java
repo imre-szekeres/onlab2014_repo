@@ -12,6 +12,7 @@ import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.view.DroppableName;
 import hu.bme.aut.wman.view.Messages.Severity;
 
 import java.util.List;
@@ -162,15 +163,8 @@ public class DomainsController extends AbstractController {
 	
 	@RequestMapping(value = NAMES, method = RequestMethod.GET)
 	public String listDomainNames(Model model, HttpServletRequest request) {
-		List<Domain> domains = domainService.selectAll();
-		model.addAttribute("options", domains);
+		List<String> domainNames = domainService.selectAllNames();
+		model.addAttribute("options", DroppableName.namesOf( domainNames ));
 		return "fragments/option_list";
-	}
-	
-	public static final String[] namesOf(List<Domain> domains) {
-		String[] names = new String[domains.size()];
-		for(int i = 0; i < names.length; ++i)
-			names[i] = domains.get( i ).getName();
-		return names;
 	}
 }
