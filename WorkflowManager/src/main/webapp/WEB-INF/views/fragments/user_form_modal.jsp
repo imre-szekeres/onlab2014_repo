@@ -239,7 +239,7 @@
 	var $_roles_in = $('#user-roles');
 	var $_nuser_from = $('#new-user-form');
 	
-	var domains_n_roles = JSON.parse('${ assignments }');
+	var domains_n_roles = JSON.parse('${ user.userRoles }');
 
 	console.log( domains_n_roles );
 	

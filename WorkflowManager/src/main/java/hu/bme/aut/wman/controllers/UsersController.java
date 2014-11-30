@@ -87,19 +87,21 @@ public class UsersController extends AbstractController {
 
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model) {
-		model.addAttribute("user", new UserTransferObject());
+		UserTransferObject user = new UserTransferObject();
+		user.setUserRoles("{}");
+		model.addAttribute("user", user);
 		model.addAttribute("postUserAction", UsersController.CREATE);
-		model.addAttribute("assignments", "{}");
 		return "fragments/user_form_modal";
 	}
 	
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
 	public String requestUpdateForm(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
-		model.addAttribute("user", new UserTransferObject(userService.selectById(userID)));
+		UserTransferObject user = new UserTransferObject(userService.selectById(userID));
+		Map<String, List<String>> assignments = daService.assignmentsOf(userID);
+		user.setUserRoles(tryStringifyAssignments(assignments, parser));
+
+		model.addAttribute("user", user);
 		model.addAttribute("postUserAction", UsersController.UPDATE);
-		
-		Map<String, List<String>> assignments = daService.assignmentsOf(userID);		
-		model.addAttribute("assignments", tryStringifyAssignments(assignments, parser));
 		model.addAttribute("formType", "update");
 		return "fragments/user_form_modal";
 	}
