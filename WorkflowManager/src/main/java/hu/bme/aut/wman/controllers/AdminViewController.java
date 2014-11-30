@@ -51,9 +51,10 @@ public class AdminViewController extends AbstractController {
 	private PrivilegeService privilegeService;
 
 	
+	@SuppressWarnings("deprecation")
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
 	public String admin(Model model) {
-		return navigateToFrame("admin", model);
+		return redirectTo(AdminViewController.USERS);
 	}
 
 	@RequestMapping(value = ROLES, method = RequestMethod.GET)

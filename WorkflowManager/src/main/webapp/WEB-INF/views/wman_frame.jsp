@@ -5,7 +5,7 @@
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>
 
 <!DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>
-<html>
+<html lang='en' >
 <head>
     <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
     <jsp:include page='fragments/html_head.jsp' >

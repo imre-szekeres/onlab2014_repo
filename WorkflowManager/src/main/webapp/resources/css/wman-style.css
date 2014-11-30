@@ -1,4 +1,14 @@
 
+/* GRADIENTS...
+ *
+	background: -webkit-linear-gradient(red, blue);
+    background: -o-linear-gradient(red, blue);
+    background: -moz-linear-gradient(red, blue);
+    background: linear-gradient(red, blue);
+ *
+ * */
+
+
 /* BEGIN xxx */
 /* END   xxx */
 
@@ -112,6 +122,23 @@
 #sign-in-error-message {
 	top: -32px;
 	font-size: 13px;
+}
+
+#sign-in-user-icon {
+	position: relative;
+	top: -42px;
+	color: #428bca;
+	font-size: 53px;
+	
+	padding: 7px;
+	display: inline-block;
+	border: 1px solid #428bca;
+	border-radius: 7px 7px 7px 7px;
+	
+	background: -webkit-linear-gradient(#F8F8F8, #E8E8E8);
+    background: -o-linear-gradient(#F8F8F8, #E8E8E8);
+    background: -moz-linear-gradient(#F8F8F8, #E8E8E8);
+    background: linear-gradient(#F8F8F8, #E8E8E8);
 }
 
 .app-name {
@@ -909,6 +936,30 @@
 	vertical-align:initial;
 }
 
+/* BEGIN admin-all */
+#roles-list-panel {
+	border-left-width: 6px;
+}
+
+.privilege-panel {
+	border-left-color: #f0ad4e;
+}
+
+.user-panel {
+	border-left-color: #428bca;
+}
+
+.domain-panel {
+	border-left-color: #5cb85c;
+}
+
+.role-panel {
+	border-left-color: #663399;
+}
+
+/* END   admin-all */
+
+
 /* BEGIN Admin Roles */
 #roles-list-panel {
 	width: 700px;
@@ -1096,6 +1147,10 @@
 
 .role-row {
 	color: #5700b3;
+}
+
+.domain-row {
+	color: #5cb85c;
 }
 
 .new-domain-input {
@@ -1299,33 +1354,210 @@
 	position: relative;
 	margin: 21px;
 	
-	width: 800px;
+	width: 900px;
 	height: 700px;
 	padding: 13px;
+}
+
+#username-panel {
+	border-top: none;
+	border-right: none;
+	border-left: none;
 	
-	border: 1px dotted grey; /* TODO: remove */
+	border-radius: 0px;
 }
 
 #username-span {
-	height: 42px;
-	line-height: 42px;
+	font-size: 32px;
+	margin: 7px;
 	display: inline-block;
-	
-	vertical-align: middle;
-	font-size: 21px;
 }
 
-.username-part {
-	float: left;
+#username-span #sign-in-user-icon {
+	margin: 0;
+	position: relative;
+	top: 0;
+}
+
+#username-text {
+	position: relative;
+	top: -13px;
+	margin-left: 7px;
+	font-style: bold;
+	font-size: 42px;
 }
 
 .button-part {
 	float: right;
+	display: inline-block;
+	margin: 7px;
+}
+
+#edit-profile-trigger {
+	position: relative;
+	top: 21px;
+	z-index: 11;
+}
+
+#cancel-edit-trigger {
+	position: relative;
+	top: 21px;
+	z-index: 11;
 }
 
 #edit-trigger-icon {
 	margin-right: 2px;
 }
+
+#email-wrapper {
+	position: relative;
+	left: 13px;
+	top: -7px;
+}
+
+.email-span {
+	color: #C8C8C8;
+}
+
+.email-text {
+	position: relative;
+	top: -1px;
+	font-size: 15px;
+	display: inline-block;
+}
+
+.email-text:hover {
+	text-decoration: underline;
+}
+
+.underlined:hover {
+	text-decoration: underline;
+}
+
+#email-wrapper .underlined:hover {
+	text-decoration: underline;
+}
+
+#email-wrapper .underlined:hover .email-text {
+	text-decoration: underline;
+}
+
+#description-panel {
+	position: relative;
+	top: -47px;
+	width: 460px;
+	margin: 0;
+	display: inline-block;
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+#description-panel .panel-heading {
+	width: 459px;
+	display: inline-block;
+	border-right: 1px solid rgb(221, 221, 221);
+}
+
+#description-wrapper {
+	width: 100%;
+	height: 160px;
+	overflow: auto;
+}
+
+#user-profile-positioner .descr-lowered {
+	margin-top: 63px;
+}
+
+/* BEGIN user comments */
+#user-comments-panel {
+	position: relative;
+	top: 16px;
+	left: 7px;
+	width: 400px;
+	display: inline-block;
+	margin:0;
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+#user-comments-panel .panel-heading {
+	width: 399px;
+	display: inline-block;
+	border-right: 1px solid rgb(221, 221, 221);
+}
+
+#user-comments .project-comment-inform {
+	font-size: 13px;
+}
+
+#user-comments {
+	height: 240px;
+	overflow-y: auto;
+}
+
+.user-comment-project-href-wrapper {
+	font-size: 12px;
+	margin-bottom: 7px;
+}
+/* END   user comments */
+
+#user-profile-positioner .bottom-panel {
+	margin-top: 88px;
+}
+
+#user-profile-positioner .closer-bottom-panel {
+	margin-top: 66px;
+}
+
+/* BEGIN domains-n-roles */
+#domains-n-roles-wrapper {
+	margin-top: 77px;
+}
+
+#domains-n-roles-trigger-wrapper {
+	width: 100%;
+	padding-bottom: 7px;
+	border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+#domains-n-roles-table-wrapper {
+	margin-top: 52px;
+}
+
+.dnr-td {
+	text-align: center;
+}
+
+.role-td {
+}
+
+.domain-td {
+}
+/* END   domains-n-roles */
+
+/* BEGIN edit user details */
+
+#user-details-panel {
+	border-left-color: rgb(221, 221, 221);
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+#user-password-panel {
+	border-left-color: rgb(221, 221, 221);
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+.description-label {
+	position: relative;
+	float: left;
+	left: 35px;
+}
+
+.submit-trigger-wrapper {
+	width: 100%;
+	border-top: 1px solid rgb(221, 221, 221);
+	padding-top: 7px;
+}
+/* END   edit user details */
+
 /* END   user profile */
 
 /* BEGIN comments on project */

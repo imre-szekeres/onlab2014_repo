@@ -90,11 +90,11 @@ public class LoginController extends AbstractController {
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
-		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"), true);
+		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"));
 		if (validationErrors.isEmpty()) {
 
 			userHandler.createUser(user, DomainService.DEFAULT_ROLE, DomainService.DEFAULT_DOMAIN);
-			request.getSession().setAttribute("subject", user);
+			request.getSession().setAttribute("subject", new SecurityToken( user.getId() ));
 
 			LOGGER.info("user: " + user.getUsername() + " registered as " + DomainService.DEFAULT_ROLE);
 			return redirectTo(APP_ROOT);

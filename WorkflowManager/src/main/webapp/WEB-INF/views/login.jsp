@@ -59,11 +59,24 @@
                     <form:form action='/WorkflowManager/login' modelAttribute='subject' method='POST' class='form-horizontal pos-rel' id='sign-in-form' >
 			            <div class='form-row'>
 			                <div class='error-message-wrapper'>
-			                    <c:if test='${ not empty loginError }' >
-			                        <div id='sign-in-error-message' class='alert alert-danger pos-rel'>
-			                            <spring:message code='login.error.message' />
-			                        </div>
-			                    </c:if>
+			                    <c:choose >
+			                        <c:when test='${ not empty loginError }' >
+			                        
+			                            <div id='sign-in-error-message' class='alert alert-danger pos-rel'>
+                                            <spring:message code='login.error.message' />
+                                        </div>
+			                        
+			                        </c:when>
+			                        <c:otherwise>
+			                        
+			                            <div id='sign-in-user-icon-wrapper' >
+			                                <span id='sign-in-user-icon' >
+			                                    <span class='glyphicon glyphicon-user' ></span>
+			                                </span>
+			                            </div>
+			                        
+			                        </c:otherwise>
+			                    </c:choose>
 			                </div>
 			            </div>
 			                                   

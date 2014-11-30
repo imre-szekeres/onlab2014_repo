@@ -33,7 +33,7 @@ public class StringUtils {
 	 * @return whether s can be handled as an empty <code>String</code>
 	 * */
 	public static final boolean isEmpty(String s) {
-		return (s != null) && !s.isEmpty();
+		return (s == null) || s.isEmpty();
 	}
 	
 	/**

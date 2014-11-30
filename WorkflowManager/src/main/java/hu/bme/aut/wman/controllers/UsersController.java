@@ -43,10 +43,15 @@ public class UsersController extends AbstractController {
 	public static final String CREATE_FORM = CREATE + "/form";
 	
 	public static final String UPDATE = ROOT_URL + "/update";
+	public static final String UPDATE_DETAILS = UPDATE + "/details";
+	public static final String UPDATE_PASSWORD = UPDATE + "/passwords";
+	
 	public static final String UPDATE_FORM = UPDATE + "/form";
+	public static final String UPDATE_DETAILS_FORM = UPDATE_FORM + "/details";
 	public static final String DELETE = ROOT_URL + "/delete";
 	public static final String DOMAINS = ROOT_URL + "/domains";
 	public static final String PROFILE = ROOT_URL + "/profile";
+	public static final String DOMAINS_AND_ROLES = PROFILE + "/dnr";
 
 
 	@EJB(mappedName = "java:module/DomainAssignmentService")
@@ -64,11 +69,17 @@ public class UsersController extends AbstractController {
 	@RequestMapping(value = PROFILE, method = RequestMethod.GET)
 	public String viewProfile(@RequestParam("user") long userID, Model model, HttpSession session) {
 		User user = userService.selectById(userID);
-		model.addAttribute("user", user);
-
-		boolean isEditable = userID == userIDOf(session);
-		model.addAttribute("isEditable", isEditable);
+		setProfileAttributes(user, model, session);
 		return navigateToFrame("user_profile", model);
+	}
+	
+	public static final void setProfileAttributes(User user, Model model, HttpSession session) {
+		model.addAttribute("user", user);
+		boolean isEditable = (user.getId() == userIDOf(session));
+		model.addAttribute("isEditable", isEditable);
+		model.addAttribute("viewProjectAction", ProjectViewController.PROJECT);
+		model.addAttribute("selectDNRTable", UsersController.DOMAINS_AND_ROLES);
+		model.addAttribute("selectDetailsForm", UsersController.UPDATE_DETAILS_FORM);
 	}
 
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
@@ -88,6 +99,8 @@ public class UsersController extends AbstractController {
 			User subject = userService.selectById(subjectID);
 			
 			tryRemove(user, subject, model);
+			if (user.getId() == subjectID)
+				return redirectTo(LoginController.LOGOUT);
 		}
 		return redirectTo(AdminViewController.USERS);
 	}
@@ -117,7 +130,7 @@ public class UsersController extends AbstractController {
 	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpSession session) {
 		User user = newUser.asUser();
 		
-		Map<String, String> errors = userService.validate(user, newUser.getConfirmPassword(), true);
+		Map<String, String> errors = userService.validate(user, newUser.getConfirmPassword());
 		if (errors.isEmpty()) {
 			long subjectID = userIDOf(session);
 			User subject = userService.selectById(subjectID);
@@ -174,6 +187,75 @@ public class UsersController extends AbstractController {
 	public String listDomains(@RequestParam("userID") long userID, Model model) {
 		model.addAttribute("assignments", daService.selectByUserID(userID));
 		return "fragments/user_role_list";
+	}
+	
+	@RequestMapping(value = DOMAINS_AND_ROLES, method = RequestMethod.GET)
+	public String requestDomainsAndRoles(@RequestParam("user") long userID, Model model) {
+		model.addAttribute("assignments", daService.selectByUserID(userID));
+		return "fragments/domains_n_roles_table";
+	}
+	
+	@RequestMapping(value = UPDATE_DETAILS_FORM, method = RequestMethod.GET)
+	public String requestDetailsForm(@RequestParam("user") long userID, Model model) {
+		User user = userService.selectById(userID);
+		setUpdateDetailsAttributes(new UserTransferObject( user ), model);
+		return "fragments/user_details_form";
+	}
+	
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = UPDATE_DETAILS, method = RequestMethod.POST)
+	public String updateDetails(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
+		User old = userService.selectById( updated.getId() );
+		updated.setPassword( old.getPassword() );
+
+		Map<String, String> errors = userService.validate(updated, updated.getPassword());		
+		if (errors.isEmpty()) {
+			old.setUsername( updated.getUsername() );
+			old.setEmail( updated.getEmail() );
+			old.setDescription( updated.getDescription() );
+			userService.save( old ); /* to preserve the collections in User */
+
+			String message = "User " + old.getUsername() + " was updated";
+			LOGGER.info(message);
+			flash(message, Severity.INFO, model);
+			return redirectTo(UsersController.PROFILE + "?user=" + updated.getId());
+		}
+		updated.setPassword( "" );
+		setUpdateDetailsAttributes(updated, errors, model);
+		setProfileAttributes(old, model, session);
+		return navigateToFrame("user_profile", model);
+	}
+
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST)
+	public String updatePassword(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
+		User user = userService.selectById( updated.getId() );
+
+		Map<String, String> errors = userService.validate(
+					user, updated.getOldPassword(), updated.getPassword(), updated.getConfirmPassword()
+		);
+		if (errors.isEmpty()) {
+			user.setPassword( updated.getPassword() );
+			userService.save( user );
+			String message = "Password of user " + user.getUsername() + " was modified";
+			LOGGER.info(message);
+			flash(message, Severity.INFO, model);
+			return redirectTo(UsersController.PROFILE + "?user=" + updated.getId());
+		}
+		setUpdateDetailsAttributes(updated, errors, model);
+		setProfileAttributes(user, model, session);
+		return navigateToFrame("user_profile", model);
+	} 
+	
+	public static final void setUpdateDetailsAttributes(UserTransferObject updated, Model model) {
+		model.addAttribute("updated", updated);
+		model.addAttribute("updateDetailsAction", UsersController.UPDATE_DETAILS);
+		model.addAttribute("updatePasswordAction", UsersController.UPDATE_PASSWORD);
+	}
+	
+	public static final void setUpdateDetailsAttributes(UserTransferObject updated, Map<String, String> errors, Model model) {
+		setUpdateDetailsAttributes(updated, model);
+		model.addAttribute("validationErrors", errors);
 	}
 	
 	public static final void reset(UserTransferObject newUser, Model model) {
