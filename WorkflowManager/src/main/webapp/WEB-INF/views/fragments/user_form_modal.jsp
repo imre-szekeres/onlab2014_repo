@@ -55,7 +55,8 @@
                     <form:input path='id' type='hidden' readonly='true' ></form:input>
                 </div>
 
-<c:if test='${ formType eq "create" }'>
+<c:choose>
+<c:when test='${ formType eq "create" }'>
                 <div class='form-group row new-user-row'>
                     <label class='control-label ${ labelColClass }' for='username' >
                         <spring:message code='user.form.username.label' ></spring:message>
@@ -159,7 +160,13 @@
                         </c:choose>
                     </div>
                 </div>
-</c:if>
+</c:when>
+<c:otherwise>
+
+<link rel='stylesheet' type='text/css' href='${ appRoot }/resources/css/user-dnr-style.css' ></link>
+
+</c:otherwise>
+</c:choose>
 
                 <div class='form-group row new-user-row'>
                     <label class='control-label ${ labelColClass }' for='domain-name-select' >
@@ -186,7 +193,7 @@
                         <div class='panel-heading'>
                             <span class='glyphicon glyphicon-screenshot' ></span>
                             <strong>
-                                <spring:message code='user.form.roles.label' ></spring:message> <span id='username-placeholder'></span>
+                                <spring:message code='user.form.roles.label' ></spring:message> <span id='username-placeholder'>${ user.username }</span>
                             </strong>    
                         </div>
                         
