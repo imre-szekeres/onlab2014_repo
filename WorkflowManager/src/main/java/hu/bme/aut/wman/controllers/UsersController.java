@@ -4,6 +4,7 @@
 package hu.bme.aut.wman.controllers;
 
 import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
+import static hu.bme.aut.wman.utils.StringUtils.asString;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.Role;
@@ -16,6 +17,7 @@ import hu.bme.aut.wman.utils.parsers.JsonParser;
 import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.transfer.UserTransferObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -138,7 +140,17 @@ public class UsersController extends AbstractController {
 		}
 		return redirectTo(AdminViewController.USERS);
 	}
-	
+
+	/**
+	 * Attempts to delete the given <code>User</code> permanently on behalf of the other <code>User</code> specified. 
+	 * It involves deleting all its <code>DomainAssignment</code>s, and with that all <code>Role</code>s assigned to it.
+	 * <p>
+	 * Also logs the action, the output and sets a flash message.
+	 * 
+	 * @param user
+	 * @param subject
+	 * @param model
+	 * */
 	private final void tryRemove(User user, User subject, Model model) {
 		try {
 			
@@ -173,13 +185,16 @@ public class UsersController extends AbstractController {
 			if (assignments != null) {
 
 				Domain domain = null;
+				List<String> notFound = new ArrayList<String>(0);
 				for(String domainName : assignments.keySet()) {
 					domain = domainService.selectByName( domainName );
-					assign(user, domain, assignments.get( domainName ), model);
+					notFound.addAll(assign(user, domain, assignments.get( domainName ), model));
 				}
 				assignToDefault(user, domain);
 
 				String message = user.getUsername() + " was created";
+				if (!notFound.isEmpty())
+					message = String.format("%s, but %s roles were not found thus not added..", message, asString(notFound));
 				LOGGER.info(message + " by " + subject.getUsername());
 				flash(message, Severity.INFO, model);
 			}
@@ -197,6 +212,37 @@ public class UsersController extends AbstractController {
 		model.addAttribute("pageName", "admin_users");
 		return AbstractController.FRAME;
 	}
+	
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
+	public String updateUser(@ModelAttribute("user") UserTransferObject updated, Model model, HttpSession session) {
+		User user = userService.selectById( updated.getId() );
+		long subjectID = userIDOf(session);
+		User subject = userService.selectById(subjectID);
+		Map<String, List<String>> assignments = tryParseAssignments(updated.getUserRoles(), parser);
+		
+		if (assignments != null) {
+
+			Domain domain = null;
+			List<String> notFound = new ArrayList<String>(0);
+			for(String domainName : assignments.keySet()) {
+				domain = domainService.selectByName( domainName );
+				notFound.addAll(assign(user, domain, assignments.get( domainName ), model));
+			}
+
+			String message = user.getUsername() + " was updated";
+			if (!notFound.isEmpty())
+				message = String.format("%s, but %s roles were not found thus not added..", message, asString(notFound));
+			LOGGER.info(message + " by " + subject.getUsername());
+			flash(message, Severity.INFO, model);
+		}
+		else {
+			LOGGER.error("Unable to process the given JSON String: " + updated.getUserRoles());
+			flash("Some errors occurred during the creation of user " + updated.getUsername(), Severity.ERROR, model);
+		}
+		return redirectTo(AdminViewController.USERS);
+	}
+
 
 	/**
 	 * Parses the given JSON <code>String</code> into a <code>Map</code>.
@@ -215,6 +261,16 @@ public class UsersController extends AbstractController {
 		return null;
 	}
 
+	/**
+	 * Assigns the given <code>User</code> in the default <code>Role</code> to the default <code>Domain</code> in
+	 * case it is not yet assigned to it.
+	 * 
+	 * @param user
+	 * @param domain
+	 * 
+	 * @see {@link DomainService#DEFAULT_DOMAIN}
+	 * @see {@link DomainService#DEFAULT_ROLE}
+	 * */
 	private final void assignToDefault(User user, Domain domain) {
 		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), DomainService.DEFAULT_DOMAIN);
 		
@@ -228,13 +284,30 @@ public class UsersController extends AbstractController {
 		}
 	}
 
-	private final void assign(User user, Domain domain, List<String> roles, Model model) {
+	/**
+	 * Assigns the given <code>User</code> to the <code>Domain</code> instance passed with the 
+	 * <code>Role</code>s specified in case they exist.
+	 * 
+	 * @param user
+	 * @param domain
+	 * @param roles
+	 * @param model
+	 * 
+	 * @return the {@link List} of {@link Role} names that could not be found
+	 * */
+	private final List<String> assign(User user, Domain domain, List<String> roles, Model model) {
 		userService.save(user);
-		DomainAssignment da = new DomainAssignment();
+		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), domain.getName());
+		da = (da == null) ? new DomainAssignment() : da;
 		
+		List<String> notFound = new ArrayList<String>(0);
+		da.setUserRoles(new ArrayList<Role>(0));
 		for(String r : roles) {
 			Role role = domain.roleOf( r );
-			da.addUserRole(role);
+			if (role != null)
+				da.addUserRole(role);
+			else
+				notFound.add( r );
 		}
 		da.setUser(user);
 		da.setDomain(domain);
@@ -242,6 +315,7 @@ public class UsersController extends AbstractController {
 		String message = user.getUsername() + " was assigned to domain " + domain.getName();
 		LOGGER.info(message);
 		flash(message, Severity.INFO, model);
+		return notFound;
 	}
 	
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)

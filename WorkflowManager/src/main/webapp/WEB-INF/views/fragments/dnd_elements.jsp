@@ -23,5 +23,4 @@
 	   var $_target = $(event.target).parent();
 	   event.dataTransfer.setData('elementID', $_target.attr('id'));
    }
-
 </script>

@@ -248,7 +248,7 @@
 	
 	var domains_n_roles = JSON.parse('${ user.userRoles }');
 
-	console.log( domains_n_roles );
+	console.log( domains_n_roles ); // TODO:
 	
 	function submitNewUserForm(event) {
 	    var json_str = JSON.stringify( domains_n_roles );
@@ -327,6 +327,20 @@
         console.log(domains_n_roles);
 	}
 
+	function appendRoles(roles, domain, $_container) {
+		for(var index in roles) {
+			var dnd = dndElementOf(roles[index], roles[index], domain, "", "role-body");
+            $( dnd ).appendTo( $_container );
+		}
+	}
+
+	function buildUserRoles(dnr_dict, $_container) {
+		for(var domain in dnr_dict) {
+			var roles = dnr_dict[domain];
+			appendRoles(roles, domain, $_container);
+		}
+	}
+
 	$_domains_select.change(function(event) {
 	    requestRolesFor( $(this).val() );
 	    $_dname_plh.html( $_domains_select.val() );
@@ -338,4 +352,5 @@
 	$_username_in.keyup(function() {
 	     $_uname_plh.html( $_username_in.val() );       
 	});
+	buildUserRoles(domains_n_roles, $_roles_input_wrapper);
 </script>

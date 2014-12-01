@@ -181,7 +181,18 @@ public class RolesController extends AbstractController {
 		}
 		return redirectTo(AdminViewController.ROLES);
 	}
-	
+
+	/**
+	 * Attempts to remove the given <code>Role</code> from the specified <code>Domain</code> on behalf
+	 * the <code>User</code> passed as argument.
+	 * <p>
+	 * Not only logs the operation, also sets a flash message.
+	 * 
+	 * @param role
+	 * @param domain
+	 * @param subject
+	 * @param model
+	 * */
 	private final void tryRemove(Role role, Domain domain, User subject, Model model) {
 		try {
 			if (domain == null)
