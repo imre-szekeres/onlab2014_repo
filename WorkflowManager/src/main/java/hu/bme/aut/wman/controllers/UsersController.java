@@ -70,7 +70,6 @@ public class UsersController extends AbstractController {
 
 
 
-
 	@RequestMapping(value = PROFILE, method = RequestMethod.GET)
 	public String viewProfile(@RequestParam("user") long userID, Model model, HttpSession session) {
 		User user = userService.selectById(userID);
