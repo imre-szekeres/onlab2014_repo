@@ -54,7 +54,7 @@ public class Role extends AbstractEntity {
 	public static final String PR_PRIVILEGS = "privileges";
 
 	@Column(unique = true)
-	@Size(min = 5, message = "must be longer than 5 characters")
+	@Size(min = 5, max = 16, message = "must be between 5 and 16 characters.")
 	private String name;
 	
 	@NotNull
