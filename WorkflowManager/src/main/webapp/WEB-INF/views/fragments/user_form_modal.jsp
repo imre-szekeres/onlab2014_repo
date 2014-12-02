@@ -37,8 +37,8 @@
     <c:set var='inputAreaColClass' value='col-sm-6' />
 </c:if>
 
-<div class='modal-dialog'>
-<div class='modal-content'>
+<div class='modal-dialog' >
+<div class='modal-content' >
     <form:form action='${ appRoot }${ postUserAction }' id='new-user-form' modelAttribute='user' method='POST' class='form-vertical' >
         <div class='modal-header'>
             <button type='button' class='close' data-dismiss='modal'>
@@ -290,8 +290,6 @@
 		var domain = $_domains_select.val();
 		delete domains_n_roles[domain];
 		$_roles_input_wrapper.find('[owner="' + domain + '"]').remove();
-
-		console.log(domains_n_roles);
 	}
 
 	function hasDuplicate(selector, $_to, owner) {
@@ -314,9 +312,6 @@
 
 	    $_element.appendTo( $_roles_input_wrapper );
 	    applyTooltip($_element, current_owner);
-	    
-	    console.log('id: ' + $_element.attr('id'));
-	    console.log(domains_n_roles);
 	}
 	
 	function appendToSource($_element, $_source, current_owner, dict) {
@@ -372,7 +367,6 @@
 	    requestRolesFor( $(this).val() );
 	    var domain = $_domains_select.val();
 	    $_dname_plh.html( domain );
-	    $_remove_d_icon.attr('title', $_remove_d_icon.attr('title').replace('domain', domain));
 	});
 	   
 	$_uname_plh.html( $_username_in.val() );
@@ -381,5 +375,6 @@
 	$_username_in.keyup(function() {
 	     $_uname_plh.html( $_username_in.val() );       
 	});
+	
 	buildUserRoles(domains_n_roles, $_roles_input_wrapper);
 </script>

@@ -66,7 +66,7 @@ public class RolesController extends AbstractController {
 		String domainName  = newRole.getDomainName();
 		
 		Role role = new Role(roleName);
-		Map<String, String> errors = roleService.validate(role, domainName, true);
+		Map<String, String> errors = roleService.validate(role, domainName);
 		
 		if (errors.isEmpty()) {
 			User subject = userService.selectById( userIDOf(session) );
@@ -106,7 +106,7 @@ public class RolesController extends AbstractController {
 		
 		Role role = roleService.selectById(newRole.getId());
 		role.setName( newRole.getRoleName() );
-		Map<String, String> errors = roleService.validate(role, domainName, false);
+		Map<String, String> errors = roleService.validate(role, domainName);
 		
 		if (errors.isEmpty()) {
 			User subject = userService.selectById( userIDOf(session) );
