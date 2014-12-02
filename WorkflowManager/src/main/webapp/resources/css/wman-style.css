@@ -1067,7 +1067,7 @@
 	
 	padding-left: 13px;
 	padding-right: 13px;
-	background-color: #6600CC;
+	background-color: #584376; /* #6600CC; /* #6e5494; */
 }
 
 .admin-domain-panel .panel-heading {
@@ -1088,7 +1088,7 @@
 }
 
 .admin-role-panel .panel-heading:hover {
-	background-color: #9933FF;
+	background-color: #6B24B2; /* #5C1F99; /* #7A29CC; /* #9933FF; */
 }
 
 .admin-domain-panel .panel-heading:hover {
@@ -1171,6 +1171,8 @@
 
 
 /* BEGIN admin users */
+
+/* TODO for user DNR update */
 .new-user-container {
 	width: 320px;
 	left: -190px;
@@ -1520,6 +1522,7 @@
 
 #domains-n-roles-table-wrapper {
 	margin-top: 52px;
+	box-shadow: 3px 3px 2px #F0F0F0;
 }
 
 .dnr-td {

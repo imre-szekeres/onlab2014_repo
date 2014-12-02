@@ -19,7 +19,7 @@
                            name='${ user.id }' >${ user.username }</a>
                     </h3>
                     <wman:iconRow parentId='user-${ user.id }-heading' 
-                                  editPath='#1' 
+                                  editPath='${ appRoot }${ selectUpdateFormUrl }?user=${ user.id }' 
                                   detailsPath='${ appRoot }${ detailsUserAction }?user=${ user.id }' 
                                   deletePath='${ appRoot }${ deleteUserAction }?user=${ user.id }' 
                                   iconRowClass='role-icon-row' />

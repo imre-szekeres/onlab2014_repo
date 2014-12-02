@@ -165,6 +165,29 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 		return namedQuery.getResultList();
 	}
 
+	/**
+	 * Supports execution of non-SELECT <code>NamedQuery</code>s using the parameter <code>List</code> passed
+	 * as argument.
+	 *
+	 * @param queryName
+	 *            the name of the query in the specific entity class
+	 * @param parameters
+	 *          of the query
+	 * @return the number of rows affected
+	 * 
+	 * @see {@link javax.persistence.Query#executeUpdate()}
+	 * @see {@link javax.persistence.TypedQuery#executeUpdate()}
+	 * @see {@link AbstractDataService#callNamedQuery(String, List)}
+	 */
+	protected int executeNamedQuery(String queryName, List<Entry<String, Object>> parameters) {
+		TypedQuery<T> namedQuery = em.createNamedQuery(queryName, getEntityClass());
+		for (Entry<String, Object> entry : parameters) {
+			namedQuery.setParameter(entry.getKey(), entry.getValue());
+		}
+		return namedQuery.executeUpdate();
+	}
+
+	
 	private CriteriaQuery<T> buildCriteriaByParameters(List<Entry<String, Object>> parameters) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> buildedCriteriaQuery = builder.createQuery(getEntityClass());

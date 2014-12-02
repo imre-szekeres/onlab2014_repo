@@ -14,9 +14,11 @@ import java.util.List;
  */
 public class DroppableName implements DragNDroppable {
 	private final String name;
+	private final String owner;
 
-	public DroppableName(String name) {
+	public DroppableName(String name, String owner) {
 		this.name = name;
+		this.owner = owner;
 	}
 
 	/**
@@ -36,17 +38,25 @@ public class DroppableName implements DragNDroppable {
 	}
 	
 	/**
+	 * @return the owner
+	 */
+	public String getOwner() {
+		return owner;
+	}
+
+	/**
 	 * Transforms a <code>List</code> of domain names to a <code>List</code> of 
 	 * <code>DroppableDomainName</code>s in order to allow standard representation.
 	 * 
-	 * @param domainNames
+	 * @param names
+	 * @param owner
 	 * @return the droppabelDomainNames
 	 * @see {@link DroppableDomainName}
 	 * */
-	public static final List<DroppableName> namesOf(List<String> names) {
+	public static final List<DroppableName> namesOf(List<String> names, String owner) {
 		List<DroppableName> droppableNames = new ArrayList<>();
 		for(String name : names)
-			droppableNames.add(new DroppableName( name ));
+			droppableNames.add(new DroppableName(name, owner));
 		return droppableNames;
 	}
 }

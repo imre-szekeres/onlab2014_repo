@@ -96,6 +96,8 @@ public class RoleTransferObject {
 	}
 	
 	public static final String privilegesStringOf(Collection<Privilege> privileges) {
+		if (privileges.isEmpty())
+			return "";
 		StringBuffer buffer = new StringBuffer();
 		for(Privilege p : privileges) {
 			buffer.append(p.getName() + "|");

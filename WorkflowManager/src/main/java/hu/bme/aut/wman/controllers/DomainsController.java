@@ -164,7 +164,7 @@ public class DomainsController extends AbstractController {
 	@RequestMapping(value = NAMES, method = RequestMethod.GET)
 	public String listDomainNames(Model model, HttpServletRequest request) {
 		List<String> domainNames = domainService.selectAllNames();
-		model.addAttribute("options", DroppableName.namesOf( domainNames ));
+		model.addAttribute("options", DroppableName.namesOf(domainNames, ""));
 		return "fragments/option_list";
 	}
 }

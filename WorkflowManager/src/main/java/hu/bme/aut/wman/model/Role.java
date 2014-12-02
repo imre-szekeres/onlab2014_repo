@@ -1,7 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import hu.bme.aut.wman.view.DragNDroppable;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,7 +40,7 @@ import javax.validation.constraints.Size;
 														          "AND r.name = :roleName " +
 															      "AND r MEMBER OF d.roles ")
 })
-public class Role extends AbstractEntity implements DragNDroppable {
+public class Role extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_ACTIONTYPE = "Role.findByActionType";
 	public static final String NQ_FIND_BY_DOMAIN = "Role.findByDomain";
@@ -228,15 +226,5 @@ public class Role extends AbstractEntity implements DragNDroppable {
 	@Override
 	public String toString() {
 		return "Role -- " + name;
-	}
-
-	@Override
-	public String getValue() {
-		return this.name;
-	}
-
-	@Override
-	public String getLabel() {
-		return this.name;
 	}
 }

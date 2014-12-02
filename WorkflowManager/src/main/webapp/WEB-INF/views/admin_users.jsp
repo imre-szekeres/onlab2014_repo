@@ -49,11 +49,6 @@
    var create_form_url = "${ appRoot }${ selectCreateFormUrl }";
    var current_form = 'None';
 
-   function submitNewUserForm(event) {
-	   $_nuser_form.submit();
-   }
-   
-   
    function requestUserRolesFor( $_list_wrapper ) {
 	   var url_ = da_root + "?userID=" + $_list_wrapper.attr('name');
 	   $.ajax({
@@ -70,18 +65,18 @@
    }
 
    function requestDomainNames($_domains_select) {
-	    $.ajax({
-	    	url: dnames_root,
-	    	dataType: 'html',
-	    	method: 'GET',
-	    	success: function(data) {
-	    		$_domains_select.empty();
-	    		$(data).appendTo( $_domains_select );
-	    		$_domains_select.trigger('change');
-	    	}
-	    });
+	   $.ajax({
+	   	   url: dnames_root,
+	       dataType: 'html',
+	       method: 'GET',
+	       success: function(data) {
+	    	   $_domains_select.empty();
+	    	   $(data).appendTo( $_domains_select );
+	    	   $_domains_select.trigger('change');
+	       }
+	   });
    }
-   
+
    $('.user-collapsed-href').click(function(event) {
 	   var $_target = $(event.target);
 	   var $_list_wrapper = $_target.parent().parent().parent().find('.role-list-wrapper');
@@ -93,36 +88,6 @@
    
    function allowDrop(event) {
        event.preventDefault();
-   }
-   
-   function onInputDrop(event) {
-       var sourceID = event.dataTransfer.getData("elementID");
-       $(document.getElementById( sourceID )).appendTo( $_roles_input_wrapper );
-       
-       var value = $_roles_in.val();
-       var not_contains = value.indexOf(sourceID) < 0;
-       if (value && not_contains)
-           value += "|" + sourceID;
-       else if (not_contains)
-           value = sourceID;
-       
-       $_roles_in.val( value );
-       console.log( $_roles_in.val() );
-   }
-   
-   function onSourceDrop(event) {
-       var sourceID = event.dataTransfer.getData("elementID");
-       $(document.getElementById( sourceID )).appendTo( $_roles_src_wrapper );
-       
-       var value = $_roles_in.val();
-       value = value.replace(sourceID, '');
-       value = value.replace('||', '|');
-       
-       if (value.trim() == '|')
-           value = '';
-
-       $_roles_in.val( value );
-       console.log( $_roles_in.val() );
    }
    
    function requestRolesFor(domain) {
@@ -164,6 +129,28 @@
            requestDomainNames( $_domains_select );
    });
 
+   $.each($('.edit-icon-href'), function(index, href) {
+       var $_href = $(href);
+       $_href.click(function(event) {
+           
+           event.preventDefault();
+           var url_ = $_href.attr('href');
+           $.ajax({
+               url: url_,
+               dataType: 'html',
+               method: 'GET',
+               success: function(data) {
+                   $_nuser_modal.empty();
+                   $(data).appendTo( $_nuser_modal );
+                   form_included = true;
+                   current_form = 'update';
+                   $_create_user_trigger.trigger('click');
+                   form_included = false;
+                   $_nuser_modal.find('[data-toggle="tooltip"]').tooltip();
+               }
+           });
+       });
+   });
 </script>
 
 <c:if test='${ not empty validationErrors }' >
