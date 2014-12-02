@@ -398,6 +398,9 @@ public class UsersController extends AbstractController {
 			flash(message, Severity.INFO, model);
 			return redirectTo(UsersController.PROFILE + "?user=" + updated.getId());
 		}
+		updated.setUsername( user.getUsername() );
+		updated.setEmail( user.getEmail() );
+		updated.setDescription( user.getDescription() );
 		setUpdateDetailsAttributes(updated, errors, model);
 		setProfileAttributes(user, model, session);
 		return navigateToFrame("user_profile", model);
