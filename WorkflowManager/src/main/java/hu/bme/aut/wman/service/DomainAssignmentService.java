@@ -24,19 +24,41 @@ import javax.ejb.Stateless;
 @Stateless
 public class DomainAssignmentService extends AbstractDataService<DomainAssignment> {
 
+	/**
+	 * Retrieves the <code>DomainAssignment</code>s corresponding to the given <code>Domain</code> specified
+	 * by its name.
+	 * 
+	 * @param domin
+	 * @return the {@link DomainAssignmnet}s owned by the {@link Domain} given
+	 * */
 	public List<DomainAssignment> selectByDomainName(String domain) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<>(1);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domain));
 		return callNamedQuery(DomainAssignment.NQ_FIND_BY_DOMAIN, parameters);
 	}
-	
-	public List<DomainAssignment> selectByUserID(long userID) {
+
+	/**
+	 * Retrieves the <code>DomainAssignment</code>s corresponding to the given <code>User</code> specified
+	 * by its id.
+	 * 
+	 * @param userID
+	 * @return the {@link DomainAssignmnet}s binding the given {@link User} to a specific {@link Domain}
+	 * */
+	public List<DomainAssignment> selectByUserID(Long userID) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<>(1);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
 		return callNamedQuery(DomainAssignment.NQ_FIND_BY_USER_ID, parameters);
 	}
-	
-	public DomainAssignment selectByDomainFor(long userID, String domain) {
+
+	/**
+	 * Retrieves the specific <code>DomainAssignment</code> that binds the given <code>User</code> to
+	 * the given <code>Domain</code>.
+	 * 
+	 * @param userID
+	 * @param domin
+	 * @return the {@link DomainAssignmnet} found
+	 * */
+	public DomainAssignment selectByDomainFor(Long userID, String domain) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<>(2);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domain));
@@ -44,7 +66,14 @@ public class DomainAssignmentService extends AbstractDataService<DomainAssignmen
 		
 		return (assignments.size() > 0) ? assignments.get(0) : null;
 	}
-	
+
+	/**
+	 * @param username
+	 * @param domain
+	 * @return the {@link DomainAssignment} binding {@link User} to the {@link Domain}
+	 * 
+	 * @see {@link DomainAssignmentService#selectByDomainFor(String, String)}
+	 * */
 	public DomainAssignment selectByDomainFor(String username, String domain) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<>(2);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
@@ -125,5 +154,4 @@ public class DomainAssignmentService extends AbstractDataService<DomainAssignmen
 	protected Class<DomainAssignment> getEntityClass() {
 		return DomainAssignment.class;
 	}
-
 }
