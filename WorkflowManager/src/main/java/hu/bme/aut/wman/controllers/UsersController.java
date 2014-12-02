@@ -207,7 +207,7 @@ public class UsersController extends AbstractController {
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		AdminViewController.setAdminUsersContent(model, userService);
 		model.addAttribute("postUserAction", UsersController.CREATE);
-		reset(newUser, model);
+		model.addAttribute("user", newUser);
 		model.addAttribute("pageName", "admin_users");
 		return AbstractController.FRAME;
 	}
@@ -430,17 +430,5 @@ public class UsersController extends AbstractController {
 	public static void setUpdateDetailsAttributes(UserTransferObject updated, Map<String, String> errors, Model model) {
 		setUpdateDetailsAttributes(updated, model);
 		model.addAttribute("validationErrors", errors);
-	}
-
-	/**
-	 * Resets the given <code>UserTransferObject</code> into a state where it contains no domain-role
-	 * assignments and puts it into the <code>Mode</code> instance (as an attribute) passed as argument.
-	 * 
-	 * @param newUser
-	 * @param model
-	 * */
-	public static void reset(UserTransferObject newUser, Model model) {
-		newUser.setUserRoles("");
-		model.addAttribute("user", newUser);
 	}
 }
