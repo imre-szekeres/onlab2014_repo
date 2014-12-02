@@ -14,14 +14,18 @@ function getUrlParameter(sParam)
 
 /* BEGIN drag-n-drop */
 function dndElementOf(label, value, owner, rowClass, bodyClass) {
-	   return dndElementOf(label, value, owner, rowClass, bodyClass, 'onElementDragged(event)');
-}
-
-function dndElementOf(label, value, owner, rowClass, bodyClass, ondragstart) {
-	   return "<div class='drag-n-drop-row "+ rowClass +"' id='" + value + "' name='" + value + "' owner='" + owner + "' >" + 
-                  "<div class='drag-n-drop-body " + bodyClass + "' draggable='true' ondragstart='" + ondragstart  + "' >" +
-                     label +
-                  "</div>" +
-	          "</div>";
+     return "<div class='drag-n-drop-row " + rowClass + "' id='" + value + "' name='" + value + "' owner='" + owner + "' >" + 
+                "<div class='drag-n-drop-body " + bodyClass + "' draggable='true' ondragstart='onElementDragged(event)' >" +
+                    label +
+                "</div>" +
+	        "</div>";
 }
 /* END  drag-n-drop */
+
+function wait($_conatainer) {
+	$_conatainer.css('cursor', 'wait');
+}
+
+function nowait($_conatainer) {
+	$_conatainer.css('cursor', 'auto');
+}

@@ -21,14 +21,29 @@
 	height: 488px;
 }
 
-#domain-name-select {
-	width: 190px;
-}
-
 #new-user-modal .modal-body {
 	height: 580px;
 }
 
 #new-user-modal .modal-content {
 	height: 700px;
+}
+
+#remove-domain-icon {
+	position: relative;
+	top: -30px;
+	left: 220px;
+	color: #d9534f;
+	cursor: pointer;
+	font-size: 16px;
+	z-index: 11;
+}
+
+.domain-name-select-row {
+	height: 35px;
+}
+
+.domain-name-select-wrapper {
+	position: relative;
+	left: -8px;
 }

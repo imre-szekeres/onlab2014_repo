@@ -5,8 +5,11 @@ package hu.bme.aut.wman.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
+ * Responsible for handling several <code>String</code> operations.
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -25,7 +28,7 @@ public class StringUtils {
 			buffer.append(part);
 		return buffer.toString();
 	}
-	
+
 	/**
 	 * Checks whether a given <code>String</code> is null or an empty string.
 	 * 
@@ -35,7 +38,7 @@ public class StringUtils {
 	public static final boolean isEmpty(String s) {
 		return (s == null) || s.isEmpty();
 	}
-	
+
 	/**
 	 * Removes the empty <code>String</code>s from the given list.
 	 * 
@@ -64,5 +67,20 @@ public class StringUtils {
 			buffer.append(String.format("%s, ", (element == null) ? "null" : element.toString()));
 		}
 		return buffer.substring(0, buffer.length() - 1) + ']';
+	}
+	
+	/**
+	 * Transforms the input <code>Set</code> to a <code>String</code> in a format of 
+	 * (e1, e2, ..., eN) calling the toString() method of each element considering null values.
+	 * 
+	 * @param elements
+	 * @return the {@link String} representation of the given {@link Set}
+	 * */
+	public static final <T> String asString(Set<T> elements) {
+		StringBuffer buffer = new StringBuffer("(");
+		for(T element : elements) {
+			buffer.append(String.format("%s, ", (element == null) ? "null" : element.toString()));
+		}
+		return buffer.substring(0, buffer.length() - 1) + ')';
 	}
 }

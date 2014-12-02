@@ -49,19 +49,8 @@
    var create_form_url = "${ appRoot }${ selectCreateFormUrl }";
    var current_form = 'None';
 
-
-
-   function wait() {
-	   $_nuser_modal.css('cursor', 'wait');
-   }
-   
-   function nowait() {
-       $_nuser_modal.css('cursor', 'auto');
-   }
-
    function requestUserRolesFor( $_list_wrapper ) {
 	   var url_ = da_root + "?userID=" + $_list_wrapper.attr('name');
-	   wait();
 	   $.ajax({
 		   url: url_,
 		   dataType: "html",
@@ -71,13 +60,11 @@
 			   $_list_wrapper.attr('requestable', 'false');
 			   $_list_wrapper.parent().parent().find('.collapse').collapse('show');
 			   $('[data-toggle="tooltip"]').tooltip();
-			   nowait();
 		   }
 	   });
    }
 
    function requestDomainNames($_domains_select) {
-	   wait();
 	   $.ajax({
 	   	   url: dnames_root,
 	       dataType: 'html',
@@ -86,11 +73,10 @@
 	    	   $_domains_select.empty();
 	    	   $(data).appendTo( $_domains_select );
 	    	   $_domains_select.trigger('change');
-	    	   nowait();
 	       }
 	   });
    }
-   
+
    $('.user-collapsed-href').click(function(event) {
 	   var $_target = $(event.target);
 	   var $_list_wrapper = $_target.parent().parent().parent().find('.role-list-wrapper');
@@ -106,7 +92,6 @@
    
    function requestRolesFor(domain) {
 	   var url_ = roles_url + "?domain=" + domain;
-	   wait();
 	   $.ajax({
 		   url: url_,
 		   dataType: 'html',
@@ -114,13 +99,11 @@
 		   success: function(data) {
 			   $_roles_src_wrapper.empty();
 			   $(data).appendTo( $_roles_src_wrapper );
-			   nowait();
 		   }
 	   });
    }
    
    function requestCreateForm($_modal) {
-	   wait();
        $.ajax({
            url: create_form_url,
            dataType: 'html',
@@ -133,7 +116,6 @@
                if ($_domains_select.find('option').length < 1) {
                    requestDomainNames( $_domains_select );
                }
-               nowait();
            }
        });
    }
@@ -148,7 +130,6 @@
    });
 
    $.each($('.edit-icon-href'), function(index, href) {
-	   wait();
        var $_href = $(href);
        $_href.click(function(event) {
            
@@ -165,7 +146,7 @@
                    current_form = 'update';
                    $_create_user_trigger.trigger('click');
                    form_included = false;
-                   nowait();
+                   $_nuser_modal.find('[data-toggle="tooltip"]').tooltip();
                }
            });
        });

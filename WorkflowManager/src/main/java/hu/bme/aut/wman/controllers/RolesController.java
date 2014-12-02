@@ -141,7 +141,7 @@ public class RolesController extends AbstractController {
 	 * @param role
 	 * @param privilege
 	 * */
-	private final void assign(Role role, Privilege privilege) {
+	private void assign(Role role, Privilege privilege) {
 		if (privilege != null) {
 			LOGGER.debug(privilege.toString() + " was found");
 			role.addPrivilege( privilege );
@@ -193,7 +193,7 @@ public class RolesController extends AbstractController {
 	 * @param subject
 	 * @param model
 	 * */
-	private final void tryRemove(Role role, Domain domain, User subject, Model model) {
+	private void tryRemove(Role role, Domain domain, User subject, Model model) {
 		try {
 			if (domain == null)
 				throw new Exception("Domain does not exist!");
@@ -219,7 +219,7 @@ public class RolesController extends AbstractController {
 	 * @param newRole
 	 * @param model
 	 * */
-	public static final void reset(RoleTransferObject newRole, Model model) {
+	public static void reset(RoleTransferObject newRole, Model model) {
 		newRole.setPrivileges("");
 		model.addAttribute("role", newRole);
 	}

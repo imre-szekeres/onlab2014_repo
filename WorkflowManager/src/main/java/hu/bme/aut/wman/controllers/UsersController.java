@@ -77,7 +77,7 @@ public class UsersController extends AbstractController {
 		return navigateToFrame("user_profile", model);
 	}
 	
-	public static final void setProfileAttributes(User user, Model model, HttpSession session) {
+	public static void setProfileAttributes(User user, Model model, HttpSession session) {
 		model.addAttribute("user", user);
 		boolean isEditable = (user.getId() == userIDOf(session));
 		model.addAttribute("isEditable", isEditable);
@@ -115,7 +115,7 @@ public class UsersController extends AbstractController {
 	 * @param model
 	 * @return the {@link Map} containing the values
 	 * */
-	private static final String tryStringifyAssignments(Map<String, List<String>> assignments, JsonParser<String, List<String>> parser) {
+	private static String tryStringifyAssignments(Map<String, List<String>> assignments, JsonParser<String, List<String>> parser) {
 		try {
 			return parser.stringify( assignments );
 		} catch(Exception e) {
@@ -150,7 +150,7 @@ public class UsersController extends AbstractController {
 	 * @param subject
 	 * @param model
 	 * */
-	private final void tryRemove(User user, User subject, Model model) {
+	private void tryRemove(User user, User subject, Model model) {
 		try {
 			
 			List<DomainAssignment> assignments = daService.selectByUserID(user.getId());
@@ -224,10 +224,13 @@ public class UsersController extends AbstractController {
 
 			Domain domain = null;
 			List<String> notFound = new ArrayList<String>(0);
+			Map<String, Long> removables = daService.selectDomainsAndIds(user.getId());
 			for(String domainName : assignments.keySet()) {
 				domain = domainService.selectByName( domainName );
 				notFound.addAll(assign(user, domain, assignments.get( domainName ), model));
+				removables.remove( domainName );	
 			}
+			deassign(user, subject, removables, model);
 
 			String message = user.getUsername() + " was updated";
 			if (!notFound.isEmpty())
@@ -251,7 +254,7 @@ public class UsersController extends AbstractController {
 	 * @param model
 	 * @return the {@link Map} containing the values
 	 * */
-	private static final Map<String, List<String>> tryParseAssignments(String json, JsonParser<String, List<String>> parser) {
+	private static Map<String, List<String>> tryParseAssignments(String json, JsonParser<String, List<String>> parser) {
 		try {
 			return parser.parse( json );
 		} catch(Exception e) {
@@ -270,7 +273,7 @@ public class UsersController extends AbstractController {
 	 * @see {@link DomainService#DEFAULT_DOMAIN}
 	 * @see {@link DomainService#DEFAULT_ROLE}
 	 * */
-	private final void assignToDefault(User user, Domain domain) {
+	private void assignToDefault(User user, Domain domain) {
 		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), DomainService.DEFAULT_DOMAIN);
 		
 		if (!DomainService.DEFAULT_DOMAIN.equals( domain.getName() ) && da == null) {
@@ -294,7 +297,7 @@ public class UsersController extends AbstractController {
 	 * 
 	 * @return the {@link List} of {@link Role} names that could not be found
 	 * */
-	private final List<String> assign(User user, Domain domain, List<String> roles, Model model) {
+	private List<String> assign(User user, Domain domain, List<String> roles, Model model) {
 		userService.save(user);
 		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), domain.getName());
 		da = (da == null) ? new DomainAssignment() : da;
@@ -316,13 +319,32 @@ public class UsersController extends AbstractController {
 		flash(message, Severity.INFO, model);
 		return notFound;
 	}
-	
+
+	/**
+	 * Attempts to remove all <code>DomainAssignment</code>s, remove the given <code>User</code> from the <code>Domain</code>s
+	 * specified by their names from the database. 
+	 * <p>
+	 * Also logs the operation and flashes a message.
+	 * 
+	 * @param user
+	 * @param subject
+	 * @param removables
+	 * @param model
+	 * */
+	private void deassign(User user, User subject, Map<String, Long> removables, Model model) {
+		for(String domain : removables.keySet())
+			daService.deleteAssignmentById(removables.get( domain ));
+		String message = String.format("User %s was removed from Domain %s", user.getUsername(), asString(removables.keySet()));
+		LOGGER.info(String.format("%s by %s.", message, subject.getUsername()));
+		flash(message, Severity.INFO, model);
+	}
+
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)
 	public String listDomains(@RequestParam(value = "userID", defaultValue = "-1") long userID, Model model) {
 		model.addAttribute("assignments", daService.selectByUserID(userID));
 		return "fragments/user_role_list";
 	}
-	
+
 	@RequestMapping(value = DOMAINS_AND_ROLES, method = RequestMethod.GET)
 	public String requestDomainsAndRoles(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
 		model.addAttribute("assignments", daService.selectByUserID(userID));
@@ -388,7 +410,7 @@ public class UsersController extends AbstractController {
 	 * @param updated
 	 * @param errors
 	 * */
-	public static final void setUpdateDetailsAttributes(UserTransferObject updated, Model model) {
+	public static void setUpdateDetailsAttributes(UserTransferObject updated, Model model) {
 		model.addAttribute("updated", updated);
 		model.addAttribute("updateDetailsAction", UsersController.UPDATE_DETAILS);
 		model.addAttribute("updatePasswordAction", UsersController.UPDATE_PASSWORD);
@@ -402,7 +424,7 @@ public class UsersController extends AbstractController {
 	 * @param errors
 	 * @param model
 	 * */
-	public static final void setUpdateDetailsAttributes(UserTransferObject updated, Map<String, String> errors, Model model) {
+	public static void setUpdateDetailsAttributes(UserTransferObject updated, Map<String, String> errors, Model model) {
 		setUpdateDetailsAttributes(updated, model);
 		model.addAttribute("validationErrors", errors);
 	}
@@ -414,7 +436,7 @@ public class UsersController extends AbstractController {
 	 * @param newUser
 	 * @param model
 	 * */
-	public static final void reset(UserTransferObject newUser, Model model) {
+	public static void reset(UserTransferObject newUser, Model model) {
 		newUser.setUserRoles("");
 		model.addAttribute("user", newUser);
 	}

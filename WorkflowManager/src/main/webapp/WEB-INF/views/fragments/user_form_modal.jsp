@@ -164,23 +164,31 @@
 <c:otherwise>
 
 <link rel='stylesheet' type='text/css' href='${ appRoot }/resources/css/user-dnr-style.css' ></link>
+<c:set var='domainSelectRowClass' value='domain-name-select-row' />
+<c:set var='domainSelectWrapperClass' value='domain-name-select-wrapper' />
 
 </c:otherwise>
 </c:choose>
 
-                <div class='form-group row new-user-row'>
+                <div class='form-group row new-user-row ${ domainSelectRowClass } '>
                     <label class='control-label ${ labelColClass }' for='domain-name-select' >
                         <spring:message code='role.form.domain.label' ></spring:message>
                     </label>
-                    <div class='${ inputColClass }'>
+                    <div class='${ inputColClass } ${ domainSelectWrapperClass }'>
                         <div class='input-group' >
                             <span class='input-group-addon' ><span class='glyphicon glyphicon-tower' ></span></span>
                             <form:select id='domain-name-select' path='domainName' class='form-control new-user-input' >
                             </form:select>
                         </div>
+
+                        <c:if test='${ formType ne "create" }' >
+                        <span id='remove-domain-icon' data-toggle='tooltip' data-placement='right' title='Deassign ${ user.username } from domain' >
+	                        <span class='glyphicon glyphicon-remove' onclick='removeDomain(event)' ></span>
+	                    </span>
+	                    </c:if>
                     </div>
                 </div>
-                
+
                 <div class='form-group row new-user-row hidden-row' hidden='true' >
                     <div class='${ inputColClass }'>
                         <form:input id='user-roles' path='userRoles' type='hidden' class='form-control new-user-input user-roles' ></form:input>
@@ -236,6 +244,7 @@
 <script>
 
 	var $_domains_select = $('#domain-name-select');
+	var $_remove_d_icon = $('#remove-domain-icon');
 	var $_dname_plh = $('#domain-name-placeholder');
 	var $_username_in = $('#username');
 	var $_uname_plh = $('#username-placeholder');
@@ -245,7 +254,7 @@
 	var $_roles_input_wrapper = $('#privileges-dnd-input-wrapper');
 	var $_roles_in = $('#user-roles');
 	var $_nuser_from = $('#new-user-form');
-	
+
 	var domains_n_roles = JSON.parse('${ user.userRoles }');
 
 	console.log( domains_n_roles ); // TODO:
@@ -277,6 +286,14 @@
 		return true;
 	}
 
+	function removeDomain(event) {
+		var domain = $_domains_select.val();
+		delete domains_n_roles[domain];
+		$_roles_input_wrapper.find('[owner="' + domain + '"]').remove();
+
+		console.log(domains_n_roles);
+	}
+
 	function hasDuplicate(selector, $_to, owner) {
 	    return $_to.find( selector ).length > 0;
 	}
@@ -296,6 +313,7 @@
 	    }
 
 	    $_element.appendTo( $_roles_input_wrapper );
+	    applyTooltip($_element, current_owner);
 	    
 	    console.log('id: ' + $_element.attr('id'));
 	    console.log(domains_n_roles);
@@ -304,6 +322,7 @@
 	function appendToSource($_element, $_source, current_owner, dict) {
 	    if ($_element.attr('owner') == current_owner) {
 	    	$_element.appendTo( $_source );
+	    	$_element.tooltip('destroy');
 	    	removeValue($_element.attr('id').trim(), current_owner, dict);
 	    }
 	}
@@ -327,10 +346,18 @@
         console.log(domains_n_roles);
 	}
 
+	function applyTooltip($_dnd, text) {
+		$_dnd.attr('data-toggle', 'tooltip');
+        $_dnd.attr('title', text);
+        $_dnd.attr('data-placement', 'left');
+        $_dnd.tooltip();
+	}
+	
 	function appendRoles(roles, domain, $_container) {
 		for(var index in roles) {
-			var dnd = dndElementOf(roles[index], roles[index], domain, "", "role-body");
-            $( dnd ).appendTo( $_container );
+			var $_dnd = $(dndElementOf(roles[index], roles[index], domain, "", "role-body"));
+			applyTooltip($_dnd, domain);
+			$_dnd.appendTo( $_container );
 		}
 	}
 
@@ -343,7 +370,9 @@
 
 	$_domains_select.change(function(event) {
 	    requestRolesFor( $(this).val() );
-	    $_dname_plh.html( $_domains_select.val() );
+	    var domain = $_domains_select.val();
+	    $_dname_plh.html( domain );
+	    $_remove_d_icon.attr('title', $_remove_d_icon.attr('title').replace('domain', domain));
 	});
 	   
 	$_uname_plh.html( $_username_in.val() );
