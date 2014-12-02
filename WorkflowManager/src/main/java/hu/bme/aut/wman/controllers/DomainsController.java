@@ -86,6 +86,7 @@ public class DomainsController extends AbstractController {
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
+		model.addAttribute("postDomainAction", DomainsController.CREATE);
 		AdminViewController.setAdminDomainsContent(model, domainService);
 		model.addAttribute("pageName", "admin_domains");
 		return "wman_frame";
@@ -93,7 +94,7 @@ public class DomainsController extends AbstractController {
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String updateDomain(@ModelAttribute("domain") Domain newDomain, @RequestParam("oldId") long oldId, Model model, HttpSession session) {
+	public String updateDomain(@ModelAttribute("domain") Domain newDomain, @RequestParam("oldId") Long oldId, Model model, HttpSession session) {
 		Domain domain = domainService.selectById(oldId);
 		domain.setName(newDomain.getName());
 		Map<String, String> errors = domainService.validate( domain );
@@ -109,6 +110,7 @@ public class DomainsController extends AbstractController {
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
+		setUpdateFormAttributes(newDomain, oldId, model);
 		AdminViewController.setAdminDomainsContent(model, domainService);
 		model.addAttribute("pageName", "admin_domains");
 		return "wman_frame";
@@ -122,15 +124,26 @@ public class DomainsController extends AbstractController {
 	}
 	
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
-	public String requestUpdateForm(@RequestParam("domain") long domainID, Model model) {
+	public String requestUpdateForm(@RequestParam("domain") Long domainID, Model model) {
 		Domain domain = domainService.selectById(domainID);
-		model.addAttribute("domain", domain);
-		model.addAttribute("oldId", domainID);
-		model.addAttribute("postDomainAction", DomainsController.UPDATE);
-		model.addAttribute("formType", "update");
+		setUpdateFormAttributes(domain, domainID, model);
 		return "fragments/domain_form_modal";
 	}
-	
+
+	/**
+	 * Helper method for setting the <code>Model</code> attributes for the response for
+	 * the request of <code>DomainsService.UPDATE_FORM</code>.
+	 * 
+	 * @param domain
+	 * @param model
+	 * */
+	public static final void setUpdateFormAttributes(Domain domain, Long oldId, Model model) {
+		model.addAttribute("domain", domain);
+		model.addAttribute("oldId", oldId);
+		model.addAttribute("postDomainAction", DomainsController.UPDATE);
+		model.addAttribute("formType", "update");
+	}
+
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
 	public String deleteRole(@RequestParam("domain") long domainID, HttpSession session, Model model) {
