@@ -174,5 +174,6 @@
     $('.has-error').tooltip({
     	placement: 'top'
     });
+    current_form = '${ formType }';
 </script>
 </c:if>

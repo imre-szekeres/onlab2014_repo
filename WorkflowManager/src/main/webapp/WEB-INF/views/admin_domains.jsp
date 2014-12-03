@@ -95,5 +95,7 @@
     $('.has-error').tooltip({
         placement: 'top'
     });
+    current_form = '${ formType }';
+    form_included = false;
 </script>
 </c:if>
