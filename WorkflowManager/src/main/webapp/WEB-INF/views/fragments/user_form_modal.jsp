@@ -19,7 +19,7 @@
 </c:when>
 <c:otherwise>
     
-    <c:set var='formTitle' value="Update User" />
+    <c:set var='formTitle' value="Update ${ user.username }" />
     <c:set var='submitText' value='Update' />
     <c:set var='inputPanelClass' value='update-dnr-input-panel' />
     <c:set var='sourcePanelClass' value='update-dnr-source-panel' />

@@ -22,7 +22,7 @@
 <c:otherwise>
     
     <c:set var='formID' value="update-role-form" />
-    <c:set var='formTitle' value="Update Role" />
+    <c:set var='formTitle' value="Update ${ role.roleName }" />
     <c:set var='submitCallback' value='submitUpdateRoleForm(event)' />
     <c:set var='submitText' value='Update' />
 
