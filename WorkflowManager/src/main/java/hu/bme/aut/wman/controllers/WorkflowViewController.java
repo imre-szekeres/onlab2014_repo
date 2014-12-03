@@ -1,11 +1,23 @@
 package hu.bme.aut.wman.controllers;
 
+import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Project;
+import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Workflow;
+import hu.bme.aut.wman.model.graph.GraphNode;
+import hu.bme.aut.wman.model.graph.StateGraph;
+import hu.bme.aut.wman.service.ActionTypeService;
+import hu.bme.aut.wman.service.GraphNodeService;
 import hu.bme.aut.wman.service.ProjectService;
+import hu.bme.aut.wman.service.StateGraphService;
 import hu.bme.aut.wman.service.StateService;
+import hu.bme.aut.wman.service.TransitionService;
 import hu.bme.aut.wman.service.WorkflowService;
+import hu.bme.aut.wman.view.objects.ErrorMessageVO;
+import hu.bme.aut.wman.view.objects.NewTransitionVO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +25,19 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.common.collect.Maps;
 
 /**
  * @version "%I%, %G%"
@@ -26,6 +46,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class WorkflowViewController extends AbstractController {
 
 	public static final String WORKFLOW = "/workflow";
+	public static final String STATE_GRAPH = "/workflow/stategraph";
+	public static final String SAVE_STATE = "/new/state";
+	public static final String NEW_TRANSITION = "/new/transition";
+	public static final String DELETE_STATE = "/delete/state";
+	public static final String DELETE_TRANSITION = "/delete/transition";
+	public static final String INITIAL_STATE = "/initial/state";
 
 	@EJB(mappedName = "java:module/WorkflowService")
 	private WorkflowService workflowService;
@@ -33,6 +59,14 @@ public class WorkflowViewController extends AbstractController {
 	private StateService stateService;
 	@EJB(mappedName = "java:module/ProjectService")
 	private ProjectService projectService;
+	@EJB(mappedName = "java:module/StateGraphService")
+	private StateGraphService graphService;
+	@EJB(mappedName = "java:module/GraphNodeService")
+	private GraphNodeService nodeService;
+	@EJB(mappedName = "java:module/TransitionService")
+	private TransitionService transitionService;
+	@EJB(mappedName = "java:module/ActionTypeService")
+	private ActionTypeService actionService;
 
 	@RequestMapping(value = WORKFLOW, method = RequestMethod.GET)
 	public String workflowView(@RequestParam("id") Long workflowId, Model model, HttpServletRequest request) {
@@ -40,11 +74,119 @@ public class WorkflowViewController extends AbstractController {
 		Workflow workflow = workflowService.selectById(workflowId);
 		List<Project> projects = projectService.selectAllByWorkflowName(workflow.getName());
 
+		List<ActionType> actions = actionService.selectAll();
+		Map<Long, String> actionNamesById = Maps.newHashMap();
+		for (ActionType action : actions) {
+			actionNamesById.put(action.getId(), action.getActionTypeName());
+		}
+
 		//		model.addAttribute("workflowVO", new WorkflowVO(workflow, projects));
 		model.addAttribute("workflow", workflow);
 		model.addAttribute("projects", projects);
+		model.addAttribute("actionMap", actionNamesById);
+		model.addAttribute("newState", new State());
+		model.addAttribute("newTransition", new NewTransitionVO());
 		model.addAttribute("message", "Workflow " + workflow.getName());
 		return navigateToFrame("workflow", model);
+	}
+
+	@RequestMapping(value = STATE_GRAPH, method = RequestMethod.GET)
+	@ResponseStatus(value = HttpStatus.OK)
+	public @ResponseBody StateGraph getGraph(@RequestParam("id") Long workflowId, Model model, HttpServletRequest request) {
+		StateGraph graph = graphService.selectByWorkflowId(workflowId).get(0);
+		return graph;
+	}
+
+	@RequestMapping(value = SAVE_STATE, method = RequestMethod.POST)
+	public ModelAndView postNewState(@ModelAttribute("newState") State newState, @RequestParam("workflowId") Long workflowId, @RequestParam("stateId") Long stateId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+		//		newState.setInitial(false);
+		if (stateId == -1) {
+			stateService.saveNew(newState, workflowId);
+		} else {
+			State state = stateService.selectById(stateId);
+			state.setDescription(newState.getDescription());
+			state.setName(newState.getName());
+			stateService.save(state);
+		}
+
+		ModelAndView view = redirectToFrame("workflow", redirectAttributes);
+		view.setViewName("redirect:/workflow?id=" + workflowId);
+		return view;
+	}
+
+	@RequestMapping(value = INITIAL_STATE, method = RequestMethod.GET)
+	public ModelAndView setInitialState(@RequestParam("nodeId") Long nodeId, @RequestParam("workflowId") Long workflowId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+		Workflow workflow = workflowService.selectById(workflowId);
+		State oldInitState = workflow.getInitialState();
+		oldInitState.setInitial(false);
+		GraphNode oldInitNode = nodeService.selectByStateId(oldInitState.getId());
+		oldInitNode.setInitial(false);
+
+		State newInitState = null;
+		Long stateId = graphService.getStateIdOfNode(nodeId);
+		for (State state : workflow.getStates()) {
+			if(state.getId().equals(stateId)) {
+				newInitState = state;
+				break;
+			}
+		}
+		newInitState.setInitial(true);
+		GraphNode newInitNode = nodeService.selectById(nodeId);
+		newInitNode.setInitial(true);
+
+		stateService.save(oldInitState);
+		stateService.save(newInitState);
+		nodeService.save(oldInitNode);
+		nodeService.save(newInitNode);
+
+		ModelAndView view = redirectToFrame("workflow", redirectAttributes);
+		view.setViewName("redirect:/workflow?id=" + workflowId);
+		return view;
+	}
+
+	@RequestMapping(value = NEW_TRANSITION, method = RequestMethod.POST)
+	public ModelAndView postNewTransition(@ModelAttribute("newTransition") NewTransitionVO newTransitionVO, @RequestParam("from") Long fromId, @RequestParam("to") Long toId,
+			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+
+		transitionService.save(newTransitionVO, fromId, toId);
+
+		ModelAndView view = redirectToFrame("workflow", redirectAttributes);
+		view.setViewName("redirect:/workflow?id=" + newTransitionVO.getWorkflowId());
+		return view;
+	}
+
+	@RequestMapping(value = DELETE_STATE, method = RequestMethod.GET)
+	public ModelAndView deleteState(@RequestParam("workflowId") Long workflowId, @RequestParam("nodeId") Long nodeId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
+
+		Long stateId = graphService.getStateIdOfNode(nodeId);
+
+		try {
+			workflowService.removeState(workflowId, stateId);
+			graphService.deleteNode(nodeId);
+		} catch (EntityNotDeletableException e) {
+			errors.add(new ErrorMessageVO("The state is not deletable.", e.getMessage()));
+		}
+
+		ModelAndView view = redirectToFrame("workflow", errors, redirectAttributes);
+		view.setViewName("redirect:/workflow?id=" + workflowId);
+		return view;
+	}
+
+	@RequestMapping(value = DELETE_TRANSITION, method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void deleteTransition(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
+
+		Long edgeId = Long.parseLong(request.getParameter("edgeId"));
+		Long transitionId = graphService.getTransitionIdOfEdge(edgeId);
+
+		try {
+			transitionService.deleteById(transitionId);
+			graphService.deleteEdge(edgeId);
+		} catch (EntityNotDeletableException e) {
+			errors.add(new ErrorMessageVO("The state is not deletable.", e.getMessage()));
+		}
 	}
 
 	@Override

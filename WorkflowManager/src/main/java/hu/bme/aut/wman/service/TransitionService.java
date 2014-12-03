@@ -1,7 +1,12 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Transition;
+import hu.bme.aut.wman.model.graph.GraphEdge;
+import hu.bme.aut.wman.model.graph.GraphNode;
+import hu.bme.aut.wman.model.graph.StateGraph;
+import hu.bme.aut.wman.view.objects.NewTransitionVO;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -11,18 +16,52 @@ import java.util.Map.Entry;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 
 /**
  * Helps make operations with <code>StateNavigationEntry</code>.
- * 
+ *
  * @version "%I%, %G%"
  */
 @Stateless
 @LocalBean
 public class TransitionService extends AbstractDataService<Transition> {
+
+	@Inject
+	GraphNodeService nodeService;
+	@Inject
+	StateGraphService graphService;
+	@Inject
+	StateService stateService;
+	@Inject
+	ActionTypeService actionService;
+
+	public void save(NewTransitionVO transitionVO, Long fromId, Long toId) {
+		GraphNode fromNode = nodeService.selectById(fromId);
+		GraphNode toNode = nodeService.selectById(toId);
+		State fromState = stateService.selectById(fromNode.getStateId());
+		State toState = stateService.selectById(toNode.getStateId());
+		ActionType action = actionService.selectById(transitionVO.getActionId());
+
+		// create a new transaction
+		//		Transition entity = new Transition(transitionVO.getAction(), toState, fromState);
+		Transition transition = attach(new Transition(action, toState, fromState));
+
+		// create graph edge
+		StateGraph graph = graphService.selectByWorkflowId(transitionVO.getWorkflowId()).get(0);
+
+		GraphEdge graphEdge = new GraphEdge();
+		graphEdge.setEnd(toNode);
+		graphEdge.setStart(fromNode);
+		graphEdge.setGraph(graph);
+		graphEdge.setLabel(action.getActionTypeName());
+		graphEdge.setTransitionId(transition.getId());
+
+		graph.getEdges().add(graphEdge);
+	}
 
 	public List<Transition> selectByParentId(Long parentId) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
@@ -46,22 +85,22 @@ public class TransitionService extends AbstractDataService<Transition> {
 		return Collections2.transform(selectByParentId(state.getId()),
 				new Function<Transition, State>() {
 
-					@Override
-					public State apply(Transition navigationEntry) {
-						return navigationEntry.getNextState();
-					}
-				});
+			@Override
+			public State apply(Transition navigationEntry) {
+				return navigationEntry.getNextState();
+			}
+		});
 	}
 
 	public Collection<State> selectParents(State state) {
 		return Collections2.transform(selectByNextStateId(state.getId()),
 				new Function<Transition, State>() {
 
-					@Override
-					public State apply(Transition navigationEntry) {
-						return navigationEntry.getParent();
-					}
-				});
+			@Override
+			public State apply(Transition navigationEntry) {
+				return navigationEntry.getParent();
+			}
+		});
 	}
 
 	@Override

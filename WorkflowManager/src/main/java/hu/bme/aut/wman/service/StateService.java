@@ -6,6 +6,9 @@ import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Transition;
+import hu.bme.aut.wman.model.Workflow;
+import hu.bme.aut.wman.model.graph.GraphNode;
+import hu.bme.aut.wman.model.graph.StateGraph;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import javax.inject.Inject;
 
 /**
  * Helps make operations with <code>State</code>.
- * 
+ *
  * @version "%I%, %G%"
  */
 @Stateless
@@ -33,17 +36,57 @@ public class StateService extends AbstractDataService<State> {
 	TransitionService transitionService;
 	@Inject
 	ProjectService projectService;
+	@Inject
+	StateGraphService graphService;
+	@Inject
+	GraphNodeService nodeService;
+	@Inject
+	WorkflowService workflowService;
 
 	// @PostConstruct
 	// public void init() {
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
+	@Override
+	public void save(State entity) {
+		if (entity.getId() != null) {
+			GraphNode node = nodeService.selectByStateId(entity.getId());
+			node.setLabel(entity.getName());
+			node.setContent(entity.getDescription());
+		}
+		super.save(entity);
+	}
+
+	public void saveNew(State entity, Long workflowId) {
+		Workflow workflow = workflowService.selectById(workflowId);
+
+		if (workflow != null) {
+			entity.setWorkflow(workflow);
+			workflow.getStates().add(entity);
+		}
+		workflowService.save(workflow);
+
+		StateGraph graph = graphService.selectByWorkflowId(workflowId).get(0);
+		State state = attach(entity);
+
+		GraphNode graphPoint = new GraphNode();
+		graphPoint.setStateId(state.getId());
+		graphPoint.setLabel(state.getName());
+		graphPoint.setContent(state.getDescription());
+		graphPoint.setInitial(state.isInitial());
+		graphPoint.setX(-1);
+		graphPoint.setY(-1);
+		graphPoint.setGraph(graph);
+
+		graph.getPoints().add(graphPoint);
+	};
+
 	/**
 	 * Deletes the state.
 	 * You can not delete a state, if it is an initial state or there is at least one project in that state at the moment.
 	 * (If you want delete a state from the client you should call WorkflowService.removeState)
-	 * 
+	 *
 	 * @param entity
 	 *            the state to delete
 	 * @throws EntityNotDeletableException
@@ -69,6 +112,9 @@ public class StateService extends AbstractDataService<State> {
 		List<Transition> transitions = new ArrayList<Transition>();
 		for (Transition parent : parents) {
 			for (Transition nextState : nextStates) {
+				if (parent.getParent()==nextState.getNextState()) {
+					continue;
+				}
 				transitions.add(new Transition(parent.getActionType(), nextState.getNextState(), parent.getParent()));
 			}
 		}
@@ -93,7 +139,7 @@ public class StateService extends AbstractDataService<State> {
 
 	/**
 	 * Add a new transition to the state.
-	 * 
+	 *
 	 * @param state
 	 *            the source state
 	 * @param actionType
@@ -117,7 +163,7 @@ public class StateService extends AbstractDataService<State> {
 
 	/**
 	 * Deletes the transition. This equals TransitionService.delete(Transition).
-	 * 
+	 *
 	 * @param transition
 	 * @throws EntityNotDeletableException
 	 *             if the transition is not deletable for some reason.

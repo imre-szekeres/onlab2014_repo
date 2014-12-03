@@ -1,9 +1,7 @@
 package hu.bme.aut.wman.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -12,15 +10,15 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for connections between <code>States</code>.
- * 
+ *
  * @version "%I%, %G%"
  */
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Transition.findByParentId", query = "SELECT t FROM Transition t WHERE t.parentState.id=:parentId"),
-		@NamedQuery(name = "Transition.findByNextId", query = "SELECT t FROM Transition t WHERE t.nextState.id=:nextId"),
-		@NamedQuery(name = "Transition.findByActionTypeId", query = "SELECT t FROM Transition t WHERE t.actionType.id=:typeId")
+	@NamedQuery(name = "Transition.findByParentId", query = "SELECT t FROM Transition t WHERE t.parentState.id=:parentId"),
+	@NamedQuery(name = "Transition.findByNextId", query = "SELECT t FROM Transition t WHERE t.nextState.id=:nextId"),
+	@NamedQuery(name = "Transition.findByActionTypeId", query = "SELECT t FROM Transition t WHERE t.actionType.id=:typeId")
 })
 public class Transition extends AbstractEntity {
 
@@ -32,17 +30,17 @@ public class Transition extends AbstractEntity {
 	public static final String PR_NEXT_STATE = "nextState";
 	public static final String PR_ACTION_TYPE = "actionType";
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne
 	@JoinColumn
 	private State parentState;
 
 	@Column
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@NotNull
 	private State nextState;
 
 	@Column
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@NotNull
 	private ActionType actionType;
 
@@ -53,7 +51,7 @@ public class Transition extends AbstractEntity {
 	public Transition(ActionType actionType, State nextState, State parent) {
 		this.actionType = actionType;
 		this.nextState = nextState;
-		this.parentState = parent;
+		parentState = parent;
 	}
 
 	public State getParent() {
@@ -61,7 +59,7 @@ public class Transition extends AbstractEntity {
 	}
 
 	public void setParent(State parent) {
-		this.parentState = parent;
+		parentState = parent;
 	}
 
 	public State getNextState() {

@@ -598,11 +598,11 @@
 }
 
 #project-history {
-	height: 300px;
+	/*height: 300px;*/
 }
 
 #project-attachments {
-	height: 300px;
+	/*height: 300px;*/
 }
 
 .project-name {
@@ -637,6 +637,7 @@
 }
 
 .attachment-list {
+	float:left;
 }
 
 .attachment-row {
@@ -644,10 +645,6 @@
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: #D4D9DE;
-}
-
-.attachment-li :hover{
-	background-color: #ddd;
 }
 
 .attachment-input-wrapper {
@@ -659,12 +656,13 @@
 	border-bottom-color: #D4D9DE;
 }
 
-.btn-clear-hover-primary:hover {
-	background-color: #3071a9;
+.project-comment-btn {
+	margin-top: 10px;
 }
 
-.btn-clear-hover-danger:hover {
-	background-color: #c9302c;
+#workflow-states-graph {
+	min-width: 400px;
+	min-height: 400px;
 }
 /* END Project */
 
@@ -1091,3 +1089,241 @@
 	
 }
 /* END comments on project */
+
+/* BEGIN Graph*/
+.graph-node {
+	padding: 0px 5px;
+	border-radius: 50%;
+	width: 70px;
+	height: 70px; 
+	background-color: #5700B3;
+	color: white;
+	
+	text-align:center;
+	line-height:70px;
+	
+	overflow: visible;
+	
+	position:relative;
+	top:5px;
+	left:5px;
+	z-index: 30;
+}
+
+.graph-node a{
+	color:white;
+}
+
+.buttons-placeholder-initial:hover {
+	background-color: #87F087 !important;
+}
+
+.graph-node-initial {
+	background-color: #5cb85c !important;
+}
+
+.buttons-placeholder-end:hover {
+	background-color: #FBA9A6 !important;
+}
+
+.graph-node-end {
+	background-color: #d9534f !important;
+}
+
+.graph-node-popover {
+	color: black;
+	line-height: normal;
+	
+	position: relative;
+	top: 20px;
+	left: -110px;
+	width: 400px;
+	
+	padding:0px;
+	border-color: #428bca;
+}
+
+.graph-node-popover.bottom .arrow:after {
+    border-bottom-color: #428bca;
+}
+
+.graph-node-popover-title {
+	background-color: #428bca;
+	color:white;
+}
+
+.graph-node-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.graph-node:hover {
+	/*background-color: #9933FF;*/
+	/*color: #5700B3;*/
+}
+
+.buttons-placeholder {
+	border-radius: 50%;
+	width: 80px;
+	height: 80px; 
+	background-color: white;
+	
+	z-index: 20;
+}
+
+.buttons-placeholder:hover {
+	
+	background-color: #9933FF;
+	/*border-style: solid;
+	border-width: 2px;*/
+}
+
+.graph-button {
+	text-align:center;
+	color:white;
+	
+	z-index: 40;
+}
+
+#add-button {
+	position: relative;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.add-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #428bca;
+	
+	margin: 0px;
+}
+
+.add-button:hover {
+	color: #235581;
+}
+
+#init-button {
+	position: relative;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.init-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #428bca;
+	
+	margin: 0px;
+}
+
+.init-button:hover {
+	color: #f0ad4e;
+}
+
+#state-edit-button {
+	position: relative;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.state-edit-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #428bca;
+	
+	margin: 0px;
+}
+
+.state-edit-button:hover {
+	color: #235581;
+}
+
+.graph-transition-label{
+	position: relative;
+	top: 3px;
+	left: 45px;
+	
+	display:block;
+	width:7em;
+	
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.graph-transition {
+	height: 5px;
+	position: relative;
+	background-color: black;
+	z-index: 10;
+}
+
+.graph-transition:hover {
+	background-color: #777;
+}
+
+#edge-edit-button {
+	position: relative;
+	
+	width: 30px;
+	height: 30px;
+}
+
+.edge-edit-button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	z-index: 1001;
+	line-height: 30;
+	background-color: #428bca;
+	
+	margin: 0px;
+}
+
+.edge-edit-button:hover {
+	color: #235581;
+}
+
+#transition-settings-modal-start {
+	float: left;
+	width: 50%;
+	padding:5px;
+}
+
+#transition-settings-modal-start-title {
+	margin-bottom: 10px;
+	font-size: 17px;
+}
+
+#transition-settings-modal-end {
+	padding:5px;
+}
+
+#transition-settings-modal-end-title {
+	margin-bottom: 10px;
+	font-size: 17px;
+}
+
+.transition-delete-button {
+	float:right;
+	margin-right: 30px;
+}
+
+.transition-settings-modal-action {
+	margin: 5px 0px;
+	line-height: 1.7em;
+}
+/* END Graph*/

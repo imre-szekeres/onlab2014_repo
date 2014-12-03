@@ -72,7 +72,7 @@
 							</button>
 							<ul class="dropdown-menu" role="menu">
 								<c:forEach var="action" items="${actions}">
-									<li> <a href="#"> ${action.name} </a> </li>
+									<li> <a href="do/action?projectId=${project.id}&actionId=${action.id}" > ${action.actionTypeName} </a> </li>
 								</c:forEach>
 							</ul>
 						</c:when>
@@ -119,16 +119,21 @@
 						</div>
 					</div>
 				</form:form>
-				<ul class='list-unstyled panel-body-section attachment-list'>
+				<div class="attachment-list container-fluid">
 					<c:forEach var="file" items="${project.files}">
-						<li class="attachment-li"> 
-							<div class="attachment-row"> ${file.fileName} 
+						<div class="attachment-row row"> 
+							<div class="col-xs-8">
+								${file.fileName} 
+							</div>
+							<div class="col-xs-2">
 								<a href='download/file?id=${file.id}' role='button' class='btn btn-primary header-button btn-clear-hover-primary'><span class="glyphicon glyphicon-download btn-clear-hover-primary" aria-hidden="true"></span></a>
+							</div>
+							<div class="col-xs-2">
 								<a href='delete/file?id=${file.id}&projectId=${project.id}' role='button' class='btn btn-danger header-button btn-clear-hover-danger'><span class="glyphicon glyphicon-trash btn-clear-hover-danger" aria-hidden="true"></span></a>
 							</div>
-						</li>
+						</div>
 					</c:forEach>
-				</ul>
+				<div>
 			</div>
 		</div>
 	</div>
@@ -153,13 +158,25 @@
 			<div id='project-add-comment' class="panel-body">
 				<span class="form-group"> Write a comment: </span>
 				<form:textarea id='comment-input' class='form-control' path='value' placeholder='Write your comment here.' rows='4' style='resize:none;width:400px;' value='TestDescription for test project' />
-				<input id="comment-btn" class="btn btn-primary" type="submit" value="Comment"/>
+				<input id="comment-btn" class="btn btn-primary project-comment-btn" type="submit" value="Comment"/>
 			</div>
 		</form:form>
 	</div>
 </div>
 	
 <script language="javascript">
+	$( function() {
+		var h1 = $('#project-attachments').height();
+		var h2 = $('#project-history').height();
+		if (h1 > h2) {
+			$('#project-history').height(h1);
+			$('#project-attachments').height(h1);
+		} else {
+			$('#project-history').height(h2);
+			$('#project-attachments').height(h2);
+		}
+	});
+
 	$(document).ready( function() {
 		$('.btn-file :file').on('fileselect', function(event, label) {
 			$( "#attachment-placeholder" ).val(label);

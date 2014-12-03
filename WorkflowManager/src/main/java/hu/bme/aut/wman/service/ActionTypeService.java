@@ -44,9 +44,9 @@ public class ActionTypeService extends AbstractDataService<ActionType> {
 	@Override
 	public void delete(ActionType entity) throws EntityNotDeletableException {
 		List<Transition> relatedTransitions = transitionService.selectByActionTypeId(entity.getId());
-		if (relatedTransitions.size() > 0)
-			throw new EntityNotDeletableException("There is " + relatedTransitions.size() + " project(s), which are in this state.");
-		else {
+		if (relatedTransitions.size() > 0) {
+			throw new EntityNotDeletableException("There is " + relatedTransitions.size() + " action(s) using this action.");
+		} else {
 			super.delete(entity);
 		}
 	};
@@ -60,6 +60,7 @@ public class ActionTypeService extends AbstractDataService<ActionType> {
 	 * @throws EntityNotDeletableException
 	 *             if you can not delete that ActionType for same reason
 	 */
+	@Override
 	public void deleteById(Long actionTypeId) throws EntityNotDeletableException {
 		delete(selectById(actionTypeId));
 	}

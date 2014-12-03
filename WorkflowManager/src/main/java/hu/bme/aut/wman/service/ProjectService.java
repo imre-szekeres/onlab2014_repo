@@ -44,6 +44,8 @@ public class ProjectService extends AbstractDataService<Project> {
 	CommentService commentService;
 	@Inject
 	WorkflowService workflowService;
+	@Inject
+	ActionTypeService actionService;
 
 	// private Validator validator;
 
@@ -110,9 +112,9 @@ public class ProjectService extends AbstractDataService<Project> {
 	 * @param project
 	 */
 	public void close(Project project) {
-		if (!project.isActive())
+		if (!project.isActive()) {
 			return;
-		else {
+		} else {
 			// FIXME
 			//			if (isDetached(project)) {
 			project = attach(project);
@@ -134,16 +136,22 @@ public class ProjectService extends AbstractDataService<Project> {
 	 * Reopens the project. It means it will be active.
 	 *
 	 * @param project
+	 * @throws Exception
 	 */
-	public void reopen(Project project) {
-		if (project.isActive())
+	public void reopen(Project project) throws Exception {
+		if (project.isActive()) {
 			return;
-		else {
+		} else {
 			// FIXME
 			//			if (isDetached(project)) {
 			project = attach(project);
 			//			}
-			project.setActive(true);
+
+			if (project.getWorkflow() == null) {
+				throw new Exception("You can not reopen this project, because its workflow has been deleted.");
+			} else {
+				project.setActive(true);
+			}
 		}
 	}
 
@@ -151,8 +159,9 @@ public class ProjectService extends AbstractDataService<Project> {
 	 * Finds and opens the project by id.
 	 *
 	 * @param projectId
+	 * @throws Exception
 	 */
-	public void reopenById(Long projectId) {
+	public void reopenById(Long projectId) throws Exception {
 		reopen(selectById(projectId));
 	}
 
@@ -163,9 +172,9 @@ public class ProjectService extends AbstractDataService<Project> {
 	 * @param newOwner
 	 */
 	public void setOwnerOnProject(Project project, User newOwner) {
-		if (project.getOwner() == newOwner)
+		if (project.getOwner() == newOwner) {
 			return;
-		else {
+		} else {
 			if (isDetached(project)) {
 				project = attach(project);
 			}
@@ -180,7 +189,10 @@ public class ProjectService extends AbstractDataService<Project> {
 	 * @param action
 	 *            to execute
 	 */
-	public void executeAction(Project project, final ActionType action) {
+	public void executeAction(Long projectId, Long actionId) {
+		Project project = selectById(projectId);
+		final ActionType action = actionService.selectById(actionId);
+
 		State currentState = project.getCurrentState();
 
 		Collection<Transition> transitions = Collections2.filter(transitionService.selectByParentId(currentState.getId()), new Predicate<Transition>() {
@@ -194,8 +206,9 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (!transitions.isEmpty()) {
 			project.setCurrentState(transitions.iterator().next().getNextState());
 			save(project);
-		} else
+		} else {
 			throw new IllegalArgumentException("There is no transition with this " + action + " from the " + currentState + " on " + project + ".");
+		}
 	}
 
 	/**

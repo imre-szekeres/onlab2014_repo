@@ -119,7 +119,11 @@ public class ProjectsViewController extends AbstractController {
 	@RequestMapping(value = REOPEN_PROJECT, method = RequestMethod.GET)
 	public ModelAndView reopen(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
-		projectService.reopenById(projectId);
+		try {
+			projectService.reopenById(projectId);
+		} catch (Exception e) {
+			// TODO error message
+		}
 
 		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=false");

@@ -37,8 +37,8 @@ public class State extends AbstractEntity {
 	public static final String PR_INITIAL = "initial";
 	public static final String PR_WORKFLOW = "workflow";
 	public static final String PR_DESCRIPTION = "description";
-	public static final String PR_NEXTSTATES = "nextStates";
-	public static final String PR_FILES = "files";
+	//	public static final String PR_NEXTSTATES = "nextStates";
+	//	public static final String PR_FILES = "files";
 	public static final String PR_HISTORYENTRIES = "historyEntries";
 
 	@NotNull
@@ -62,14 +62,6 @@ public class State extends AbstractEntity {
 	//	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	//	private List<BlobFile> files;
 
-	// @ManyToOne
-	// @JoinColumn
-	// private State parent;
-	//
-	// @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-	// private List<State> children;
-
-	@Deprecated
 	public State() {
 		super();
 	}
@@ -238,23 +230,30 @@ public class State extends AbstractEntity {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		State other = (State) obj;
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		// if (parent == null) {
 		// if (other.parent != null) {
 		// return false;
@@ -263,10 +262,12 @@ public class State extends AbstractEntity {
 		// return false;
 		// }
 		if (workflow == null) {
-			if (other.workflow != null)
+			if (other.workflow != null) {
 				return false;
-		} else if (!workflow.equals(other.workflow))
+			}
+		} else if (!workflow.equals(other.workflow)) {
 			return false;
+		}
 		return true;
 	}
 

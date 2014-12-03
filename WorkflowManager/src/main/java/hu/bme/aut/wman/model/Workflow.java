@@ -65,8 +65,9 @@ public class Workflow extends AbstractEntity {
 	public State getInitialState() {
 		// Search the root of the state hierarchy
 		for (State state : states) {
-			if (state.isInitial())
+			if (state.isInitial()) {
 				return state;
+			}
 		}
 		// Should never happen
 		throw new IllegalArgumentException("There is not intial state for workflow: " + id);
@@ -157,33 +158,44 @@ public class Workflow extends AbstractEntity {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Workflow other = (Workflow) obj;
 		if (description == null) {
-			if (other.description != null)
+			if (other.description != null) {
 				return false;
-		} else if (!description.equals(other.description))
+			}
+		} else if (!description.equals(other.description)) {
 			return false;
+		}
 		if (domain == null) {
-			if (other.domain != null)
+			if (other.domain != null) {
 				return false;
-		} else if (!domain.equals(other.domain))
+			}
+		} else if (!domain.equals(other.domain)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		if (states == null) {
-			if (other.states != null)
+			if (other.states != null) {
 				return false;
-		} else if (!states.equals(other.states))
+			}
+		} else if (!states.equals(other.states)) {
 			return false;
+		}
 		return true;
 	}
 

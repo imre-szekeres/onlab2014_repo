@@ -38,6 +38,7 @@ public class ProjectViewController extends AbstractController {
 
 	public static final String PROJECT = "/project";
 	public static final String COMMENT_ON_PROJECT = "/project/comment";
+	public static final String DO_ACTION = "/do/action";
 
 	@EJB(mappedName = "java:module/ProjectService")
 	private ProjectService projectService;
@@ -79,6 +80,16 @@ public class ProjectViewController extends AbstractController {
 		}
 
 		projectService.commentOnProject(projectId, user, commentMessage.getValue());
+
+		ModelAndView view = redirectToFrame("project", redirectAttributes);
+		view.setViewName("redirect:/project?id=" + projectId);
+		return view;
+	}
+
+	@RequestMapping(value = DO_ACTION, method = RequestMethod.GET)
+	public ModelAndView doAction(@RequestParam("projectId") Long projectId, @RequestParam("actionId") Long actionId, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
+		projectService.executeAction(projectId, actionId);
 
 		ModelAndView view = redirectToFrame("project", redirectAttributes);
 		view.setViewName("redirect:/project?id=" + projectId);

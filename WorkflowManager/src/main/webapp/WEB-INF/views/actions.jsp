@@ -133,7 +133,7 @@
 				
 				$.ajax({
 					type: "post",
-					url: "http://localhost:8080/WorkflowManager/action/add/role",
+					url: "action/add/role",
 					cache: false,
 					data:'actionid=' + actionId + "&roleid=" + roleId,
 					success: function(response){
@@ -182,7 +182,7 @@
 				
 				$.ajax({
 					type: "post",
-					url: "http://localhost:8080/WorkflowManager/action/remove/role",
+					url: "action/remove/role",
 					cache: false,
 					data:'actionid=' + actionId + "&roleid=" + roleId,
 					success: function(response){

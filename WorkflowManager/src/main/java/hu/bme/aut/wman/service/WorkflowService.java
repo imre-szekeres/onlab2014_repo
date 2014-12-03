@@ -4,6 +4,8 @@ import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Workflow;
+import hu.bme.aut.wman.model.graph.GraphNode;
+import hu.bme.aut.wman.model.graph.StateGraph;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -38,6 +40,31 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	private ProjectService projectService;
 	@Inject
 	private StateService stateService;
+	@Inject
+	private StateGraphService graphService;
+
+	@Override
+	public void save(Workflow entity) {
+		super.save(entity);
+
+		Workflow workflow = attach(entity);
+		StateGraph graph = new StateGraph(workflow.getId());
+
+		for (State state : workflow.getStates()) {
+			GraphNode graphPoint = new GraphNode();
+			graphPoint.setStateId(state.getId());
+			graphPoint.setLabel(state.getName());
+			graphPoint.setContent(state.getDescription());
+			graphPoint.setInitial(state.isInitial());
+			graphPoint.setX(-1);
+			graphPoint.setY(-1);
+			graphPoint.setGraph(graph);
+
+			graph.getPoints().add(graphPoint);
+		}
+
+		graphService.save(graph);
+	};
 
 	/**
 	 * Deletes the workflow.
@@ -59,9 +86,9 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 			}
 		});
 
-		if (relatedActiveProjects.size() > 0)
+		if (relatedActiveProjects.size() > 0) {
 			throw new EntityNotDeletableException("There are " + relatedActiveProjects.size() + " active project(s) using this workflow");
-		else {
+		} else {
 			super.delete(entity);
 		}
 	}
@@ -88,8 +115,11 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	 * @throws EntityNotDeletableException
 	 *             if the state was not deletable for some reason
 	 */
-	public void removeState(Workflow workflow, State state) throws EntityNotDeletableException {
+	public void removeState(Long workflowId, Long stateId) throws EntityNotDeletableException {
+		State state = stateService.selectById(stateId);
 		stateService.delete(state);
+
+		Workflow workflow = selectById(workflowId);
 		workflow.getStates().remove(state);
 		save(workflow);
 	}
@@ -103,14 +133,15 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	 * @return true if the workflow is valid
 	 */
 	public boolean verify(Workflow workflow) {
-		if (workflow.getStates().size() == 0)
+		if (workflow.getStates().size() == 0) {
 			return false;
-		else if (workflow.getStates().size() == 1 && workflow.getStates().get(0) != workflow.getInitialState())
+		} else if (workflow.getStates().size() == 1 && workflow.getStates().get(0) != workflow.getInitialState()) {
 			return false;
-		else if (selectByName(workflow.getName()) != null)
+		} else if (selectByName(workflow.getName()) != null) {
 			return false;
-		else
+		} else {
 			return true;
+		}
 	}
 
 	/**
