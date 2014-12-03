@@ -85,7 +85,7 @@
                                                          selectClass='form-control new-role-input' 
                                                          path='domainName' 
                                                          isReadonly='${ isReadonly }' 
-                                                         elements='${ domains }' 
+                                                         elements='${ domainNames }' 
                                                          readonlyValue='${ role.domainName }' />
                                         </span>
                                         
@@ -95,7 +95,7 @@
                                                      selectClass='form-control new-role-input' 
                                                      path='domainName' 
                                                      isReadonly='${ isReadonly }' 
-                                                     elements='${ domains }' 
+                                                     elements='${ domainNames }' 
                                                      readonlyValue='${ role.domainName }' />
                                     </c:otherwise>
                                 </c:choose>
