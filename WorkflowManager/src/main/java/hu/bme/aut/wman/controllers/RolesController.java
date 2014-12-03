@@ -93,8 +93,9 @@ public class RolesController extends AbstractController {
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		AdminViewController.setAdminRolesContent(model, domainService);
+		setFormAttributes(newRole, domainService, RolesController.CREATE, "create", model);
 		model.addAttribute("pageName", "admin_roles");
-		reset(newRole, model);
+		reset(newRole, model); /* TODO: also USE JSON content */
 		return AbstractController.FRAME;
 	}
 	
@@ -118,7 +119,7 @@ public class RolesController extends AbstractController {
 			role.setPrivileges(new HashSet<Privilege>());
 			for(String s : privileges) {
 				Privilege p = privilegeService.selectByName(s);
-				assign(role, p);
+				assign(role, p); /* TODO: add NOT FOUND messages, support */
 			}
 			roleService.save(role);
 			String message = role.toString() + " was updated";
@@ -128,10 +129,9 @@ public class RolesController extends AbstractController {
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
+		setFormAttributes(newRole, domainService, RolesController.UPDATE, "update", model);
 		AdminViewController.setAdminRolesContent(model, domainService);
-		model.addAttribute("pageName", "admin_roles");
-		model.addAttribute("postRoleAction", RolesController.UPDATE);
-		model.addAttribute("formType", "update");
+		model.addAttribute("pageName", "admin_roles"); /* TODO: also USE JSON content */
 		return AbstractController.FRAME;
 	}
 
@@ -151,9 +151,7 @@ public class RolesController extends AbstractController {
 	
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model) {
-		model.addAttribute("role", new RoleTransferObject());
-		model.addAttribute("domains", DroppableName.namesOf(domainService.selectAllNames(), ""));
-		model.addAttribute("postRoleAction", RolesController.CREATE);
+		setFormAttributes(new RoleTransferObject(), domainService, RolesController.CREATE, "create", model);
 		return "fragments/role_form_modal";
 	}
 	
@@ -161,12 +159,26 @@ public class RolesController extends AbstractController {
 	public String requestUpdateForm(@RequestParam(value = "role", defaultValue = "-1") long roleID, Model model) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
-		model.addAttribute("role", new RoleTransferObject(role, domain.getName()));
-		model.addAttribute("domains", DroppableName.namesOf(domainService.selectAllNames(), ""));
-		model.addAttribute("postRoleAction", RolesController.UPDATE);
-		model.addAttribute("formType", "update");
+		setFormAttributes(new RoleTransferObject(role, domain.getName()), domainService, RolesController.UPDATE, "update", model);
 		return "fragments/role_form_modal";
 	}
+
+	/**
+	 * Sets the <code>Model</code> attributes required by the forms used to represent <code>Role</code> data for
+	 * either creation or update operations.
+	 * 
+	 * @param role
+	 * @param domainService
+	 * @param postRoleAction
+	 * @param formType
+	 * @param model
+	 * */
+	public static final void setFormAttributes(RoleTransferObject role, DomainService domainService, String postRoleAction, String formType, Model model) {
+		model.addAttribute("role", role);
+		model.addAttribute("domainNames", DroppableName.namesOf(domainService.selectAllNames(), ""));
+		model.addAttribute("postRoleAction", postRoleAction);
+		model.addAttribute("formType", formType);
+	} 
 
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)

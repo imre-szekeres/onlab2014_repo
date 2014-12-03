@@ -46,16 +46,7 @@
     	$('#new-role-form').submit();
     }
 
-    function wait() {
-        $_newr_modal.css('cursor', 'wait');
-    }
-    
-    function nowait() {
-        $_newr_modal.css('cursor', 'auto');
-    }
-    
     function queryPrivileges($_target) {
-    	wait();
     	var url_ = privileges_url;
     	$.ajax({
     		url: url_,
@@ -65,7 +56,6 @@
     			$_target = data;
     		    $_priv_src_wrapper.html( data );
     		    rearrangePrivileges( $_newr_modal );
-    		    nowait();
     		}
     	});
     }
@@ -79,7 +69,6 @@
     }
     
     function requestCreateForm() {
-    	wait();
     	$.ajax({
     		url: create_form_url,
     		dataType: 'html',
@@ -89,13 +78,12 @@
     			$(data).appendTo( $_newr_modal );
     			requestPrivileges();
     			current_form = 'create';
-    			nowait();
     		}
     	});
     }
     
     function onCreateClick(event) {
-    	if (current_form !== 'create' && !form_included)
+    	if (current_form !== 'create')
     		requestCreateForm();
     	else
     		requestPrivileges();
@@ -158,7 +146,6 @@
     });
     
     $.each($('.edit-icon-href'), function(index, href) {
-    	wait();
     	var $_href = $(href);
         $_href.click(function(event) {
         	
@@ -171,11 +158,9 @@
         		success: function(data) {
         			$_newr_modal.empty();
                     $(data).appendTo( $_newr_modal );
-                    form_included = true;
-                    current_form = 'update';
+                    current_form = 'create';
                     $_create_role_trigger.trigger('click');
-                    form_included = false;
-                    nowait();
+                    current_form = 'update';
         		}
         	});
         });
@@ -184,6 +169,7 @@
 
 <c:if test='${ not empty validationErrors }' >
 <script>
+    current_form = 'create';
     $_create_role_trigger.trigger('click');
     $('.has-error').tooltip({
     	placement: 'top'

@@ -38,6 +38,9 @@ public class WebAppStartupListener
 		PropertyConfigurator.configure( LOG4J_PROPERTIES );
 	}
 
+	/**
+	 * Initializes the <code>WebAppStartupListener</code> to execute the setup operation.
+	 * */
 	@PostConstruct
 	public void init() {
 		this.isSetupNeeded = true;
