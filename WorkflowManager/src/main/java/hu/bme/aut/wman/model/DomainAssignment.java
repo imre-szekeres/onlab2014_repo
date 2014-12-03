@@ -28,10 +28,22 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "DomainAssignment.findByUsernameFor", query = "SELECT da FROM DomainAssignment da "+ 
 																	 "WHERE da.user.username = :username "+
 																		 "AND da.domain.name = :domainName "),
-	@NamedQuery(name = "DomainAssignment.findAllByUser", query = "SELECT da FROM DomainAssignment da WHERE da.user.username = :username ")
+	@NamedQuery(name = "DomainAssignment.findAllByUser", query = "SELECT da FROM DomainAssignment da WHERE da.user.username = :username "),
+	@NamedQuery(name = "DomainAssignment.findDomainsAndIds", query = "SELECT da.domain.name, da.id FROM DomainAssignment da " +
+	                                                                 "WHERE da.user.id = :userID "),
+    @NamedQuery(name = "DomainAssignment.deleteById", query = "DELETE FROM DomainAssignment da " +
+	                                                          "WHERE da.id = :id ")
 })
 public class DomainAssignment extends AbstractEntity {
 
+	public static final String NQ_FIND_BY_DOMAIN = "DomainAssignment.findByDomain";
+	public static final String NQ_FIND_BY_USER_ID = "DomainAssignment.findByUserID";
+	public static final String NQ_FIND_BY_DOMAIN_FOR = "DomainAssignment.findByDomainFor";
+	public static final String NQ_FIND_BY_USERNAME_FOR = "DomainAssignment.findByUsernameFor";
+	public static final String NQ_FIND_ALL_BY_USER = "DomainAssignment.findAllByUser";
+	public static final String NQ_FIND_DOMAINS_AND_IDS = "DomainAssignment.findDomainsAndIds";
+	public static final String NQ_DELETED_BY_ID = "DomainAssignment.deleteById";
+	
 	@NotNull
 	@ManyToOne
 	private User user;
@@ -46,6 +58,7 @@ public class DomainAssignment extends AbstractEntity {
 	
 	public DomainAssignment() {
 		super();
+		this.userRoles = new ArrayList<>();
 	}
 	
 	public DomainAssignment(User user, Domain domain, Role role) {

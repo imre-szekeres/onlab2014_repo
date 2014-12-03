@@ -18,16 +18,18 @@
 </head>
 <body>
     
-    <div id='sign-in-header-wrapper' class='container' >
-        <div class='row'>
-            <div class='col-md-3'></div>
-            <div class='col-md-3' id='app-name-wrapper' ><h3 class='app-name' ><strong>WorkflowManager</strong></h3></div>
-            <div class='col-md-4' id='not-part-of-it-wrapper' >
-                <span class='app-name' ><strong>Not a part of it yet?</strong></span>
+    <div id='sign-in-header-wrapper' >
+        <div id='sign-in-header-positioner' >
+            
+            <div id='sign-in-header' >
+                <span id='app-name-wrapper'>
+                    <strong><span class='glyphicon glyphicon-random' ></span> <span id='app-name' >WorkflowManager</span></strong>
+                </span>
+                <span id='not-part-of-it-yet' > Not part of it yet?  </span>
                 <button class='btn btn-warning' id='register-btn' onClick='showRegister(event)' >Register</button>
                 <button class='btn btn-default' id='sign-in-trigger-btn' data-toggle='modal' data-target='#sign-in-modal' >Sign In</button>
             </div>
-            <div class='col-md-2'></div>
+            
         </div>
     </div>
     
@@ -57,18 +59,31 @@
                     <form:form action='/WorkflowManager/login' modelAttribute='subject' method='POST' class='form-horizontal pos-rel' id='sign-in-form' >
 			            <div class='form-row'>
 			                <div class='error-message-wrapper'>
-			                    <c:if test='${ not empty loginError }' >
-			                        <div id='sign-in-error-message' class='alert alert-danger pos-rel'>
-			                            <spring:message code='login.error.message' />
-			                        </div>
-			                    </c:if>
+			                    <c:choose >
+			                        <c:when test='${ not empty loginError }' >
+			                        
+			                            <div id='sign-in-error-message' class='alert alert-danger pos-rel'>
+                                            <spring:message code='login.error.message' />
+                                        </div>
+			                        
+			                        </c:when>
+			                        <c:otherwise>
+			                        
+			                            <div id='sign-in-user-icon-wrapper' >
+			                                <span id='sign-in-user-icon' >
+			                                    <span class='glyphicon glyphicon-user' ></span>
+			                                </span>
+			                            </div>
+			                        
+			                        </c:otherwise>
+			                    </c:choose>
 			                </div>
 			            </div>
 			                                   
 			            <c:set var='inputClass' value='${ loginError == null ? "" : "has-error"  }' />
 			                                   
 			            <div class='form-row ${ inputClass }'>
-			                <form:input id='username' path='username' type='text' value='Username' class='form:input-large form-control' />
+			                <form:input id='username' path='username' type='text' placeholder='Username' class='form:input-large form-control' />
 			            </div>
 			            <div class='form-row ${ inputClass }' >
 			                <form:input id='password' path='password' type='password' class='form:input-large form-control'/>
@@ -77,8 +92,8 @@
                 
                 </div>
                 <div class='modal-footer' >
-                    <button type='button' class='btn btn-warning' data-dismiss='modal' >Cancel</button>
                     <button type='button' class='btn btn-primary' onclick='submitSignIn(event)' >Sign In</button>
+                    <button type='button' class='btn btn-warning' data-dismiss='modal' >Cancel</button>
                 </div>
             </div>
         </div>

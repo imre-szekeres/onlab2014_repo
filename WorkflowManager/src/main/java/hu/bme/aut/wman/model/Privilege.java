@@ -90,4 +90,8 @@ public class Privilege extends AbstractEntity implements DragNDroppable {
 	public String getLabel() {
 		return name;
 	}
+	
+	public String getOwner() {
+		return "";
+	}
 }

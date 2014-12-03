@@ -3,10 +3,10 @@
  */
 package hu.bme.aut.wman.controllers;
 
-import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.service.DomainService;
+import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
-import hu.bme.aut.wman.view.objects.transfer.RoleTransferObject;
+import hu.bme.aut.wman.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,37 +41,78 @@ public class AdminViewController extends AbstractController {
 		NAVIGATION_TABS.put(NAV_PREFIX + USERS, "Users");
 	}
 
+	@EJB(mappedName = "java:module/UserService")
+	private UserService userService;
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
 	@EJB(mappedName = "java:module/DomainService")
 	private DomainService domainService;
+	@EJB(mappedName = "java:module/PrivilegeService")
+	private PrivilegeService privilegeService;
 
 	
+	@SuppressWarnings("deprecation")
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
 	public String admin(Model model) {
-		return navigateToFrame("admin", model);
+		return redirectTo(AdminViewController.USERS);
 	}
 
 	@RequestMapping(value = ROLES, method = RequestMethod.GET)
 	public String adminRoles(Model model) {
-		model.addAttribute("domains", domainService.selectAll());
-		model.addAttribute("newRole", new RoleTransferObject());
-		model.addAttribute("selectPrivilegesUrl", PrivilegesController.ROOT_URL);
-		model.addAttribute("createRoleAction", RolesController.CREATE);
+		setAdminRolesContent(model, domainService);
 		return navigateToFrame("admin_roles", model);
 	}
 
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)
 	public String adminDomains(Model model) {
-		model.addAttribute("domains", domainService.selectAll());
-		model.addAttribute("newDomain", new Domain());
-		model.addAttribute("selectRolesUrl", RolesController.ROOT_URL);
-		model.addAttribute("createDomainAction", DomainsController.CREATE);
+		setAdminDomainsContent(model, domainService);
 		return navigateToFrame("admin_domains", model);
 	}
 
+	@RequestMapping(value = PRIVILEGES, method = RequestMethod.GET)
+	public String adminPrivileges(Model model) {
+		model.addAttribute("privileges", privilegeService.selectAll());
+		return navigateToFrame("admin_privileges", model);
+	}
+	
+	@RequestMapping(value = USERS, method = RequestMethod.GET)
+	public String adminUsers(Model model) {
+		setAdminUsersContent(model, userService);
+		return navigateToFrame("admin_users", model);
+	}
+	
 	@Override
 	public Map<String, String> getNavigationTabs() {
 		return NAVIGATION_TABS;
+	}
+	
+	public static final void setAdminRolesContent(Model model, DomainService domainService) {
+		model.addAttribute("domains", domainService.selectAll());
+		model.addAttribute("selectPrivilegesUrl", PrivilegesController.ROOT_URL);
+		model.addAttribute("selectCreateFormUrl", RolesController.CREATE_FORM);
+		model.addAttribute("selectUpdateFormUrl", RolesController.UPDATE_FORM);
+		model.addAttribute("deleteRoleAction", RolesController.DELETE);
+		model.addAttribute("navigationTabs", NAVIGATION_TABS);
+	}
+	
+	public static final void setAdminDomainsContent(Model model, DomainService domainService) {
+		model.addAttribute("domains", domainService.selectAll());
+		model.addAttribute("selectRolesUrl", RolesController.ROOT_URL);
+		model.addAttribute("selectCreateFormUrl", DomainsController.CREATE_FORM);
+		model.addAttribute("selectUpdateFormUrl", DomainsController.UPDATE_FORM);
+		model.addAttribute("deleteDomainAction", DomainsController.DELETE);
+		model.addAttribute("navigationTabs", NAVIGATION_TABS);
+	}
+	
+	public static final void setAdminUsersContent(Model model, UserService userService) {
+		model.addAttribute("users", userService.selectAll());
+		model.addAttribute("selectDomainsForUrl", UsersController.DOMAINS);
+		model.addAttribute("selectDomainNamesUrl", DomainsController.NAMES);
+		model.addAttribute("selectRolesForUrl", RolesController.ROOT_URL);
+		model.addAttribute("selectCreateFormUrl", UsersController.CREATE_FORM);
+		model.addAttribute("selectUpdateFormUrl", UsersController.UPDATE_FORM);
+		model.addAttribute("deleteUserAction", UsersController.DELETE);
+		model.addAttribute("detailsUserAction", UsersController.PROFILE);
+		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
 }

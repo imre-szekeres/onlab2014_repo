@@ -2,45 +2,11 @@
     pageEncoding="UTF-8"%> 
 
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core'        prefix='c' %>
-<%@ taglib uri='http://www.springframework.org/tags'      prefix='spring' %>   
-<%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
-
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
-<div id='roles-list-panel' class='panel panel-default' >
+<div id='roles-list-panel' class='panel panel-default admin-panel role-panel' >
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
-    <c:forEach var='domain' items='${ domains }' >  
-        <c:forEach var='role' items='${ domain.roles }' >
-            
-            <div class='panel panel-default admin-role-panel' >
-                <div class='panel-heading' role='tab' id='role-${ role.id }-heading' title='in domain ${ domain.name }' data-toggle='tooltip' data-placement='right' >
-                    <h3 class='panel-title'>
-                        <a class='collapsed' 
-                           aria-expanded='false' 
-                           aria-controls='collapse-${ role.id }' 
-                           data-toggle='collapse' 
-                           data-parent='#admin-roles-content-wrapper' 
-                           href='#collapse-${ role.id }' >${ role.name }</a>
-                    </h3>
-                </div>
-                <div id='collapse-${ role.id }' class='panel-collapse collapse in' role='tabpanel' 
-                     aria-labelledby='role-${ role.id }-heading' >
-                    <div class='list-group privileges-list-group' >
-                    
-	                    <div class='privilege-list-wrapper' >
-	                    <c:forEach var='privilege' items='${ role.privileges }' >
-	                        <div class='privilege-row' >
-	                           ${ privilege.name }
-	                        </div>
-	                    </c:forEach>
-	                    </div>
-                    
-                    </div>
-                </div>
-            </div>
-            
-        </c:forEach>
-    </c:forEach>
+    <jsp:include page='fragments/roles_list.jsp' />
 </div>
 </div>
 
@@ -51,133 +17,88 @@
 </div>
 
 <div class='modal fade' id='new-role-modal' tabindex='-1' role='dialog' aria-labelledby='#new-role-label' aria-hidden='true' >
-    
-    <form:form modelAttribute='newRole' action='${ appRoot }/${ createRoleAction }' method='POST' id='new-role-form' class='form-horizontal' >
-    <div class='modal-dialog' >
-    <div class='modal-content' >
-        <div class='modal-header' >
-            <button type='button' class='close' data-dismiss='modal'>
-                <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
-            </button>
-            <h4 class='modal-title' id='new-role-label' >Create Role</h4>
-        </div>
+    <script>
+       var form_included = false;
+    </script>
+
+    <c:if test='${ not empty validationErrors }' >
         
-        <div class='modal-body'>
-            <div id='new-role-form-fieldset-wrapper' >
-            <fieldset>
-                
-                <div class='form-group' >
-                </div>
-                
-                <div class='form-group' >
-                    <label class='control-label col-sm-2' for='role-name' >
-                        <spring:message code='role.form.name.label' ></spring:message>
-                    </label>
-                    <div class='col-sm-4'>
-                        <form:input id='role-name' path='roleName' type='text' class='form-control new-role-input' ></form:input>
-                    </div>
-                </div>
-                
-                <div class='form-group' >
-                    <label class='control-label col-sm-2' for='role-domain' >
-                        <spring:message code='role.form.domain.label' ></spring:message>
-                    </label>
-                    <div class='col-sm-4' >
-                        <form:select id='role-domain' path="domainName" class='form-control new-role-input' >
-                            <c:forEach var='domain' items='${ domains }' >
-                                <form:option value='${ domain.name }' >${ domain.name }</form:option>
-                            </c:forEach>
-                        </form:select>
-                    </div>
-                </div>
-                
-                <div id='privileges-input-wrapper' class='form-group' >
-                    <div class='col-sm-7'>
-                        <form:input id='role-privileges' type='hidden' path='privileges' class='form-control new-role-input privileges' ></form:input>
-                    </div>
-                </div>
-                
-                <div class='form-group' >
-                    <div id='privileges-dnd-target-panel' class='panel panel-default new-role-privileges-input-panel pos-rel' 
-                         ondragover='allowDrop(event)' ondrop='onInputDrop(event)' >
-                        <div class='panel-heading'>
-                            <strong>
-                                <spring:message code='role.form.privileges.label' ></spring:message>
-                            </strong>    
-                        </div>
-                        
-                        <div class='panel-body'>
-                            <div id='privileges-dnd-input-wrapper' class='col-sm-6 pos-rel' >
-                                <div id='privileges-dnd-input-content' class='col-sm-6 pos-rel input-content' >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </fieldset>
-            </div>
-            
-            <div id='privileges-dnd-source-panel-wrapper' class='pos-rel' >
-                <div id='privileges-dnd-source-panel' class='panel panel-default' 
-                     ondragover='allowDrop(event)' ondrop='onSourceDrop(event)' >
-                    <div class='panel-heading'>
-                        <strong>
-                            <spring:message code='privileges.dnd.available.label' ></spring:message>
-                        </strong>
-                    </div>
-                    
-                    <div class='panel-body'>
-                        <div id='privileges-dnd-source-wrapper' class='col-sm-6 pos-rel' >
-                            <div id='privileges-dnd-source-content' class='col-sm-6 pos-rel source-content' >
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class='modal-footer' >
-            <button type='submit' class='btn btn-primary' onclick='submitNewRoleForm(event)' >Create</button>
-            <button type='button' class='btn btn-default' data-dismiss='modal' >Cancel</button>
-        </div>
-    </div>
-    </div>
-    </form:form>
-
+        <jsp:include page='fragments/role_form_modal.jsp'>
+            <jsp:param name='formType' value='${ formType }' />
+        </jsp:include>
+        <script>
+            var form_included = true;
+        </script>
+        
+    </c:if>
 </div>
 
 <script>
-    var url_root = "${ selectPrivilegesUrl }";
-    var $_avail_privs = 'None';
-    var $_priv_src_wrapper = $('#privileges-dnd-source-wrapper');
+    var privileges_url = "${ appRoot }${ selectPrivilegesUrl }";
+    var create_form_url = "${ appRoot }${ selectCreateFormUrl }";
     
-    var $_privs_in = $('#role-privileges');
+    var $_create_role_trigger = $('#create-role-trigger');
+    var $_newr_modal = $('#new-role-modal');
+    var $_avail_privs = 'None';
+    var current_form = 'None';
 
     function submitNewRoleForm(event) {
     	$('#new-role-form').submit();
     }
+
+    function wait() {
+        $_newr_modal.css('cursor', 'wait');
+    }
+    
+    function nowait() {
+        $_newr_modal.css('cursor', 'auto');
+    }
     
     function queryPrivileges($_target) {
-    	var url_ = "${ appRoot }" + url_root;
+    	wait();
+    	var url_ = privileges_url;
     	$.ajax({
     		url: url_,
     		dataType: 'html',
     		method: "GET",
     		success: function(data) {
     			$_target = data;
-    		    $_priv_src_wrapper.find('.source-content').html( data );
+    		    $_priv_src_wrapper.html( data );
+    		    rearrangePrivileges( $_newr_modal );
+    		    nowait();
+    		}
+    	});
+    }
+   
+    function requestPrivileges() {
+    	if ($_avail_privs == 'None') {
+            queryPrivileges($_avail_privs);
+        } else {
+            $_priv_src_wrapper.html( $_avail_privs );
+        }
+    }
+    
+    function requestCreateForm() {
+    	wait();
+    	$.ajax({
+    		url: create_form_url,
+    		dataType: 'html',
+    		method: 'GET',
+    		success: function(data) {
+    			$_newr_modal.empty();
+    			$(data).appendTo( $_newr_modal );
+    			requestPrivileges();
+    			current_form = 'create';
+    			nowait();
     		}
     	});
     }
     
     function onCreateClick(event) {
-    	console.log("role create triggered");
-    	if ($_avail_privs == 'None') {
-    		queryPrivileges($_avail_privs);
-    	} else {
-    		$_priv_src_wrapper.find('.source-content').html( $_avail_privs );
-    	}
+    	if (current_form !== 'create' && !form_included)
+    		requestCreateForm();
+    	else
+    		requestPrivileges();
     }
     
     function allowDrop(event) {
@@ -186,7 +107,7 @@
     
     function onInputDrop(event) {
     	var sourceID = event.dataTransfer.getData("elementID");
-    	$(document.getElementById( sourceID )).appendTo($(event.target).find('.input-content'));
+    	$(document.getElementById( sourceID )).appendTo( $_priv_input_wrapper );
     	
     	var value = $_privs_in.val();
     	var not_contains = value.indexOf(sourceID) < 0;
@@ -196,12 +117,11 @@
     		value = sourceID;
     	
     	$_privs_in.val( value );
-    	console.log( $_privs_in.val() );
     }
     
     function onSourceDrop(event) {
     	var sourceID = event.dataTransfer.getData("elementID");
-    	$(document.getElementById( sourceID )).appendTo($_priv_src_wrapper.find('.source-content'));
+    	$(document.getElementById( sourceID )).appendTo( $_priv_src_wrapper );
     	
     	var value = $_privs_in.val();
     	value = value.replace(sourceID, '');
@@ -211,10 +131,62 @@
             value = '';
 
         $_privs_in.val( value );
-    	console.log( $_privs_in.val() );
+    }
+    
+    function contains(list, value) {
+    	for(var i = 0; i < list.length; ++i)
+    		if (list[i] == value)
+    			return true;
+    	return false;
+    }
+    
+    function rearrangePrivileges($_modal) {
+    	var old_privs = $_privs_in.val().split('|');
+
+        for(var i = 0; i < old_privs.length; ++i) {
+    		var id = old_privs[i];
+    		
+    		var $_e = $_priv_src_wrapper.find('[name="' + id + '"]');
+    		$_e.appendTo( $_priv_input_wrapper );
+    	}
     }
 
-    $('#create-role-trigger').click( onCreateClick );
+    $_create_role_trigger.click( onCreateClick );
     $('.collapse').collapse();
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip({
+    	placement: 'bottom'
+    });
+    
+    $.each($('.edit-icon-href'), function(index, href) {
+    	wait();
+    	var $_href = $(href);
+        $_href.click(function(event) {
+        	
+        	event.preventDefault();
+        	var url_ = $_href.attr('href');
+        	$.ajax({
+        		url: url_,
+        		dataType: 'html',
+        		method: 'GET',
+        		success: function(data) {
+        			$_newr_modal.empty();
+                    $(data).appendTo( $_newr_modal );
+                    form_included = true;
+                    current_form = 'update';
+                    $_create_role_trigger.trigger('click');
+                    form_included = false;
+                    nowait();
+        		}
+        	});
+        });
+    });
 </script>
+
+<c:if test='${ not empty validationErrors }' >
+<script>
+    $_create_role_trigger.trigger('click');
+    $('.has-error').tooltip({
+    	placement: 'top'
+    });
+</script>
+</c:if>

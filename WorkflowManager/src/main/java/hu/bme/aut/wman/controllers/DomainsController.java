@@ -3,21 +3,32 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
 import hu.bme.aut.wman.model.Domain;
+import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.Role;
+import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
+import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.view.DroppableName;
+import hu.bme.aut.wman.view.Messages.Severity;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Imre Szekeres
@@ -26,21 +37,35 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class DomainsController extends AbstractController {
 
+	private static final Logger LOGGER = Logger.getLogger( DomainsController.class );
+	
 	public static final String ROOT_URL = "/domains";
 	public static final String CREATE = ROOT_URL + "/create";
+	public static final String CREATE_FORM = CREATE + "/form";
 	
+	public static final String UPDATE = ROOT_URL + "/update";
+	public static final String UPDATE_FORM = UPDATE + "/form";
+	public static final String DELETE = ROOT_URL + "/delete";
+	public static final String NAMES = ROOT_URL + "/names";
+	
+	
+	@EJB(mappedName = "java:module/DomainAssignmentService")
+	private DomainAssignmentService daService;
 	@EJB(mappedName = "java:module/DomainService")
 	private DomainService domainService;
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
+	@EJB(mappedName = "java:module/UserService")
+	private UserService userService;
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
-	public String createDomain(@ModelAttribute("newDomain") Domain newDomain, Model model) {
+	public String createDomain(@ModelAttribute("domain") Domain newDomain, Model model, HttpSession session) {
 		Map<String, String> errors = domainService.validate( newDomain );
 		
 		if (errors.isEmpty()) {
 			List<Role> defaults = domainService.selectByName(DomainService.DEFAULT_DOMAIN).getRoles();
+			User subject = userService.selectById( userIDOf(session) );
 			
 			for(Role role : defaults) {
 				int lastIndex = role.getName().lastIndexOf(" ");
@@ -50,12 +75,109 @@ public class DomainsController extends AbstractController {
 				newRole.setPrivileges( role.getPrivileges() );
 				roleService.save( newRole );
 				newDomain.addRole( newRole );
+				LOGGER.info("Role " + newRole.getName() + " was found and added to " + newDomain.getName());
 			}
 			
 			domainService.save( newDomain );
-		} else {
-			model.addAttribute("errorMessages", errors);
+			String message = "Domain " + newDomain.getName() + " was created";
+			LOGGER.info(message + " by " + subject.getUsername());
+			flash(message, Severity.INFO, model);
+			return redirectTo(AdminViewController.DOMAINS);
+		}
+
+		model.addAttribute(AbstractController.ERRORS_MAP, errors);
+		model.addAttribute("postDomainAction", DomainsController.CREATE);
+		AdminViewController.setAdminDomainsContent(model, domainService);
+		model.addAttribute("pageName", "admin_domains");
+		return "wman_frame";
+	}
+	
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
+	public String updateDomain(@ModelAttribute("domain") Domain newDomain, @RequestParam("oldId") Long oldId, Model model, HttpSession session) {
+		Domain domain = domainService.selectById(oldId);
+		domain.setName(newDomain.getName());
+		Map<String, String> errors = domainService.validate( domain );
+		
+		if (errors.isEmpty()) {
+			User subject = userService.selectById( userIDOf(session) );
+			
+			domainService.save( domain );
+			String message = "Domain " + domain.getName() + " was updated";
+			LOGGER.info(message + " by " + subject.getUsername());
+			flash(message, Severity.INFO, model);
+			return redirectTo(AdminViewController.DOMAINS);
+		}
+
+		model.addAttribute(AbstractController.ERRORS_MAP, errors);
+		setUpdateFormAttributes(newDomain, oldId, model);
+		AdminViewController.setAdminDomainsContent(model, domainService);
+		model.addAttribute("pageName", "admin_domains");
+		return "wman_frame";
+	}
+	
+	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
+	public String requestCreateForm(Model model) {
+		model.addAttribute("domain", new Domain());
+		model.addAttribute("postDomainAction", DomainsController.CREATE);
+		return "fragments/domain_form_modal";
+	}
+	
+	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
+	public String requestUpdateForm(@RequestParam("domain") Long domainID, Model model) {
+		Domain domain = domainService.selectById(domainID);
+		setUpdateFormAttributes(domain, domainID, model);
+		return "fragments/domain_form_modal";
+	}
+
+	/**
+	 * Helper method for setting the <code>Model</code> attributes for the response for
+	 * the request of <code>DomainsService.UPDATE_FORM</code>.
+	 * 
+	 * @param domain
+	 * @param model
+	 * */
+	public static final void setUpdateFormAttributes(Domain domain, Long oldId, Model model) {
+		model.addAttribute("domain", domain);
+		model.addAttribute("oldId", oldId);
+		model.addAttribute("postDomainAction", DomainsController.UPDATE);
+		model.addAttribute("formType", "update");
+	}
+
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = DELETE, method = RequestMethod.GET)
+	public String deleteRole(@RequestParam("domain") long domainID, HttpSession session, Model model) {
+		Domain domain = domainService.selectById(domainID);
+		
+		if (domain != null) {
+			User subject = userService.selectById( userIDOf(session) );
+			
+			tryRemove(domain, subject, session, model);
 		}
 		return redirectTo(AdminViewController.DOMAINS);
+	}
+	
+	private final void tryRemove(Domain domain, User subject, HttpSession session, Model model) {
+		try {
+			
+			List<DomainAssignment> assignments = daService.selectByDomainName(domain.getName());
+			for(DomainAssignment da : assignments) {
+				daService.delete( da );
+				LOGGER.info(da.getUser().getUsername() + " was deassigned from " + da.getDomain().getName());
+			}
+			domainService.delete( domain );
+			LOGGER.info("Domain " + domain.getName() + " was removed by " + subject.getUsername());
+		} catch(Exception e) {
+			String message = "Unable to delete domain " + domain.getName();
+			LOGGER.error(message + ": " + e.getMessage(), e);
+			flash(message, Severity.ERROR, model);
+		}
+	}
+	
+	@RequestMapping(value = NAMES, method = RequestMethod.GET)
+	public String listDomainNames(Model model, HttpServletRequest request) {
+		List<String> domainNames = domainService.selectAllNames();
+		model.addAttribute("options", DroppableName.namesOf(domainNames, ""));
+		return "fragments/option_list";
 	}
 }

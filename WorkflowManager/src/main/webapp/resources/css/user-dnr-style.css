@@ -1,0 +1,49 @@
+#new-user-modal #privileges-dnd-source-panel-wrapper {
+	top: -578px;
+	left: 402px;
+	width: 400px;
+}
+
+#new-user-modal #privileges-dnd-source-wrapper {
+	height: 500px;
+}
+
+#new-user-modal #privileges-dnd-target-panel {
+	left: 5px;
+	width: 320px;
+}
+
+#new-user-modal #privileges-dnd-input-wrapper {
+	height: 500px;
+}
+
+#privileges-dnd-target-panel {
+	height: 488px;
+}
+
+#new-user-modal .modal-body {
+	height: 580px;
+}
+
+#new-user-modal .modal-content {
+	height: 700px;
+}
+
+#remove-domain-icon {
+	position: relative;
+	top: -30px;
+	left: 220px;
+	color: #d9534f;
+	cursor: pointer;
+	font-size: 16px;
+	z-index: 11;
+}
+
+.domain-name-select-row {
+	height: 35px;
+}
+
+.domain-name-select-wrapper {
+	position: relative;
+	left: -8px;
+}

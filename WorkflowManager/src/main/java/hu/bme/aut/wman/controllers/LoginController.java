@@ -90,16 +90,16 @@ public class LoginController extends AbstractController {
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
-		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"), true);
-		if (validationErrors.size() <= 0) {
+		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"));
+		if (validationErrors.isEmpty()) {
 
 			userHandler.createUser(user, DomainService.DEFAULT_ROLE, DomainService.DEFAULT_DOMAIN);
-			request.getSession().setAttribute("subject", user);
+			request.getSession().setAttribute("subject", new SecurityToken( user.getId() ));
 
-			LOGGER.info("user: " + user.getUsername() + " registered as System Reader");
+			LOGGER.info("user: " + user.getUsername() + " registered as " + DomainService.DEFAULT_ROLE);
 			return redirectTo(APP_ROOT);
 		}
-		model.addAttribute("validationErrors", validationErrors);
+		model.addAttribute(AbstractController.ERRORS_MAP, validationErrors);
 		return "login";
 	}
 	
@@ -109,5 +109,26 @@ public class LoginController extends AbstractController {
 		HttpSession session = request.getSession();
 		session.setAttribute("subject", null);
 		return redirectTo(APP_ROOT);
+	}
+
+	/**
+	 * Retrieves the user ID via the passed <code>HttpSession</code>.
+	 * 
+	 * @param session
+	 * @return the user ID of the currently logged in user
+	 * */
+	public static final long userIDOf(HttpSession session) {
+		SecurityToken token = (SecurityToken) session.getAttribute("subject");
+		return (token == null) ? -1 : token.getUserID();
+	}
+
+	/**
+	 * Retrieves the user ID via the passed <code>HttpServletRequest</code>.
+	 * 
+	 * @param request
+	 * @return the user ID of the currently logged in user
+	 * */
+	public static final long userIDOf(HttpServletRequest request) {
+		return userIDOf(request.getSession());
 	}
 }

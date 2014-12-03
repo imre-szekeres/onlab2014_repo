@@ -3,10 +3,6 @@
  */
 package hu.bme.aut.wman.service;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
-
 import hu.bme.aut.wman.model.Privilege;
 import hu.bme.aut.wman.service.validation.PrivilegeValidator;
 import hu.bme.aut.wman.service.validation.ValidationEngine;
@@ -17,7 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 /**
+ * Handles the CRUD operations and business logic of instances of class <code>Privilege</code>.
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */

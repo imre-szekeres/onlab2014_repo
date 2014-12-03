@@ -5,6 +5,7 @@
 
 	<persistence-unit name="products" transaction-type="JTA">
 		<jta-data-source>ProductDB</jta-data-source>
+		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)" />
 		</properties>

@@ -1,5 +1,7 @@
 package hu.bme.aut.wman.controllers;
 
+import hu.bme.aut.wman.view.Messages;
+import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.ErrorMessageVO;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class AbstractController {
 
 	public static final String FRAME = "wman_frame";
 	public static final String NAV_PREFIX = "/WorkflowManager";
+	public static final String ERRORS_MAP = "validationErrors";
 
 	/**
 	 * Navigates to the given content page in the frame.
@@ -103,5 +106,19 @@ public class AbstractController {
 	 */
 	public Map<String, String> getNavigationTabs() {
 		return Maps.newHashMap();
+	}
+	
+	/**
+	 * Injects a message to the response object in order to display it on the view
+	 * to inform the user.
+	 * 
+	 * @param message
+	 * @param severity
+	 * @param model
+	 * 
+	 * @see {@link hu.bme.aut.wman.view.Messages#flash(String, Severity, Model)}
+	 * */
+	protected static final void flash(String message, Severity severity, Model model) {
+		Messages.flash(message, severity, model);
 	}
 }

@@ -1,4 +1,14 @@
 
+/* GRADIENTS...
+ *
+	background: -webkit-linear-gradient(red, blue);
+    background: -o-linear-gradient(red, blue);
+    background: -moz-linear-gradient(red, blue);
+    background: linear-gradient(red, blue);
+ *
+ * */
+
+
 /* BEGIN xxx */
 /* END   xxx */
 
@@ -65,6 +75,45 @@
 	border: 1px solid #428BCA;
 }
 
+#sign-in-header {
+	position: relative;
+	left: -350px;
+	top: 13px;
+	height: 60px;
+	width: 900px;
+}
+
+#app-name-wrapper {
+	color: white;
+	font-size: 28px;
+}
+
+#not-part-of-it-yet {
+	color: white;
+}
+
+#app-name {
+	margin-left: 7px;
+	margin-right: 13px;
+}
+
+#sign-in-header-positioner {
+	position: relative;
+	width: 100%;
+	height: 0;
+	left: 50%;
+}
+
+#register-btn {
+	margin-right: 13px;
+}
+
+
+#sign-in-header {
+	position: relative;
+	
+}
+
 .form-row {
 	width: 100%;
 	margin: 5px;
@@ -72,6 +121,24 @@
 
 #sign-in-error-message {
 	top: -32px;
+	font-size: 13px;
+}
+
+#sign-in-user-icon {
+	position: relative;
+	top: -42px;
+	color: #428bca;
+	font-size: 53px;
+	
+	padding: 7px;
+	display: inline-block;
+	border: 1px solid #428bca;
+	border-radius: 7px 7px 7px 7px;
+	
+	background: -webkit-linear-gradient(#F8F8F8, #E8E8E8);
+    background: -o-linear-gradient(#F8F8F8, #E8E8E8);
+    background: -moz-linear-gradient(#F8F8F8, #E8E8E8);
+    background: linear-gradient(#F8F8F8, #E8E8E8);
 }
 
 .app-name {
@@ -880,6 +947,30 @@
 	vertical-align:initial;
 }
 
+/* BEGIN admin-all */
+#roles-list-panel {
+	border-left-width: 6px;
+}
+
+.privilege-panel {
+	border-left-color: rgb(221, 221, 221); /*#f0ad4e;*/
+}
+
+.user-panel {
+	border-left-color: rgb(221, 221, 221); /*#428bca;*/
+}
+
+.domain-panel {
+	border-left-color: rgb(221, 221, 221); /*#5cb85c;*/
+}
+
+.role-panel {
+	border-left-color: rgb(221, 221, 221); /*#663399;*/
+}
+
+/* END   admin-all */
+
+
 /* BEGIN Admin Roles */
 #roles-list-panel {
 	width: 700px;
@@ -916,10 +1007,9 @@
 	left: -1px;
 	overflow-y: scroll;
 	overflow-x: auto;
-}
-
-#privileges-dnd-input-content {
-	left: -24px;
+	padding: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 
 #privileges-dnd-target-panel {
@@ -934,12 +1024,14 @@
 }
 
 #privileges-dnd-source-wrapper {
-	top: 1px;
 	width: 316px;
 	height: 433px;
 	
 	overflow-y: scroll;
 	overflow-x: auto;
+	padding: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 
 #privileges-dnd-source-content {
@@ -961,29 +1053,44 @@
 	padding: 0;
 }
 
-/*.admin-role-panel:nth-child(even) {
-	position: relative;
-	top: -42px;
-	left: 230px;
-}*/
 
 .admin-role-panel {
-	width: 210px;
+	/*width: 210px;*/
+	width: auto;
+	min-width: 210px;
+	display: inline-block;
 }
 
 .admin-role-panel .panel-heading .panel-collapse {
-	width: 210px;
+	/*width: 210px;*/
+	width: auto;
+	min-width: 210px;
+	display: inline-block;
+}
+
+.admin-role-panel .list-group {
+	width: inherit;
 }
 
 .admin-role-panel .panel-heading {
 	padding: 0;
 	height: 35px;
 	
-	background-color: #6600CC;
+	padding-left: 13px;
+	padding-right: 13px;
+	background-color: #584376; /* #6600CC; /* #6e5494; */
 }
 
 .admin-domain-panel .panel-heading {
 	background-color: #5cb85c;
+}
+
+.admin-privilege-panel .panel-heading {
+	background-color: #E57200; /*#428bca;*/
+}
+
+.admin-user-panel .panel-heading {
+	background-color: #428bca;
 }
 
 .admin-role-panel .panel-title {
@@ -992,11 +1099,19 @@
 }
 
 .admin-role-panel .panel-heading:hover {
-	background-color: #9933FF;
+	background-color: #6B24B2; /* #5C1F99; /* #7A29CC; /* #9933FF; */
 }
 
 .admin-domain-panel .panel-heading:hover {
 	background-color: #6CBF6C;
+}
+
+.admin-privilege-panel .panel-heading:hover {
+	background-color: #EA8E33; /*#5bc0de;*/
+}
+
+.admin-user-panel .panel-heading:hover {
+	background-color: #5bc0de;
 }
 
 .admin-role-panel .panel-title a{
@@ -1033,9 +1148,8 @@
 	line-height: 21px;
 	text-align: center;
 	vertical-align: middle;
-	
-	display: inline-block;
-	color: #FF9900;
+
+	color: #E57200;
 	background-color: rgb(245, 245, 245);
 	
 	margin-top: 1px;
@@ -1046,18 +1160,98 @@
 	color: #5700b3;
 }
 
+.domain-row {
+	color: #5cb85c;
+}
+
+.new-domain-input {
+	position: relative;
+	top: -5px;
+}
+
+.submit-row-btn {
+	position: relative;
+	left: 51px;
+}
+
+#new-domain-submit {
+	left: 71px;
+	z-index: 11;
+}
 /* END   Admin Roles */
 
 
+/* BEGIN admin users */
+
+/* TODO for user DNR update */
+.new-user-container {
+	width: 320px;
+	left: -190px;
+}
+.hidden-row {
+	display: none;
+}
+
+#new-user-form .new-user-input {
+	position: relative;
+	top: -5px;
+}
+
+#new-user-form .input-group-addon {
+	position: relative;
+	top: -5px;
+}
+
+
+#new-user-modal .modal-dialog {
+	width: 800px;
+	height: 810px;
+}
+
+#new-user-modal .modal-content {
+	height: 790px;
+}
+
+#new-user-modal .modal-body {
+	height: 670px;
+}
+
+
+#new-user-modal #privileges-dnd-source-panel-wrapper {
+	top: -676px;
+	left: 402px;
+}
+
+#new-user-modal #privileges-dnd-source-wrapper {
+	height: 354px;
+}
+
+#new-user-modal #privileges-dnd-target-panel {
+	left: 15px;
+	width: 675px;
+}
+
+#new-user-modal #privileges-dnd-input-wrapper {
+	height: 180px;
+}
+
+/* END   admin users */
+
 /* BEGIN darg-n-drop */
 .drag-n-drop-row {
-	width: 295px;
+	width: 100%;
 	height: 25px;
 	
 	background-color: #eee;
 	
 	margin-top: 2px;
 	margin-bottom: 2px;
+	cursor: move;
+}
+
+.drag-n-drop-row:hover {
+	background-color: #F8F8F8;
+	cursor: move;
 }
 
 .drag-n-drop-body {
@@ -1068,6 +1262,11 @@
 	line-height: 25px;
 	text-align: center;
 	vertical-align: middle;
+	cursor: move;
+}
+
+.drag-n-drop-body:hover {
+	cursor: move;
 }
 
 .privilege-row {
@@ -1075,9 +1274,305 @@
 
 .privilege-body {
 	/* color: #5700b3; */
-	color: #FF9900;
+	/*color: #FF9900; */
+	color: #E57200;
+}
+
+.role-body {
+	color: #5700b3;
 }
 /* END   darg-n-drop */
+
+/* BEGIN inconRow.tag */
+.icon-row {
+	width: auto;
+	display: none;
+	height: 0px;
+
+	padding-left: 21px;	
+	padding-right: 21px;
+	z-index: 11;
+}
+
+.icon-row * {
+	z-index: 11;
+}
+
+.icon-row-icon {
+	position: relative;
+	height: 0px;
+}
+
+.icon-row-icon-href {
+	position: relative;
+	text-decoration: none;
+	color: white;
+	
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+
+	border: 1px solid red;
+	border-radius: 50%;
+	padding: 6px;
+	
+	z-index: 21;
+	cursor: pointer;
+}
+
+.icon-row-icon-href:hover {
+	color: white;
+}
+
+.edit-icon, .details-icon  {
+	float: left;
+}
+
+.delete-icon {
+	float: right;
+}
+
+.details-icon, .details-icon-href {
+	position: relative;
+	left: 21px;
+}
+
+.edit-icon-href {
+	margin-right: 5px;
+	padding-left: 7px;
+}
+
+.details-icon-href {
+	padding-left: 7px;
+}
+
+.edit-icon-href, .details-icon-href {
+	background-color: #428bca;
+	border-color: #428bca;
+}
+
+.delete-icon-href {
+	background-color: #d9534f;
+	border-color: #d9534f;
+}
+
+.role-icon-row {
+	position: relative;
+	top: -56px;
+}
+/* END   inconRow.tag */
+
+/* BEGIN user profile */
+.positioner {
+	position: relative;
+	margin: 21px;
+	
+	width: 900px;
+	height: 700px;
+	padding: 13px;
+}
+
+#username-panel {
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	
+	border-radius: 0px;
+}
+
+#username-span {
+	font-size: 32px;
+	margin: 7px;
+	display: inline-block;
+}
+
+#username-span #sign-in-user-icon {
+	margin: 0;
+	position: relative;
+	top: 0;
+}
+
+#username-text {
+	position: relative;
+	top: -13px;
+	margin-left: 7px;
+	font-style: bold;
+	font-size: 42px;
+}
+
+.button-part {
+	float: right;
+	display: inline-block;
+	margin: 7px;
+}
+
+#edit-profile-trigger {
+	position: relative;
+	top: 21px;
+	z-index: 11;
+}
+
+#cancel-edit-trigger {
+	position: relative;
+	top: 21px;
+	z-index: 11;
+}
+
+#edit-trigger-icon {
+	margin-right: 2px;
+}
+
+#email-wrapper {
+	position: relative;
+	left: 13px;
+	top: -7px;
+}
+
+.email-span {
+	color: #C8C8C8;
+}
+
+.email-text {
+	position: relative;
+	top: -1px;
+	font-size: 15px;
+	display: inline-block;
+}
+
+.email-text:hover {
+	text-decoration: underline;
+}
+
+.underlined:hover {
+	text-decoration: underline;
+}
+
+#email-wrapper .underlined:hover {
+	text-decoration: underline;
+}
+
+#email-wrapper .underlined:hover .email-text {
+	text-decoration: underline;
+}
+
+#description-panel {
+	position: relative;
+	top: -47px;
+	width: 460px;
+	margin: 0;
+	display: inline-block;
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+#description-panel .panel-heading {
+	width: 459px;
+	display: inline-block;
+	border-right: 1px solid rgb(221, 221, 221);
+}
+
+#description-wrapper {
+	width: 100%;
+	height: 160px;
+	overflow: auto;
+}
+
+#user-profile-positioner .descr-lowered {
+	margin-top: 63px;
+}
+
+/* BEGIN user comments */
+#user-comments-panel {
+	position: relative;
+	top: 16px;
+	left: 7px;
+	width: 400px;
+	display: inline-block;
+	margin:0;
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+#user-comments-panel .panel-heading {
+	width: 399px;
+	display: inline-block;
+	border-right: 1px solid rgb(221, 221, 221);
+}
+
+#user-comments .project-comment-inform {
+	font-size: 13px;
+}
+
+#user-comments {
+	height: 240px;
+	overflow-y: auto;
+}
+
+.user-comment-project-href-wrapper {
+	font-size: 12px;
+	margin-bottom: 7px;
+}
+/* END   user comments */
+
+#user-profile-positioner .bottom-panel {
+	margin-top: 88px;
+}
+
+#user-profile-positioner .closer-bottom-panel {
+	margin-top: 66px;
+}
+
+/* BEGIN domains-n-roles */
+#domains-n-roles-wrapper {
+	margin-top: 77px;
+}
+
+#domains-n-roles-trigger-wrapper {
+	width: 100%;
+	padding-bottom: 7px;
+	border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+#domains-n-roles-table-wrapper {
+	margin-top: 52px;
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+.dnr-td {
+	text-align: center;
+}
+
+.role-td {
+}
+
+.domain-td {
+}
+/* END   domains-n-roles */
+
+/* BEGIN edit user details */
+
+#user-details-panel {
+	border-left-color: rgb(221, 221, 221);
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+#user-password-panel {
+	border-left-color: rgb(221, 221, 221);
+	box-shadow: 3px 3px 2px #F0F0F0;
+}
+
+.description-label {
+	position: relative;
+	float: left;
+	left: 35px;
+}
+
+.submit-trigger-wrapper {
+	width: 100%;
+	border-top: 1px solid rgb(221, 221, 221);
+	padding-top: 7px;
+}
+/* END   edit user details */
+
+/* END   user profile */
 
 /* BEGIN comments on project */
 .project-comment-body{

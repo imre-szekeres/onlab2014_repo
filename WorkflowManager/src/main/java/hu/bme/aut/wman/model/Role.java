@@ -10,6 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Role
@@ -20,13 +21,20 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @NamedQueries({
 	@NamedQuery(name = "Role.findByActionType", query = "SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes"),
+
 	@NamedQuery(name = "Role.findByAssignment", query = "SELECT r FROM Role r, DomainAssignment d "+
 														"WHERE d.domain.name = :domainName "+
 														    "AND d.user.id = :userID "+
 															"AND r MEMBER OF d.userRoles "),
+
 	@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
 													"WHERE d.name = :domainName "+
 														    "AND r MEMBER OF d.roles"),
+
+    @NamedQuery(name = "Role.findNamesByDomain", query = "SELECT r.name FROM Role r, Domain d "+
+														 "WHERE d.name = :domainName "+
+														    "AND r MEMBER OF d.roles"),
+
     @NamedQuery(name = "Role.findByDomainAndName", query = "SELECT r FROM Role r, Domain d "+
 														   "WHERE d.name = :domainName "+
 														          "AND r.name = :roleName " +
@@ -36,6 +44,7 @@ public class Role extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_ACTIONTYPE = "Role.findByActionType";
 	public static final String NQ_FIND_BY_DOMAIN = "Role.findByDomain";
+	public static final String NQ_FIND_NAMES_BY_DOMAIN = "Role.findNamesByDomain";
 	public static final String NQ_FIND_BY_DOMAIN_AND_NAME = "Role.findByDomainAndName";
 
 	public static final String PR_NAME = "name";
@@ -45,6 +54,7 @@ public class Role extends AbstractEntity {
 	public static final String PR_PRIVILEGS = "privileges";
 
 	@Column(unique = true)
+	@Size(min = 5, max = 16, message = "must be between 5 and 16 characters.")
 	private String name;
 	
 	@NotNull

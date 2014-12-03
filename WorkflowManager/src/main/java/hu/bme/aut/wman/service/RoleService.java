@@ -1,6 +1,7 @@
 package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.ActionType;
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.service.validation.RoleValidator;
 import hu.bme.aut.wman.service.validation.ValidationEngine;
@@ -39,9 +40,25 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 	
 	public Map<String, String> validate(Role role, String domain) {
 		Map<String, String> errors = validator.validate(role);
-		if (selectByName(role.getName(), domain) != null)
-			errors.put("domain", "Role already exists in the given domain!");
+		unicityOf(role, domain, errors);
+		if (DomainService.DEFAULT_DOMAIN.equals( domain ))
+			errors.put("domain", "Domain " + DomainService.DEFAULT_DOMAIN + " cannot be modified!");
 		return errors;
+	}
+
+	/**
+	 * Ensures the unicity of a <code>Role</code>'s name in a given <code>Domain</code> thus
+	 * the unicity of that given <code>Role</code>. If that constraint is violated, then places a 
+	 * <code>ConstraintViolation</code> into the given <code>Map</code> with the key value of "name".
+	 * 
+	 * @param role
+	 * @param domain
+	 * @param errors
+	 * */
+	private void unicityOf(Role role, String domain, Map<String, String> errors) {
+		Role old = selectByName(role.getName(), domain);
+		if ((old != null) && (!old.getId().equals( role.getId() )))
+			errors.put("name", "Role already exists in the given domain!");
 	}
 
 	public Role selectByName(String name) {
@@ -64,6 +81,18 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domainName));
 		return callNamedQuery(Role.NQ_FIND_BY_DOMAIN, parameterList);
+	}
+
+	/**
+	 * Retrieves the <code>Role</code> names corresponding to the given <code>Domain</code> name.
+	 * 
+	 * @param domainName
+	 * @return a list of {@link Role} name corresponding to that {@link Domain} name 
+	 * */
+	public List<String> selectNamesByDomain(String domainName) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domainName));
+		return callNamedQuery(Role.NQ_FIND_NAMES_BY_DOMAIN, parameterList, String.class);
 	}
 
 	/**
