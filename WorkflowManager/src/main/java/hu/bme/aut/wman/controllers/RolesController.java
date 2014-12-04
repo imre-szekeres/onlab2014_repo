@@ -68,8 +68,9 @@ public class RolesController extends AbstractController {
 		Role role = new Role(roleName);
 		Map<String, String> errors = roleService.validate(role, domainName);
 		
+		Long subjectID = userIDOf(session);
 		if (errors.isEmpty()) {
-			User subject = userService.selectById( userIDOf(session) );
+			User subject = userService.selectById( subjectID );
 			List<String> privileges = newRole.privileges();
 			
 			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
@@ -92,10 +93,10 @@ public class RolesController extends AbstractController {
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
-		AdminViewController.setAdminRolesContent(model, domainService);
-		setFormAttributes(newRole, domainService, RolesController.CREATE, "create", model);
+		AdminViewController.setAdminRolesContent(model, subjectID, domainService);
+		setFormAttributes(newRole, subjectID, domainService, RolesController.CREATE, "create", model);
 		model.addAttribute("pageName", "admin_roles");
-		reset(newRole, model); /* TODO: also USE JSON content */
+		reset(newRole, model);
 		return AbstractController.FRAME;
 	}
 	
@@ -109,8 +110,9 @@ public class RolesController extends AbstractController {
 		role.setName( newRole.getRoleName() );
 		Map<String, String> errors = roleService.validate(role, domainName);
 		
+		Long subjectID = userIDOf(session);
 		if (errors.isEmpty()) {
-			User subject = userService.selectById( userIDOf(session) );
+			User subject = userService.selectById( subjectID );
 			List<String> privileges = newRole.privileges();
 			
 			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
@@ -129,8 +131,8 @@ public class RolesController extends AbstractController {
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
-		setFormAttributes(newRole, domainService, RolesController.UPDATE, "update", model);
-		AdminViewController.setAdminRolesContent(model, domainService);
+		setFormAttributes(newRole, subjectID, domainService, RolesController.UPDATE, "update", model);
+		AdminViewController.setAdminRolesContent(model, subjectID, domainService);
 		model.addAttribute("pageName", "admin_roles"); /* TODO: also USE JSON content */
 		return AbstractController.FRAME;
 	}
@@ -150,16 +152,18 @@ public class RolesController extends AbstractController {
 	}
 	
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
-	public String requestCreateForm(Model model) {
-		setFormAttributes(new RoleTransferObject(), domainService, RolesController.CREATE, "create", model);
+	public String requestCreateForm(Model model, HttpSession session) {
+		Long subjectID = userIDOf(session);
+		setFormAttributes(new RoleTransferObject(), subjectID, domainService, RolesController.CREATE, "create", model);
 		return "fragments/role_form_modal";
 	}
 	
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
-	public String requestUpdateForm(@RequestParam(value = "role", defaultValue = "-1") long roleID, Model model) {
+	public String requestUpdateForm(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
-		setFormAttributes(new RoleTransferObject(role, domain.getName()), domainService, RolesController.UPDATE, "update", model);
+		Long subjectID = userIDOf(session);
+		setFormAttributes(new RoleTransferObject(role, domain.getName()), subjectID, domainService, RolesController.UPDATE, "update", model);
 		return "fragments/role_form_modal";
 	}
 
@@ -173,9 +177,9 @@ public class RolesController extends AbstractController {
 	 * @param formType
 	 * @param model
 	 * */
-	public static final void setFormAttributes(RoleTransferObject role, DomainService domainService, String postRoleAction, String formType, Model model) {
+	public static final void setFormAttributes(RoleTransferObject role, Long subjectID, DomainService domainService, String postRoleAction, String formType, Model model) {
 		model.addAttribute("role", role);
-		model.addAttribute("domainNames", DroppableName.namesOf(domainService.selectAllNames(), ""));
+		model.addAttribute("domainNames", DroppableName.namesOf(domainService.domainNamesOf( subjectID ), ""));
 		model.addAttribute("postRoleAction", postRoleAction);
 		model.addAttribute("formType", formType);
 	} 

@@ -4,6 +4,7 @@
 package hu.bme.aut.wman.controllers;
 
 import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
+import static hu.bme.aut.wman.utils.StringUtils.asString;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.Role;
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -63,10 +63,12 @@ public class DomainsController extends AbstractController {
 	public String createDomain(@ModelAttribute("domain") Domain newDomain, Model model, HttpSession session) {
 		Map<String, String> errors = domainService.validate( newDomain );
 		
+		Long subjectID = userIDOf(session);
 		if (errors.isEmpty()) {
 			List<Role> defaults = domainService.selectByName(DomainService.DEFAULT_DOMAIN).getRoles();
-			User subject = userService.selectById( userIDOf(session) );
+			User subject = userService.selectById( subjectID );
 			
+			Role admin = null;
 			for(Role role : defaults) {
 				int lastIndex = role.getName().lastIndexOf(" ");
 				String roleName = role.getName().substring(lastIndex);
@@ -76,20 +78,41 @@ public class DomainsController extends AbstractController {
 				roleService.save( newRole );
 				newDomain.addRole( newRole );
 				LOGGER.info("Role " + newRole.getName() + " was found and added to " + newDomain.getName());
+				admin = ("Administrator".equals( roleName.trim() ) ? newRole : null);
 			}
-			
+
 			domainService.save( newDomain );
 			String message = "Domain " + newDomain.getName() + " was created";
 			LOGGER.info(message + " by " + subject.getUsername());
 			flash(message, Severity.INFO, model);
+
+			assignNew(subject, newDomain, admin);
 			return redirectTo(AdminViewController.DOMAINS);
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		model.addAttribute("postDomainAction", DomainsController.CREATE);
-		AdminViewController.setAdminDomainsContent(model, domainService);
+		AdminViewController.setAdminDomainsContent(model, subjectID, domainService);
 		model.addAttribute("pageName", "admin_domains");
 		return "wman_frame";
+	}
+	
+	/**
+	 * Assigns the given <code>User</code> to the <code>Domain</code> instance passed with the 
+	 * <code>Role</code>s specified in case they exist.
+	 * 
+	 * @param user
+	 * @param domain
+	 * @param roles
+	 * @param model
+	 * 
+	 * @return the {@link List} of {@link Role} names that could not be found
+	 * */
+	private void assignNew(User user, Domain domain, Role role) {
+		userService.save(user);
+		DomainAssignment da = new DomainAssignment(user, domain, role);
+		daService.save( da );
+		LOGGER.info(user.getUsername() + " was assigned to domain " + domain.getName() + " as " + asString(role));
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -99,8 +122,9 @@ public class DomainsController extends AbstractController {
 		domain.setName(newDomain.getName());
 		Map<String, String> errors = domainService.validate( domain );
 		
+		Long subjectID = userIDOf(session);
 		if (errors.isEmpty()) {
-			User subject = userService.selectById( userIDOf(session) );
+			User subject = userService.selectById( subjectID );
 			
 			domainService.save( domain );
 			String message = "Domain " + domain.getName() + " was updated";
@@ -111,7 +135,7 @@ public class DomainsController extends AbstractController {
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		setUpdateFormAttributes(newDomain, oldId, model);
-		AdminViewController.setAdminDomainsContent(model, domainService);
+		AdminViewController.setAdminDomainsContent(model, subjectID, domainService);
 		model.addAttribute("pageName", "admin_domains");
 		return "wman_frame";
 	}
@@ -146,18 +170,18 @@ public class DomainsController extends AbstractController {
 
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteRole(@RequestParam("domain") long domainID, HttpSession session, Model model) {
+	public String deleteRole(@RequestParam("domain") Long domainID, HttpSession session, Model model) {
 		Domain domain = domainService.selectById(domainID);
 		
 		if (domain != null) {
 			User subject = userService.selectById( userIDOf(session) );
 			
-			tryRemove(domain, subject, session, model);
+			tryRemove(domain, subject, model);
 		}
 		return redirectTo(AdminViewController.DOMAINS);
 	}
 	
-	private final void tryRemove(Domain domain, User subject, HttpSession session, Model model) {
+	private final void tryRemove(Domain domain, User subject, Model model) {
 		try {
 			
 			List<DomainAssignment> assignments = daService.selectByDomainName(domain.getName());
@@ -175,8 +199,8 @@ public class DomainsController extends AbstractController {
 	}
 	
 	@RequestMapping(value = NAMES, method = RequestMethod.GET)
-	public String listDomainNames(Model model, HttpServletRequest request) {
-		List<String> domainNames = domainService.selectAllNames();
+	public String listDomainNames(Model model, HttpSession session) {
+		List<String> domainNames = domainService.domainNamesOf( userIDOf(session) );
 		model.addAttribute("options", DroppableName.namesOf(domainNames, ""));
 		return "fragments/option_list";
 	}

@@ -99,6 +99,32 @@ public class DomainService extends AbstractDataService<Domain> {
 	}
 
 	/**
+	 * Retrieves the <code>Domain</code> instances that the given <code>User</code> specified by its id
+	 * was assigned to.
+	 * 
+	 * @param userID
+	 * @return the {@link List} of {@link Domain}s
+	 * */
+	public List<Domain> domainsOf(Long userID) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		return callNamedQuery(Domain.NQ_FIND_BY_USER_ID, parameters);
+	}
+	
+	/**
+	 * Retrieves the names of the <code>Domain</code> instances that the given <code>User</code> specified by its id
+	 * was assigned to.
+	 * 
+	 * @param userID
+	 * @return the {@link List} of {@link Domain} names
+	 * */
+	public List<String> domainNamesOf(Long userID) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		return callNamedQuery(Domain.NQ_FIND_NAMES_BY_USER_ID, parameters, String.class);
+	}
+
+	/**
 	 * @see {@link AbstractDataService#getEntityClass()}
 	 * */
 	@Override

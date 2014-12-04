@@ -32,12 +32,16 @@ import javax.validation.constraints.Size;
 													   "AND r MEMBER OF d.userRoles "),
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u " +
 											      "WHERE u.username = :username "),
+    @NamedQuery(name = "User.findUsersInDomainOf", query = "SELECT DISTINCT u FROM User u, DomainAssignment da1, DomainAssignment da2 " +
+                                                           "WHERE da1.domain = da2.domain " + 
+    		                                                      "AND da1.user = u AND da2.user.id = :userID ")
 })
 public class User extends AbstractEntity {
 
 	public static final String NQ_FIND_USERS_FOR_PROJECT = "User.findUsersForProject";
 	public static final String NQ_FIND_USERS_OF = "User.findUsersOf";
 	public static final String NQ_FIND_BY_NAME = "User.findByName";
+	public static final String NQ_FIND_USERS_IN_DOMAIN_OF = "User.findUsersInDomainOf";
 
 	public static final String PR_NAME = "username";
 	public static final String PR_PASSWORD = "password";

@@ -175,9 +175,9 @@ public class UsersController extends AbstractController {
 	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpSession session) {
 		User user = newUser.asUser();
 		
+		Long subjectID = userIDOf(session);
 		Map<String, String> errors = userService.validate(user, newUser.getConfirmPassword());
 		if (errors.isEmpty()) {
-			long subjectID = userIDOf(session);
 			User subject = userService.selectById(subjectID);
 			Map<String, List<String>> assignments = tryParseAssignments(newUser.getUserRoles(), parser);
 			
@@ -205,7 +205,7 @@ public class UsersController extends AbstractController {
 		}
 		
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
-		AdminViewController.setAdminUsersContent(model, userService);
+		AdminViewController.setAdminUsersContent(model, subjectID, userService);
 		model.addAttribute("postUserAction", UsersController.CREATE);
 		model.addAttribute("user", newUser);
 		model.addAttribute("pageName", "admin_users");
@@ -276,7 +276,7 @@ public class UsersController extends AbstractController {
 	private void assignToDefault(User user, Domain domain) {
 		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), DomainService.DEFAULT_DOMAIN);
 		
-		if (!DomainService.DEFAULT_DOMAIN.equals( domain.getName() ) && da == null) {
+		if ((domain == null) || ( !DomainService.DEFAULT_DOMAIN.equals(domain.getName()) && (da == null) )) {
 			userService.save( user );
 			Domain defDomain = domainService.selectByName(DomainService.DEFAULT_DOMAIN);
 			Role defRole = roleService.selectByName(DomainService.DEFAULT_ROLE);

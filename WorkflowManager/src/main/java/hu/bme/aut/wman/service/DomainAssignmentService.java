@@ -131,7 +131,7 @@ public class DomainAssignmentService extends AbstractDataService<DomainAssignmen
 	 * @param userID
 	 * @return a {@link Map} containing its {@link Role}s ordered by the {@link Domain}s they are defined in
 	 * */
-	public Map<String, List<String>> assignmentsOf(long userID) {
+	public Map<String, List<String>> assignmentsOf(Long userID) {
 		List<DomainAssignment> assignments = selectByUserID( userID );
 		Map<String, List<String>> results = new HashMap<>();
 		if (assignments.isEmpty())

@@ -55,6 +55,17 @@ public class StringUtils {
 	}
 
 	/**
+	 * Obtains the <code>String</code> representation of the given <code>Object</code> or returns "null"
+	 * if the <code>Object</code> was null.
+	 * 
+	 * @param object 
+	 * @return the {@link String} representation of the given {@link Object}
+	 * */
+	public static final String asString(Object object) {
+		return (object == null) ? "null" : object.toString();
+	}
+
+	/**
 	 * Transforms the input <code>List</code> to a <code>String</code> in a format of 
 	 * [e1, e2, ..., eN] calling the toString() method of each element considering null values.
 	 * 
