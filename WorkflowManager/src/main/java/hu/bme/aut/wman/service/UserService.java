@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.service;
 
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.validation.PasswordValidator;
 import hu.bme.aut.wman.service.validation.UserValidator;
@@ -140,6 +141,19 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		List<Entry<String, Object>> parameters = new ArrayList<>();
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("roleName", roleName));
 		return callNamedQuery("User.findUsersOf", parameters);
+	}
+
+	/**
+	 * Selects all the <code>User</code>s assigned to all the <code>Domain</code>s the <code>User</code> specified
+	 * by its id is also assigned to.
+	 * 
+	 * @param userID
+	 * @return a {@link List} of {@link User}s in the same {@link Domain} as the given {@link User}
+	 * */
+	public List<User> selectUsersInDomainOf(Long userID) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF, parameters);
 	}
 
 	/**

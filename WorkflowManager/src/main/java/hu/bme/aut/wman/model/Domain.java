@@ -27,13 +27,19 @@ import javax.validation.constraints.Size;
 	@NamedQuery(name = "Domain.findByName", query = "SELECT d FROM Domain d WHERE d.name = :domainName "),
 	@NamedQuery(name = "Domain.findAllNames", query = "SELECT d.name FROM Domain d "),
 	@NamedQuery(name = "Domain.findByRoleID", query = "SELECT d FROM Domain d, Role r "+
-	                                                  "WHERE r.id = :roleID AND r MEMBER OF d.roles ")
+	                                                  "WHERE r.id = :roleID AND r MEMBER OF d.roles "),
+    @NamedQuery(name = "Domain.findByUserID", query = "SELECT d FROM Domain d, DomainAssignment da " + 
+	                                                  "WHERE d.id = da.domain.id AND da.user.id = :userID"),
+	@NamedQuery(name = "Domain.findNamesByUserID", query = "SELECT d.name FROM Domain d, DomainAssignment da " + 
+            									      "WHERE d.id = da.domain.id AND da.user.id = :userID")
 })
 public class Domain extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_NAME = "Domain.findByName";
 	public static final String NQ_FIND_ALL_NAMES = "Domain.findAllNames";
 	public static final String NQ_FIND_BY_ROLE_ID = "Domain.findByRoleID";
+	public static final String NQ_FIND_BY_USER_ID = "Domain.findByUserID";
+	public static final String NQ_FIND_NAMES_BY_USER_ID = "Domain.findNamesByUserID";
 	
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";

@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,14 +60,14 @@ public class AdminViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = ROLES, method = RequestMethod.GET)
-	public String adminRoles(Model model) {
-		setAdminRolesContent(model, domainService);
+	public String adminRoles(Model model, HttpSession session) {
+		setAdminRolesContent(model, userIDOf(session), domainService);
 		return navigateToFrame("admin_roles", model);
 	}
 
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)
-	public String adminDomains(Model model) {
-		setAdminDomainsContent(model, domainService);
+	public String adminDomains(Model model, HttpSession session) {
+		setAdminDomainsContent(model, userIDOf(session), domainService);
 		return navigateToFrame("admin_domains", model);
 	}
 
@@ -76,8 +78,9 @@ public class AdminViewController extends AbstractController {
 	}
 	
 	@RequestMapping(value = USERS, method = RequestMethod.GET)
-	public String adminUsers(Model model) {
-		setAdminUsersContent(model, userService);
+	public String adminUsers(Model model, HttpSession session) {
+		Long subjectID = userIDOf(session);
+		setAdminUsersContent(model, subjectID, userService);
 		return navigateToFrame("admin_users", model);
 	}
 	
@@ -86,8 +89,8 @@ public class AdminViewController extends AbstractController {
 		return NAVIGATION_TABS;
 	}
 	
-	public static final void setAdminRolesContent(Model model, DomainService domainService) {
-		model.addAttribute("domains", domainService.selectAll());
+	public static final void setAdminRolesContent(Model model, Long subjectID, DomainService domainService) {
+		model.addAttribute("domains", domainService.domainsOf( subjectID ));
 		model.addAttribute("selectPrivilegesUrl", PrivilegesController.ROOT_URL);
 		model.addAttribute("selectCreateFormUrl", RolesController.CREATE_FORM);
 		model.addAttribute("selectUpdateFormUrl", RolesController.UPDATE_FORM);
@@ -95,8 +98,8 @@ public class AdminViewController extends AbstractController {
 		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
 	
-	public static final void setAdminDomainsContent(Model model, DomainService domainService) {
-		model.addAttribute("domains", domainService.selectAll());
+	public static final void setAdminDomainsContent(Model model, Long subjectID, DomainService domainService) {
+		model.addAttribute("domains", domainService.domainsOf( subjectID ));
 		model.addAttribute("selectRolesUrl", RolesController.ROOT_URL);
 		model.addAttribute("selectCreateFormUrl", DomainsController.CREATE_FORM);
 		model.addAttribute("selectUpdateFormUrl", DomainsController.UPDATE_FORM);
@@ -104,8 +107,8 @@ public class AdminViewController extends AbstractController {
 		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
 	
-	public static final void setAdminUsersContent(Model model, UserService userService) {
-		model.addAttribute("users", userService.selectAll());
+	public static final void setAdminUsersContent(Model model, Long subjectID, UserService userService) {
+		model.addAttribute("users", userService.selectUsersInDomainOf( subjectID ));
 		model.addAttribute("selectDomainsForUrl", UsersController.DOMAINS);
 		model.addAttribute("selectDomainNamesUrl", DomainsController.NAMES);
 		model.addAttribute("selectRolesForUrl", RolesController.ROOT_URL);
