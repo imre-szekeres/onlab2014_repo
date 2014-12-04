@@ -16,6 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,16 +49,21 @@ public class LoginController extends AbstractController {
 	@EJB(mappedName = "java:module/UserHandlerImpl")
 	private UserHandlerLocal userHandler;
 
+	@Autowired
+	@Qualifier("authenticationManager")
+	private AuthenticationManager authManager;
 
 
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = APP_ROOT, method = RequestMethod.GET)
-	public String home(Model model, HttpServletRequest request) {
-		if (request.getSession().getAttribute("subject") != null) {
-			model.addAttribute("message", "Welcome to WorkflowManager!");
-			return navigateToFrame("index", model);
-		}
-		return redirectTo(LOGIN);
+	public String home(Model model, HttpServletRequest request, HttpSession session) {
+		if (request.getRemoteUser() == null)
+			return redirectTo(LOGIN);
+
+		if (session.getAttribute("subject") == null)
+			session.setAttribute("subject", new SecurityToken(userService.selectIDOf( request.getRemoteUser() )));
+		model.addAttribute("message", "Welcome to WorkflowManager!");
+		return navigateToFrame("index", model);
 	}
 
 
@@ -94,7 +106,7 @@ public class LoginController extends AbstractController {
 		if (validationErrors.isEmpty()) {
 
 			userHandler.createUser(user, DomainService.DEFAULT_ROLE, DomainService.DEFAULT_DOMAIN);
-			request.getSession().setAttribute("subject", new SecurityToken( user.getId() ));
+			setTokensOf(user, request);
 
 			LOGGER.info("user: " + user.getUsername() + " registered as " + DomainService.DEFAULT_ROLE);
 			return redirectTo(APP_ROOT);
@@ -102,13 +114,30 @@ public class LoginController extends AbstractController {
 		model.addAttribute(AbstractController.ERRORS_MAP, validationErrors);
 		return "login";
 	}
-	
+
+	/**
+	 * Responsible for setting the <code>SecurityToken</code> and the credentials in the <code>HttpSession</code> instance
+	 * for the freshly registered user.
+	 * 
+	 * @param user
+	 * @param request
+	 * */
+	private final void setTokensOf(User user, HttpServletRequest request) {
+		request.getSession();
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+		token.setDetails(new WebAuthenticationDetails( request ));
+		Authentication auth = authManager.authenticate( token );
+		request.getSession().setAttribute("subject", new SecurityToken( user.getId() ));
+		
+		SecurityContextHolder.getContext().setAuthentication( auth );
+	}
+
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = LOGOUT, method = RequestMethod.GET)
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.setAttribute("subject", null);
-		return redirectTo(APP_ROOT);
+		return redirectTo(LOGIN);
 	}
 
 	/**
