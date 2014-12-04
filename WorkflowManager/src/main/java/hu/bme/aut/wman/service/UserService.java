@@ -100,7 +100,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		Map<String, String> errors = new HashMap<>();
 		
 		if (!old.getPassword().equals( oldPassword ))
-			errors.put("oldPassword", "Given value does not equal to the old one.");
+			errors.put("oldPassword", "Given value does not match to the old one.");
 		if (StringUtils.isEmpty( newPassword ))
 			errors.put("password", "cannot be empty");
 		else if (StringUtils.isEmpty( confirmPassword ))
@@ -154,6 +154,32 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		List<Entry<String, Object>> parameters = new ArrayList<>();
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
 		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF, parameters);
+	}
+
+	/**
+	 * Retrieves the password of the given <code>User<code>.
+	 * 
+	 * @param username
+	 * @return the corresponding password
+	 * */
+	public String selectPasswordOf(String username) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		List<String> results = callNamedQuery(User.NQ_FIND_PASSWORD_OF, parameters, String.class);
+		return (results == null || results.isEmpty()) ? null : results.get(0);
+	}
+
+	/**
+	 * Retrieves the ID of the given <code>User<code>.
+	 * 
+	 * @param username
+	 * @return the corresponding ID
+	 * */
+	public Long selectIDOf(String username) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		List<Long> results = callNamedQuery(User.NQ_FIND_ID_OF, parameters, Long.class);
+		return (results == null || results.isEmpty()) ? null : results.get(0);
 	}
 
 	/**

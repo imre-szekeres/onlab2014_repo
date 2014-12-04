@@ -34,7 +34,11 @@ import javax.validation.constraints.Size;
 											      "WHERE u.username = :username "),
     @NamedQuery(name = "User.findUsersInDomainOf", query = "SELECT DISTINCT u FROM User u, DomainAssignment da1, DomainAssignment da2 " +
                                                            "WHERE da1.domain = da2.domain " + 
-    		                                                      "AND da1.user = u AND da2.user.id = :userID ")
+    		                                                      "AND da1.user = u AND da2.user.id = :userID "),
+    @NamedQuery(name = "User.findPasswordOf", query = "SELECT u.password FROM User u " +
+    		                                          "WHERE u.username = :username "),
+    @NamedQuery(name = "User.findIDOf", query = "SELECT u.id FROM User u " +
+    	    		                            "WHERE u.username = :username ")
 })
 public class User extends AbstractEntity {
 
@@ -42,6 +46,8 @@ public class User extends AbstractEntity {
 	public static final String NQ_FIND_USERS_OF = "User.findUsersOf";
 	public static final String NQ_FIND_BY_NAME = "User.findByName";
 	public static final String NQ_FIND_USERS_IN_DOMAIN_OF = "User.findUsersInDomainOf";
+	public static final String NQ_FIND_PASSWORD_OF = "User.findPasswordOf";
+	public static final String NQ_FIND_ID_OF = "User.findIDOf";
 
 	public static final String PR_NAME = "username";
 	public static final String PR_PASSWORD = "password";
@@ -58,11 +64,11 @@ public class User extends AbstractEntity {
 	protected String username;
 
 	@NotNull
-	@Size(min = 7, max = 32, message = "must be between 7 and 32 characters.")
+	@Size(min = 7, max = 277, message = "must be between 7 and 277 characters.")
 	protected String password;
 
 	@NotNull
-	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid format.")
+	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid email format.")
 	protected String email;
 
 	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 characters.")

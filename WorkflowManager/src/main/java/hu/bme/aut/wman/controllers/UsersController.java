@@ -25,6 +25,9 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -67,6 +70,10 @@ public class UsersController extends AbstractController {
 	private RoleService roleService;
 	@EJB(mappedName = "java:module/UserRolesParser")
 	private JsonParser<String, List<String>> parser;
+	
+	@Autowired
+	@Qualifier("bcryptEncoder")
+	private PasswordEncoder encoder;
 
 
 
@@ -178,6 +185,7 @@ public class UsersController extends AbstractController {
 		Long subjectID = userIDOf(session);
 		Map<String, String> errors = userService.validate(user, newUser.getConfirmPassword());
 		if (errors.isEmpty()) {
+			user.setPassword( encoder.encode(user.getPassword()) ); /* hashing the password */
 			User subject = userService.selectById(subjectID);
 			Map<String, List<String>> assignments = tryParseAssignments(newUser.getUserRoles(), parser);
 			
@@ -388,10 +396,10 @@ public class UsersController extends AbstractController {
 		User user = userService.selectById( updated.getId() );
 
 		Map<String, String> errors = userService.validate(
-					user, updated.getOldPassword(), updated.getPassword(), updated.getConfirmPassword()
+					user, encoder.encode(updated.getOldPassword()), updated.getPassword(), updated.getConfirmPassword()
 		);
 		if (errors.isEmpty()) {
-			user.setPassword( updated.getPassword() );
+			user.setPassword( encoder.encode(updated.getPassword()) ); /* hashing the password */
 			userService.save( user );
 			String message = "Password of user " + user.getUsername() + " was modified";
 			LOGGER.info(message);
