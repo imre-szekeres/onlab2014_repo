@@ -47,9 +47,13 @@
 
     <bean id='authenticationService' 
           class='hu.bme.aut.wman.service.AuthenticationService' />
+    <bean id='bcryptEncoder' 
+          class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder' />
 
     <security:authentication-manager alias='authenticationManager' >
-        <security:authentication-provider user-service-ref='authenticationService' />
+        <security:authentication-provider user-service-ref='authenticationService' >
+            <security:password-encoder ref='bcryptEncoder' />
+        </security:authentication-provider>
     </security:authentication-manager>
 
 </beans>

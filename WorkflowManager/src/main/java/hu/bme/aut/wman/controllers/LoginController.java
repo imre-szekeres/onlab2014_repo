@@ -22,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +53,10 @@ public class LoginController extends AbstractController {
 	@Autowired
 	@Qualifier("authenticationManager")
 	private AuthenticationManager authManager;
+	
+	@Autowired
+	@Qualifier("bcryptEncoder")
+	private PasswordEncoder encoder;
 
 
 	@SuppressWarnings("deprecation")
@@ -70,43 +75,20 @@ public class LoginController extends AbstractController {
 	@RequestMapping(value = LOGIN, method = RequestMethod.GET)
 	public String getLogin(Model model) {
 		User subject = new User();
-		model.addAttribute("subject", subject);
+		model.addAttribute("user", subject);
 		return navigateTo(LOGIN, "login", model);
 	}
 
-
-	@SuppressWarnings("deprecation")
-	@RequestMapping(value = LOGIN, method=RequestMethod.POST)
-	public String postLogin(@ModelAttribute("subject") User subject, HttpServletRequest request, Model model){
-		User user = doAuthenticate(subject);
-		if (user != null) {
-			request.getSession().setAttribute("subject", new SecurityToken(user.getId()));
-
-			LOGGER.info("user: " + user.getUsername() + " logged in");
-			return redirectTo(APP_ROOT);
-		}
-		subject.setPassword("");
-		model.addAttribute("loginError", true);
-		return "login";
-	}
-
-
-	private final User doAuthenticate(User subject) {
-		User user = userService.selectByName(subject.getUsername());
-		if(user == null || user.getPassword().equals(subject.getPassword()))
-			return user;
-		return null;
-	}
-
-
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(@ModelAttribute("subject") User user, HttpServletRequest request, Model model) {
+	public String register(@ModelAttribute("user") User user, HttpServletRequest request, Model model) {
 		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"));
 		if (validationErrors.isEmpty()) {
 
+			String plainPassword = user.getPassword();
+			user.setPassword(encoder.encode( user.getPassword() )); /* hashes the password with BCrypt algorithm */
 			userHandler.createUser(user, DomainService.DEFAULT_ROLE, DomainService.DEFAULT_DOMAIN);
-			setTokensOf(user, request);
+			setTokensOf(user.getId(), user.getUsername(), plainPassword, request);
 
 			LOGGER.info("user: " + user.getUsername() + " registered as " + DomainService.DEFAULT_ROLE);
 			return redirectTo(APP_ROOT);
@@ -119,15 +101,17 @@ public class LoginController extends AbstractController {
 	 * Responsible for setting the <code>SecurityToken</code> and the credentials in the <code>HttpSession</code> instance
 	 * for the freshly registered user.
 	 * 
-	 * @param user
+	 * @param id
+	 * @param username
+	 * @param plainPassword
 	 * @param request
 	 * */
-	private final void setTokensOf(User user, HttpServletRequest request) {
+	private final void setTokensOf(Long id, String username, String plainPassword, HttpServletRequest request) {
 		request.getSession();
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, plainPassword);
 		token.setDetails(new WebAuthenticationDetails( request ));
 		Authentication auth = authManager.authenticate( token );
-		request.getSession().setAttribute("subject", new SecurityToken( user.getId() ));
+		request.getSession().setAttribute("subject", new SecurityToken( id ));
 		
 		SecurityContextHolder.getContext().setAuthentication( auth );
 	}

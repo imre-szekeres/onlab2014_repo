@@ -83,12 +83,23 @@ public class AdminViewController extends AbstractController {
 		setAdminUsersContent(model, subjectID, userService);
 		return navigateToFrame("admin_users", model);
 	}
-	
+
+	/**
+	 * @see {@link AbstractController#getNavigationTabs()}
+	 * */
 	@Override
 	public Map<String, String> getNavigationTabs() {
 		return NAVIGATION_TABS;
 	}
-	
+
+	/**
+	 * Encapsulates the setting of the content required to render the admin_roles page across
+	 * the application.
+	 * 
+	 * @param model
+	 * @param subjectID
+	 * @param domainService
+	 * */
 	public static final void setAdminRolesContent(Model model, Long subjectID, DomainService domainService) {
 		model.addAttribute("domains", domainService.domainsOf( subjectID ));
 		model.addAttribute("selectPrivilegesUrl", PrivilegesController.ROOT_URL);
@@ -97,7 +108,15 @@ public class AdminViewController extends AbstractController {
 		model.addAttribute("deleteRoleAction", RolesController.DELETE);
 		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
-	
+
+	/**
+	 * Encapsulates the setting of the content required to render the admin_domains page across
+	 * the application.
+	 * 
+	 * @param model
+	 * @param subjectID
+	 * @param domainService
+	 * */
 	public static final void setAdminDomainsContent(Model model, Long subjectID, DomainService domainService) {
 		model.addAttribute("domains", domainService.domainsOf( subjectID ));
 		model.addAttribute("selectRolesUrl", RolesController.ROOT_URL);
@@ -106,7 +125,15 @@ public class AdminViewController extends AbstractController {
 		model.addAttribute("deleteDomainAction", DomainsController.DELETE);
 		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
-	
+
+	/**
+	 * Encapsulates the setting of the content required to render the admin_users page across
+	 * the application.
+	 * 
+	 * @param model
+	 * @param subjectID
+	 * @param userService
+	 * */
 	public static final void setAdminUsersContent(Model model, Long subjectID, UserService userService) {
 		model.addAttribute("users", userService.selectUsersInDomainOf( subjectID ));
 		model.addAttribute("selectDomainsForUrl", UsersController.DOMAINS);
