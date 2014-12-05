@@ -146,7 +146,7 @@ public class LoginController extends AbstractController {
 	public String accessDenied(HttpSession session, Model model) {
 		if (session.getAttribute("subject") == null)
 			return redirectTo(LOGIN);
-		return navigateToFrame("access_denied", model);
+		return navigateToFrame("fragments/access_denied", model);
 	}
 
 	/**
