@@ -189,5 +189,4 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	protected Class<User> getEntityClass() {
 		return User.class;
 	}
-
 }

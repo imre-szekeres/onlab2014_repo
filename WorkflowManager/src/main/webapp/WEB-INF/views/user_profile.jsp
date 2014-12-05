@@ -4,6 +4,7 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
+<!DOCTYPE html>
 <div id='user-profile-positioner' class='positioner' >
     
     <div id='username-panel' class='panel panel-default' >

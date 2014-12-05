@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 
 <c:set var='loginError' value='${ (not empty loginError or not empty requestScope.error or not empty param.error) ? true : loginError }' />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -84,7 +84,7 @@
 			            <c:set var='inputClass' value='${ loginError == null ? "" : "has-error"  }' />
 			                                   
 			            <div class='form-row ${ inputClass }'>
-			                <input id='username' name='j_username' type='text' class='form:input-large form-control' >
+			                <input id='username' name='j_username' type='text' placeholder='Username' class='form:input-large form-control' >
 			            </div>
 			            <div class='form-row ${ inputClass }' >
 			                <input id='password' name='j_password' type='password' class='form:input-large form-control' >

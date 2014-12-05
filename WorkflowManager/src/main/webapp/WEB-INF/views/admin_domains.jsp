@@ -5,6 +5,7 @@
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
+<!DOCTYPE html>
 <div id='roles-list-panel' class='panel panel-default admin-panel domain-panel'>
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
     <jsp:include page='fragments/domains_list.jsp' />

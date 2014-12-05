@@ -3,6 +3,7 @@
 
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core'        prefix='c' %>
 
+<!DOCTYPE html>
 <c:forEach var='privilege' items='${ privileges }' >
         
         <div class='panel panel-default admin-role-panel admin-privilege-panel' >

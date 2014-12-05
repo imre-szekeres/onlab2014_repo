@@ -37,6 +37,7 @@
     <c:set var='inputAreaColClass' value='col-sm-6' />
 </c:if>
 
+<!DOCTYPE html>
 <div class='modal-dialog' >
 <div class='modal-content' >
     <form:form action='${ appRoot }${ postUserAction }' id='new-user-form' modelAttribute='user' method='POST' class='form-vertical' >
