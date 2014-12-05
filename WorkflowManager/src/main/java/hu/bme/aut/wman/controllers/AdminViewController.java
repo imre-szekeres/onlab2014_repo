@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,7 +77,8 @@ public class AdminViewController extends AbstractController {
 		model.addAttribute("privileges", privilegeService.selectAll());
 		return navigateToFrame("admin_privileges", model);
 	}
-	
+
+	@Secured({"View User"})
 	@RequestMapping(value = USERS, method = RequestMethod.GET)
 	public String adminUsers(Model model, HttpSession session) {
 		Long subjectID = userIDOf(session);

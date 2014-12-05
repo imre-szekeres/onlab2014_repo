@@ -43,6 +43,8 @@ public class LoginController extends AbstractController {
 	public static final String APP_ROOT = "/";
 	public static final String LOGIN = "/login";
 	public static final String LOGOUT = "/logout";
+	public static final String ACCESS_DENIED = "/403";
+	
 
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
@@ -116,12 +118,35 @@ public class LoginController extends AbstractController {
 		SecurityContextHolder.getContext().setAuthentication( auth );
 	}
 
+	/**
+	 * Responsible for handling the logout operation in which the <code>User</code> credentials are
+	 * cleared from the given <code>HttpSession</code> accessed from the <code>HttpServletRequest</code> passed.
+	 * 
+	 * @param request
+	 * @return redirect to the login page
+	 * */
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = LOGOUT, method = RequestMethod.GET)
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.setAttribute("subject", null);
 		return redirectTo(LOGIN);
+	}
+
+	/**
+	 * Responsible for dispatching the request to either an inner page or to the login page
+	 * depending on the <code>SecurityToken</code> in the <code>HttpSession</code>.
+	 * 
+	 * @param session
+	 * @param model
+	 * @return redirect {@link String} to either to login page or the frame
+	 * */
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = ACCESS_DENIED, method = RequestMethod.GET)
+	public String accessDenied(HttpSession session, Model model) {
+		if (session.getAttribute("subject") == null)
+			return redirectTo(LOGIN);
+		return navigateToFrame("access_denied", model);
 	}
 
 	/**

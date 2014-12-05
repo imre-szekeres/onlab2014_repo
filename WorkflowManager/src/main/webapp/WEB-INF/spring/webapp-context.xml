@@ -12,26 +12,29 @@
 
     <mvc:annotation-driven />
     <context:component-scan base-package='hu.bme.aut.wman.controllers' />
-    
+
     <bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
-    
+
     <bean class='org.springframework.web.servlet.view.InternalResourceViewResolver' >
         <property name='prefix' value='/WEB-INF/views/' />
         <property name='suffix' value='.jsp' />
     </bean>
-    
+
     <bean id='messageSource'
           class='org.springframework.context.support.ResourceBundleMessageSource' >
           <property name='basename' value='messages' />
     </bean>
-    
+
     <bean id='webAppStartupListener' 
           class='hu.bme.aut.wman.listeners.WebAppStartupListener' />
     
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
+    <security:global-method-security secured-annotations='enabled' />
+    
     <security:http auto-config='true' use-expressions='true' >
+        <security:access-denied-handler error-page='/403' />
         <security:intercept-url pattern='/resources/**' access='permitAll' />
         <security:form-login login-page='/login' 
                              default-target-url='/'

@@ -56,12 +56,12 @@ public class WebAppStartupListener
 		LOGGER.debug("WebAppStartupListener.onApplicationEvent: start");
 		try {
 
-			if (isSetupNeeded()) {
+			/*if (isSetupNeeded()) {
 				synchronized (this) {
 					startupService.setupWebapp(XML_DB_CONFIG);
 				}
 			}
-			setSetupNeeded( false );
+			setSetupNeeded( false );*//* TODO: uncomment */
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.fatal(e);

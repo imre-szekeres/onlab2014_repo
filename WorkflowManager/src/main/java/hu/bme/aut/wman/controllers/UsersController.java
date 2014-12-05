@@ -391,12 +391,12 @@ public class UsersController extends AbstractController {
 	}
 
 	@SuppressWarnings("deprecation")
-	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST)
+	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST) /* TODO: */
 	public String updatePassword(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User user = userService.selectById( updated.getId() );
 
 		Map<String, String> errors = userService.validate(
-					user, encoder.encode(updated.getOldPassword()), updated.getPassword(), updated.getConfirmPassword()
+					user, updated.getOldPassword(), updated.getPassword(), updated.getConfirmPassword(), encoder
 		);
 		if (errors.isEmpty()) {
 			user.setPassword( encoder.encode(updated.getPassword()) ); /* hashing the password */

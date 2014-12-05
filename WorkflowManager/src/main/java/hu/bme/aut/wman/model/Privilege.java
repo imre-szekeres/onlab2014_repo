@@ -6,6 +6,8 @@ package hu.bme.aut.wman.model;
 import hu.bme.aut.wman.view.DragNDroppable;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -14,8 +16,16 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("serial")
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Privilege.findAllNamesByUsername", query = "SELECT p.name FROM Privilege p, DomainAssignment da, Role r " +
+                                                                 "WHERE p MEMBER OF r.privileges " +
+			                                                            "AND r MEMBER OF da.userRoles " +
+                                                                        "AND da.user.username = :username ")
+})
 public class Privilege extends AbstractEntity implements DragNDroppable {
 
+	public static final String NQ_FIND_ALL_NAMES_BY_USERNAME = "Privilege.findAllNamesByUsername";
+	
 	public static final String PR_NAME = "name";
 	public static final String PR_ROLES = "roles";
 

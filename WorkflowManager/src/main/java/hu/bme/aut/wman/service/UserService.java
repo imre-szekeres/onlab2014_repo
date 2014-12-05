@@ -19,6 +19,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 /**
  * Helps make operations with <code>User</code>.
@@ -94,13 +96,14 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	 * @param user
 	 * @param oldPassword
 	 * @param confirmPassword
+	 * @param encoder
 	 * @return the {@link java.util.Map} representation of (<code>propertyName</code>, <code>errorMessage</code>) entries
 	 * */
-	public Map<String, String> validate(User old, String oldPassword, String newPassword, String confirmPassword) {
+	public Map<String, String> validate(User old, String oldPassword, String newPassword, String confirmPassword, PasswordEncoder encoder) {
 		Map<String, String> errors = new HashMap<>();
 		
-		if (!old.getPassword().equals( oldPassword ))
-			errors.put("oldPassword", "Given value does not match to the old one.");
+		if (!encoder.matches(oldPassword, old.getPassword()))
+			errors.put("oldPassword", "Given value does not match the previous one.");
 		if (StringUtils.isEmpty( newPassword ))
 			errors.put("password", "cannot be empty");
 		else if (StringUtils.isEmpty( confirmPassword ))
