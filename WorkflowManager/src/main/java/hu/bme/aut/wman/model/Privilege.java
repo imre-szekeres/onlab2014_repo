@@ -17,8 +17,8 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Privilege.findAllNamesByUsername", query = "SELECT p.name FROM Privilege p, DomainAssignment da, Role r " +
-                                                                 "WHERE p MEMBER OF r.privileges " +
+	@NamedQuery(name = "Privilege.findAllNamesByUsername", query = "SELECT DISTINCT p.name FROM Privilege p, DomainAssignment da, Role r " +
+                                                                   "WHERE p MEMBER OF r.privileges " +
 			                                                            "AND r MEMBER OF da.userRoles " +
                                                                         "AND da.user.username = :username ")
 })
