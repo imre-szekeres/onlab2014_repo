@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -130,7 +131,8 @@ public class UsersController extends AbstractController {
 		}
 		return null;
 	}
-	
+
+	@PreAuthorize("hasRole('Create User')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
 	public String deleteUser(@RequestParam("user") long userID, HttpSession session, Model model) {
@@ -176,7 +178,8 @@ public class UsersController extends AbstractController {
 			flash(message, Severity.ERROR, model);
 		}
 	}
-	
+
+	@PreAuthorize("hasRole('Create User')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpSession session) {
@@ -219,7 +222,8 @@ public class UsersController extends AbstractController {
 		model.addAttribute("pageName", "admin_users");
 		return AbstractController.FRAME;
 	}
-	
+
+	@PreAuthorize("hasRole('Assign User') and hasRole('Assign Role')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateUser(@ModelAttribute("user") UserTransferObject updated, Model model, HttpSession session) {
@@ -305,6 +309,7 @@ public class UsersController extends AbstractController {
 	 * 
 	 * @return the {@link List} of {@link Role} names that could not be found
 	 * */
+	@PreAuthorize("hasRole('Assign User') and hasRole('Assign Role')") /* TODO check! */
 	private List<String> assign(User user, Domain domain, List<String> roles, Model model) {
 		userService.save(user);
 		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), domain.getName());

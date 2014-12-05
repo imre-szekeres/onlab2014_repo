@@ -15,7 +15,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,32 +53,34 @@ public class AdminViewController extends AbstractController {
 	@EJB(mappedName = "java:module/PrivilegeService")
 	private PrivilegeService privilegeService;
 
-	
-	@SuppressWarnings("deprecation")
+
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
 	public String admin(Model model) {
-		return redirectTo(AdminViewController.USERS);
+		return navigateToFrame("admin", model);
 	}
 
+	@PreAuthorize("hasRole('View Role')")
 	@RequestMapping(value = ROLES, method = RequestMethod.GET)
 	public String adminRoles(Model model, HttpSession session) {
 		setAdminRolesContent(model, userIDOf(session), domainService);
 		return navigateToFrame("admin_roles", model);
 	}
 
+	@PreAuthorize("hasRole('View Domain')")
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)
 	public String adminDomains(Model model, HttpSession session) {
 		setAdminDomainsContent(model, userIDOf(session), domainService);
 		return navigateToFrame("admin_domains", model);
 	}
 
+	@PreAuthorize("hasRole('View Privilege')")
 	@RequestMapping(value = PRIVILEGES, method = RequestMethod.GET)
 	public String adminPrivileges(Model model) {
 		model.addAttribute("privileges", privilegeService.selectAll());
 		return navigateToFrame("admin_privileges", model);
 	}
 
-	@Secured({"View User"})
+	@PreAuthorize("hasRole('View User')")
 	@RequestMapping(value = USERS, method = RequestMethod.GET)
 	public String adminUsers(Model model, HttpSession session) {
 		Long subjectID = userIDOf(session);

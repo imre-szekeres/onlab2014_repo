@@ -82,6 +82,19 @@ public class PrivilegeService extends AbstractDataService<Privilege> implements 
 	}
 
 	/**
+	 * Obtains the <code>Privilege</code>s owned by the <code>User</code> specified by its username.
+	 * 
+	 * @param username
+	 * @return a {@link List} of {@link Privilege}s
+	 * */
+	public List<Privilege> privilegesOf(String username) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		return callNamedQuery(Privilege.NQ_FIND_ALL_BY_USERNAME, parameters);
+	}
+
+	
+	/**
 	 * @see {@link AbstractDataService}
 	 * */
 	@Override

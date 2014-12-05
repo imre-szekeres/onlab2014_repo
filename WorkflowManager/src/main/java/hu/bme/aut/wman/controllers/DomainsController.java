@@ -23,6 +23,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -57,7 +58,8 @@ public class DomainsController extends AbstractController {
 	private RoleService roleService;
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
-	
+
+	@PreAuthorize("hasRole('Create Domain')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createDomain(@ModelAttribute("domain") Domain newDomain, Model model, HttpSession session) {
@@ -114,7 +116,8 @@ public class DomainsController extends AbstractController {
 		daService.save( da );
 		LOGGER.info(user.getUsername() + " was assigned to domain " + domain.getName() + " as " + asString(role));
 	}
-	
+
+	@PreAuthorize("hasRole('Create Domain')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateDomain(@ModelAttribute("domain") Domain newDomain, @RequestParam("oldId") Long oldId, Model model, HttpSession session) {
@@ -168,6 +171,7 @@ public class DomainsController extends AbstractController {
 		model.addAttribute("formType", "update");
 	}
 
+	@PreAuthorize("hasRole('Create Domain')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
 	public String deleteRole(@RequestParam("domain") Long domainID, HttpSession session, Model model) {
@@ -197,7 +201,7 @@ public class DomainsController extends AbstractController {
 			flash(message, Severity.ERROR, model);
 		}
 	}
-	
+
 	@RequestMapping(value = NAMES, method = RequestMethod.GET)
 	public String listDomainNames(Model model, HttpSession session) {
 		List<String> domainNames = domainService.domainNamesOf( userIDOf(session) );

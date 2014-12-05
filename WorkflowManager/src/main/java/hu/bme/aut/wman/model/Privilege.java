@@ -10,6 +10,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.security.core.GrantedAuthority;
+
 /**
  * @author Imre Szekeres
  * @version "%I%, %G%"
@@ -20,11 +22,16 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Privilege.findAllNamesByUsername", query = "SELECT DISTINCT p.name FROM Privilege p, DomainAssignment da, Role r " +
                                                                    "WHERE p MEMBER OF r.privileges " +
 			                                                            "AND r MEMBER OF da.userRoles " +
-                                                                        "AND da.user.username = :username ")
+                                                                        "AND da.user.username = :username "),
+    @NamedQuery(name = "Privilege.findAllByUsername", query = "SELECT DISTINCT p FROM Privilege p, DomainAssignment da, Role r " +
+                                                              "WHERE p MEMBER OF r.privileges " + 
+    		                                                      "AND r MEMBER OF da.userRoles " +
+                                                                  "AND da.user.username = :username ")
 })
-public class Privilege extends AbstractEntity implements DragNDroppable {
+public class Privilege extends AbstractEntity implements DragNDroppable, GrantedAuthority {
 
 	public static final String NQ_FIND_ALL_NAMES_BY_USERNAME = "Privilege.findAllNamesByUsername";
+	public static final String NQ_FIND_ALL_BY_USERNAME = "Privilege.findAllByUsername";
 	
 	public static final String PR_NAME = "name";
 	public static final String PR_ROLES = "roles";
@@ -103,5 +110,13 @@ public class Privilege extends AbstractEntity implements DragNDroppable {
 	
 	public String getOwner() {
 		return "";
+	}
+
+	/**
+	 * @see {@link GrantedAuthority#getAuthority()}
+	 * */
+	@Override
+	public String getAuthority() {
+		return this.name;
 	}
 }

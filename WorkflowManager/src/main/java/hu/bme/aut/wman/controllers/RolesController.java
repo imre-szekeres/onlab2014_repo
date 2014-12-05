@@ -24,6 +24,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,7 +59,8 @@ public class RolesController extends AbstractController {
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
 	
-	
+
+	@PreAuthorize("hasRole('Create Role') and hasRole('Assign Privilege')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
@@ -99,7 +101,8 @@ public class RolesController extends AbstractController {
 		reset(newRole, model);
 		return AbstractController.FRAME;
 	}
-	
+
+	@PreAuthorize("hasRole('Assign Privilege')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
@@ -150,7 +153,7 @@ public class RolesController extends AbstractController {
 			LOGGER.debug(privilege.toString() + " was addoed to " + role.toString());
 		}
 	}
-	
+
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model, HttpSession session) {
 		Long subjectID = userIDOf(session);
@@ -184,6 +187,7 @@ public class RolesController extends AbstractController {
 		model.addAttribute("formType", formType);
 	} 
 
+	@PreAuthorize("hasRole('Create Role')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
 	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") long roleID, Model model, HttpSession session) {

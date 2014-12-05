@@ -5,13 +5,8 @@ package hu.bme.aut.wman.service;
 
 import static hu.bme.aut.wman.utils.StringUtils.isEmpty;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ejb.EJB;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,12 +28,6 @@ public class AuthenticationService implements UserDetailsService {
 		String password = userService.selectPasswordOf(username);
 		if (isEmpty( password ))
 			throw new UsernameNotFoundException(username);
-
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		for(String privilege : privilegeService.privilegeNamesOf(username))
-			authorities.add(new SimpleGrantedAuthority( privilege ));
-
-		return new User(username, password, authorities);
+		return new User(username, password, privilegeService.privilegesOf(username));
 	}
 }

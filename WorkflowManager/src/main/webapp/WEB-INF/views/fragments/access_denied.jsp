@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
-<div class='warning-panel'>
-    <div class='alert alert-danger' >
-        Sorry, you are not authorized to access this site!
+<div id='access-defined-panel' class='warning-panel'>
+    <div id='access-denied-alert' class='alert alert-danger' >
+        Sorry, you are not authorized to do that!
     </div>
 </div>
