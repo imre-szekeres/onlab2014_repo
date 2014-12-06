@@ -202,6 +202,10 @@ public class DomainsController extends AbstractController {
 		}
 	}
 
+	/**
+	 * TODO:
+	 * */
+	@PreAuthorize("hasRole('View Domain')")
 	@RequestMapping(value = NAMES, method = RequestMethod.GET)
 	public String listDomainNames(Model model, HttpSession session) {
 		List<String> domainNames = domainService.domainNamesOf( userIDOf(session) );

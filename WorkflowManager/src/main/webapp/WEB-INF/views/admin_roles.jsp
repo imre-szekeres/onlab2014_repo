@@ -79,6 +79,9 @@
     			$(data).appendTo( $_newr_modal );
     			requestPrivileges();
     			current_form = 'create';
+    		},
+    		error: function() {
+    			window.location = "${ appRoot }/403";
     		}
     	});
     }
@@ -162,7 +165,10 @@
                     current_form = 'create';
                     $_create_role_trigger.trigger('click');
                     current_form = 'update';
-        		}
+        		},
+                error: function() {
+                    window.location = "${ appRoot }/403";
+                }
         	});
         });
     });

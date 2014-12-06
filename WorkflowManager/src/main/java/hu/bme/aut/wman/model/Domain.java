@@ -32,13 +32,15 @@ import javax.validation.constraints.Size;
 	                                                  "WHERE d.id = da.domain.id AND da.user.id = :userID"),
 	@NamedQuery(name = "Domain.findNamesByUserID", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da " + 
             									           "WHERE d.id = da.domain.id AND da.user.id = :userID"),
-   @NamedQuery(name = "Domain.findNamesByUserIDAndPrivilege", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da, Privilege p, Role r " + 
-                    									              "WHERE d.id = da.domain.id AND da.user.id = :userID " +
-		                                                                  "AND p.name = :privilegeName " +
-                    									                  "AND r MEMBER OF da.userRoles " +
-		                                                                  "AND p MEMBER OF r.privileges "),
-   @NamedQuery(name = "Domain.findNamesByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d.name FROM Domain d " + 
-		                        									       "WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
+
+    @NamedQuery(name = "Domain.findNamesByUserIDAndPrivilege", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da, Privilege p, Role r " + 
+                    									               "WHERE d.id = da.domain.id AND da.user.id = :userID " +
+		                                                                   "AND p.name = :privilegeName " +
+                    									                   "AND r MEMBER OF da.userRoles " +
+		                                                                   "AND p MEMBER OF r.privileges "),
+
+    @NamedQuery(name = "Domain.findNamesByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d.name FROM Domain d " + 
+		                        									        "WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
 		                                                                                     "WHERE da.domain.id = d.id AND da.user.id = :userID " +
 		                        									                              "AND r MEMBER OF da.userRoles " +
 		                                                                                          "AND p MEMBER OF r.privileges " +
