@@ -105,8 +105,8 @@ public class UsersController extends AbstractController {
 	public String requestCreateForm(Model model, HttpSession session) {
 		UserTransferObject user = new UserTransferObject();
 		user.setUserRoles("{}");
-		setFormAttributes( user, userIDOf(session), domainService, 
-				           UsersController.CREATE, Arrays.asList(new String[] {"Assign User", "Assign Role", "Create User"}), 
+		setFormAttributes( user, userIDOf(session), domainService, UsersController.CREATE, "create", 
+				           Arrays.asList(new String[] {"Assign User", "Assign Role", "Create User"}), 
 				           model );
 		return "fragments/user_form_modal";
 	}
@@ -117,7 +117,7 @@ public class UsersController extends AbstractController {
 		UserTransferObject user = new UserTransferObject(userService.selectById(userID));
 		Map<String, List<String>> assignments = daService.assignmentsOf(userID);
 		user.setUserRoles(tryStringifyAssignments(assignments, parser));
-		setFormAttributes( user, userIDOf(session), domainService, UsersController.UPDATE, 
+		setFormAttributes( user, userIDOf(session), domainService, UsersController.UPDATE, "update",
 				           Arrays.asList(new String[] {"Assign User", "Assign Role"}), 
 				           model );
 		return "fragments/user_form_modal";
@@ -126,11 +126,12 @@ public class UsersController extends AbstractController {
 	/**
 	 * TODO: 
 	 * */
-	private static final void setFormAttributes(UserTransferObject user, Long subjectID, DomainService domainService, String postUserAction, Collection<? extends String> authorities, Model model) {
+	private static final void setFormAttributes(UserTransferObject user, Long subjectID, DomainService domainService, String postUserAction, String formType, Collection<? extends String> authorities, Model model) {
 		model.addAttribute("user", user);
 		model.addAttribute("postUserAction", postUserAction);
 		List<String> domainNames = domainService.domainNamesOf(subjectID, authorities);
 		model.addAttribute("domains", DroppableName.namesOf(domainNames, ""));
+		model.addAttribute("formType", formType);
 	}
 	
 	/**
@@ -234,8 +235,10 @@ public class UsersController extends AbstractController {
 		}
 		
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
-		AdminViewController.setAdminUsersContent(model, subjectID, userService);
-		setFormAttributes(newUser, subjectID, domainService, UsersController.CREATE, Arrays.asList(new String[] {"Create User", "Assign User", "Assign Role"}), model);
+		AdminViewController.setAdminUsersContent(model, subjectID, userService, Arrays.asList(new String[] {"View User"}));
+		setFormAttributes( newUser, subjectID, domainService, UsersController.CREATE, "create",  
+				           Arrays.asList(new String[] {"Create User", "Assign User", "Assign Role"}), 
+				           model );
 		model.addAttribute("pageName", "admin_users");
 		return AbstractController.FRAME;
 	}

@@ -97,7 +97,7 @@ public class RolesController extends AbstractController {
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
-		AdminViewController.setAdminRolesContent(model, subjectID, domainService);
+		AdminViewController.setAdminRolesContent(model, subjectID, domainService, Arrays.asList(new String[] {"View Role"}));
 		List<String> authorities = Arrays.asList(new String[] {"Assign Privilege", "Create Role"});
 		setFormAttributes(newRole, subjectID, domainService, RolesController.CREATE, "create", authorities, model);
 		model.addAttribute("pageName", "admin_roles");
@@ -139,7 +139,7 @@ public class RolesController extends AbstractController {
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		List<String> authorities = Arrays.asList(new String[] {"Assign Privilege"});
 		setFormAttributes(newRole, subjectID, domainService, RolesController.UPDATE, "update", authorities, model);
-		AdminViewController.setAdminRolesContent(model, subjectID, domainService);
+		AdminViewController.setAdminRolesContent(model, subjectID, domainService, Arrays.asList(new String[] {"View Role"}));
 		model.addAttribute("pageName", "admin_roles"); /* TODO: also USE JSON content */
 		return AbstractController.FRAME;
 	}

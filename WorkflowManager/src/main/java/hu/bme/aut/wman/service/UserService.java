@@ -10,6 +10,7 @@ import hu.bme.aut.wman.utils.StringUtils;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,10 +154,26 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	 * @param userID
 	 * @return a {@link List} of {@link User}s in the same {@link Domain} as the given {@link User}
 	 * */
-	public List<User> selectUsersInDomainOf(Long userID) {
+	public List<User> usersInDomainOf(Long userID) {
 		List<Entry<String, Object>> parameters = new ArrayList<>();
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
 		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF, parameters);
+	}
+
+	/**
+	 * Selects all the <code>User</code>s assigned to all the <code>Domain</code>s in which the <code>User</code> specified
+	 * by its id is also assigned to and has all the <code>Privilege</code>s specified by their names.
+	 * 
+	 * @param userID
+	 * @param privilegeNames
+	 * @return a {@link List} of {@link User}s in the same {@link Domain} as the given {@link User}
+	 * */
+	public List<User> usersInDomainOf(Long userID, Collection<? extends String> privilegeNames) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeNames", privilegeNames));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("count", privilegeNames.size()));
+		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF_BY_PRIVILEGE_NAMES, parameters);
 	}
 
 	/**

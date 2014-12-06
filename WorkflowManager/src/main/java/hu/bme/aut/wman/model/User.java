@@ -35,6 +35,17 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "User.findUsersInDomainOf", query = "SELECT DISTINCT u FROM User u, DomainAssignment da1, DomainAssignment da2 " +
                                                            "WHERE da1.domain = da2.domain " + 
     		                                                      "AND da1.user = u AND da2.user.id = :userID "),
+
+   @NamedQuery(name = "User.findUsersInDomainOfByPrivilegeNames", query = "SELECT DISTINCT u FROM User u, DomainAssignment da1, DomainAssignment da2 " +
+    		                                                              "WHERE da1.domain = da2.domain " + 
+    		       		                                                     "AND da1.user = u AND da2.user.id = :userID " + 
+    		                                                                 "AND :count = (" +
+    		       		                                                           "SELECT COUNT(DISTINCT p) FROM Privilege p, Role r " +
+    		                                                                       "WHERE p.name IN :privilegeNames " +
+    		       		                                                               "AND r MEMBER OF da2.userRoles " +
+    		                                                                           "AND p MEMBER OF r.privileges " +
+    		       		                                                  ")"),
+
     @NamedQuery(name = "User.findPasswordOf", query = "SELECT u.password FROM User u " +
     		                                          "WHERE u.username = :username "),
     @NamedQuery(name = "User.findIDOf", query = "SELECT u.id FROM User u " +
@@ -46,6 +57,7 @@ public class User extends AbstractEntity {
 	public static final String NQ_FIND_USERS_OF = "User.findUsersOf";
 	public static final String NQ_FIND_BY_NAME = "User.findByName";
 	public static final String NQ_FIND_USERS_IN_DOMAIN_OF = "User.findUsersInDomainOf";
+	public static final String NQ_FIND_USERS_IN_DOMAIN_OF_BY_PRIVILEGE_NAMES = "User.findUsersInDomainOfByPrivilegeNames";
 	public static final String NQ_FIND_PASSWORD_OF = "User.findPasswordOf";
 	public static final String NQ_FIND_ID_OF = "User.findIDOf";
 

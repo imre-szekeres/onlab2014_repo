@@ -9,6 +9,8 @@ import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,7 +78,7 @@ public class AdminViewController extends AbstractController {
 	@PreAuthorize("hasRole('View Role')")
 	@RequestMapping(value = ROLES, method = RequestMethod.GET)
 	public String adminRoles(Model model, HttpSession session) {
-		setAdminRolesContent(model, userIDOf(session), domainService);
+		setAdminRolesContent(model, userIDOf(session), domainService, Arrays.asList(new String[] {"View Role"}));
 		return navigateToFrame("admin_roles", model);
 	}
 
@@ -121,7 +123,7 @@ public class AdminViewController extends AbstractController {
 	@RequestMapping(value = USERS, method = RequestMethod.GET)
 	public String adminUsers(Model model, HttpSession session) {
 		Long subjectID = userIDOf(session);
-		setAdminUsersContent(model, subjectID, userService);
+		setAdminUsersContent(model, subjectID, userService, Arrays.asList(new String[] {"View User"}));
 		return navigateToFrame("admin_users", model);
 	}
 
@@ -141,8 +143,8 @@ public class AdminViewController extends AbstractController {
 	 * @param subjectID
 	 * @param domainService
 	 * */
-	public static final void setAdminRolesContent(Model model, Long subjectID, DomainService domainService) {
-		model.addAttribute("domains", domainService.domainsOf( subjectID ));
+	public static final void setAdminRolesContent(Model model, Long subjectID, DomainService domainService, Collection<? extends String> authorities) {
+		model.addAttribute("domains", domainService.domainsOf(subjectID, authorities));
 		model.addAttribute("selectPrivilegesUrl", PrivilegesController.ROOT_URL);
 		model.addAttribute("selectCreateFormUrl", RolesController.CREATE_FORM);
 		model.addAttribute("selectUpdateFormUrl", RolesController.UPDATE_FORM);
@@ -175,8 +177,8 @@ public class AdminViewController extends AbstractController {
 	 * @param subjectID
 	 * @param userService
 	 * */
-	public static final void setAdminUsersContent(Model model, Long subjectID, UserService userService) {
-		model.addAttribute("users", userService.selectUsersInDomainOf( subjectID ));
+	public static final void setAdminUsersContent(Model model, Long subjectID, UserService userService, Collection<? extends String> authorities) {
+		model.addAttribute("users", userService.usersInDomainOf(subjectID,  authorities));
 		model.addAttribute("selectDomainsForUrl", UsersController.DOMAINS);
 		model.addAttribute("selectDomainNamesUrl", DomainsController.NAMES);
 		model.addAttribute("selectRolesForUrl", RolesController.ROOT_URL);

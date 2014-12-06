@@ -171,7 +171,7 @@ public class DomainsController extends AbstractController {
 		model.addAttribute("formType", "update");
 	}
 
-	@PreAuthorize("hasRole('Create Domain')")
+	@PreAuthorize("hasRole('Remove Domain')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
 	public String deleteRole(@RequestParam("domain") Long domainID, HttpSession session, Model model) {

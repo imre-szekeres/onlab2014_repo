@@ -155,6 +155,24 @@ public class DomainService extends AbstractDataService<Domain> {
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("count", privilegeNames.size()));
 		return callNamedQuery(Domain.NQ_FIND_NAMES_BY_USER_ID_AND_PRIVILEGE_NAMES, parameters, String.class);
 	}
+
+	/**
+	 * Retrieves the <code>Domain</code> instances that the given <code>User</code> specified by its id
+	 * was assigned to AND owns one of the <code>Privilege</code>s specified by their names.
+	 * 
+	 * @param userID
+	 * @param privilegeNames
+	 * @return the {@link List} of {@link Domain} names
+	 * */
+	public List<Domain> domainsOf(Long userID, Collection<? extends String> privilegeNames) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeNames", privilegeNames));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("count", privilegeNames.size()));
+		return callNamedQuery(Domain.NQ_FIND_ALL_BY_USER_ID_AND_PRIVILEGE_NAMES, parameters);
+	}
+
+
 	/**
 	 * @see {@link AbstractDataService#getEntityClass()}
 	 * */

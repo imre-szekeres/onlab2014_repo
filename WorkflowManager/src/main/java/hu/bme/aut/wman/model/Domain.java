@@ -45,8 +45,15 @@ import javax.validation.constraints.Size;
 		                        									                              "AND r MEMBER OF da.userRoles " +
 		                                                                                          "AND p MEMBER OF r.privileges " +
 		                        									                              "AND p.name IN :privilegeNames " +
-		                                                                   ")" )
+		                                                                   ")" ),
 
+    @NamedQuery(name = "Domain.findAllByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d FROM Domain d " + 
+				                        								  "WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
+				                                                                           "WHERE da.domain.id = d.id AND da.user.id = :userID " +
+				                        									                    "AND r MEMBER OF da.userRoles " +
+				                                                                                "AND p MEMBER OF r.privileges " +
+				                        									                    "AND p.name IN :privilegeNames " +
+				                                                          ")" )
 })
 public class Domain extends AbstractEntity {
 
@@ -57,6 +64,7 @@ public class Domain extends AbstractEntity {
 	public static final String NQ_FIND_NAMES_BY_USER_ID = "Domain.findNamesByUserID";
 	public static final String NQ_FIND_NAMES_BY_USER_ID_AND_PRIVILEGE = "Domain.findNamesByUserIDAndPrivilege";
 	public static final String NQ_FIND_NAMES_BY_USER_ID_AND_PRIVILEGE_NAMES = "Domain.findNamesByUserIDAndPrivilegeNames";
+	public static final String NQ_FIND_ALL_BY_USER_ID_AND_PRIVILEGE_NAMES = "Domain.findAllByUserIDAndPrivilegeNames";
 	
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";
