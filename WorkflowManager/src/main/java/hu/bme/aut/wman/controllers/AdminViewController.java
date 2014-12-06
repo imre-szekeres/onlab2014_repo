@@ -54,11 +54,25 @@ public class AdminViewController extends AbstractController {
 	private PrivilegeService privilegeService;
 
 
+	/**
+	 * Navigates to the default Admin page.
+	 * 
+	 * @param model
+	 * @return the view corresponding to the admin page
+	 * */
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
 	public String admin(Model model) {
 		return navigateToFrame("admin", model);
 	}
 
+	/**
+	 * Navigates to the View corresponding to the Admin <code>Role</code>s page, also sets the required
+	 * <code>Model</code> attributes to render the View.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return the View to navigate to
+	 * */
 	@PreAuthorize("hasRole('View Role')")
 	@RequestMapping(value = ROLES, method = RequestMethod.GET)
 	public String adminRoles(Model model, HttpSession session) {
@@ -66,6 +80,14 @@ public class AdminViewController extends AbstractController {
 		return navigateToFrame("admin_roles", model);
 	}
 
+	/**
+	 * Navigates to the View corresponding to the Admin <code>Domain</code>s page, also sets the required
+	 * <code>Model</code> attributes to render the View.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return the View to navigate to
+	 * */
 	@PreAuthorize("hasRole('View Domain')")
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)
 	public String adminDomains(Model model, HttpSession session) {
@@ -73,6 +95,13 @@ public class AdminViewController extends AbstractController {
 		return navigateToFrame("admin_domains", model);
 	}
 
+	/**
+	 * Navigates to the View corresponding to the Admin <code>Privilege</code>s page, also sets the required
+	 * <code>Model</code> attributes to render the View.
+	 * 
+	 * @param model
+	 * @return the View to navigate to
+	 * */
 	@PreAuthorize("hasRole('View Privilege')")
 	@RequestMapping(value = PRIVILEGES, method = RequestMethod.GET)
 	public String adminPrivileges(Model model) {
@@ -80,6 +109,14 @@ public class AdminViewController extends AbstractController {
 		return navigateToFrame("admin_privileges", model);
 	}
 
+	/**
+	 * Navigates to the View corresponding to the Admin <code>User</code>s page, also sets the required
+	 * <code>Model</code> attributes to render the View.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return the View to navigate to
+	 * */
 	@PreAuthorize("hasRole('View User')")
 	@RequestMapping(value = USERS, method = RequestMethod.GET)
 	public String adminUsers(Model model, HttpSession session) {

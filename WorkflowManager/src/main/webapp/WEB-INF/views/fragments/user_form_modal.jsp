@@ -5,6 +5,7 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/functions'   prefix='fn' %>
 <%@ taglib uri='http://www.springframework.org/tags'      prefix='spring' %>   
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
+<%@ taglib tagdir='/WEB-INF/tags/' prefix='wman' %>
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 <c:set var='formType' value="${ empty formType ? 'create' : formType }" />
@@ -178,8 +179,9 @@
                     <div class='${ inputColClass } ${ domainSelectWrapperClass }'>
                         <div class='input-group' >
                             <span class='input-group-addon' ><span class='glyphicon glyphicon-tower' ></span></span>
-                            <form:select id='domain-name-select' path='domainName' class='form-control new-user-input' >
-                            </form:select>
+                            <select id='domain-name-select' path='domainName' class='form-control new-user-input' >
+                                <wman:optionList options='${ domains }' />
+                            </select>
                         </div>
 
                         <c:if test='${ formType ne "create" }' >
@@ -257,9 +259,9 @@
 	var $_nuser_from = $('#new-user-form');
 
 	var domains_n_roles = JSON.parse('${ user.userRoles }');
-
-	console.log( domains_n_roles ); // TODO:
 	
+	console.log(domains_n_roles);
+
 	function submitNewUserForm(event) {
 	    var json_str = JSON.stringify( domains_n_roles );
 	    $_roles_in.val( json_str );
@@ -369,6 +371,8 @@
 	    var domain = $_domains_select.val();
 	    $_dname_plh.html( domain );
 	});
+	
+	$_domains_select.trigger('change');
 	   
 	$_uname_plh.html( $_username_in.val() );
 	$_dname_plh.html( $_domains_select.val() );

@@ -11,6 +11,7 @@ import hu.bme.aut.wman.service.validation.ValidationEngine;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -124,6 +125,36 @@ public class DomainService extends AbstractDataService<Domain> {
 		return callNamedQuery(Domain.NQ_FIND_NAMES_BY_USER_ID, parameters, String.class);
 	}
 
+	/**
+	 * Retrieves the names of the <code>Domain</code> instances that the given <code>User</code> specified by its id
+	 * was assigned to AND owns the <code>Privilege</code> specified by its name.
+	 * 
+	 * @param userID
+	 * @param privilegeName
+	 * @return the {@link List} of {@link Domain} names
+	 * */
+	public List<String> domainNamesOf(Long userID, String privilegeName) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		return callNamedQuery(Domain.NQ_FIND_NAMES_BY_USER_ID_AND_PRIVILEGE, parameters, String.class);
+	}
+
+	/**
+	 * Retrieves the names of the <code>Domain</code> instances that the given <code>User</code> specified by its id
+	 * was assigned to AND owns one of the <code>Privilege</code>s specified by their names.
+	 * 
+	 * @param userID
+	 * @param privilegeNames
+	 * @return the {@link List} of {@link Domain} names
+	 * */
+	public List<String> domainNamesOf(Long userID, Collection<? extends String> privilegeNames) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeNames", privilegeNames));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("count", privilegeNames.size()));
+		return callNamedQuery(Domain.NQ_FIND_NAMES_BY_USER_ID_AND_PRIVILEGE_NAMES, parameters, String.class);
+	}
 	/**
 	 * @see {@link AbstractDataService#getEntityClass()}
 	 * */

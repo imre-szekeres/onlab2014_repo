@@ -14,10 +14,13 @@ import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.utils.parsers.JsonParser;
+import hu.bme.aut.wman.view.DroppableName;
 import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.transfer.UserTransferObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -84,7 +87,10 @@ public class UsersController extends AbstractController {
 		setProfileAttributes(user, model, session);
 		return navigateToFrame("user_profile", model);
 	}
-	
+
+	/**
+	 * 
+	 * */
 	public static void setProfileAttributes(User user, Model model, HttpSession session) {
 		model.addAttribute("user", user);
 		boolean isEditable = (user.getId() == userIDOf(session));
@@ -94,25 +100,37 @@ public class UsersController extends AbstractController {
 		model.addAttribute("selectDetailsForm", UsersController.UPDATE_DETAILS_FORM);
 	}
 
+	@PreAuthorize("hasRole('Create User') and hasRole('Assign User') and hasRole('Assign Role')")
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
-	public String requestCreateForm(Model model) {
+	public String requestCreateForm(Model model, HttpSession session) {
 		UserTransferObject user = new UserTransferObject();
 		user.setUserRoles("{}");
-		model.addAttribute("user", user);
-		model.addAttribute("postUserAction", UsersController.CREATE);
+		setFormAttributes( user, userIDOf(session), domainService, 
+				           UsersController.CREATE, Arrays.asList(new String[] {"Assign User", "Assign Role", "Create User"}), 
+				           model );
 		return "fragments/user_form_modal";
 	}
-	
+
+	@PreAuthorize("hasRole('Assign User') and hasRole('Assign Role')")
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
-	public String requestUpdateForm(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
+	public String requestUpdateForm(@RequestParam(value = "user", defaultValue = "-1") Long userID, Model model, HttpSession session) {
 		UserTransferObject user = new UserTransferObject(userService.selectById(userID));
 		Map<String, List<String>> assignments = daService.assignmentsOf(userID);
 		user.setUserRoles(tryStringifyAssignments(assignments, parser));
-
-		model.addAttribute("user", user);
-		model.addAttribute("postUserAction", UsersController.UPDATE);
-		model.addAttribute("formType", "update");
+		setFormAttributes( user, userIDOf(session), domainService, UsersController.UPDATE, 
+				           Arrays.asList(new String[] {"Assign User", "Assign Role"}), 
+				           model );
 		return "fragments/user_form_modal";
+	}
+
+	/**
+	 * TODO: 
+	 * */
+	private static final void setFormAttributes(UserTransferObject user, Long subjectID, DomainService domainService, String postUserAction, Collection<? extends String> authorities, Model model) {
+		model.addAttribute("user", user);
+		model.addAttribute("postUserAction", postUserAction);
+		List<String> domainNames = domainService.domainNamesOf(subjectID, authorities);
+		model.addAttribute("domains", DroppableName.namesOf(domainNames, ""));
 	}
 	
 	/**
@@ -217,8 +235,7 @@ public class UsersController extends AbstractController {
 		
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		AdminViewController.setAdminUsersContent(model, subjectID, userService);
-		model.addAttribute("postUserAction", UsersController.CREATE);
-		model.addAttribute("user", newUser);
+		setFormAttributes(newUser, subjectID, domainService, UsersController.CREATE, Arrays.asList(new String[] {"Create User", "Assign User", "Assign Role"}), model);
 		model.addAttribute("pageName", "admin_users");
 		return AbstractController.FRAME;
 	}
@@ -370,7 +387,7 @@ public class UsersController extends AbstractController {
 		setUpdateDetailsAttributes(new UserTransferObject( user ), model);
 		return "fragments/user_details_form";
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE_DETAILS, method = RequestMethod.POST)
 	public String updateDetails(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {

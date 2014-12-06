@@ -143,7 +143,7 @@ public class LoginController extends AbstractController {
 	 * */
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = ACCESS_DENIED)
-	public String accessDenied(HttpSession session, Model model) {
+	public String accessDenied(HttpServletRequest request, HttpSession session, Model model) {
 		if (session.getAttribute("subject") == null)
 			return redirectTo(LOGIN);
 		return navigateToFrame("fragments/access_denied", model);
