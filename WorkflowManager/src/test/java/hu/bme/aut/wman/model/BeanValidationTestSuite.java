@@ -4,18 +4,18 @@
 package hu.bme.aut.wman.model;
 
 import static org.junit.Assert.assertTrue;
-import java.util.Arrays;
-
+import hu.bme.aut.wman.service.validation.RoleValidator;
 import hu.bme.aut.wman.service.validation.UserValidator;
 import hu.bme.aut.wman.service.validation.ValidationEngine;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import static org.junit.runners.Parameterized.Parameters;
-
-import java.util.Collection;
-import java.util.Map;
+import org.junit.runners.Parameterized.Parameters;
 /**
  * @author Imre Szekeres
  * @version "%I%, %G%"
@@ -31,8 +31,10 @@ public class BeanValidationTestSuite {
 	
 	@Parameters
 	public static Collection<Object[]> engines() {
+		@SuppressWarnings("deprecation")
 		Object[][] engines = new Object[][] {
-				{new UserValidator(), new User()}
+				{new UserValidator(), new User()},
+				{new RoleValidator(), new Role()}
 		};
 		return Arrays.asList(engines);
 	}
