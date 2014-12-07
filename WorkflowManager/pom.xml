@@ -191,7 +191,7 @@
                     <tomeeClassifier>plus</tomeeClassifier>
                     <reloadOnUpdate>true</reloadOnUpdate>
                     <port>8080</port>
-                    <httpsPort>8443</httpsPort>      
+                    <httpsPort>8443</httpsPort>
                     <synchronization>                   
                         <updateOnlyExtensions>
                             <updateOnlyExtension>.xhtml</updateOnlyExtension>
