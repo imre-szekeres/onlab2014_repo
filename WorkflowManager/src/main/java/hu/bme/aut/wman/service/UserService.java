@@ -240,6 +240,21 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	}
 
 	/**
+	 * Lists the accessibility of those <code>User</code>s that own the <code>Privilege</code>s specified and 
+	 * in the same <code>Domain</code> as the <code>User</code> given as its id.
+	 * 
+	 * @param userID
+	 * @param privilegeNames
+	 * */
+	public List<String[]> personellInfoOf(Long userID, Collection<? extends String> privilegeNames) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("subjectID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeNames", privilegeNames));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("count", privilegeNames.size()));
+		return callNamedQuery(User.NQ_FIND_PERSONELL_INFO, parameters, String[].class);
+	}
+
+	/**
 	 * @see {@link AbstractDataService#getClass()}
 	 * */
 	@Override

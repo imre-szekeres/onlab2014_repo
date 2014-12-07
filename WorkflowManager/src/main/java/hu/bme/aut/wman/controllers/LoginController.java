@@ -12,6 +12,7 @@ import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.UserService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -196,7 +197,7 @@ public class LoginController extends AbstractController {
 			model.addAttribute("denialMessage", buildDenialMessage( (String) request.getAttribute("denialMessage") ));
 		
 		else if (request.getAttribute("authoritiesRequired") != null)
-			buildDenialMessage((List<? extends ConfigAttribute>) request.getAttribute("authoritiesRequired"), userService, model);
+			buildDenialMessage(userIDOf(session), (List<? extends ConfigAttribute>) request.getAttribute("authoritiesRequired"), userService, model);
 		return navigateToFrame("fragments/access_denied", model);
 	}
 
@@ -213,15 +214,17 @@ public class LoginController extends AbstractController {
 	/**
 	 * Builds a more complex denial message to be displayed from the authorities passed as a <code>List</code>.
 	 * 
+	 * @param subjectID
 	 * @param authorities
 	 * @param userService
 	 * @return the message to be displayed
 	 * */
-	public static final void buildDenialMessage(List<? extends ConfigAttribute> authorities, UserService userService, Model model) {
+	public static final void buildDenialMessage(Long subjectID, List<? extends ConfigAttribute> authorities, UserService userService, Model model) {
 		model.addAttribute("detailedAccessDenied", "Sorry, you are not authorized to execute that operation.");
-		model.addAttribute("personellLine", "Please contact one of the administrators to grant the required privileges.");
+		model.addAttribute("personellLine", "Please contact one of the personell mentioned below to grant the required privileges.");
+		model.addAttribute("personellInfo", userService.personellInfoOf(subjectID, Arrays.asList(new String[] {"Assign Role", "Assign User"})));
 	}
-	
+
 	/**
 	 * Retrieves the user ID via the passed <code>HttpSession</code>.
 	 * 

@@ -46,6 +46,7 @@
 			<privilege name='View Role' removable='false' />
 			<privilege name='View Privilege' removable='false' />
 			<privilege name='View ActionType' removable='false' />
+			<privilege name='View User' removable='false' />
 		</role>
 		
 		<role name='System Manager' domain='System' import='System Developer' removable='false' >
@@ -57,9 +58,7 @@
 			<privilege name='Assign User' removable='false' />
 			<privilege name='Assign ActionType' removable='false' />
 			<privilege name='Assign Project' removable='false' />
-			<privilege name='Assign Role' removable='false' />
-			
-			<privilege name='View User' removable='false' />			
+			<privilege name='Assign Role' removable='false' />			
 		</role>
 		
 		<role name='System Administrator' domain='System' import='System Manager' removable='false' >

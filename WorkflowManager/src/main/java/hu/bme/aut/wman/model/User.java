@@ -63,7 +63,18 @@ import javax.validation.constraints.Size;
     		                                                           "AND dau.domain = das.domain " + 
     		      		                                               "AND r MEMBER OF das.userRoles " +
     		                                                           "AND p MEMBER OF r.privileges " +
-    		      		                                               "AND p.name = :privilegeName ")
+    		      		                                               "AND p.name = :privilegeName "),
+
+   @NamedQuery(name = "User.findPersonellInfo", query = "SELECT u.username, u.email FROM User u, User s, DomainAssignment dau, DomainAssignment das " +
+                                                        "WHERE s.id= :subjectID AND dau.domain = das.domain " +
+		                                                       "AND dau.user = u " +
+                                                               "AND das.user = s " +
+		                                                       "AND :count = ( " +
+                                                                    "SELECT COUNT(DISTINCT p.name) FROM Privilege p, Role r " +
+		                                                            "WHERE p MEMBER OF r.privileges " +
+                                                                          "AND r MEMBER OF dau.userRoles " +
+		                                                                  "AND p.name IN :privilegeNames " +
+                                                               " )")
 })
 public class User extends AbstractEntity {
 
@@ -77,6 +88,8 @@ public class User extends AbstractEntity {
 	
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "User.findCountByPrivilege";
 	public static final String NQ_FIND_COUNT_BY_ID_AND_PRIVILEGE = "User.findCountByIDAndPrivilege";
+	
+	public static final String NQ_FIND_PERSONELL_INFO = "User.findPersonellInfo";
 
 	public static final String PR_NAME = "username";
 	public static final String PR_PASSWORD = "password";
