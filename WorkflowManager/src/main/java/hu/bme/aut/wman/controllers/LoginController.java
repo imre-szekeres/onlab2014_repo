@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import hu.bme.aut.wman.exceptions.DetailedAccessDeniedException;
 import hu.bme.aut.wman.handlers.UserHandlerLocal;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.security.SecurityToken;
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,7 +63,6 @@ public class LoginController extends AbstractController {
 	private PasswordEncoder encoder;
 
 
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = APP_ROOT, method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request, HttpSession session) {
 		if (request.getRemoteUser() == null)
@@ -90,7 +91,6 @@ public class LoginController extends AbstractController {
 	 * @param model
 	 * @return the name of the View that renders the Html response or the URL to redirect to
 	 * */
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@ModelAttribute("user") User user, HttpServletRequest request, Model model) {
 		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"));
@@ -134,12 +134,25 @@ public class LoginController extends AbstractController {
 	 * @param request
 	 * @return redirect to the login page
 	 * */
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = LOGOUT, method = RequestMethod.GET)
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.setAttribute("subject", null);
 		return redirectTo(LOGIN);
+	}
+
+	/**
+	 * Handles any <code>DetailedAccessDeniedException</code> thrown by any part of the application, fetches the required <code>ConfigAttribute</code>s
+	 * or <code>GrantedAuthority</code>s (a.k.a. <code>Privilege</code>s) to obtain access to the given page then redirect to the access denied URL.
+	 * 
+	 * @param request
+	 * @param exception
+	 * @return the redirect URL
+	 * */
+	@ExceptionHandler(DetailedAccessDeniedException.class)
+	public String handleAccessDenied(HttpServletRequest request, DetailedAccessDeniedException exception) {
+		request.setAttribute("authoritiesRequired", exception.getRequiredAuthorities());
+		return redirectTo(ACCESS_DENIED);
 	}
 
 	/**
@@ -150,7 +163,6 @@ public class LoginController extends AbstractController {
 	 * @param model
 	 * @return redirect {@link String} to either to login page or the frame
 	 * */
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = ACCESS_DENIED)
 	public String accessDenied(HttpServletRequest request, HttpSession session, Model model) {
 		if (session.getAttribute("subject") == null)

@@ -94,7 +94,6 @@ public class AbstractController {
 	 *            redirects here
 	 * @return a string, with we should redirect
 	 */
-	@Deprecated
 	public String redirectTo(String to) {
 		return "redirect:" + to;
 	}

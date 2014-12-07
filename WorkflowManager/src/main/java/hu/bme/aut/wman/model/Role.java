@@ -75,9 +75,10 @@ public class Role extends AbstractEntity {
 	public static final String NQ_FIND_BY_DOMAIN = "Role.findByDomain";
 	public static final String NQ_FIND_NAMES_BY_DOMAIN = "Role.findNamesByDomain";
 	public static final String NQ_FIND_BY_DOMAIN_AND_NAME = "Role.findByDomainAndName";
+	public static final String NQ_FIND_COUNT_BY_PRIVILEGES = "Role.findCountByPrivileges";
+
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "Role.findCountByPrivilege";
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME = "Role.findCountByPrivilegeAndName";
-	public static final String NQ_FIND_COUNT_BY_PRIVILEGES = "Role.findCountByPrivileges";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";

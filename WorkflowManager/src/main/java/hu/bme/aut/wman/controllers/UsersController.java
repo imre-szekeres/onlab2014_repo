@@ -83,19 +83,32 @@ public class UsersController extends AbstractController {
 
 
 
+	/**
+	 * Handles the navigation to the profile page of the <code>User</code> specified by its id 
+	 * and data setting required by it.
+	 * 
+	 * @param userID
+	 * @param model
+	 * @param session
+	 * @return the name of the View that renders the Html response
+	 * */
 	@RequestMapping(value = PROFILE, method = RequestMethod.GET)
-	public String viewProfile(@RequestParam("user") long userID, Model model, HttpSession session) {
+	public String viewProfile(@RequestParam("user") Long userID, Model model, HttpSession session) {
 		User user = userService.selectById(userID);
 		setProfileAttributes(user, model, session);
 		return navigateToFrame("user_profile", model);
 	}
 
 	/**
+	 * Pre-sets the required values to display the profile page for the given <code>User</code>.
 	 * 
+	 * @param user
+	 * @param model
+	 * @param session
 	 * */
 	public static void setProfileAttributes(User user, Model model, HttpSession session) {
 		model.addAttribute("user", user);
-		boolean isEditable = (user.getId() == userIDOf(session));
+		boolean isEditable = user.getId().equals( userIDOf(session) );
 		model.addAttribute("isEditable", isEditable);
 		model.addAttribute("viewProjectAction", ProjectViewController.PROJECT);
 		model.addAttribute("selectDNRTable", UsersController.DOMAINS_AND_ROLES);
@@ -163,7 +176,6 @@ public class UsersController extends AbstractController {
 	}
 
 	@PreAuthorize("hasPermission(#userID, 'User', 'Create User')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
 	public String deleteUser(@RequestParam("user") Long userID, HttpSession session, Model model) {
 		User user = userService.selectById(userID);
@@ -210,7 +222,6 @@ public class UsersController extends AbstractController {
 	}
 
 	@PreAuthorize("hasRole('Create User') and hasRole('Assign User') and hasRole('Assign Role')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpSession session) {
 		User user = newUser.asUser();
@@ -255,7 +266,6 @@ public class UsersController extends AbstractController {
 	}
 
 	@PreAuthorize("hasPermission(#updated.id, 'User', 'Assign User') and hasPermission(#updated.id, 'User', 'Assign Role')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateUser(@ModelAttribute("user") UserTransferObject updated, Model model, HttpSession session) {
 		User user = userService.selectById( updated.getId() );
@@ -431,7 +441,6 @@ public class UsersController extends AbstractController {
 		return "fragments/user_details_form";
 	}
 
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE_DETAILS, method = RequestMethod.POST)
 	public String updateDetails(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User old = userService.selectById( updated.getId() );
@@ -455,7 +464,6 @@ public class UsersController extends AbstractController {
 		return navigateToFrame("user_profile", model);
 	}
 
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST) /* TODO: */
 	public String updatePassword(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User user = userService.selectById( updated.getId() );

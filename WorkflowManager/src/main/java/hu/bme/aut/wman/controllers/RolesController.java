@@ -63,7 +63,6 @@ public class RolesController extends AbstractController {
 	
 
 	@PreAuthorize("hasPermission(#newRole.domainName, 'Domain', 'Create Role') and hasPermission(#newRole.domainName, 'Domain', 'Assign Privilege')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
 		String roleName = newRole.getRoleName();
@@ -106,7 +105,6 @@ public class RolesController extends AbstractController {
 	}
 
 	@PreAuthorize("hasPermission(#newRole.id, 'Role', 'Assign Privilege')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
 		String roleName = newRole.getRoleName();
@@ -198,7 +196,6 @@ public class RolesController extends AbstractController {
 	} 
 
 	@PreAuthorize("hasPermission(#roleID, 'Role', 'Create Role')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
 	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);

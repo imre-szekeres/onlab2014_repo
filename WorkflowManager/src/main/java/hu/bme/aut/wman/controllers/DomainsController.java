@@ -73,7 +73,6 @@ public class DomainsController extends AbstractController {
 	 * @return the name of the View that renders the Html response
 	 * */
 	@PreAuthorize("hasRole('Create Domain')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createDomain(@ModelAttribute("domain") Domain newDomain, Model model, HttpSession session) {
 		Map<String, String> errors = domainService.validate( newDomain );
@@ -144,7 +143,6 @@ public class DomainsController extends AbstractController {
 	 * @return the name of the View that renders the Html response
 	 * */
 	@PreAuthorize("hasPermission(#newDomain.name, 'Domain', 'Update Domain')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateDomain(@ModelAttribute("domain") Domain newDomain, @RequestParam("oldId") Long oldId, Model model, HttpSession session) {
 		Domain domain = domainService.selectById(oldId);
@@ -224,7 +222,6 @@ public class DomainsController extends AbstractController {
 	 * @return the name of the View that renders the Html response
 	 * */
 	@PreAuthorize("hasPermission(#domainID, 'Domain', 'Remove Domain')")
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
 	public String deleteDomain(@RequestParam("domain") Long domainID, HttpSession session, Model model) {
 		Domain domain = domainService.selectById(domainID);
