@@ -189,7 +189,9 @@
                 <configuration>
                     <tomeeVersion>1.7.0</tomeeVersion>
                     <tomeeClassifier>plus</tomeeClassifier>
-                    <reloadOnUpdate>true</reloadOnUpdate>              
+                    <reloadOnUpdate>true</reloadOnUpdate>
+                    <port>8080</port>
+                    <httpsPort>8443</httpsPort>      
                     <synchronization>                   
                         <updateOnlyExtensions>
                             <updateOnlyExtension>.xhtml</updateOnlyExtension>

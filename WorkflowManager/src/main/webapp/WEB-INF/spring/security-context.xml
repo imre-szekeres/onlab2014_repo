@@ -30,18 +30,22 @@
     <security:http auto-config='true' use-expressions='true' disable-url-rewriting='true' >
         <security:access-denied-handler ref='detailedAccessDeniedHandler' />
         
-        <security:intercept-url pattern='/resources/**' access='permitAll' />
+        <security:intercept-url pattern='/resources/**' access='permitAll' requires-channel='https' />
         <security:form-login login-page='/login' 
                              default-target-url='/'
                              authentication-failure-url='/login?error=true' />
         <security:logout logout-success-url='/logout'
                          invalidate-session='true' />
-        <security:intercept-url pattern='/register' access='permitAll' />
-        <security:intercept-url pattern='/login*'   access='permitAll' />
-        <security:intercept-url pattern='/logout'   access='permitAll' />
-        <security:intercept-url pattern='/**'       access='authenticated' />
+        <security:intercept-url pattern='/register' access='permitAll' requires-channel='https' />
+        <security:intercept-url pattern='/login*'   access='permitAll' requires-channel='https' />
+        <security:intercept-url pattern='/logout'   access='permitAll' requires-channel='https' />
+        <security:intercept-url pattern='/**'       access='authenticated' requires-channel='https' />
         
         <security:csrf /> <!-- Cross-site Request Forgery -->
+
+        <security:port-mappings>
+            <security:port-mapping http='8080' https='8443' />
+        </security:port-mappings>
     </security:http>
 
     <bean id='authenticationService' 
