@@ -3,13 +3,16 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.utils.StringUtils.asString;
 import hu.bme.aut.wman.exceptions.DetailedAccessDeniedException;
+import hu.bme.aut.wman.exceptions.MessagedAccessDeniedException;
 import hu.bme.aut.wman.handlers.UserHandlerLocal;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.UserService;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -143,15 +147,34 @@ public class LoginController extends AbstractController {
 
 	/**
 	 * Handles any <code>DetailedAccessDeniedException</code> thrown by any part of the application, fetches the required <code>ConfigAttribute</code>s
-	 * or <code>GrantedAuthority</code>s (a.k.a. <code>Privilege</code>s) to obtain access to the given page then redirect to the access denied URL.
+	 * or <code>GrantedAuthority</code>s (a.k.a. <code>Privilege</code>s) to obtain access to the given page then redirects to the access denied URL.
 	 * 
 	 * @param request
 	 * @param exception
 	 * @return the redirect URL
 	 * */
+	@SuppressWarnings("unchecked")
 	@ExceptionHandler(DetailedAccessDeniedException.class)
-	public String handleAccessDenied(HttpServletRequest request, DetailedAccessDeniedException exception) {
+	public String handleDetailedAccessDenied(HttpServletRequest request, DetailedAccessDeniedException exception) {
 		request.setAttribute("authoritiesRequired", exception.getRequiredAuthorities());
+		LOGGER.info(String.format( "Access Denied for User %s due to lacking %s", 
+				                   userIDOf(request), 
+				                   asString((List<? extends ConfigAttribute>) request.getAttribute("authoritiesRequired"))) );
+		return redirectTo(ACCESS_DENIED);
+	}
+
+	/**
+	 * Handles any <code>MessagedAccessDeniedException</code> thrown by any part of the application, fetches the message as cause of the access denial 
+     * then redirects to the access denied URL.
+	 * 
+	 * @param request
+	 * @param exception
+	 * @return the redirect URL
+	 * */
+	@ExceptionHandler(MessagedAccessDeniedException.class)
+	public String handleMessagedAccessDenied(HttpServletRequest request, MessagedAccessDeniedException exception) {
+		request.setAttribute("denialMessage", exception.getMessage());
+		LOGGER.info(String.format("Access Denied for User %s due to %s", userIDOf(request), request.getAttribute("denialMessage")));
 		return redirectTo(ACCESS_DENIED);
 	}
 
@@ -163,13 +186,42 @@ public class LoginController extends AbstractController {
 	 * @param model
 	 * @return redirect {@link String} to either to login page or the frame
 	 * */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = ACCESS_DENIED)
 	public String accessDenied(HttpServletRequest request, HttpSession session, Model model) {
 		if (session.getAttribute("subject") == null)
 			return redirectTo(LOGIN);
+
+		if (request.getAttribute("denialMessage") != null)
+			model.addAttribute("denialMessage", buildDenialMessage( (String) request.getAttribute("denialMessage") ));
+		
+		else if (request.getAttribute("authoritiesRequired") != null)
+			buildDenialMessage((List<? extends ConfigAttribute>) request.getAttribute("authoritiesRequired"), userService, model);
 		return navigateToFrame("fragments/access_denied", model);
 	}
 
+	/**
+	 * Builds a simple denial message to be displayed from the simple cause of denial passed as a <code>String</code> argument.
+	 * 
+	 * @param denialCause
+	 * @return the message to be displayed
+	 * */
+	public static final String buildDenialMessage(String denialCause) {
+		return String.format("Sorry, you are not authorized to execute that operation, becasuse %s.", denialCause);
+	}
+
+	/**
+	 * Builds a more complex denial message to be displayed from the authorities passed as a <code>List</code>.
+	 * 
+	 * @param authorities
+	 * @param userService
+	 * @return the message to be displayed
+	 * */
+	public static final void buildDenialMessage(List<? extends ConfigAttribute> authorities, UserService userService, Model model) {
+		model.addAttribute("detailedAccessDenied", "Sorry, you are not authorized to execute that operation.");
+		model.addAttribute("personellLine", "Please contact one of the administrators to grant the required privileges.");
+	}
+	
 	/**
 	 * Retrieves the user ID via the passed <code>HttpSession</code>.
 	 * 

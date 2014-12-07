@@ -294,6 +294,6 @@ public class Domain extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Domain -- " + name;
+		return this.name;
 	}
 }

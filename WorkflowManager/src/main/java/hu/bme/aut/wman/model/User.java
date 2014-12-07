@@ -318,6 +318,6 @@ public class User extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "user -- " + username;
+		return this.username;
 	}
 }

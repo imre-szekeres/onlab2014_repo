@@ -14,6 +14,11 @@
 
 /* BEGIN access-denied */
 
+#access-denined-panel {
+	padding: 13px;
+	padding-top: 31px;
+}
+
 /* END   access-denied */
 
 /* BEGIN Globals */

@@ -97,7 +97,7 @@ public class Privilege extends AbstractEntity implements DragNDroppable, Granted
 	
 	@Override
 	public String toString() {
-		return "Privilege -- " + name;
+		return this.name;
 	}
 	
 	public String getValue() {
