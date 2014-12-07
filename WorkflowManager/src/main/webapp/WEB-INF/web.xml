@@ -30,7 +30,7 @@
         </servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/spring/webapp-context.xml</param-value>
+            <param-value>/WEB-INF/spring/webapp-context.xml /WEB-INF/spring/security-context.xml</param-value>
         </init-param>
     </servlet>
   
@@ -50,6 +50,6 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/spring/webapp-context.xml</param-value>
+        <param-value>/WEB-INF/spring/webapp-context.xml /WEB-INF/spring/security-context.xml</param-value>
     </context-param>
 </web-app>
