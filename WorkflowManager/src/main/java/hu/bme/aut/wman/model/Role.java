@@ -88,6 +88,7 @@ public class Role extends AbstractEntity {
 
 	@Column(unique = true)
 	@Size(min = 5, message = "must be longer than 5 characters.")
+	@NotNull
 	private String name;
 	
 	@NotNull

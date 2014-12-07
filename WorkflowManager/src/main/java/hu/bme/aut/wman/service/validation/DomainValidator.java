@@ -23,7 +23,7 @@ public class DomainValidator extends ValidationEngine<Domain> {
 		Set<ConstraintViolation<Domain>> violations;
 		
 		violations = validator.validateProperty(domain, "name");
-		if(violations.size() > 0) 
+		if (violations.size() > 0) 
 			errors.put("name", violations.iterator().next().getMessage());
 		return errors;
 	}
