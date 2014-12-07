@@ -27,11 +27,22 @@ public class DetailedAffirmativeBased extends AffirmativeBased {
 	 * Sets up the default strategy for the AffirmativeBased AccessDecisionManager.
 	 * */
 	public DetailedAffirmativeBased() {
-		this(Arrays.asList(new AccessDecisionVoter[] {new RoleVoter(), new AuthenticatedVoter()}));
+		this(Arrays.asList(new AccessDecisionVoter[] {newRoleVoter(), new AuthenticatedVoter()}));
 	}
 
 	public DetailedAffirmativeBased(@SuppressWarnings("rawtypes") List<AccessDecisionVoter> voters) {
 		super( voters );
+	}
+
+	/**
+	 * Factory method for creating a <code>RoleVoter</code> that does not require a Role Prefix.
+	 * 
+	 * @return a new instance of a {@link RoleVoter}
+	 * */
+	private static final RoleVoter newRoleVoter() {
+		RoleVoter roleVoter = new RoleVoter();
+		roleVoter.setRolePrefix("");
+		return roleVoter;
 	}
 
 	/**
