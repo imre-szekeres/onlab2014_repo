@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,6 +43,7 @@ public class WorkflowsViewController extends AbstractController {
 	@EJB(mappedName = "java:module/ProjectService")
 	private ProjectService projectService;
 
+	@PreAuthorize("hasRole('View Workflow')")
 	@RequestMapping(value = WORKFLOWS, method = RequestMethod.GET)
 	public String workflowsView(Model model, HttpServletRequest request) {
 
@@ -51,6 +53,7 @@ public class WorkflowsViewController extends AbstractController {
 		return navigateToFrame("workflows", model);
 	}
 
+	@PreAuthorize("hasRole('Create Workflow')")
 	@RequestMapping(value = NEW_WORKFLOW, method = RequestMethod.GET)
 	public String newWorkflowView(Model model, HttpServletRequest request) {
 
@@ -59,6 +62,7 @@ public class WorkflowsViewController extends AbstractController {
 		return navigateToFrame("new_workflow", model);
 	}
 
+	/* TODO: authorize */
 	@RequestMapping(value = NEW_WORKFLOW, method = RequestMethod.POST)
 	public ModelAndView postNewWorkflow(@ModelAttribute("workflow") Workflow workflow, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
@@ -75,6 +79,7 @@ public class WorkflowsViewController extends AbstractController {
 		return redirectToFrame(WORKFLOWS, redirectAttributes);
 	}
 
+	@PreAuthorize("hasPermission(#workflowId, 'Workflow', 'Create Workflow')")
 	@RequestMapping(value = DELETE_WORKFLOW, method = RequestMethod.GET)
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long workflowId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();

@@ -3,7 +3,7 @@
  */
 package hu.bme.aut.wman.exceptions;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -21,9 +21,9 @@ public class DetailedAccessDeniedException extends AccessDeniedException {
 	 * 
 	 */
 	private static final long serialVersionUID = 2095800114147146277L;
-	private final List<? extends ConfigAttribute> requiredAuthorities;
+	private final Collection<? extends ConfigAttribute> requiredAuthorities;
 	
-	public DetailedAccessDeniedException(String msg, List<? extends ConfigAttribute> requiredAuthorities ) {
+	public DetailedAccessDeniedException(String msg, Collection<? extends ConfigAttribute> requiredAuthorities ) {
 		super(msg);
 		this.requiredAuthorities = requiredAuthorities;
 	}
@@ -31,7 +31,7 @@ public class DetailedAccessDeniedException extends AccessDeniedException {
 	/**
 	 * @return requiredAuthorities
 	 * */
-	public List<? extends ConfigAttribute> getRequiredAuthorities() {
+	public Collection<? extends ConfigAttribute> getRequiredAuthorities() {
 		return requiredAuthorities;
 	}
 }

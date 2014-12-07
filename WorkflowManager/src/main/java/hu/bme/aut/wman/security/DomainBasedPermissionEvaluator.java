@@ -5,9 +5,12 @@ package hu.bme.aut.wman.security;
 
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Privilege;
+import hu.bme.aut.wman.model.Workflow;
 import hu.bme.aut.wman.service.DomainService;
+import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.service.WorkflowService;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -40,6 +43,10 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 	private RoleService roleService;
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
+	@EJB(mappedName = "java:module/ProjectService")
+	private ProjectService projectService;
+	@EJB(mappedName = "java:module/WorkflowService")
+	private WorkflowService workflowService;
 
 	/**
 	 * Responsible for handling the hasPermission(targetDomainObject, permission) like expression.
@@ -78,6 +85,12 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 		
 		else if ("User".equals( targetType ))
 			return hasUserPermissions(username, targetId, (String) permission);
+		
+		else if ("Project".equals( targetType ))
+			return hasProjectPermissions(username, targetId, (String) permission);
+		
+		else if ("Workflow".equals( targetType ))
+			return hasWorkflowPermissions(username, targetId, (String) permission);
 		return false;
 	}
 
@@ -89,7 +102,8 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 	 * @param targetId
 	 * @param permission
 	 * @return true when the {@link User} has any {@link Role} that owns the {@link Privilege} specified in the given {@link Domain}
-	 * */	private boolean hasRolePermissions(String username, Object targetId, String permission) {
+	 * */	
+	private boolean hasRolePermissions(String username, Object targetId, String permission) {
 		if (targetId instanceof Long)
 			return roleService.hasPrivilege(username, (Long) targetId, permission);
 		return roleService.hasPrivilege(username, (String) targetId, permission);
@@ -124,6 +138,38 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 		if (targetId instanceof Long) 
 			return userService.hasPrivilege(username, (Long) targetId, permission);
 		return userService.hasPrivilege(username, (String) targetId, permission);
+	}
+
+	/**
+	 * Handles the case when it is to be decided whether the given <code>User</code> has the given <code>Privilege</code>
+	 * (specified by its name) in the the <code>Domain</code> the given <code>Project</code> is in.
+	 * 
+	 * @param username
+	 * @param targetId
+	 * @param permission
+	 * @return true when the {@link User} has any {@link Role} that owns the {@link Privilege} specified in the given {@link Domain}
+	 *         in which the given {@link Project} (as its identifier) is
+	 * */
+	private boolean hasProjectPermissions(String username, Object targetId, String permission) {
+		if (targetId instanceof Long) 
+			return projectService.hasPrivilege(username, (Long) targetId, permission);
+		return projectService.hasPrivilege(username, (String) targetId, permission);
+	}
+
+	/**
+	 * Handles the case when it is to be decided whether the given <code>User</code> has the given <code>Privilege</code>
+	 * (specified by its name) in the the <code>Domain</code> the given <code>Workflow</code> is in.
+	 * 
+	 * @param username
+	 * @param targetId
+	 * @param permission
+	 * @return true when the {@link User} has any {@link Role} that owns the {@link Privilege} specified in the given {@link Domain}
+	 *         in which the given {@link Workflow} (as its identifier) is
+	 * */
+	private boolean hasWorkflowPermissions(String username, Object targetId, String permission) {
+		if (targetId instanceof Long) 
+			return workflowService.hasPrivilege(username, (Long) targetId, permission);
+		return workflowService.hasPrivilege(username, (String) targetId, permission);
 	}
 
 	/**
