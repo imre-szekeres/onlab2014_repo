@@ -27,8 +27,6 @@
                 <c:forEach var='info' items='${ personellInfo }' >
                     <li>
                        <span class='glyphicon glyphicon-envelope'></span> 
-                       <span><c:out value='${ info[0] }' /></span>
-                       <span>: </span>
                        <span><a href='mailto:${ info[1] }' ><c:out value='${ info[1] }' /></a></span>
                     </li>
                 </c:forEach>
