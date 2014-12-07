@@ -81,6 +81,15 @@ public class LoginController extends AbstractController {
 		return navigateTo(LOGIN, "login", model);
 	}
 
+	/**
+	 * Handles the registration of a new <code>User</code> to the Login page; assigns the default <code>Role</code> to it in the
+	 * default <code>Domain</code>.
+	 * 
+	 * @param user
+	 * @param request
+	 * @param model
+	 * @return the name of the View that renders the Html response or the URL to redirect to
+	 * */
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@ModelAttribute("user") User user, HttpServletRequest request, Model model) {
@@ -155,7 +164,7 @@ public class LoginController extends AbstractController {
 	 * @param session
 	 * @return the user ID of the currently logged in user
 	 * */
-	public static final long userIDOf(HttpSession session) {
+	public static final Long userIDOf(HttpSession session) {
 		SecurityToken token = (SecurityToken) session.getAttribute("subject");
 		return (token == null) ? -1 : token.getUserID();
 	}
@@ -166,7 +175,7 @@ public class LoginController extends AbstractController {
 	 * @param request
 	 * @return the user ID of the currently logged in user
 	 * */
-	public static final long userIDOf(HttpServletRequest request) {
+	public static final Long userIDOf(HttpServletRequest request) {
 		return userIDOf(request.getSession());
 	}
 }

@@ -1,6 +1,7 @@
 package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.Domain;
+import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.validation.PasswordValidator;
 import hu.bme.aut.wman.service.validation.UserValidator;
@@ -200,6 +201,42 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
 		List<Long> results = callNamedQuery(User.NQ_FIND_ID_OF, parameters, Long.class);
 		return (results == null || results.isEmpty()) ? null : results.get(0);
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
+	 * as permission in any of the <code>Domain</code>s that the <code>User</code> at hand specified by its id is assigned to.
+	 * 
+	 * @param subject
+	 * @param userID
+	 * @param privilegeName
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link User}
+	 * */
+	public boolean hasPrivilege(String subject, Long userID, String privilegeName) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("subjectName", subject));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		List<? extends Number> count = callNamedQuery(User.NQ_FIND_COUNT_BY_ID_AND_PRIVILEGE, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
+	 * as permission in any of the <code>Domain</code>s that the <code>User</code> at hand specified by its id is assigned to.
+	 * 
+	 * @param subject
+	 * @param username
+	 * @param privilegeName
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link User}
+	 * */
+	public boolean hasPrivilege(String subject, String username, String privilegeName) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("subjectName", subject));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		List<? extends Number> count = callNamedQuery(User.NQ_FIND_COUNT_BY_PRIVILEGE, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
 	}
 
 	/**

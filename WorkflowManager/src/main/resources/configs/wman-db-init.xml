@@ -30,6 +30,7 @@
         <privilege name='View HistoryEntry' removable='false' />
         
         <privilege name='Remove Domain' removable='false' />
+        <privilege name='Update Domain' removable='false' />
     </privileges>
     
     <roles>
@@ -69,6 +70,7 @@
 			
 			<privilege name='View HistoryEntry' removable='false' />
 			<privilege name='Remove Domain' removable='false' />
+			<privilege name='Update Domain' removable='false' />
 		</role>
     </roles>
     

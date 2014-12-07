@@ -57,6 +57,9 @@
     			$_modal.empty();
     			$(data).appendTo( $_modal );
     			current_form = 'create';
+    		},
+    		error: function() {
+    			window.location = "${ appRoot }/403";
     		}
     	});
     }
@@ -84,6 +87,9 @@
                     current_form = 'update';
                     $_cdomain_trigger.trigger('click');
                     form_included = false;
+                },
+                error: function() {
+                    window.location = "${ appRoot }/403";
                 }
             });
         });

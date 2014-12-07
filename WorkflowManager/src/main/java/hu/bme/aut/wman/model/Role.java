@@ -38,7 +38,36 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Role.findByDomainAndName", query = "SELECT r FROM Role r, Domain d "+
 														   "WHERE d.name = :domainName "+
 														          "AND r.name = :roleName " +
-															      "AND r MEMBER OF d.roles ")
+															      "AND r MEMBER OF d.roles "),
+
+    @NamedQuery(name = "Role.findCountByPrivileges", query = "SELECT COUNT(DISTINCT r) FROM Role r, Domain d, DomainAssignment da " + 
+													          "WHERE r MEMBER OF d.roles " +
+    		                                                      "AND r.id = :roleID " +
+													              "AND da.user.username = :username " +
+    		                                                      "AND da.domain = d " +
+													              "AND :count = ( SELECT COUNT(DISTINCT p) FROM Role r1, Privilege p " +
+    		                                                                     "WHERE r1 MEMBER OF da.userRoles " +
+													                                 "AND p MEMBER OF r1.privileges " +
+    		                                                                         "AND p.name IN :privilegeNames " +
+    		                                                      ")"),
+
+    @NamedQuery(name = "Role.findCountByPrivilege", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " + 
+    														 "WHERE r MEMBER OF d.roles " +
+    		    		                                          "AND r.id = :roleID " +
+    															  "AND da.user.username = :username " +
+    		    		                                          "AND da.domain = d " +
+    															  "AND p MEMBER OF r2.privileges " + 
+    		    		                                          "AND p.name = :privilegeName " +
+    															  "AND r2 MEMBER OF da.userRoles "),
+
+    @NamedQuery(name = "Role.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " + 
+    			    										        "WHERE r MEMBER OF d.roles " +
+    			    		    		                                "AND r.name = :roleName " +
+    			    													"AND da.user.username = :username " +
+    			    		    		                                "AND da.domain = d " +
+    			    													"AND p MEMBER OF r2.privileges " + 
+    			    		    		                                "AND p.name = :privilegeName " +
+    			    													"AND r2 MEMBER OF da.userRoles ")
 })
 public class Role extends AbstractEntity {
 
@@ -46,6 +75,9 @@ public class Role extends AbstractEntity {
 	public static final String NQ_FIND_BY_DOMAIN = "Role.findByDomain";
 	public static final String NQ_FIND_NAMES_BY_DOMAIN = "Role.findNamesByDomain";
 	public static final String NQ_FIND_BY_DOMAIN_AND_NAME = "Role.findByDomainAndName";
+	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "Role.findCountByPrivilege";
+	public static final String NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME = "Role.findCountByPrivilegeAndName";
+	public static final String NQ_FIND_COUNT_BY_PRIVILEGES = "Role.findCountByPrivileges";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";

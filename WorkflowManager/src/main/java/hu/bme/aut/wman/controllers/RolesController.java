@@ -62,7 +62,7 @@ public class RolesController extends AbstractController {
 	private UserService userService;
 	
 
-	@PreAuthorize("hasRole('Create Role') and hasRole('Assign Privilege')")
+	@PreAuthorize("hasPermission(#newRole.domainName, 'Domain', 'Create Role') and hasPermission(#newRole.domainName, 'Domain', 'Assign Privilege')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
@@ -105,7 +105,7 @@ public class RolesController extends AbstractController {
 		return AbstractController.FRAME;
 	}
 
-	@PreAuthorize("hasRole('Assign Privilege')")
+	@PreAuthorize("hasPermission(#newRole.id, 'Role', 'Assign Privilege')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
@@ -167,7 +167,7 @@ public class RolesController extends AbstractController {
 		return "fragments/role_form_modal";
 	}
 
-	@PreAuthorize("hasRole('Assign Privilege')")
+	@PreAuthorize("hasPermission(#roleID, 'Role', 'Assign Privilege')")
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
 	public String requestUpdateForm(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
@@ -197,10 +197,10 @@ public class RolesController extends AbstractController {
 		model.addAttribute("formType", formType);
 	} 
 
-	@PreAuthorize("hasRole('Create Role')")
+	@PreAuthorize("hasPermission(#roleID, 'Role', 'Create Role')")
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") long roleID, Model model, HttpSession session) {
+	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
 		
