@@ -6,6 +6,7 @@ package hu.bme.aut.wman.security;
 import static hu.bme.aut.wman.utils.StringUtils.asString;
 import hu.bme.aut.wman.controllers.LoginController;
 import hu.bme.aut.wman.exceptions.DetailedAccessDeniedException;
+import hu.bme.aut.wman.exceptions.MessagedAccessDeniedException;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,12 +50,16 @@ public class DetailedAccessDeniedHandler extends AccessDeniedHandlerImpl {
 					throws IOException, ServletException {
 		if (exception instanceof DetailedAccessDeniedException)
 			handleDetailed(request, (DetailedAccessDeniedException) exception);
+
+		else if (exception instanceof MessagedAccessDeniedException)
+			handleMessaged(request, (MessagedAccessDeniedException) exception);
 		super.handle(request, response, exception);
 	}
 
 	/**
 	 * Handles any <code>DetailedAccessDeniedException</code> thrown by the <code>SecurityFilterChain</code>, fetches the required <code>ConfigAttribute</code>s
-	 * or <code>GrantedAuthority</code>s (a.k.a. <code>Privilege</code>s) to obtain access to the given page then redirects to the access denied URL.
+	 * or <code>GrantedAuthority</code>s (a.k.a. <code>Privilege</code>s) to obtain access to the given page then redirects to the access denied URL, 
+	 * and sets it as a <code>HttpServletRequest</code> attribute by the key "authoritiesRequired".
 	 * 
 	 * @param request
 	 * @param exception
@@ -64,5 +69,17 @@ public class DetailedAccessDeniedHandler extends AccessDeniedHandlerImpl {
 		request.setAttribute("authoritiesRequired", exception.getRequiredAuthorities());
 		LOGGER.info(String.format( "Access Denied due to lacking %s", 
 				                   asString((List<? extends ConfigAttribute>) request.getAttribute("authoritiesRequired"))) );
+	}
+
+	/**
+	 * Handles any <code>MessagedAccessDeniedException</code> thrown by the <code>SecurityFilterChain</code>, fetches the message set by the thrower 
+	 * and sets it as a <code>HttpServletRequest</code> attribute by the key "denialMessage".
+	 * 
+	 * @param request
+	 * @param exception
+	 * */
+	private void handleMessaged(HttpServletRequest request, MessagedAccessDeniedException exception) {
+		request.setAttribute("denialMessage", exception.getMessage());
+		LOGGER.info(String.format( "Access Denied due to %s", (String) request.getAttribute("denialMessage") ));
 	}
 }

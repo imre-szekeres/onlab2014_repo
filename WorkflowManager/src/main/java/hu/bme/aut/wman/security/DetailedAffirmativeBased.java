@@ -23,6 +23,9 @@ import org.springframework.security.core.Authentication;
  */
 public class DetailedAffirmativeBased extends AffirmativeBased {
 
+	/**
+	 * Sets up the default strategy for the AffirmativeBased AccessDecisionManager.
+	 * */
 	public DetailedAffirmativeBased() {
 		this(Arrays.asList(new AccessDecisionVoter[] {new RoleVoter(), new AuthenticatedVoter()}));
 	}
@@ -32,7 +35,14 @@ public class DetailedAffirmativeBased extends AffirmativeBased {
 	}
 
 	/**
+	 * Executes the method defined by the superclass and catches any <code>AccessDeniedException</code> that is thrown and 
+	 * wraps it into a <code>DetailedAccessDeniedException</code> with the "reasons" supplied.
 	 * 
+	 * @param authentication
+	 * @param object
+	 * @param configAttributes
+	 * 
+	 * @throws {@link AccessDeniedException} which in fact is an instance of a {@link DetailedAccessDeniedException}
 	 * */
 	@Override
 	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) 
