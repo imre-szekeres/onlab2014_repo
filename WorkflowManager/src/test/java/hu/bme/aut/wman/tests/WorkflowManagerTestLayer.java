@@ -4,6 +4,7 @@
 package hu.bme.aut.wman.tests;
 
 import hu.bme.aut.wman.model.ModelTestLayer;
+import hu.bme.aut.wman.services.ServicesTestLayer;
 import hu.bme.aut.wman.utils.UtilityTestLayer;
 
 import org.apache.log4j.BasicConfigurator;
@@ -17,8 +18,9 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+	UtilityTestLayer.class,
 	ModelTestLayer.class,
-	UtilityTestLayer.class
+	ServicesTestLayer.class,
 })
 public class WorkflowManagerTestLayer {
 

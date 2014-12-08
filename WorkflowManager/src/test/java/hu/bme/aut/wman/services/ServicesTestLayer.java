@@ -1,7 +1,7 @@
 /**
- * UtilitiesTestSuite.java
+ * ServicesTestLayer.java
  */
-package hu.bme.aut.wman.utils;
+package hu.bme.aut.wman.services;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -13,7 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	JsonParserTestSuite.class
+	
 })
-public class UtilityTestLayer {
+public class ServicesTestLayer {
 }

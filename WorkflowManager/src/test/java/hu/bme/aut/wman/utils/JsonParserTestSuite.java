@@ -26,20 +26,20 @@ import org.junit.runners.Parameterized.Parameters;
  * @version "%I%, %G%"
  */
 @RunWith(Parameterized.class)
-public class JsonParserTester {
+public class JsonParserTestSuite {
 
 	private static final JsonParser<String, List<String>> PARSER;
 	private static final Logger LOGGER;
 
 	static {
 		PARSER = new UserRolesParser();
-		LOGGER = Logger.getLogger( JsonParserTester.class );
+		LOGGER = Logger.getLogger( JsonParserTestSuite.class );
 	}
 
 	private String json;
 	private Map<String, List<String>> userRoles;
 
-	public JsonParserTester(String json, Map<String, List<String>> userRoles) {
+	public JsonParserTestSuite(String json, Map<String, List<String>> userRoles) {
 		this.json = json;
 		this.userRoles = userRoles;
 	}
