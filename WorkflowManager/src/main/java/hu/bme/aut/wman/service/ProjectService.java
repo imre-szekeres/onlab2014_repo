@@ -97,6 +97,13 @@ public class ProjectService extends AbstractDataService<Project> {
 		super.save(project);
 	}
 
+	public void save(Long id, String name, String description) {
+		Project project = selectById(id);
+
+		project.setName(name);
+		project.setDescription(description);
+	}
+
 	// TODO
 	/**
 	 * You can not delete projects, only closing is allowed.
@@ -266,6 +273,34 @@ public class ProjectService extends AbstractDataService<Project> {
 		save(project);
 	}
 
+	public void assignUser(Long projectId, Long userId) throws IllegalArgumentException {
+		Project project = selectById(projectId);
+		User user = userService.selectById(userId);
+
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(ProjectAssignment.PR_PROJECT, project));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(ProjectAssignment.PR_USER, user));
+		if (projectAssignmentService.selectByParameters(parameterList).size()>0) {
+			throw new IllegalArgumentException(user.getUsername()+" is already assigned.");
+		}
+
+		ProjectAssignment assignment = new ProjectAssignment(user, project);
+
+		projectAssignmentService.save(assignment);
+	}
+
+	public void unassignUser(Long projectId, Long userId) throws EntityNotDeletableException {
+		Project project = selectById(projectId);
+		User user = userService.selectById(userId);
+
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(ProjectAssignment.PR_PROJECT, project));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(ProjectAssignment.PR_USER, user));
+		ProjectAssignment assignment = projectAssignmentService.selectByParameters(parameterList).get(0);
+
+		projectAssignmentService.delete(assignment);
+	}
+
 	/**
 	 * @param workflowName
 	 * @return the projects which have the given workflow
@@ -300,7 +335,7 @@ public class ProjectService extends AbstractDataService<Project> {
 	 * @param workflowName
 	 * @return the projects which have the given user assigned to it
 	 */
-	public List<Project> findProjectsForUser(String username) {
+	public List<Project> selectProjectsForUser(String username) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, username));
 		return callNamedQuery(Project.NQ_FIND_PROJECTS_FOR_USER, parameterList);

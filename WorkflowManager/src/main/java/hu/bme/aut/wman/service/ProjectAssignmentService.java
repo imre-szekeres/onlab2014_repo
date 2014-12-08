@@ -14,7 +14,7 @@ import javax.ejb.Stateless;
 
 /**
  * Helps make operations with <code>ProjectAssignment</code>.
- * 
+ *
  * @version "%I%, %G%"
  */
 @Stateless

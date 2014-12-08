@@ -11,14 +11,14 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for Entity: ProjectAssignment
- * 
+ *
  * @version "%I%, %G%"
  */
 @Entity
 @SuppressWarnings("serial")
 @NamedQueries({
-		@NamedQuery(name = "ProjectAssignment.findByProjectId", query = "SELECT pa FROM ProjectAssignment pa WHERE pa.project.id=:id"),
-		@NamedQuery(name = "ProjectAssignment.findByUser", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.user.username=:username")
+	@NamedQuery(name = "ProjectAssignment.findByProjectId", query = "SELECT pa FROM ProjectAssignment pa WHERE pa.project.id=:id"),
+	@NamedQuery(name = "ProjectAssignment.findByUser", query = "SELECT pa FROM ProjectAssignment pa " + "WHERE pa.user.username=:username")
 })
 public class ProjectAssignment extends AbstractEntity {
 
@@ -45,9 +45,6 @@ public class ProjectAssignment extends AbstractEntity {
 		super();
 		this.user = user;
 		this.project = project;
-
-		// this.user.addProjectAssignment(this);
-		// this.project.addProjectAssignment(this);
 	}
 
 	public User getUser() {

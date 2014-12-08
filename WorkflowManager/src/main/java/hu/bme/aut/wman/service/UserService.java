@@ -26,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Helps make operations with <code>User</code>.
- * 
+ *
  * @version "%I%, %G%"
  */
 @LocalBean
@@ -47,9 +47,9 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	}
 
 	/**
-	 * Validates the given <code>User</code> object against its given <code>ValidationConstraint</code>s 
+	 * Validates the given <code>User</code> object against its given <code>ValidationConstraint</code>s
 	 * as Java annotation using Bean Validation mechanisms.
-	 * 
+	 *
 	 * @param user
 	 * @param confirmPassword
 	 * @return the {@link java.util.Map} representation of (<code>propertyName</code>, <code>errorMessage</code>) entries
@@ -60,12 +60,12 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		validateConfirmationPassword(user, confirmPassword, errors);
 		return errors;
 	}
-	
+
 	/**
 	 * Determines whether the given <code>User</code> instance corresponds to the unicity
 	 * constraint given to the username property. Upon it does not it places an error message into the
 	 * <code>Map</code> passed as argument with the key "username".
-	 * 
+	 *
 	 * @param user
 	 * @param errors
 	 * @see {@link User}
@@ -80,7 +80,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	/**
 	 * Validates the confirmation password and places an error message into the given <code>Map</code>
 	 * with a key "confirmPassword".
-	 * 
+	 *
 	 * @param user
 	 * @param confirmPassword
 	 * @param errors
@@ -90,11 +90,11 @@ public class UserService extends AbstractDataService<User> implements Serializab
 			errors.put("confirmPassword", "Confirmation password does not match.");
 		}
 	}
-	
+
 	/**
-	 * Validates the given <code>User</code> object against its given <code>ValidationConstraint</code>s 
+	 * Validates the given <code>User</code> object against its given <code>ValidationConstraint</code>s
 	 * as Java annotation using Bean Validation mechanisms.
-	 * 
+	 *
 	 * @param user
 	 * @param oldPassword
 	 * @param confirmPassword
@@ -103,19 +103,21 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	 * */
 	public Map<String, String> validate(User old, String oldPassword, String newPassword, String confirmPassword, PasswordEncoder encoder) {
 		Map<String, String> errors = new HashMap<>();
-		
-		if (!encoder.matches(oldPassword, old.getPassword()))
+
+		if (!encoder.matches(oldPassword, old.getPassword())) {
 			errors.put("oldPassword", "Given value does not match the previous one.");
-		if (StringUtils.isEmpty( newPassword ))
+		}
+		if (StringUtils.isEmpty( newPassword )) {
 			errors.put("password", "cannot be empty");
-		else if (StringUtils.isEmpty( confirmPassword ))
+		} else if (StringUtils.isEmpty( confirmPassword )) {
 			errors.put("confirmPassword", "cannot be empty");
-		else if (!newPassword.equals( confirmPassword ))
+		} else if (!newPassword.equals( confirmPassword )) {
 			errors.put("confirmPassword", "Does not match the new password");
-		
+		}
+
 		String pass = old.getPassword();
 		old.setPassword( newPassword );
-		
+
 		Map<String, String> err = passwordValidator.validate( old );
 		errors.putAll( err );
 		old.setPassword( pass );
@@ -125,7 +127,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	/**
 	 * Retrieves the <code>User</code> specified by its username in case it is found
 	 * otherwise null.
-	 * 
+	 *
 	 * @param username
 	 * @return the {@link User} corresponding to it
 	 * */
@@ -138,7 +140,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 
 	/**
 	 * Returns all <code>User</code>s owning the <code>Role</code> given by its name.
-	 * 
+	 *
 	 * @param roleName
 	 * @return a list of {@link User}s owning the {@link Role} with name roleName
 	 * */
@@ -151,7 +153,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	/**
 	 * Selects all the <code>User</code>s assigned to all the <code>Domain</code>s the <code>User</code> specified
 	 * by its id is also assigned to.
-	 * 
+	 *
 	 * @param userID
 	 * @return a {@link List} of {@link User}s in the same {@link Domain} as the given {@link User}
 	 * */
@@ -161,10 +163,16 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF, parameters);
 	}
 
+	public List<User> selectUsersForProject(Long projectId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectId", projectId));
+		return callNamedQuery(User.NQ_FIND_USERS_FOR_PROJECT, parameterList);
+	}
+
 	/**
 	 * Selects all the <code>User</code>s assigned to all the <code>Domain</code>s in which the <code>User</code> specified
 	 * by its id is also assigned to and has all the <code>Privilege</code>s specified by their names.
-	 * 
+	 *
 	 * @param userID
 	 * @param privilegeNames
 	 * @return a {@link List} of {@link User}s in the same {@link Domain} as the given {@link User}
@@ -179,7 +187,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 
 	/**
 	 * Retrieves the password of the given <code>User<code>.
-	 * 
+	 *
 	 * @param username
 	 * @return the corresponding password
 	 * */
@@ -192,7 +200,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 
 	/**
 	 * Retrieves the ID of the given <code>User<code>.
-	 * 
+	 *
 	 * @param username
 	 * @return the corresponding ID
 	 * */
@@ -206,7 +214,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	/**
 	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
 	 * as permission in any of the <code>Domain</code>s that the <code>User</code> at hand specified by its id is assigned to.
-	 * 
+	 *
 	 * @param subject
 	 * @param userID
 	 * @param privilegeName
@@ -224,7 +232,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	/**
 	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
 	 * as permission in any of the <code>Domain</code>s that the <code>User</code> at hand specified by its id is assigned to.
-	 * 
+	 *
 	 * @param subject
 	 * @param username
 	 * @param privilegeName
@@ -240,9 +248,9 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	}
 
 	/**
-	 * Lists the accessibility of those <code>User</code>s that own the <code>Privilege</code>s specified and 
+	 * Lists the accessibility of those <code>User</code>s that own the <code>Privilege</code>s specified and
 	 * in the same <code>Domain</code> as the <code>User</code> given as its id.
-	 * 
+	 *
 	 * @param userID
 	 * @param privilegeNames
 	 * */

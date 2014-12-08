@@ -2,15 +2,21 @@ package hu.bme.aut.wman.controllers;
 
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.BlobFile;
+import hu.bme.aut.wman.model.HistoryEntryEventType;
 import hu.bme.aut.wman.model.Project;
+import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.BlobFileService;
+import hu.bme.aut.wman.service.HistoryEntryService;
 import hu.bme.aut.wman.service.ProjectService;
+import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.view.objects.ErrorMessageVO;
 import hu.bme.aut.wman.view.objects.FileUploadVO;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +47,10 @@ public class FileController extends AbstractController{
 	private ProjectService projectService;
 	@EJB(mappedName = "java:module/BlobFileService")
 	private BlobFileService blobFileService;
+	@EJB(mappedName="java:module/HistoryEntryService")
+	private HistoryEntryService historyService;
+	@EJB(mappedName="java:module/UserService")
+	private UserService userService;
 
 	@RequestMapping(value = UPLOAD_FILE_ON_PROJECT, method = RequestMethod.POST)
 	public ModelAndView upload(@RequestParam("id") Long projectId, @ModelAttribute(value="fileUploadVO") FileUploadVO fileVO, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -56,6 +66,9 @@ public class FileController extends AbstractController{
 		project.getFiles().add(blobFile);
 		projectService.save(project);
 
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		historyService.log(user.getUsername(), new Date(), HistoryEntryEventType.UPLOADED_FILE, "uploaded a file: " + originalFilename, projectId);
+
 		ModelAndView view = redirectToFrame("project", redirectAttributes);
 		view.setViewName("redirect:/project?id=" + projectId);
 		return view;
@@ -65,8 +78,12 @@ public class FileController extends AbstractController{
 	public void download(@RequestParam("id") Long fileId, Model model, HttpServletRequest request,
 			HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
 
+
 		BlobFile file = blobFileService.selectById(fileId);
 		byte[] content = file.getContent();
+
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		historyService.log(user.getUsername(), new Date(), HistoryEntryEventType.DOWNLOADED_FILE, "downloaded a file: " + file.getFileName(), file.getProject().getId());
 
 		response.setContentType(file.getContentType());
 		response.setContentLength(content.length);
@@ -85,14 +102,19 @@ public class FileController extends AbstractController{
 	}
 
 	@RequestMapping(value = DELETE_FILE, method = RequestMethod.GET)
-	public ModelAndView deleteWorkflow(@RequestParam("id") Long fileId,@RequestParam("projectId") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	public ModelAndView deleteFile(@RequestParam("id") Long fileId,@RequestParam("projectId") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
 
+		BlobFile file = blobFileService.selectById(fileId);
+
 		try {
-			blobFileService.deleteById(fileId);
+			blobFileService.delete(file);
 		} catch (EntityNotDeletableException e) {
 			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
 		}
+
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		historyService.log(user.getUsername(), new Date(), HistoryEntryEventType.REMOVED_FILE, "deleted a file: " + file.getFileName(), projectId);
 
 		ModelAndView view = redirectToFrame(ProjectViewController.PROJECT, errors, redirectAttributes);
 		view.setViewName(view.getViewName() + "?id=" + projectId);
