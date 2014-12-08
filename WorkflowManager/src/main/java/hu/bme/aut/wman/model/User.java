@@ -24,7 +24,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "WM_USER")
 @NamedQueries({
-	@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectID"),
+	@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectId"),
 	// TODO:
 	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r, DomainAssignment d "+
 												   "WHERE r.name=:roleName "+

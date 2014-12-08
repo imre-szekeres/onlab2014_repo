@@ -26,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Helps make operations with <code>User</code>.
- * 
+ *
  * @version "%I%, %G%"
  */
 @LocalBean
@@ -47,9 +47,9 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	}
 
 	/**
-	 * Validates the given <code>User</code> object against its given <code>ValidationConstraint</code>s 
+	 * Validates the given <code>User</code> object against its given <code>ValidationConstraint</code>s
 	 * as Java annotation using Bean Validation mechanisms.
-	 * 
+	 *
 	 * @param user
 	 * @param confirmPassword
 	 * @return the {@link java.util.Map} representation of (<code>propertyName</code>, <code>errorMessage</code>) entries
@@ -60,12 +60,12 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		validateConfirmationPassword(user, confirmPassword, errors);
 		return errors;
 	}
-	
+
 	/**
 	 * Determines whether the given <code>User</code> instance corresponds to the unicity
 	 * constraint given to the username property. Upon it does not it places an error message into the
 	 * <code>Map</code> passed as argument with the key "username".
-	 * 
+	 *
 	 * @param user
 	 * @param errors
 	 * @see {@link User}
@@ -80,7 +80,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	/**
 	 * Validates the confirmation password and places an error message into the given <code>Map</code>
 	 * with a key "confirmPassword".
-	 * 
+	 *
 	 * @param user
 	 * @param confirmPassword
 	 * @param errors
@@ -90,11 +90,11 @@ public class UserService extends AbstractDataService<User> implements Serializab
 			errors.put("confirmPassword", "Confirmation password does not match.");
 		}
 	}
-	
+
 	/**
-	 * Validates the given <code>User</code> object against its given <code>ValidationConstraint</code>s 
+	 * Validates the given <code>User</code> object against its given <code>ValidationConstraint</code>s
 	 * as Java annotation using Bean Validation mechanisms.
-	 * 
+	 *
 	 * @param user
 	 * @param oldPassword
 	 * @param confirmPassword
@@ -106,16 +106,17 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		
 		if (!encoder.matches(oldPassword, old.getPassword()))
 			errors.put("oldPassword", "Given value does not match the previous one.");
-		if (StringUtils.isEmpty( newPassword ))
+		if (StringUtils.isEmpty( newPassword )) {
 			errors.put("password", "cannot be empty");
-		else if (StringUtils.isEmpty( confirmPassword ))
+		} else if (StringUtils.isEmpty( confirmPassword )) {
 			errors.put("confirmPassword", "cannot be empty");
-		else if (!newPassword.equals( confirmPassword ))
+		} else if (!newPassword.equals( confirmPassword )) {
 			errors.put("confirmPassword", "Does not match the new password");
-		
+		}
+
 		String pass = old.getPassword();
 		old.setPassword( newPassword );
-		
+
 		Map<String, String> err = passwordValidator.validate( old );
 		errors.putAll( err );
 		old.setPassword( pass );
@@ -125,7 +126,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	/**
 	 * Retrieves the <code>User</code> specified by its username in case it is found
 	 * otherwise null.
-	 * 
+	 *
 	 * @param username
 	 * @return the {@link User} corresponding to it
 	 * */
@@ -138,7 +139,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 
 	/**
 	 * Returns all <code>User</code>s owning the <code>Role</code> given by its name.
-	 * 
+	 *
 	 * @param roleName
 	 * @return a list of {@link User}s owning the {@link Role} with name roleName
 	 * */
@@ -151,7 +152,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	/**
 	 * Selects all the <code>User</code>s assigned to all the <code>Domain</code>s the <code>User</code> specified
 	 * by its id is also assigned to.
-	 * 
+	 *
 	 * @param userID
 	 * @return a {@link List} of {@link User}s in the same {@link Domain} as the given {@link User}
 	 * */
@@ -159,6 +160,12 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		List<Entry<String, Object>> parameters = new ArrayList<>();
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
 		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF, parameters);
+	}
+
+	public List<User> selectUsersForProject(Long projectId) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectId", projectId));
+		return callNamedQuery(User.NQ_FIND_USERS_FOR_PROJECT, parameterList);
 	}
 
 	/**
