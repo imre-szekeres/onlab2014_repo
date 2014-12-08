@@ -5,16 +5,10 @@
  * */
 package hu.bme.aut.wman.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -37,9 +31,6 @@ public class State extends AbstractEntity {
 	public static final String PR_INITIAL = "initial";
 	public static final String PR_WORKFLOW = "workflow";
 	public static final String PR_DESCRIPTION = "description";
-	//	public static final String PR_NEXTSTATES = "nextStates";
-	//	public static final String PR_FILES = "files";
-	public static final String PR_HISTORYENTRIES = "historyEntries";
 
 	@NotNull
 	// @Size(min = 4, max = 25)
@@ -53,15 +44,6 @@ public class State extends AbstractEntity {
 	@ManyToOne
 	private Workflow workflow;
 
-	// @OneToMany(mappedBy = "parentState", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	// private List<Transition> nextStates;
-
-	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	private Set<HistoryEntry> historyEntries;
-
-	//	@OneToMany(mappedBy = "state", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	//	private List<BlobFile> files;
-
 	public State() {
 		super();
 	}
@@ -71,9 +53,6 @@ public class State extends AbstractEntity {
 		this.description = description;
 		workflow = null;
 		this.initial = initial;
-		historyEntries = new HashSet<>();
-		//		files = new ArrayList<>();
-		// this.children = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -88,18 +67,6 @@ public class State extends AbstractEntity {
 		return workflow;
 	}
 
-	public Set<HistoryEntry> getHistoryEntries() {
-		return historyEntries;
-	}
-
-	// public List<Transition> getNextStates() {
-	// return nextStates;
-	// }
-
-	// public State getParent() {
-	// return parent;
-	// }
-
 	public boolean isInitial() {
 		return initial;
 	}
@@ -107,30 +74,6 @@ public class State extends AbstractEntity {
 	public void setInitial(boolean initial) {
 		this.initial = initial;
 	}
-
-	// public void setParent(State parent) {
-	// this.parent = parent;
-	// }
-	//
-	// public List<State> getChildren() {
-	// return children;
-	// }
-	//
-	// public void setChildren(List<State> children) {
-	// this.children = children;
-	// }
-
-	// public void setNextStates(List<Transition> nextStates) {
-	// this.nextStates = nextStates;
-	// }
-
-	//	public List<BlobFile> getFiles() {
-	//		return files;
-	//	}
-	//
-	//	public void setFiles(List<BlobFile> files) {
-	//		this.files = files;
-	//	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -148,81 +91,11 @@ public class State extends AbstractEntity {
 		this.workflow = workflow;
 	}
 
-	/**
-	 * Add {@link HistoryEntry} to this State
-	 *
-	 * @param historyEntry
-	 *            {@link HistoryEntry} to add
-	 */
-	public void addHistoryEntry(HistoryEntry historyEntry) {
-		historyEntries.add(historyEntry);
-	}
-
-	/**
-	 * Remove {@link HistoryEntry} from this State
-	 *
-	 * @param historyEntry
-	 *            {@link HistoryEntry} to remove
-	 */
-	public boolean removeHistoryEntry(HistoryEntry historyEntry) {
-		return historyEntries.remove(historyEntry);
-	}
-
-	// /**
-	// * Remove {@link Transition} from this State
-	// *
-	// * @param stateNavigationEntry
-	// * {@link Transition} to remove
-	// */
-	// public void removeNexState(Transition stateNavigationEntry) {
-	// nextStates.remove(stateNavigationEntry);
-	// stateNavigationEntry.setParent(null);
-	// }
-
-	// /**
-	// * Add {@link Transition} to this State
-	// *
-	// * @param stateNavigationEntry
-	// * {@link Transition} to add
-	// */
-	// public void addNextState(Transition stateNavigationEntry) {
-	// getNextStates().add(stateNavigationEntry);
-	// stateNavigationEntry.setParent(this);
-	// }
-
-	// /**
-	// * Add a child state to this State
-	// *
-	// * @param child
-	// * child state to add
-	// */
-	// public void addChild(State child) {
-	// if (getChildren() == null) {
-	// setChildren(new ArrayList<State>());
-	// }
-	// if (child != null && !getChildren().contains(child)) {
-	// getChildren().add(child);
-	// child.setParent(this);
-	// }
-	// }
-	//
-	// /**
-	// * Remove the child state from this State's children
-	// *
-	// * @param child
-	// * child state to remove
-	// */
-	// public boolean removeChild(State child) {
-	// return children.remove(child);
-	// }
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		//		result = prime * result + ((files == null) ? 0 : files.hashCode());
-		result = prime * result + ((historyEntries == null) ? 0 : historyEntries.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -254,13 +127,6 @@ public class State extends AbstractEntity {
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		// if (parent == null) {
-		// if (other.parent != null) {
-		// return false;
-		// }
-		// } else if (!parent.equals(other.parent)) {
-		// return false;
-		// }
 		if (workflow == null) {
 			if (other.workflow != null) {
 				return false;
@@ -275,11 +141,4 @@ public class State extends AbstractEntity {
 	public String toString() {
 		return "State [id=|" + id + "|, name=" + name + ", initial=" + initial + "]";
 	}
-
-	// public State copy() {
-	// State copy = new State(name, description, initial);
-	// // copy.setNextStates(nextStates);
-	// copy.setWorkflow(workflow);
-	// return copy;
-	// }
 }

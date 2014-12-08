@@ -39,12 +39,23 @@ public class TransitionService extends AbstractDataService<Transition> {
 	@Inject
 	ActionTypeService actionService;
 
-	public void save(NewTransitionVO transitionVO, Long fromId, Long toId) {
+	public void save(NewTransitionVO transitionVO, Long fromId, Long toId) throws IllegalArgumentException {
+
 		GraphNode fromNode = nodeService.selectById(fromId);
 		GraphNode toNode = nodeService.selectById(toId);
 		State fromState = stateService.selectById(fromNode.getStateId());
 		State toState = stateService.selectById(toNode.getStateId());
 		ActionType action = actionService.selectById(transitionVO.getActionId());
+
+		// Check if there is an other transition with this action from the same state
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Transition.PR_ACTION_TYPE, action));
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Transition.PR_PARENT_STATE, fromState));
+		List<Transition> sameTransition = selectByParameters(parameterList);
+
+		if (sameTransition.size()>0) {
+			throw new IllegalArgumentException("There is an other transition with this action from state: " + fromState.getName());
+		}
 
 		// create a new transaction
 		//		Transition entity = new Transition(transitionVO.getAction(), toState, fromState);

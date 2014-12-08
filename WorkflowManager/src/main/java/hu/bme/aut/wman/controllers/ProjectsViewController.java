@@ -1,10 +1,12 @@
 package hu.bme.aut.wman.controllers;
 
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.model.HistoryEntryEventType;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
 import hu.bme.aut.wman.security.SecurityToken;
+import hu.bme.aut.wman.service.HistoryEntryService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.service.WorkflowService;
@@ -13,6 +15,7 @@ import hu.bme.aut.wman.view.objects.NewProjectVO;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +53,8 @@ public class ProjectsViewController extends AbstractController {
 	private WorkflowService workflowService;
 	@EJB(mappedName="java:module/UserService")
 	private UserService userService;
+	@EJB(mappedName="java:module/HistoryEntryService")
+	private HistoryEntryService historyService;
 
 	@RequestMapping(value = PROJECTS, method = RequestMethod.GET)
 	public String workflowsView(@RequestParam("active") Boolean actives, Model model, HttpServletRequest request) {
@@ -107,9 +112,12 @@ public class ProjectsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = CLOSE_PROJECT, method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	public ModelAndView close(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		projectService.closeById(projectId);
+
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		historyService.log(user.getUsername(), new Date(), HistoryEntryEventType.CLOSED_PROJECT, "closed this project", projectId);
 
 		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=true");
@@ -124,6 +132,9 @@ public class ProjectsViewController extends AbstractController {
 		} catch (Exception e) {
 			// TODO error message
 		}
+
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		historyService.log(user.getUsername(), new Date(), HistoryEntryEventType.REOPENED_PROJECT, "reopened this project", projectId);
 
 		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=false");

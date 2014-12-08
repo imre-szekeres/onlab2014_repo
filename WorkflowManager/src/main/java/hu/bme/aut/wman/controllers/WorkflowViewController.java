@@ -29,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +53,7 @@ public class WorkflowViewController extends AbstractController {
 	public static final String DELETE_STATE = "/delete/state";
 	public static final String DELETE_TRANSITION = "/delete/transition";
 	public static final String INITIAL_STATE = "/initial/state";
+	public static final String SAVE_WORKFLOW = "/save/workflow";
 
 	@EJB(mappedName = "java:module/WorkflowService")
 	private WorkflowService workflowService;
@@ -148,7 +150,12 @@ public class WorkflowViewController extends AbstractController {
 	public ModelAndView postNewTransition(@ModelAttribute("newTransition") NewTransitionVO newTransitionVO, @RequestParam("from") Long fromId, @RequestParam("to") Long toId,
 			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
-		transitionService.save(newTransitionVO, fromId, toId);
+		try {
+			transitionService.save(newTransitionVO, fromId, toId);
+		} catch (Exception e) {
+			// TODO
+
+		}
 
 		ModelAndView view = redirectToFrame("workflow", redirectAttributes);
 		view.setViewName("redirect:/workflow?id=" + newTransitionVO.getWorkflowId());
@@ -187,6 +194,15 @@ public class WorkflowViewController extends AbstractController {
 		} catch (EntityNotDeletableException e) {
 			errors.add(new ErrorMessageVO("The state is not deletable.", e.getMessage()));
 		}
+	}
+
+	@RequestMapping(value = SAVE_WORKFLOW, method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void saveWorkflow(@RequestBody Workflow workflow, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+		Long workflowId = Long.parseLong(request.getParameter("id"));
+
+		workflowService.save(workflowId, workflow.getName(), workflow.getDescription());
+
 	}
 
 	@Override

@@ -58,12 +58,8 @@ public class Project extends AbstractEntity {
 	@ManyToOne
 	private Workflow workflow;
 
-	@OneToMany(mappedBy = "project")
+	@OneToMany(mappedBy = "project", fetch= FetchType.EAGER)
 	private List<HistoryEntry> historyEntries;
-
-	// TODO: elaborate ?
-	// @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	// private Set<ProjectAssignment> projectAssignments;
 
 	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Comment> comments = new ArrayList<Comment>();
@@ -249,18 +245,23 @@ public class Project extends AbstractEntity {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof Project))
+		}
+		if (!(obj instanceof Project)) {
 			return false;
+		}
 		Project other = (Project) obj;
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		return true;
 	}
 

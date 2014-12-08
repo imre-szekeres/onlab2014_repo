@@ -2,21 +2,57 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
-<%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
+<%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <div id="project-content-wrapper">
 	<div id="project-header" class="content-header">
-		<h3 class='project-name'> <strong>Project:</strong> ${project.name} </h3>
-		<a role='button' class='btn btn-primary header-button'> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <span class='button-text'>Edit</span> </a>
-		<c:if test='${project.active}'>
-		</c:if>
 		<c:choose>
-			<c:when test='${project.active}'>
-				<a href='close/project?id=${project.id}' role='button' class='btn btn-warning header-button'> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <span class='button-text'>Close</span> </a>
+			<c:when test='${param.mode=="edit"}'>
+				<div id="edit-mode-name" style="width:600px;">
+					<h3 class='project-name' style='line-height:1.4em;'> 
+						<strong style='float:left;'>Project:</strong>
+						<input id="edit-mode-name-input" class="form-control" style='width:200px;float:left;' value="${project.name}"/>
+					</h3>
+					<a id='project-save-button' href='#' role='button' class='btn btn-primary header-button' style='margin-left:10px;float:left;'>
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						<span class='button-text'>Save</span>
+					</a>
+					<a href='project?id=${project.id}' role='button' class='btn btn-warning header-button' style='float:left;'>
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+						<span class='button-text'>Cancel</span>
+					</a>	
+					<div style="clear:both;"></div>
+				</div> 
 			</c:when>
 			<c:otherwise>
-				<a href='reopen/project?id=${project.id}' role='button' class='btn btn-success header-button'> <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> <span class='button-text'>Reopen</span> </a>
-				<a href='delete/project?id=${project.id}' role='button' class='btn btn-danger header-button'> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <span class='button-text'>Delete</span> </a>
+				<h3 class='project-name'> <strong>Project:</strong> ${project.name} </h3>
+				<a href='project?id=${project.id}&mode=edit' role='button' class='btn btn-primary header-button'> 
+					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+					<span class='button-text'>Edit</span> 
+				</a>
+				<a href='#' data-toggle="modal" data-target="#assign-user-modal" role='button' class='btn btn-primary header-button'> 
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span> 
+					<span class='button-text'>Assign user</span> 
+				</a>
+				<c:choose>
+					<c:when test='${project.active}'>
+						<a href='close/project?id=${project.id}' role='button' class='btn btn-warning header-button'> 
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+							<span class='button-text'>Close</span> 
+						</a>
+					</c:when>
+					<c:otherwise>
+						<a href='reopen/project?id=${project.id}' role='button' class='btn btn-success header-button'> 
+							<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 
+							<span class='button-text'>Reopen</span> 
+						</a>
+						<a href='delete/project?id=${project.id}' role='button' class='btn btn-danger header-button'> 
+							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 
+							<span class='button-text'>Delete</span> 
+						</a>
+					</c:otherwise>
+				</c:choose>				
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -34,25 +70,52 @@
 	
 	<div id="project-properties-panel" class='panel panel-default'>
 		<div class="panel-heading">
-			<h3 class="panel-title">Properties</h3>
+			<h3 class="panel-title" style="display:inline;">Properties</h3>
+			<c:choose>
+				<c:when test='${project.active}'>
+					<h4 style="display:inline;margin-left:20px;"><span class="label label-success">Active</span></h4>
+				</c:when>
+				<c:otherwise>
+					<h4 style="display:inline;margin-left:20px;"><span class="label label-danger">Closed</span></h4>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div id="project-base-properties" class="panel-body double-panel-left">
-			<div id="project-description" class="text-justify panel-body-section">
-				<strong>Description:</strong>
-				<p>${project.description}</p>
-			</div>
+			<c:choose>
+				<c:when test='${param.mode=="edit"}'>
+					<label for='edit-mode-description' class='col-sm-1 control-label' style='text-align:left;'><strong>Description:</strong></label>
+					<div id="edit-mode-description">
+						<textarea id="edit-mode-description-input" class="form-control" rows="4" cols="50" style="width:100%;height:100%;">${project.description}</textarea>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div id="project-description" class="text-justify panel-body-section">
+						<strong>Description:</strong>
+						<p>${project.description}</p>
+					</div>
+				</c:otherwise>
+			</c:choose>
 			<div id="project-owner" class='panel-body-section'>
-				<strong>Owner:</strong> ${project.owner.username}
+				<strong>Owner:</strong>
+				<a href='users/profile?user=${project.owner.id}' class='no-decor-link'>${project.owner.username}</a>
 			</div>
-			<div id="project-active" class='panel-body-section'>
-				<c:choose>
-					<c:when test='${project.active}'>
-						<h4><span class="label label-success">Active</span></h4>
-					</c:when>
-					<c:otherwise>
-						<h4><span class="label label-danger">Closed</span></h4>
-					</c:otherwise>
-				</c:choose>
+			<div id="project-assigned-users" class='panel-body-section'>
+				<strong>Assigned users:</strong> 
+				<c:if test='${empty assignedUsers}'>
+					<div>-</div>
+				</c:if>
+				<c:forEach var="aUser" items="${assignedUsers}">
+					<div class="row assignment-row">
+						<div class="col-md-10 assigned-user-link-wrapper">
+							<a href='users/profile?user=${aUser.id}' class='no-decor-link' data-userid='${aUser.id}'>${aUser.username}</a>
+						</div>
+						<div class="col-md-2">
+							<a id='assign-delete-button' class='assign-delete-button' href='#' role='button'>
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							</a>
+						</div>
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 		<div class="panel-body">
@@ -95,7 +158,14 @@
 			<div class="panel-body">
 				<ul class="list-unstyled">
 					<c:forEach var="historyEntry" items="${project.historyEntries}">
-						<li> <strong> ${historyEntry.when}: </strong> ${historyEntry.userName} ${historyEntry.actionTypeName} ${historyEntry.state.name}</li>
+						<c:choose>
+							<c:when test='${historyEntry.event == "DONE_ACTION"}'>
+								<li> <span style="color:#9A9A9A;"> <fmt:formatDate value="${historyEntry.when}" pattern="YYYY-MM-dd"/> - </span><strong>${historyEntry.userName}: </strong> ${historyEntry.message}. New state is <i>${historyEntry.state}.</i></li>
+							</c:when>
+							<c:otherwise>
+								<li> <span style="color:#9A9A9A;"> <fmt:formatDate value="${historyEntry.when}" pattern="YYYY-MM-dd"/> - </span><strong>${historyEntry.userName}: </strong> ${historyEntry.message} in state: <i>${historyEntry.state}.</i></li>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 				</ul>
 			</div>
@@ -146,7 +216,7 @@
 			<c:forEach var="comment" items="${project.comments}">
 				<div class="project-comment-body panel-body">
 					<div class="project-comment-inform">
-						<strong>${comment.user.username}</strong> <span style="color:#9A9A9A;">- ${comment.postDate}<span>
+						<a href='users/profile?user=${comment.user.id}' class='no-decor-link'><strong>${comment.user.username}</strong></a> <span style="color:#9A9A9A;">- <fmt:formatDate value="${comment.postDate}" pattern="YYYY-MM-dd HH:mm"/><span>
 					</div>
 					<div class="project-comment-message">
 						${comment.description}
@@ -162,6 +232,37 @@
 			</div>
 		</form:form>
 	</div>
+	
+	<div class="modal fade" id="assign-user-modal" tabindex="-1" role="dialog" aria-labelledby="assign-user-model-label" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="assign-user-model-label">Assign user</h4>
+				</div>
+				<div class="modal-body">
+					<div class="assign-user-form-wrapper">
+						<div class='form-group'>
+							<div>
+								<label for='input-assign-user-select' class='control-label' style="padding-bottom:5px;">User</label>
+								<select id='assign-user-select' class="form-control"  placeholder="User" style='width:265px;'>
+									<c:forEach var="user" items="${assignableUsers}">
+										<option value="${user.id}">
+											${user.username}
+										</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<input id='assign-user-modal-submit' type="submit" class="btn btn-primary" value="Assign" />
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 	
 <script language="javascript">
@@ -175,6 +276,60 @@
 			$('#project-history').height(h2);
 			$('#project-attachments').height(h2);
 		}
+		
+		$('#project-save-button').click(function(e) {
+			var name = $('#edit-mode-name-input').val();
+			var description = $('#edit-mode-description-input').val();
+		
+			var project = {
+				"name" : name,
+				"description" : description
+			}
+			$.ajax({
+				type: "POST",
+				contentType : 'application/json',
+				dataType : 'json',
+				accepts: 'json',
+				url: "save/project?id="+${project.id},
+				data: JSON.stringify(project),
+				success :function(response) {
+					window.location.href = "project?id="+${project.id};
+				},
+				error :function(response) {
+					window.location.href = "project?id="+${project.id};
+				}
+			});
+		});
+		
+		$('#assign-user-modal-submit').click(function(e) {
+			var id = $('#assign-user-select').val();
+			
+			$.ajax({
+				type: "GET",
+				url: "assign/user?projectId="+${project.id}+"&id="+id,
+				success :function(response) {
+					window.location.href = "project?id="+${project.id};
+				},
+				error :function(response) {
+					window.location.href = "project?id="+${project.id};
+				}
+			});
+		});
+		
+		$('.assign-delete-button').click(function(e) {
+			var id = $(this).parent().siblings('.assigned-user-link-wrapper').children('a').data('userid');
+			
+			$.ajax({
+				type: "GET",
+				url: "unassign/user?projectId="+${project.id}+"&id="+id,
+				success :function(response) {
+					window.location.href = "project?id="+${project.id};
+				},
+				error :function(response) {
+					window.location.href = "project?id="+${project.id};
+				}
+			});
+		});
 	});
 
 	$(document).ready( function() {

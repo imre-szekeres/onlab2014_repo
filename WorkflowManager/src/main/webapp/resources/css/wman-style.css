@@ -731,6 +731,24 @@
 	min-width: 400px;
 	min-height: 400px;
 }
+
+#assign-delete-button{
+	color: red;
+}
+
+.assignment-row {
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #D4D9DE;
+
+	margin-left:20px;
+	padding:5px 0px;
+	width: 40%;
+}
+
+.assignment-row:hover {
+	background-color: #eee;
+}
 /* END Project */
 
 /* BEGIN Actions */

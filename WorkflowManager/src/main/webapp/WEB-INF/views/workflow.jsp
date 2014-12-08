@@ -6,18 +6,54 @@
 
 <div id="workflow-content-wrapper">
 	<div id="workflow-header" class="content-header">
-		<h3 class='workflow-name'> <strong>Workflow:</strong> ${workflow.name} </h3>
-		<a role='button' class='btn btn-primary header-button'> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <span class='button-text'>Edit</span> </a>
-		<a href='delete/workflow?id=${workflow.id}' role='button' class='btn btn-danger header-button'> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <span class='button-text'>Delete</span> </a>
+		<c:choose>
+			<c:when test='${param.mode=="edit"}'>
+				<div id="edit-mode-name" style="width:600px;">
+					<h3 class='workflow-name' style='line-height:1.4em;'> 
+						<strong style='float:left;'>Workflow:</strong>
+						<input id="edit-mode-name-input" class="form-control" style='width:200px;float:left;' value="${workflow.name}"/>
+					</h3>
+					<a id='workflow-save-button' href='#' role='button' class='btn btn-primary header-button' style='margin-left:10px;float:left;'>
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						<span class='button-text'>Save</span>
+					</a>
+					<a href='workflow?id=${workflow.id}' role='button' class='btn btn-warning header-button' style='float:left;'>
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+						<span class='button-text'>Cancel</span>
+					</a>	
+					<div style="clear:both;"></div>
+				</div> 
+			</c:when>
+			<c:otherwise>
+				<h3 class='workflow-name'> <strong>Workflow:</strong> ${workflow.name} </h3>
+				<a href='workflow?id=${workflow.id}&mode=edit' role='button' class='btn btn-primary header-button'>
+					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					<span class='button-text'>Edit</span>
+				</a>
+				<a href='delete/workflow?id=${workflow.id}' role='button' class='btn btn-danger header-button'>
+					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 
+					<span class='button-text'>Delete</span>
+				</a>				
+			</c:otherwise>
+		</c:choose>
 	</div>
 	<div id="workflow-properties-panel" >
 		<div id="workflow-description" class="panel panel-default double-panel-left">
 			<div class="panel-heading">
 				<h3 class="panel-title">Description</h3>
 			</div>
-			<div class="panel-body text-justify">
-				${workflow.description}
-			</div>
+			<c:choose>
+				<c:when test='${param.mode=="edit"}'>
+					<div id="edit-mode-description">
+						<textarea id="edit-mode-description-input" class="form-control" rows="4" cols="50" style="width:100%;height:100%;">${workflow.description}</textarea>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="panel-body text-justify">
+						${workflow.description}
+					</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div id="workflow-projects" class="panel panel-default">
 			<div class="panel-heading">
@@ -603,6 +639,29 @@
 			$('#new-state-form').attr("action", "/WorkflowManager/new/state?workflowId="+${workflow.id}+"&stateId=-1")
 			$('#new-state-modal-label').text('New state');
 			$('#new-state-submit').val("Create")
+		});
+		
+		$('#workflow-save-button').click(function(e) {
+			var name = $('#edit-mode-name-input').val();
+			var description = $('#edit-mode-description-input').val();
+		
+			var workflow = {
+				"name" : name,
+				"description" : description
+			}
+			$.ajax({
+				type: "POST",
+				contentType : 'application/json; charset=utf-8',
+				dataType : 'json',
+				url: "save/workflow?id="+${workflow.id},
+				data: JSON.stringify(workflow),
+				success :function(response) {
+					window.location.href = "workflow?id="+${workflow.id};
+				},
+				error: function(){
+					window.location.href = "workflow?id="+${workflow.id};
+				}
+			});
 		});
 	});
 </script>

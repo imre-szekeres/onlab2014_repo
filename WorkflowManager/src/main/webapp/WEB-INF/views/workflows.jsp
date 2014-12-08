@@ -47,7 +47,7 @@
 			var name = $(this).find('div.workflows-id').text();
 			$(this).find('div.workflows-name').append( 
 							"<div id='delete-button' class='delete-button'><a class='no-decor-link little-button-link' href='delete/workflow?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>" +
-							"<div id='edit-button' class='edit-button'><a class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></a></div>" +
+							"<div id='edit-button' class='edit-button'><a class='no-decor-link little-button-link' href='workflow?id="+name+"&mode=edit'><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></a></div>" +
 							"<div id='open-button' class='open-button'><a class='no-decor-link little-button-link' href='workflow?id="+name+"'><span class='glyphicon glyphicon-share-alt' style='line-height: 26px;'></a></div>" );
 		})
 		.mouseleave(function() {

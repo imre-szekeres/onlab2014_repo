@@ -66,6 +66,13 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 		graphService.save(graph);
 	};
 
+	public void save(Long id, String newName, String newDescription) {
+		Workflow workflow = selectById(id);
+
+		workflow.setName(newName);
+		workflow.setDescription(newDescription);
+	};
+
 	/**
 	 * Deletes the workflow.
 	 * You can not delete a workflow, if there is at least one <b>active</b> project in with that workflow.
