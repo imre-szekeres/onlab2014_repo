@@ -65,7 +65,7 @@ import javax.validation.constraints.Size;
     		                                                           "AND p MEMBER OF r.privileges " +
     		      		                                               "AND p.name = :privilegeName "),
 
-   @NamedQuery(name = "User.findPersonellInfo", query = "SELECT u.username, u.email FROM User u, User s, DomainAssignment dau, DomainAssignment das " +
+   @NamedQuery(name = "User.findPersonellInfo", query = "SELECT DISTINCT u.username, u.email FROM User u, User s, DomainAssignment dau, DomainAssignment das " +
                                                         "WHERE s.id= :subjectID AND dau.domain = das.domain " +
 		                                                       "AND dau.user = u " +
                                                                "AND das.user = s " +

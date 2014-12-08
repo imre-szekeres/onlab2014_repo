@@ -34,7 +34,7 @@
         <security:form-login login-page='/login' 
                              default-target-url='/'
                              authentication-failure-url='/login?error=true' />
-        <security:logout logout-success-url='/logout'
+        <security:logout logout-success-url='/logout' 
                          invalidate-session='true' />
         <security:intercept-url pattern='/register' access='permitAll' />
         <security:intercept-url pattern='/login*'   access='permitAll' />
