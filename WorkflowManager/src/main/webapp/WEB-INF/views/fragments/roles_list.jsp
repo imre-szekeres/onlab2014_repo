@@ -6,7 +6,7 @@
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
-
+<!DOCTYPE html>
 <c:forEach var='domain' items='${ domains }' >  
         <c:forEach var='role' items='${ domain.roles }' >
             

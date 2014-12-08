@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -35,6 +36,10 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author Imre Szekeres
@@ -57,6 +62,10 @@ public class StartupService {
 	private DomainService domainService;
 	@Inject
 	private DomainAssignmentService domainAssignmentService;
+	
+	@Autowired
+	@Qualifier("bcryptEncoder")
+	private PasswordEncoder encoder;
 
 	
 	private final QName NAME;
@@ -77,6 +86,15 @@ public class StartupService {
 		PASSWORD = new QName("password");
 		EMAIL = new QName(User.PR_EMAIL);
 		DESCRIPTION = new QName(User.PR_DESCRIPTION);
+	}
+
+	/**
+	 * Sets the <code>PasswordEncoder</code> to a <code>BCryptPasswordEncoder</code> in case it was found
+	 * as null.
+	 * */
+	@PostConstruct
+	public void initService() {
+		encoder = (encoder == null) ? new BCryptPasswordEncoder() : encoder;
 	}
 	
 	public void setupWebapp(String xmlPath) throws Exception {
@@ -399,7 +417,11 @@ public class StartupService {
 				String removable = user.getAttributeByName( REMOVABLE ).getValue();
 				
 				User u = userService.selectByName(username);
-				u = (u == null) ? new User(username, password, email, desc) : u;
+				String encoded = encoder.encode( password );
+				u = (u == null) ? new User(username, encoded, email, desc) : u;
+				u.setPassword( encoded );
+				
+				LOGGER.info(String.format("Password was set to %s for %s..", encoded, username)); /* TODO: remove */
 				
 				LOGGER.debug(u.toString() + " was found");
 				if (Boolean.valueOf( removable ))

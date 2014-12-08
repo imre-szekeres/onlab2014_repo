@@ -5,6 +5,7 @@
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
+<!DOCTYPE html>
 <div id='roles-list-panel' class='panel panel-default admin-panel domain-panel'>
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
     <jsp:include page='fragments/domains_list.jsp' />
@@ -56,6 +57,9 @@
     			$_modal.empty();
     			$(data).appendTo( $_modal );
     			current_form = 'create';
+    		},
+    		error: function() {
+    			window.location = "${ appRoot }/403";
     		}
     	});
     }
@@ -83,6 +87,9 @@
                     current_form = 'update';
                     $_cdomain_trigger.trigger('click');
                     form_included = false;
+                },
+                error: function() {
+                    window.location = "${ appRoot }/403";
                 }
             });
         });

@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<c:set var='loginError' value='${ (not empty loginError or not empty requestScope.error or not empty param.error) ? true : loginError }' />
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -38,7 +39,7 @@
 	    <div id='register-from-positioner' class='pos-rel'>
 	        <jsp:include page='fragments/user_form.jsp'>
 	            <jsp:param name='postAction' value='${ appRoot }/register' />
-	            <jsp:param name='userRef' value='subject' />
+	            <jsp:param name='userRef' value='user' />
 	            <jsp:param name='submitButtonValue' value='Register' />
 	        </jsp:include>
 	    </div>
@@ -56,7 +57,7 @@
                 </div>
                 <div class='modal-body' id='sign-in-wrapper' >
                 
-                    <form:form action='/WorkflowManager/login' modelAttribute='subject' method='POST' class='form-horizontal pos-rel' id='sign-in-form' >
+                    <form name='f' action='<c:url value="j_spring_security_check" />' method='POST' class='form-horizontal pos-rel' id='sign-in-form' >
 			            <div class='form-row'>
 			                <div class='error-message-wrapper'>
 			                    <c:choose >
@@ -83,12 +84,16 @@
 			            <c:set var='inputClass' value='${ loginError == null ? "" : "has-error"  }' />
 			                                   
 			            <div class='form-row ${ inputClass }'>
-			                <form:input id='username' path='username' type='text' placeholder='Username' class='form:input-large form-control' />
+			                <input id='username' name='j_username' type='text' placeholder='Username' class='form:input-large form-control' >
 			            </div>
 			            <div class='form-row ${ inputClass }' >
-			                <form:input id='password' path='password' type='password' class='form:input-large form-control'/>
+			                <input id='password' name='j_password' type='password' class='form:input-large form-control' >
 			            </div>
-			       </form:form>
+			            
+			            <div hidden='true'>
+			                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" >
+			            </div>
+			       </form>
                 
                 </div>
                 <div class='modal-footer' >

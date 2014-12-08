@@ -23,6 +23,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
+ * Handles <code>Domain</code> management specific requests.
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -57,8 +60,19 @@ public class DomainsController extends AbstractController {
 	private RoleService roleService;
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
-	
-	@SuppressWarnings("deprecation")
+
+	/**
+	 * Responsible for executing the creation of a <code>Domain</code> instance in the name of the currently authenticated
+	 * <code>User</code>.
+	 * <p>
+	 * Also logs the operation and flashes message according to the outcome.
+	 * 
+	 * @param newDomain
+	 * @param model
+	 * @param session
+	 * @return the name of the View that renders the Html response
+	 * */
+	@PreAuthorize("hasRole('Create Domain')")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createDomain(@ModelAttribute("domain") Domain newDomain, Model model, HttpSession session) {
 		Map<String, String> errors = domainService.validate( newDomain );
@@ -108,14 +122,27 @@ public class DomainsController extends AbstractController {
 	 * 
 	 * @return the {@link List} of {@link Role} names that could not be found
 	 * */
+	@PreAuthorize("hasPermission(#domain.name, 'Domain', 'Assign User') and hasPermission(#domain.name, 'Domain', 'Assign Role')")
 	private void assignNew(User user, Domain domain, Role role) {
 		userService.save(user);
 		DomainAssignment da = new DomainAssignment(user, domain, role);
 		daService.save( da );
 		LOGGER.info(user.getUsername() + " was assigned to domain " + domain.getName() + " as " + asString(role));
 	}
-	
-	@SuppressWarnings("deprecation")
+
+	/**
+	 * Responsible for executing the update of a <code>Domain</code> instance in the name of the currently authenticated
+	 * <code>User</code>.
+	 * <p>
+	 * Also logs the operation and flashes message according to the outcome.
+	 * 
+	 * @param newDomain
+	 * @param oldId
+	 * @param model
+	 * @param session
+	 * @return the name of the View that renders the Html response
+	 * */
+	@PreAuthorize("hasPermission(#newDomain.name, 'Domain', 'Update Domain')")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateDomain(@ModelAttribute("domain") Domain newDomain, @RequestParam("oldId") Long oldId, Model model, HttpSession session) {
 		Domain domain = domainService.selectById(oldId);
@@ -139,14 +166,29 @@ public class DomainsController extends AbstractController {
 		model.addAttribute("pageName", "admin_domains");
 		return "wman_frame";
 	}
-	
+
+	/**
+	 * Pre-sets the required data for the Create Domain Form, then returns the name of the View.
+	 * 
+	 * @param model
+	 * @return the name of the View that renders the Html response
+	 * */
+	@PreAuthorize("hasRole('Create Domain')")
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model) {
 		model.addAttribute("domain", new Domain());
 		model.addAttribute("postDomainAction", DomainsController.CREATE);
 		return "fragments/domain_form_modal";
 	}
-	
+
+	/**
+	 * Pre-sets the required data for the Update Domain Form, then returns the name of the View.
+	 * 
+	 * @param domainID
+	 * @param model
+	 * @return the name of the View that renders the Html response
+	 * */
+	@PreAuthorize("hasPermission(#domainID, 'Domain', 'Update Domain')")
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
 	public String requestUpdateForm(@RequestParam("domain") Long domainID, Model model) {
 		Domain domain = domainService.selectById(domainID);
@@ -168,9 +210,20 @@ public class DomainsController extends AbstractController {
 		model.addAttribute("formType", "update");
 	}
 
-	@SuppressWarnings("deprecation")
+	/**
+	 * Responsible for executing the removal of a <code>Domain</code> instance in the name of the currently authenticated
+	 * <code>User</code>.
+	 * <p>
+	 * Also logs the operation and flashes message according to the outcome.
+	 * 
+	 * @param domainID
+	 * @param session
+	 * @param model
+	 * @return the name of the View that renders the Html response
+	 * */
+	@PreAuthorize("hasPermission(#domainID, 'Domain', 'Remove Domain')")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteRole(@RequestParam("domain") Long domainID, HttpSession session, Model model) {
+	public String deleteDomain(@RequestParam("domain") Long domainID, HttpSession session, Model model) {
 		Domain domain = domainService.selectById(domainID);
 		
 		if (domain != null) {
@@ -180,7 +233,18 @@ public class DomainsController extends AbstractController {
 		}
 		return redirectTo(AdminViewController.DOMAINS);
 	}
-	
+
+	/**
+	 * Attempts to remove all the <code>DomainAssignment</code>s corresponding to the given <code>Domain</code> instance,
+	 * and delete the <code>Domain</code> in the name of the <code>User</code> specified.
+	 * <p>
+	 * Also logs the operation and sets a flash message according to the outcome.
+	 * 
+	 * @param domain
+	 * @param subject
+	 * @param model
+	 * @see {@link DomainsController#deleteDomain(Long, HttpSession, Model)}
+	 * */
 	private final void tryRemove(Domain domain, User subject, Model model) {
 		try {
 			
@@ -197,7 +261,16 @@ public class DomainsController extends AbstractController {
 			flash(message, Severity.ERROR, model);
 		}
 	}
-	
+
+	/**
+	 * Lists the <code>Domain</code> names available to the <code>User</code> currently authenticated,
+	 * as an option list.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return the name of the View that renders the Html response
+	 * */
+	@PreAuthorize("hasRole('View Domain')")
 	@RequestMapping(value = NAMES, method = RequestMethod.GET)
 	public String listDomainNames(Model model, HttpSession session) {
 		List<String> domainNames = domainService.domainNamesOf( userIDOf(session) );

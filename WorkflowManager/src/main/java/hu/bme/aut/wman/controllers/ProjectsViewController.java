@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,6 +57,7 @@ public class ProjectsViewController extends AbstractController {
 	@EJB(mappedName="java:module/HistoryEntryService")
 	private HistoryEntryService historyService;
 
+	@PreAuthorize("hasRole('View Project')")
 	@RequestMapping(value = PROJECTS, method = RequestMethod.GET)
 	public String workflowsView(@RequestParam("active") Boolean actives, Model model, HttpServletRequest request) {
 
@@ -67,6 +69,7 @@ public class ProjectsViewController extends AbstractController {
 		return navigateToFrame("projects", model);
 	}
 
+	@PreAuthorize("hasRole('Create Project')")
 	@RequestMapping(value = NEW_PROJECT, method = RequestMethod.GET)
 	public String newWorkflowView(Model model, HttpServletRequest request) {
 
@@ -83,6 +86,7 @@ public class ProjectsViewController extends AbstractController {
 		return navigateToFrame("new_project", model);
 	}
 
+	/* @PreAuthorize("hasPermission(#projectVO.workflowId, 'Workflow', 'Create Project')") *//* TODO: authorize */
 	@RequestMapping(value = NEW_PROJECT, method = RequestMethod.POST)
 	public ModelAndView postNewProject(@ModelAttribute("project") NewProjectVO projectVO, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
@@ -111,6 +115,7 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
 	@RequestMapping(value = CLOSE_PROJECT, method = RequestMethod.GET)
 	public ModelAndView close(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
@@ -124,6 +129,7 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
 	@RequestMapping(value = REOPEN_PROJECT, method = RequestMethod.GET)
 	public ModelAndView reopen(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
@@ -141,6 +147,7 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
 	@RequestMapping(value = DELETE_PROJECT, method = RequestMethod.GET)
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();

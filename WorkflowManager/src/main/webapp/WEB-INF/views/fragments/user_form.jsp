@@ -5,7 +5,7 @@
 <%@ taglib uri='http://www.springframework.org/tags' prefix='spring' %>   
 <%@ taglib uri='http://www.springframework.org/tags/form' prefix='form' %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <div id='user-form-wrapper' class='pos-rel'>
     
     <form:form modelAttribute='${ param.userRef }' method='POST' action='${ param.postAction }' class='form-horizontal pos-rel' id='user-form' >

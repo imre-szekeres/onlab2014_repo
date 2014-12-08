@@ -31,8 +31,14 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.0.3.RELEASE</version>
+            <version>4.0.4.RELEASE</version>
             <scope>compile</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>spring-aop</artifactId>
+            		<groupId>org.springframework</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         
         <dependency>
@@ -116,11 +122,35 @@
         </dependency>
         
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.3</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>3.2.5.RELEASE</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>spring-aop</artifactId>
+            		<groupId>org.springframework</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>3.2.5.RELEASE</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>spring-aop</artifactId>
+            		<groupId>org.springframework</groupId>
+            	</exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>4.0.4.RELEASE</version>
+        </dependency>
+
     </dependencies>
     
     <build>
@@ -159,7 +189,9 @@
                 <configuration>
                     <tomeeVersion>1.7.0</tomeeVersion>
                     <tomeeClassifier>plus</tomeeClassifier>
-                    <reloadOnUpdate>true</reloadOnUpdate>              
+                    <reloadOnUpdate>true</reloadOnUpdate>
+                    <port>8080</port>
+                    <httpsPort>8443</httpsPort>
                     <synchronization>                   
                         <updateOnlyExtensions>
                             <updateOnlyExtension>.xhtml</updateOnlyExtension>

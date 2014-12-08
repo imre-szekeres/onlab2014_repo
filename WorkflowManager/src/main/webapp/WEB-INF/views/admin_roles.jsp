@@ -4,6 +4,7 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core'        prefix='c' %>
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
+<!DOCTYPE html>
 <div id='roles-list-panel' class='panel panel-default admin-panel role-panel' >
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
     <jsp:include page='fragments/roles_list.jsp' />
@@ -78,6 +79,9 @@
     			$(data).appendTo( $_newr_modal );
     			requestPrivileges();
     			current_form = 'create';
+    		},
+    		error: function() {
+    			window.location = "${ appRoot }/403";
     		}
     	});
     }
@@ -161,7 +165,10 @@
                     current_form = 'create';
                     $_create_role_trigger.trigger('click');
                     current_form = 'update';
-        		}
+        		},
+                error: function() {
+                    window.location = "${ appRoot }/403";
+                }
         	});
         });
     });

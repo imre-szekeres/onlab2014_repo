@@ -16,6 +16,8 @@ import hu.bme.aut.wman.view.DroppableName;
 import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.transfer.RoleTransferObject;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,8 +61,8 @@ public class RolesController extends AbstractController {
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
 	
-	
-	@SuppressWarnings("deprecation")
+
+	@PreAuthorize("hasPermission(#newRole.domainName, 'Domain', 'Create Role') and hasPermission(#newRole.domainName, 'Domain', 'Assign Privilege')")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
 		String roleName = newRole.getRoleName();
@@ -93,14 +96,15 @@ public class RolesController extends AbstractController {
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
-		AdminViewController.setAdminRolesContent(model, subjectID, domainService);
-		setFormAttributes(newRole, subjectID, domainService, RolesController.CREATE, "create", model);
+		AdminViewController.setAdminRolesContent(model, subjectID, domainService, Arrays.asList(new String[] {"View Role"}));
+		List<String> authorities = Arrays.asList(new String[] {"Assign Privilege", "Create Role"});
+		setFormAttributes(newRole, subjectID, domainService, RolesController.CREATE, "create", authorities, model);
 		model.addAttribute("pageName", "admin_roles");
 		reset(newRole, model);
 		return AbstractController.FRAME;
 	}
-	
-	@SuppressWarnings("deprecation")
+
+	@PreAuthorize("hasPermission(#newRole.id, 'Role', 'Assign Privilege')")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
 		String roleName = newRole.getRoleName();
@@ -131,8 +135,9 @@ public class RolesController extends AbstractController {
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
-		setFormAttributes(newRole, subjectID, domainService, RolesController.UPDATE, "update", model);
-		AdminViewController.setAdminRolesContent(model, subjectID, domainService);
+		List<String> authorities = Arrays.asList(new String[] {"Assign Privilege"});
+		setFormAttributes(newRole, subjectID, domainService, RolesController.UPDATE, "update", authorities, model);
+		AdminViewController.setAdminRolesContent(model, subjectID, domainService, Arrays.asList(new String[] {"View Role"}));
 		model.addAttribute("pageName", "admin_roles"); /* TODO: also USE JSON content */
 		return AbstractController.FRAME;
 	}
@@ -150,20 +155,24 @@ public class RolesController extends AbstractController {
 			LOGGER.debug(privilege.toString() + " was addoed to " + role.toString());
 		}
 	}
-	
+
+	@PreAuthorize("hasRole('Assign Privilege') and hasRole('Create Role')")
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model, HttpSession session) {
 		Long subjectID = userIDOf(session);
-		setFormAttributes(new RoleTransferObject(), subjectID, domainService, RolesController.CREATE, "create", model);
+		List<String> authorities = Arrays.asList(new String[] {"Assign Privilege", "Create Role"});
+		setFormAttributes(new RoleTransferObject(), subjectID, domainService, RolesController.CREATE, "create", authorities, model);
 		return "fragments/role_form_modal";
 	}
-	
+
+	@PreAuthorize("hasPermission(#roleID, 'Role', 'Assign Privilege')")
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
 	public String requestUpdateForm(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
 		Long subjectID = userIDOf(session);
-		setFormAttributes(new RoleTransferObject(role, domain.getName()), subjectID, domainService, RolesController.UPDATE, "update", model);
+		List<String> authorities = Arrays.asList(new String[] {"Assign Privilege"});
+		setFormAttributes(new RoleTransferObject(role, domain.getName()), subjectID, domainService, RolesController.UPDATE, "update", authorities, model);
 		return "fragments/role_form_modal";
 	}
 
@@ -175,18 +184,20 @@ public class RolesController extends AbstractController {
 	 * @param domainService
 	 * @param postRoleAction
 	 * @param formType
+	 * @param authorities
 	 * @param model
 	 * */
-	public static final void setFormAttributes(RoleTransferObject role, Long subjectID, DomainService domainService, String postRoleAction, String formType, Model model) {
+	public static final void setFormAttributes(RoleTransferObject role, Long subjectID, DomainService domainService, String postRoleAction, String formType, Collection<String> authorities, Model model) {
 		model.addAttribute("role", role);
-		model.addAttribute("domainNames", DroppableName.namesOf(domainService.domainNamesOf( subjectID ), ""));
+		List<String> domainNames = domainService.domainNamesOf(subjectID, authorities);
+		model.addAttribute("domainNames", DroppableName.namesOf(domainNames, ""));
 		model.addAttribute("postRoleAction", postRoleAction);
 		model.addAttribute("formType", formType);
 	} 
 
-	@SuppressWarnings("deprecation")
+	@PreAuthorize("hasPermission(#roleID, 'Role', 'Create Role')")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") long roleID, Model model, HttpSession session) {
+	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
 		

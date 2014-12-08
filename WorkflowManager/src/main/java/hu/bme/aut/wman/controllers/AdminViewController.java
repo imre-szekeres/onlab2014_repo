@@ -9,12 +9,15 @@ import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,52 +55,111 @@ public class AdminViewController extends AbstractController {
 	@EJB(mappedName = "java:module/PrivilegeService")
 	private PrivilegeService privilegeService;
 
-	
-	@SuppressWarnings("deprecation")
+
+	/**
+	 * Navigates to the default Admin page.
+	 * 
+	 * @param model
+	 * @return the view corresponding to the admin page
+	 * */
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
 	public String admin(Model model) {
-		return redirectTo(AdminViewController.USERS);
+		return navigateToFrame("admin", model);
 	}
 
+	/**
+	 * Navigates to the View corresponding to the Admin <code>Role</code>s page, also sets the required
+	 * <code>Model</code> attributes to render the View.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return the View to navigate to
+	 * */
+	@PreAuthorize("hasRole('View Role')")
 	@RequestMapping(value = ROLES, method = RequestMethod.GET)
 	public String adminRoles(Model model, HttpSession session) {
-		setAdminRolesContent(model, userIDOf(session), domainService);
+		setAdminRolesContent(model, userIDOf(session), domainService, Arrays.asList(new String[] {"View Role"}));
 		return navigateToFrame("admin_roles", model);
 	}
 
+	/**
+	 * Navigates to the View corresponding to the Admin <code>Domain</code>s page, also sets the required
+	 * <code>Model</code> attributes to render the View.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return the View to navigate to
+	 * */
+	@PreAuthorize("hasRole('View Domain')")
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)
 	public String adminDomains(Model model, HttpSession session) {
 		setAdminDomainsContent(model, userIDOf(session), domainService);
 		return navigateToFrame("admin_domains", model);
 	}
 
+	/**
+	 * Navigates to the View corresponding to the Admin <code>Privilege</code>s page, also sets the required
+	 * <code>Model</code> attributes to render the View.
+	 * 
+	 * @param model
+	 * @return the View to navigate to
+	 * */
+	@PreAuthorize("hasRole('View Privilege')")
 	@RequestMapping(value = PRIVILEGES, method = RequestMethod.GET)
 	public String adminPrivileges(Model model) {
 		model.addAttribute("privileges", privilegeService.selectAll());
 		return navigateToFrame("admin_privileges", model);
 	}
-	
+
+	/**
+	 * Navigates to the View corresponding to the Admin <code>User</code>s page, also sets the required
+	 * <code>Model</code> attributes to render the View.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return the View to navigate to
+	 * */
+	@PreAuthorize("hasRole('View User')")
 	@RequestMapping(value = USERS, method = RequestMethod.GET)
 	public String adminUsers(Model model, HttpSession session) {
 		Long subjectID = userIDOf(session);
-		setAdminUsersContent(model, subjectID, userService);
+		setAdminUsersContent(model, subjectID, userService, Arrays.asList(new String[] {"View User"}));
 		return navigateToFrame("admin_users", model);
 	}
-	
+
+	/**
+	 * @see {@link AbstractController#getNavigationTabs()}
+	 * */
 	@Override
 	public Map<String, String> getNavigationTabs() {
 		return NAVIGATION_TABS;
 	}
-	
-	public static final void setAdminRolesContent(Model model, Long subjectID, DomainService domainService) {
-		model.addAttribute("domains", domainService.domainsOf( subjectID ));
+
+	/**
+	 * Encapsulates the setting of the content required to render the admin_roles page across
+	 * the application.
+	 * 
+	 * @param model
+	 * @param subjectID
+	 * @param domainService
+	 * */
+	public static final void setAdminRolesContent(Model model, Long subjectID, DomainService domainService, Collection<? extends String> authorities) {
+		model.addAttribute("domains", domainService.domainsOf(subjectID, authorities));
 		model.addAttribute("selectPrivilegesUrl", PrivilegesController.ROOT_URL);
 		model.addAttribute("selectCreateFormUrl", RolesController.CREATE_FORM);
 		model.addAttribute("selectUpdateFormUrl", RolesController.UPDATE_FORM);
 		model.addAttribute("deleteRoleAction", RolesController.DELETE);
 		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
-	
+
+	/**
+	 * Encapsulates the setting of the content required to render the admin_domains page across
+	 * the application.
+	 * 
+	 * @param model
+	 * @param subjectID
+	 * @param domainService
+	 * */
 	public static final void setAdminDomainsContent(Model model, Long subjectID, DomainService domainService) {
 		model.addAttribute("domains", domainService.domainsOf( subjectID ));
 		model.addAttribute("selectRolesUrl", RolesController.ROOT_URL);
@@ -106,9 +168,17 @@ public class AdminViewController extends AbstractController {
 		model.addAttribute("deleteDomainAction", DomainsController.DELETE);
 		model.addAttribute("navigationTabs", NAVIGATION_TABS);
 	}
-	
-	public static final void setAdminUsersContent(Model model, Long subjectID, UserService userService) {
-		model.addAttribute("users", userService.selectUsersInDomainOf( subjectID ));
+
+	/**
+	 * Encapsulates the setting of the content required to render the admin_users page across
+	 * the application.
+	 * 
+	 * @param model
+	 * @param subjectID
+	 * @param userService
+	 * */
+	public static final void setAdminUsersContent(Model model, Long subjectID, UserService userService, Collection<? extends String> authorities) {
+		model.addAttribute("users", userService.usersInDomainOf(subjectID,  authorities));
 		model.addAttribute("selectDomainsForUrl", UsersController.DOMAINS);
 		model.addAttribute("selectDomainNamesUrl", DomainsController.NAMES);
 		model.addAttribute("selectRolesForUrl", RolesController.ROOT_URL);

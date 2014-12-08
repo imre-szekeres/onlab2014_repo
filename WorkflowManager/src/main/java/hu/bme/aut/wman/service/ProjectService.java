@@ -5,6 +5,7 @@ import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Comment;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.ProjectAssignment;
+import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.State;
 import hu.bme.aut.wman.model.Transition;
 import hu.bme.aut.wman.model.User;
@@ -338,6 +339,42 @@ public class ProjectService extends AbstractDataService<Project> {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, username));
 		return callNamedQuery(Project.NQ_FIND_PROJECTS_FOR_USER, parameterList);
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
+	 * as permission in the <code>Domain</code> that the <code>Project</code> specified by its id corresponds to.
+	 * 
+	 * @param username
+	 * @param projectID
+	 * @param privilegeName
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link Role}
+	 * */
+	public boolean hasPrivilege(String username, Long projectID, String privilegeName) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("projectID", projectID));
+		List<? extends Number> count = callNamedQuery(Project.NQ_FIND_COUNT_BY_PRIVILEGE, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
+	 * as permission in the <code>Domain</code> that the <code>Project</code> specified by its name corresponds to.
+	 * 
+	 * @param username
+	 * @param projectName
+	 * @param privilegeName
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link Role}
+	 * */
+	public boolean hasPrivilege(String username, String projectName, String privilegeName) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("projectName", projectName));
+		List<? extends Number> count = callNamedQuery(Project.NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
 	}
 
 	@Override

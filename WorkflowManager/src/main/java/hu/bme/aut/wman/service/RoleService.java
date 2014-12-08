@@ -64,7 +64,6 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 	public Role selectByName(String name) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Role.PR_NAME, name));
-		// FIXME should check if has exactly one element
 		List<Role> results = selectByParameters(parameterList);
 		return (results.size() > 0) ? results.get(0) : null;
 	}
@@ -103,6 +102,61 @@ public class RoleService extends AbstractDataService<Role> implements Serializab
 		ArrayList<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("actionType", actionType));
 		return callNamedQuery(Role.NQ_FIND_BY_ACTIONTYPE, parameterList);
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name has all the required <code>Privilege</code>s accounted
+	 * as permissions in the <code>Domain</code> that the <code>Role</code> specified by its id corresponds to.
+	 * 
+	 * @param username
+	 * @param roleID
+	 * @param privilegeNames
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link Role}
+	 * */
+	public boolean hasPrivileges(String username, Long roleID, Collection<? extends String> privilegeNames) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("count", privilegeNames.size()));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeNames", privilegeNames));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("roleID", roleID));
+		List<? extends Number> count = callNamedQuery(Role.NQ_FIND_COUNT_BY_PRIVILEGES, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
+	 * as permission in the <code>Domain</code> that the <code>Role</code> specified by its id corresponds to.
+	 * 
+	 * @param username
+	 * @param roleID
+	 * @param privilegeName
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link Role}
+	 * */
+	public boolean hasPrivilege(String username, Long roleID, String privilegeName) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("roleID", roleID));
+		List<? extends Number> count = callNamedQuery(Role.NQ_FIND_COUNT_BY_PRIVILEGE, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
+	 * as permission in the <code>Domain</code> that the <code>Role</code> specified by its name corresponds to.
+	 * 
+	 * @param username
+	 * @param roleName
+	 * @param privilegeName
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link Role}
+	 * */
+	public boolean hasPrivilege(String username, String roleName, String privilegeName) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("roleName", roleName));
+		List<? extends Number> count = callNamedQuery(Role.NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
 	}
 
 	/**

@@ -17,6 +17,7 @@
     <c:set var='inputAreaColClass' value='col-sm-6' />
 </c:if>
 
+<!DOCTYPE html>
 <div class='details-forms-wrapper' >
     
     <div id='user-details-panel' class='info-panel update-form-panel' >

@@ -6,7 +6,7 @@
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
-
+<!DOCTYPE html>
 <c:forEach var='domain' items='${ domains }' >  
             <div class='panel panel-default admin-role-panel admin-domain-panel' >
                 <div class='panel-heading' role='tab' id='domain-${ domain.id }-heading' >
