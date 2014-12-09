@@ -104,28 +104,28 @@ public class RolesController extends AbstractController {
 		return AbstractController.FRAME;
 	}
 
-	@PreAuthorize("hasPermission(#newRole.id, 'Role', 'Assign Privilege')")
+	@PreAuthorize("hasPermission(#updated.id, 'Role', 'Assign Privilege')")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String updateRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
-		String roleName = newRole.getRoleName();
-		String domainName  = newRole.getDomainName();
+	public String updateRole(@ModelAttribute("role") RoleTransferObject updated, Model model, HttpSession session) {
+		String roleName = updated.getRoleName();
+		String domainName  = updated.getDomainName();
 		
-		Role role = roleService.selectById(newRole.getId());
-		role.setName( newRole.getRoleName() );
+		Role role = roleService.selectById(updated.getId());
+		role.setName( updated.getRoleName() );
 		Map<String, String> errors = roleService.validate(role, domainName);
 		
 		Long subjectID = userIDOf(session);
 		if (errors.isEmpty()) {
 			User subject = userService.selectById( subjectID );
-			List<String> privileges = newRole.privileges();
+			List<String> privileges = updated.privileges();
 			
-			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
+			LOGGER.debug("found \'" + updated.getPrivileges() + "\' for role " + roleName);
 			LOGGER.debug("parsed (" + privileges.size() + ") privileges for role " + roleName);
 			
 			role.setPrivileges(new HashSet<Privilege>());
 			for(String s : privileges) {
 				Privilege p = privilegeService.selectByName(s);
-				assign(role, p); /* TODO: add NOT FOUND messages, support */
+				assign(role, p);
 			}
 			roleService.save(role);
 			String message = role.toString() + " was updated";
@@ -136,9 +136,9 @@ public class RolesController extends AbstractController {
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		List<String> authorities = Arrays.asList(new String[] {"Assign Privilege"});
-		setFormAttributes(newRole, subjectID, domainService, RolesController.UPDATE, "update", authorities, model);
+		setFormAttributes(updated, subjectID, domainService, RolesController.UPDATE, "update", authorities, model);
 		AdminViewController.setAdminRolesContent(model, subjectID, domainService, Arrays.asList(new String[] {"View Role"}));
-		model.addAttribute("pageName", "admin_roles"); /* TODO: also USE JSON content */
+		model.addAttribute("pageName", "admin_roles");
 		return AbstractController.FRAME;
 	}
 
