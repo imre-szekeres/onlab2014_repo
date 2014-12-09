@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.controllers;
 
+import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.BlobFile;
 import hu.bme.aut.wman.model.HistoryEntryEventType;
@@ -10,15 +11,13 @@ import hu.bme.aut.wman.service.BlobFileService;
 import hu.bme.aut.wman.service.HistoryEntryService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.UserService;
-import hu.bme.aut.wman.view.objects.ErrorMessageVO;
+import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.FileUploadVO;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -103,20 +102,18 @@ public class FileController extends AbstractController{
 
 	@RequestMapping(value = DELETE_FILE, method = RequestMethod.GET)
 	public ModelAndView deleteFile(@RequestParam("id") Long fileId,@RequestParam("projectId") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
-
 		BlobFile file = blobFileService.selectById(fileId);
 
 		try {
 			blobFileService.delete(file);
 		} catch (EntityNotDeletableException e) {
-			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
+			flash(format("The Workflow is not deletable due to: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 		historyService.log(user.getUsername(), new Date(), HistoryEntryEventType.REMOVED_FILE, "deleted a file: " + file.getFileName(), projectId);
 
-		ModelAndView view = redirectToFrame(ProjectViewController.PROJECT, errors, redirectAttributes);
+		ModelAndView view = redirectToFrame(ProjectViewController.PROJECT, redirectAttributes);
 		view.setViewName(view.getViewName() + "?id=" + projectId);
 		return view;
 	}

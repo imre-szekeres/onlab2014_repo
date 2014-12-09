@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.controllers;
 
+import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Project;
@@ -14,10 +15,9 @@ import hu.bme.aut.wman.service.StateGraphService;
 import hu.bme.aut.wman.service.StateService;
 import hu.bme.aut.wman.service.TransitionService;
 import hu.bme.aut.wman.service.WorkflowService;
-import hu.bme.aut.wman.view.objects.ErrorMessageVO;
+import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.NewTransitionVO;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,18 +164,16 @@ public class WorkflowViewController extends AbstractController {
 
 	@RequestMapping(value = DELETE_STATE, method = RequestMethod.GET)
 	public ModelAndView deleteState(@RequestParam("workflowId") Long workflowId, @RequestParam("nodeId") Long nodeId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
-
 		Long stateId = graphService.getStateIdOfNode(nodeId);
 
 		try {
 			workflowService.removeState(workflowId, stateId);
 			graphService.deleteNode(nodeId);
 		} catch (EntityNotDeletableException e) {
-			errors.add(new ErrorMessageVO("The state is not deletable.", e.getMessage()));
+			flash(format("The State is not deletable due to: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
-		ModelAndView view = redirectToFrame("workflow", errors, redirectAttributes);
+		ModelAndView view = redirectToFrame("workflow", redirectAttributes);
 		view.setViewName("redirect:/workflow?id=" + workflowId);
 		return view;
 	}
@@ -183,8 +181,6 @@ public class WorkflowViewController extends AbstractController {
 	@RequestMapping(value = DELETE_TRANSITION, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteTransition(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
-
 		Long edgeId = Long.parseLong(request.getParameter("edgeId"));
 		Long transitionId = graphService.getTransitionIdOfEdge(edgeId);
 
@@ -192,7 +188,7 @@ public class WorkflowViewController extends AbstractController {
 			transitionService.deleteById(transitionId);
 			graphService.deleteEdge(edgeId);
 		} catch (EntityNotDeletableException e) {
-			errors.add(new ErrorMessageVO("The state is not deletable.", e.getMessage()));
+			flash(format("The State is not deletable due to: %s", e.getMessage()), Severity.ERROR, model);
 		}
 	}
 

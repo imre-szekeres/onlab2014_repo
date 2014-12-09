@@ -40,22 +40,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test='${not empty errorList}'>
-		<div id='main-error-panel' class='error-panel'>
-			<div class="error-panel-header">
-				Error occurred
-			</div>
-			<div class="error-panel-body">
-				<c:forEach var="errorMessage" items="${errorList}">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-							<button type="button" class="close" data-dismiss="alert" onclick="errorClosed();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							<strong>${errorMessage.title}</strong> ${errorMessage.message}
-						</div>
-				</c:forEach>
-			</div>
-		</div>
-	</c:if>
-   
+    <jsp:include page='fragments/messages.jsp' />   
 
 	<script language="javascript">
 		function errorClosed() {
