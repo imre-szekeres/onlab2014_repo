@@ -4,11 +4,6 @@
 package hu.bme.aut.wman.services;
 
 import static java.lang.String.format;
-import hu.bme.aut.wman.service.DomainAssignmentService;
-import hu.bme.aut.wman.service.DomainService;
-import hu.bme.aut.wman.service.PrivilegeService;
-import hu.bme.aut.wman.service.RoleService;
-import hu.bme.aut.wman.service.UserService;
 
 import java.util.Properties;
 
@@ -32,25 +27,14 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	PrivilegeServiceTestSuite.class,
-	UserServiceTestSuite.class
+	MockedDomainServiceTestSuite.class
 })
 public class ServicesTestLayer {
 
-	public static final String DB_INIT_XML;
-	private static final Logger LOGGER;
-		
-	static {
-		DB_INIT_XML = "src/test/resources/configs/wman-db-init.xml";
-		LOGGER = Logger.getLogger( ServicesTestLayer.class );
-	}
+	private static final Logger LOGGER = Logger.getLogger( ServicesTestLayer.class );
 	
 	public static EntityManagerFactory factory;
 	public static EntityManager em;
-	public static UserService userService;
-	public static DomainService domainService;
-	public static RoleService roleService;
-	public static PrivilegeService privilegeService;
-	public static DomainAssignmentService daService;
 
 	@BeforeClass
 	public static void setupPersistence() throws Exception {
@@ -61,7 +45,6 @@ public class ServicesTestLayer {
 			factory = Persistence.createEntityManagerFactory("integrationTest", props);
 			em = factory.createEntityManager();
 			
-			setupServices( em );
 			LOGGER.info(format("%s set up the Persistence Unit(s) for further testing..", ServicesTestLayer.class.getSimpleName()));
 		} catch(Exception e) {
 			LOGGER.error(format("Unexpected: %s", e), e);
@@ -87,25 +70,6 @@ public class ServicesTestLayer {
 				LOGGER.info(format("Unable to close em: %s", e), e);
 			}
 		}
-	}
-
-	private static final void setupServices(EntityManager em) {
-		userService = new UserService();
-		userService.setEntityManager( em );
-		
-		domainService = new DomainService();
-		domainService.setEntityManager( em );
-		
-		roleService = new RoleService();
-		roleService.setEntityManager( em );
-		
-		privilegeService = new PrivilegeService();
-		privilegeService.setEntityManager( em );
-		
-		daService = new DomainAssignmentService();
-		daService.setEntityManager( em );
-		
-		domainService.set( daService );
 	}
 
 	@AfterClass

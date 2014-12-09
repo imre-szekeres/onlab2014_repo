@@ -4,12 +4,12 @@
 package hu.bme.aut.wman.services;
 
 
-import static hu.bme.aut.wman.services.ServicesTestLayer.privilegeService;
 import static hu.bme.aut.wman.utils.StringUtils.asString;
 import static java.lang.String.format;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import hu.bme.aut.wman.model.Privilege;
+import hu.bme.aut.wman.service.PrivilegeService;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,6 +17,7 @@ import java.util.Collection;
 import javax.persistence.EntityTransaction;
 
 import org.apache.log4j.Logger;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -29,11 +30,9 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class PrivilegeServiceTestSuite {
 
-	private static final Logger LOGGER;
-	
-	static {
-		LOGGER = Logger.getLogger( PrivilegeServiceTestSuite.class );
-	}
+	private static final Logger LOGGER = Logger.getLogger( PrivilegeServiceTestSuite.class );
+	private static PrivilegeService privilegeService;
+
 	
 	private Privilege privilege;
 	private String original;
@@ -44,6 +43,12 @@ public class PrivilegeServiceTestSuite {
 		this.changeTo = changeTo;
 	}
 
+	@BeforeClass
+	public static void initBeans() {
+		privilegeService = new PrivilegeService();
+		privilegeService.setEntityManager( ServicesTestLayer.em );
+	}
+	
 	@Test
 	public void testCreation() {
 		privilege = new Privilege( original );

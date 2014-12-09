@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Dec 09 00:34:44 CET 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-014a-2c41-4bd2-000005b908e0 
+Tue Dec 09 10:51:54 CET 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-014a-2e76-5333-000005b94c78 
 on database directory memory:/home/redcloud/.repos/.git/onlab_2014/WorkflowManager/testDB with class loader sun.misc.Launcher$AppClassLoader@9cc3baa 
 Loaded from file:/home/redcloud/.m2/repository/org/apache/derby/derby/10.10.1.1/derby-10.10.1.1.jar
 java.vendor=Oracle Corporation

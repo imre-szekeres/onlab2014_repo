@@ -4,8 +4,8 @@
 	version="2.0">
 
 	<persistence-unit name="integrationTest" transaction-type="RESOURCE_LOCAL">
-		<class>hu.raiffeisen.ejbsample.Product</class>
-		<class>hu.raiffeisen.ejbsample.Category</class>
+		<class>hu.bme.aut.wman.model.AbstractEntity</class>
+		<class>hu.bme.aut.wman.model.Privilege</class>
 		<exclude-unlisted-classes/>	
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:testDB;create=true" />
