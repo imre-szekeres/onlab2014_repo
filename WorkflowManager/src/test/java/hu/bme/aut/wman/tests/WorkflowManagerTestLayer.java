@@ -21,7 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	UtilityTestLayer.class,
 	ModelTestLayer.class,
-	ServicesTestLayer.class,
+	ServicesTestLayer.class
 })
 public class WorkflowManagerTestLayer extends TestCase {
 

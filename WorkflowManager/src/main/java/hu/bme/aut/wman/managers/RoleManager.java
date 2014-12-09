@@ -94,61 +94,11 @@ public class RoleManager implements Serializable {
 	}
 
 
-	/**
-	 * Only for testing purposes.
-	 * 
-	 * @param domainService
-	 * */
-	public void set(DomainService domainService) {
-		this.domainService = domainService;
-	}
 
 	/**
-	 * Only for testing purposes.
-	 * 
-	 * @param privilegeService
+	 * Wraps the <code>RoleManager</code> instance and provides setters/getters for the inner 
+	 * service layer for TESTING PURPOSES only.
 	 * */
-	public void set(PrivilegeService privilegeService) {
-		this.privilegeService = privilegeService;
-	}
-
-	/**
-	 * Only for testing purposes.
-	 * 
-	 * @param roleService
-	 * */
-	public void set(RoleService roleService) {
-		this.roleService = roleService;
-	}
-
-
-	/**
-	 * Only for testing purposes.
-	 * 
-	 * @return domainService
-	 * */
-	public DomainService getDomainService() {
-		return this.domainService;
-	}
-
-	/**
-	 * Only for testing purposes.
-	 * 
-	 * @return privilegeService
-	 * */
-	public PrivilegeService getPrivilegeService() {
-		return this.privilegeService;
-	}
-
-	/**
-	 * Only for testing purposes.
-	 * 
-	 * @return roleService
-	 * */
-	public RoleService getRoleService() {
-		return this.roleService;
-	}
-
 	public static class TestWrapper {
 		
 		private RoleManager manager;
@@ -158,35 +108,58 @@ public class RoleManager implements Serializable {
 			this.manager = manager;
 		}
 
-
+		/**
+		 * @return roleService of manager
+		 * */
 		public RoleService getRoleService() {
 			return manager.roleService;
 		}
 
+		/**
+		 * @return domainService of manager
+		 * */
 		public DomainService getDomainService() {
 			return manager.domainService;
 		}
 
+		/**
+		 * @return privilegeService of manager
+		 * */
 		public PrivilegeService getPrivilegeService() {
 			return manager.privilegeService;
 		}
 
+		/**
+		 * @param roleService
+		 * */
 		public void setRoleService(RoleService roleService) {
 			this.manager.roleService = roleService;
 		}
 
+		/**
+		 * @param domainService
+		 * */
 		public void setDomainService(DomainService domainService) {
 			this.manager.domainService = domainService;
 		}
 
+		/**
+		 * @param privilegeService
+		 * */
 		public void setPrivilegeService(PrivilegeService privilegeService) {
 			this.manager.privilegeService = privilegeService;
 		}
 
+		/**
+		 * @return manager
+		 * */
 		public RoleManager manager() {
 			return manager;
 		}
 
+		/**
+		 * @param manager
+		 * */
 		public void manager(RoleManager manager) {
 			this.manager = manager;
 		}

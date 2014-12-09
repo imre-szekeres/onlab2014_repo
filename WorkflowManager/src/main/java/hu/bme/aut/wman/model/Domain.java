@@ -220,6 +220,8 @@ public class Domain extends AbstractEntity {
 	 * @param role
 	 * */
 	public boolean addRole(Role role) {
+		if (roles.contains(role))
+			return false;
 		return this.roles.add(role);
 	}
 	
