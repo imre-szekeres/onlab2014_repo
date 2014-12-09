@@ -346,4 +346,13 @@ public class DomainService extends AbstractDataService<Domain> {
 			domainAssignmentService.delete( da );
 		super.delete( domain );
 	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param domainAssignmentService
+	 * */
+	public void set(DomainAssignmentService domainAssignmentService) {
+		this.domainAssignmentService = domainAssignmentService;
+	}
 }

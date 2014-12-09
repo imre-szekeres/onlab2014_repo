@@ -503,4 +503,58 @@ public class StartupService {
 			LOGGER.debug(entity.toString() + " was inserted");
 		}
 	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param userService
+	 * */
+	public void set(UserService userService) {
+		this.userService = userService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param roleService
+	 * */
+	public void set(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param privilegeService
+	 * */
+	public void set(PrivilegeService privilegeService) {
+		this.privilegeService = privilegeService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param domainService
+	 * */
+	public void set(DomainService domainService) {
+		this.domainService = domainService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param domainAssignmentService
+	 * */
+	public void set(DomainAssignmentService domainAssignmentService) {
+		this.domainAssignmentService = domainAssignmentService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param domainAssignmentService
+	 * */
+	public void set(PasswordEncoder encoder) {
+		this.encoder = encoder;
+	}
 }
