@@ -355,7 +355,7 @@ public class UsersController extends AbstractController {
 	 * @see {@link DomainService#DEFAULT_DOMAIN}
 	 * @see {@link DomainService#DEFAULT_ROLE}
 	 * */
-	private void assignToDefault(User user, Domain domain) {
+	private void assignToDefault(User user, Domain domain) { /* TODO: rmeove */
 		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), DomainService.DEFAULT_DOMAIN);
 		
 		if ((domain == null) || ( !DomainService.DEFAULT_DOMAIN.equals(domain.getName()) && (da == null) )) {
