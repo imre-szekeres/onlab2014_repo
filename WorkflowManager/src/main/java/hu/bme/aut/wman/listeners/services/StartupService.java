@@ -96,7 +96,15 @@ public class StartupService {
 	public void initService() {
 		encoder = (encoder == null) ? new BCryptPasswordEncoder() : encoder;
 	}
-	
+
+	/**
+	 * Parses the XML formatted descriptor, constructs the entities defined by it and their relationships, then inserts those entities.
+	 * <p>
+	 * Also considers the removal of entities also defined by the XML descriptor.
+	 * 
+	 * @param xmlPath
+	 * @throws {@link Exception} that alerts an internal error
+	 * */
 	public void setupWebapp(String xmlPath) throws Exception {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLEventReader eventReader = null;
@@ -313,7 +321,7 @@ public class StartupService {
 				String domain = role.getAttributeByName( DOMAIN ).getValue();
 				String parent = role.getAttributeByName( IMPORT ).getValue();
 				
-				Role r = roleService.selectByName(roleName);
+				Role r = roleService.selectByName(roleName, domain);
 				r = (r == null) ? new Role(roleName) : r;
 				Domain d = domainOf(domains, domain);
 
@@ -419,9 +427,6 @@ public class StartupService {
 				User u = userService.selectByName(username);
 				String encoded = encoder.encode( password );
 				u = (u == null) ? new User(username, encoded, email, desc) : u;
-				u.setPassword( encoded );
-				
-				LOGGER.info(String.format("Password was set to %s for %s..", encoded, username)); /* TODO: remove */
 				
 				LOGGER.debug(u.toString() + " was found");
 				if (Boolean.valueOf( removable ))
@@ -472,7 +477,7 @@ public class StartupService {
 					names.put(name, domain);
 				else {
 					DomainAssignment da = domainAssignmentService.selectByDomainFor(username, domain);
-					Role r = roleService.selectByName(name);
+					Role r = roleService.selectByName(name, domain);
 					da.removeUserRole( r );
 					domainAssignmentService.save( da );
 				}
@@ -481,9 +486,9 @@ public class StartupService {
 		return names;
 	}
 	
-	private final Role roleOf(Map<String, Role> roles, String roleName) throws Exception {
+	private final Role roleOf(Map<String, Role> roles, String roleName, String domain) throws Exception {
 		Role role = roles.get(roleName);
-		role = (role == null) ? roleService.selectByName(roleName) : role;
+		role = (role == null) ? roleService.selectByName(roleName, domain) : role;
 
 		if (role == null)
 			throw new RuntimeException("Role " + roleName + " does not exist!");

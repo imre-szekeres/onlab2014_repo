@@ -300,36 +300,9 @@ public class User extends AbstractEntity {
 		return true;
 	}
 
-	// TODO: PUT IT INTO BUSINESS LOGIC!!
 	/**
-	 * Checks whether the <code>User</code> has any <code>Role</code> with the
-	 * given name.
-	 *
-	 * @param name
-	 * @return true only if any of the roles has a name like the passed argument
+	 * @see {@link Object#toString()}
 	 * */
-	/*public boolean hasRole(String name) {
-		if (name == null) {
-			return true;
-		}
-		for (Role role : roles) {
-			if (name.equals(role.getName()) || "administrator".equals(role.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}*/
-
-	// TODO: comment
-	/*public boolean hasPrivilege(String name) {
-		for (Role r : roles) {
-			if (r.hasPrivilege(name)) {
-				return true;
-			}
-		}
-		return false;
-	}*/
-
 	@Override
 	public String toString() {
 		return this.username;

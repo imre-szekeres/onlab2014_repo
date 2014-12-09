@@ -3,9 +3,7 @@
  */
 package hu.bme.aut.wman.service;
 
-import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.Domain;
-import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.Privilege;
 import hu.bme.aut.wman.service.validation.DomainValidator;
 import hu.bme.aut.wman.service.validation.ValidationEngine;
@@ -19,7 +17,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 /**
  * Handles the database access regarding the <code>Domain</code> instances, the business logic
  * corresponding to the CRUD operations of them.
@@ -33,9 +30,7 @@ public class DomainService extends AbstractDataService<Domain> {
 
 	public static final String DEFAULT_DOMAIN = "System";
 	public static final String DEFAULT_ROLE = "System Viewer";
-	
-	@Inject
-	private DomainAssignmentService domainAssignmentService;
+
 	private ValidationEngine<Domain> validator;
 
 	/**
@@ -59,7 +54,7 @@ public class DomainService extends AbstractDataService<Domain> {
 			errors.put("name", "Domain " + domain.getName() + " already exists!");
 		return errors;
 	}
-	
+
 	
 	/**
 	 * Retrieves all <code>Domain</code> names stored in the database.
@@ -334,34 +329,5 @@ public class DomainService extends AbstractDataService<Domain> {
 	@Override
 	protected Class<Domain> getEntityClass() {
 		return Domain.class;
-	}
-
-	/**
-	 * @see {@link AbstractDataService#delete(hu.bme.aut.wman.model.AbstractEntity)}
-	 * */
-	@Override
-	public void delete(Domain domain) throws EntityNotDeletableException {
-		List<DomainAssignment> assignments = domainAssignmentService.selectByDomainName(domain.getName());
-		for(DomainAssignment da : assignments)
-			domainAssignmentService.delete( da );
-		super.delete( domain );
-	}
-
-	/**
-	 * Only for testing purposes!
-	 * 
-	 * @param domainAssignmentService
-	 * */
-	public void set(DomainAssignmentService domainAssignmentService) {
-		this.domainAssignmentService = domainAssignmentService;
-	}
-
-	/**
-	 * Only for testing purposes!
-	 * 
-	 * @return domainAssignmentService
-	 * */
-	public DomainAssignmentService get() {
-		return this.domainAssignmentService;
 	}
 }
