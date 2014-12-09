@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.controllers;
 
+import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.HistoryEntryEventType;
 import hu.bme.aut.wman.model.Project;
@@ -10,7 +11,7 @@ import hu.bme.aut.wman.service.HistoryEntryService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.service.WorkflowService;
-import hu.bme.aut.wman.view.objects.ErrorMessageVO;
+import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.NewProjectVO;
 
 import java.util.AbstractMap;
@@ -136,7 +137,7 @@ public class ProjectsViewController extends AbstractController {
 		try {
 			projectService.reopenById(projectId);
 		} catch (Exception e) {
-			// TODO error message
+			flash(format("Error occurred: %s", e.getMessage()), Severity.ERROR, model); /* TODO: refine */
 		}
 
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
@@ -150,15 +151,13 @@ public class ProjectsViewController extends AbstractController {
 	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
 	@RequestMapping(value = DELETE_PROJECT, method = RequestMethod.GET)
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
-
 		try {
 			projectService.deleteById(projectId);
 		} catch (EntityNotDeletableException e) {
-			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
+			flash(format("The workflow is not deletable due to: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
-		ModelAndView view = redirectToFrame(PROJECTS, errors, redirectAttributes);
+		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=false");
 		return view;
 	}

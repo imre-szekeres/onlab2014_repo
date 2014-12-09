@@ -18,21 +18,21 @@ public class Messages {
 		ERROR {
 			@Override
 			public String toString() {
-				return "errorMessage";
+				return "errorMessages";
 			}
 
 		}, 
 		WARNING {
 			@Override
 			public String toString() {
-				return "warningMessage";
+				return "warningMessages";
 			}
 
 		}, 
 		INFO {
 			@Override
 			public String toString() {
-				return "infoMessage";
+				return "infoMessages";
 			}
 		}
 	}

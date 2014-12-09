@@ -1,11 +1,12 @@
 package hu.bme.aut.wman.controllers;
 
+import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.service.ActionTypeService;
 import hu.bme.aut.wman.service.RoleService;
-import hu.bme.aut.wman.view.objects.ErrorMessageVO;
+import hu.bme.aut.wman.view.Messages.Severity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,15 +78,13 @@ public class ActionsViewController extends AbstractController {
 
 	@RequestMapping(value = DELETE_ACTION, method = RequestMethod.GET)
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long actionId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
-
 		try {
 			actionTypeService.deleteById(actionId);
 		} catch (EntityNotDeletableException e) {
-			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
+			flash(format("The Workflow is not deletable due to: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
-		return redirectToFrame(ACTIONS, errors, redirectAttributes);
+		return redirectToFrame(ACTIONS, redirectAttributes);
 	}
 
 	@RequestMapping(value = ACTION_ADD_ROLE, method = RequestMethod.POST)
