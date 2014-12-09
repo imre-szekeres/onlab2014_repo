@@ -60,7 +60,7 @@ public class BeanValidationTestSuite {
 	public void testInvalidEntity() {
 		@SuppressWarnings("unchecked")
 		Map<String, String> errors = validator.validate(invalid);
-		printMap(errors);
+		logMap(errors);
 		assertTrue(errors.size() > 0);
 		
 		for(String attribute : errorAttributes) {
@@ -73,13 +73,13 @@ public class BeanValidationTestSuite {
 	public void testValidEntity() {
 		@SuppressWarnings("unchecked")
 		Map<String, String> errors = validator.validate(valid);
-		printMap(errors);
+		logMap(errors);
 		assertTrue(errors.size() <= 0);
 	}
 	
-	private static final void printMap(Map<?, ?> map) {
+	private static final void logMap(Map<?, ?> map) {
 		for(Object key : map.keySet())
-			System.out.println(key.toString() + ": " + map.get(key).toString());
+			LOGGER.info(key.toString() + ": " + map.get(key).toString());
 	}
 	
 	@SuppressWarnings("rawtypes")

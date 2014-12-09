@@ -13,7 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	PrivilegeServiceTestSuite.class,
+	MockedPrivilegeServiceTestSuite.class,
 	MockedDomainServiceTestSuite.class
 })
 public class ServicesTestLayer {
