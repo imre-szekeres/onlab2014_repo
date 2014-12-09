@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.controllers.LoginController.refreshTokens;
 import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
 import static hu.bme.aut.wman.utils.StringUtils.asString;
 import static java.lang.String.format;
@@ -13,6 +14,7 @@ import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
+import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.utils.parsers.JsonParser;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -70,7 +73,9 @@ public class UsersController extends AbstractController {
 
 	@EJB(mappedName = "java:module/DomainManager")
 	private DomainManager domainManager;
-	
+
+	@EJB(mappedName = "java:module/PrivilegeService")
+	private PrivilegeService privilegeService;
 	@EJB(mappedName = "java:module/DomainAssignmentService")
 	private DomainAssignmentService daService;
 	@EJB(mappedName = "java:module/UserService")
@@ -79,6 +84,7 @@ public class UsersController extends AbstractController {
 	private DomainService domainService;
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
+
 	@EJB(mappedName = "java:module/UserRolesParser")
 	private JsonParser<String, List<String>> parser;
 	
@@ -190,7 +196,7 @@ public class UsersController extends AbstractController {
 			User subject = userService.selectById(subjectID);
 			
 			tryRemove(user, subject, model);
-			if (user.getId() == subjectID)
+			if (user.getId().equals(subjectID))
 				return redirectTo(LoginController.LOGOUT);
 		}
 		return redirectTo(AdminViewController.USERS);
@@ -228,7 +234,7 @@ public class UsersController extends AbstractController {
 
 	@PreAuthorize("hasRole('Create User') and hasRole('Assign User') and hasRole('Assign Role')")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
-	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpSession session) {
+	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpServletRequest request, HttpSession session) {
 		User user = newUser.asUser();
 		
 		Long subjectID = userIDOf(session);
@@ -268,7 +274,7 @@ public class UsersController extends AbstractController {
 
 	@PreAuthorize("hasPermission(#updated.id, 'User', 'Assign User') and hasPermission(#updated.id, 'User', 'Assign Role')")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String updateUser(@ModelAttribute("user") UserTransferObject updated, Model model, HttpSession session) {
+	public String updateUser(@ModelAttribute("user") UserTransferObject updated, Model model, HttpServletRequest request, HttpSession session) {
 		User user = userService.selectById( updated.getId() );
 		Long subjectID = userIDOf(session);
 		User subject = userService.selectById(subjectID);
@@ -289,6 +295,7 @@ public class UsersController extends AbstractController {
 			String message = user.getUsername() + " was updated";
 			LOGGER.info(message + " by " + subject.getUsername());
 			flash(message, Severity.INFO, model);
+			refreshTokens(user, subject, request, privilegeService);
 		}
 		else {
 			LOGGER.error("Unable to process the given JSON String: " + updated.getUserRoles());

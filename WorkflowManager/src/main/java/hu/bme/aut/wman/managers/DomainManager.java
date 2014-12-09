@@ -3,8 +3,6 @@
  */
 package hu.bme.aut.wman.managers;
 
-import static hu.bme.aut.wman.utils.StringUtils.asString;
-import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.DomainAssignment;
@@ -22,9 +20,7 @@ import java.util.Map;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-
-import org.apache.log4j.Logger;
-import org.apache.openjpa.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
 
 /**
  * @author Imre Szekeres
@@ -35,7 +31,6 @@ import org.apache.openjpa.persistence.EntityNotFoundException;
 public class DomainManager implements Serializable {
 
 	private static final long serialVersionUID = 8311321169142074267L;
-	private static final Logger LOGGER = Logger.getLogger( DomainManager.class );
 
 	@Inject
 	private DomainService domainService;
@@ -70,7 +65,6 @@ public class DomainManager implements Serializable {
 			newRole.setPrivileges( role.getPrivileges() );
 			roleService.save( newRole );
 			domain.addRole( newRole );
-			LOGGER.info("Role " + newRole.getName() + " was found and added to " + domain.getName());
 			admin = ("Administrator".equals( roleName.trim() ) ? newRole : null);
 		}
 		domainService.save( domain );
@@ -93,7 +87,6 @@ public class DomainManager implements Serializable {
 		da.addUserRole( role );
 		daService.save( da );
 		userService.save( user );
-		LOGGER.info(format("User %s was assigned to %s as %s.", user, domain, role));
 		return user;
 	}
 
@@ -114,7 +107,6 @@ public class DomainManager implements Serializable {
 		da.setUserRoles( roleService.rolesOf(domain.getName(), roleNames) );
 		userService.save( user );
 		daService.save( da );
-		LOGGER.debug(format("User %s was assigned to Domain %s as %s.", user, domain, asString(roleNames)));
 		return user;
 	}
 
@@ -131,7 +123,6 @@ public class DomainManager implements Serializable {
 		userService.save( user );
 		DomainAssignment da = new DomainAssignment(user, domain, role);
 		daService.save( da );
-		LOGGER.debug(format("User %s was assigned to Domain %s as %s.", user, domain, role));
 		return user;
 	}
 
@@ -149,7 +140,6 @@ public class DomainManager implements Serializable {
 		userService.save( user );
 		DomainAssignment da = new DomainAssignment(user, domain, roleService.rolesOf(domain.getName(), roleNames));
 		daService.save( da );
-		LOGGER.debug(format("User %s was assigned to Domain %s as %s.", user, domain, asString(roleNames)));
 		return user;
 	}
 
@@ -212,7 +202,6 @@ public class DomainManager implements Serializable {
 		for(DomainAssignment da : assignments)
 			daService.delete( da );
 		domainService.delete( domain );
-		LOGGER.debug(format("Domain %s was removed by %s.", domain, subject));
 		return domain;
 	}
 

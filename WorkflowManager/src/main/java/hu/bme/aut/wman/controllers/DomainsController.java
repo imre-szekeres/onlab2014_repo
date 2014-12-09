@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -74,7 +75,7 @@ public class DomainsController extends AbstractController {
 	 * */
 	@PreAuthorize("hasRole('Create Domain')")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
-	public String createDomain(@ModelAttribute("domain") Domain newDomain, Model model, HttpSession session) {
+	public String createDomain(@ModelAttribute("domain") Domain newDomain, Model model, HttpServletRequest request, HttpSession session) {
 		
 		Map<String, String> errors = domainManager.validate( newDomain );
 		Long subjectID = userIDOf(session);
@@ -84,7 +85,7 @@ public class DomainsController extends AbstractController {
 			String message = format("Domain %s was created", domainManager.create(subject, newDomain));
 			LOGGER.info(format("%s by %s.", message, subject));
 			flash(message, Severity.INFO, model);
-			refreshTokens(subject, subject, privilegeService);
+			refreshTokens(subject, subject, request, privilegeService);
 			return redirectTo(AdminViewController.DOMAINS);
 		}
 
@@ -188,13 +189,13 @@ public class DomainsController extends AbstractController {
 	 * */
 	@PreAuthorize("hasPermission(#domainID, 'Domain', 'Remove Domain')")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteDomain(@RequestParam("domain") Long domainID, HttpSession session, Model model) {
+	public String deleteDomain(@RequestParam("domain") Long domainID, HttpServletRequest request, HttpSession session, Model model) {
 		Domain domain = domainService.selectById(domainID);
 		
 		if (domain != null) {
 			User subject = userService.selectById( userIDOf(session) );
 			tryRemove(domain, subject, model);
-			refreshTokens(subject, subject, privilegeService);
+			refreshTokens(subject, subject, request, privilegeService);
 		}
 		return redirectTo(AdminViewController.DOMAINS);
 	}

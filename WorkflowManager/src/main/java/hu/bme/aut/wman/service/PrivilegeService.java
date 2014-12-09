@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.wman.service;
 
+import static java.lang.String.format;
 import hu.bme.aut.wman.model.Privilege;
 import hu.bme.aut.wman.service.validation.PrivilegeValidator;
 import hu.bme.aut.wman.service.validation.ValidationEngine;
@@ -10,13 +11,16 @@ import hu.bme.aut.wman.service.validation.ValidationEngine;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityNotFoundException;
 /**
  * Handles the CRUD operations and business logic of instances of class <code>Privilege</code>.
  * 
@@ -93,7 +97,24 @@ public class PrivilegeService extends AbstractDataService<Privilege> implements 
 		return callNamedQuery(Privilege.NQ_FIND_ALL_BY_USERNAME, parameters);
 	}
 
-	
+	/**
+	 * Converts the given <code>Privilege</code> names to <code>Privilege</code> instances.
+	 * 
+	 * @param privilegeNames
+	 * @return the {@link Privilege} instances corresponding to them
+	 * @throws {@link EntityNotFoundException}
+	 * */
+	public Set<Privilege> privilegesOf(Set<String> privilegeNames) throws EntityNotFoundException {
+		Set<Privilege> results = new HashSet<>();
+		for(String name : privilegeNames) {
+			Privilege p = selectByName(name);
+			if (p == null)
+				throw new EntityNotFoundException(format("Privilege %s was not found!", name));
+			results.add( p );
+		}
+		return results;
+	}
+
 	/**
 	 * @see {@link AbstractDataService}
 	 * */
