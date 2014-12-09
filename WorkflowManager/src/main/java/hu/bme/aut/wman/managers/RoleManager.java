@@ -92,4 +92,103 @@ public class RoleManager implements Serializable {
 		domainService.save( d );
 		return role;
 	}
+
+
+	/**
+	 * Only for testing purposes.
+	 * 
+	 * @param domainService
+	 * */
+	public void set(DomainService domainService) {
+		this.domainService = domainService;
+	}
+
+	/**
+	 * Only for testing purposes.
+	 * 
+	 * @param privilegeService
+	 * */
+	public void set(PrivilegeService privilegeService) {
+		this.privilegeService = privilegeService;
+	}
+
+	/**
+	 * Only for testing purposes.
+	 * 
+	 * @param roleService
+	 * */
+	public void set(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
+
+	/**
+	 * Only for testing purposes.
+	 * 
+	 * @return domainService
+	 * */
+	public DomainService getDomainService() {
+		return this.domainService;
+	}
+
+	/**
+	 * Only for testing purposes.
+	 * 
+	 * @return privilegeService
+	 * */
+	public PrivilegeService getPrivilegeService() {
+		return this.privilegeService;
+	}
+
+	/**
+	 * Only for testing purposes.
+	 * 
+	 * @return roleService
+	 * */
+	public RoleService getRoleService() {
+		return this.roleService;
+	}
+
+	public static class TestWrapper {
+		
+		private RoleManager manager;
+
+
+		public TestWrapper(RoleManager manager) {
+			this.manager = manager;
+		}
+
+
+		public RoleService getRoleService() {
+			return manager.roleService;
+		}
+
+		public DomainService getDomainService() {
+			return manager.domainService;
+		}
+
+		public PrivilegeService getPrivilegeService() {
+			return manager.privilegeService;
+		}
+
+		public void setRoleService(RoleService roleService) {
+			this.manager.roleService = roleService;
+		}
+
+		public void setDomainService(DomainService domainService) {
+			this.manager.domainService = domainService;
+		}
+
+		public void setPrivilegeService(PrivilegeService privilegeService) {
+			this.manager.privilegeService = privilegeService;
+		}
+
+		public RoleManager manager() {
+			return manager;
+		}
+
+		public void manager(RoleManager manager) {
+			this.manager = manager;
+		}
+	}
 }
