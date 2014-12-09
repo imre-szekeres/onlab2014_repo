@@ -30,6 +30,7 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -159,11 +160,14 @@ public class LoginController extends AbstractController {
 	 * @param subject
 	 * @param privilegeService
 	 * */
-	public static final void refreshTokens(User user, User subject, PrivilegeService privilegeService) {
+	public static final void refreshTokens(User user, User subject, HttpServletRequest request, PrivilegeService privilegeService) {
 		if (subject.getId().equals( user.getId() )) {
-			Authentication auth = new UsernamePasswordAuthenticationToken( subject.getUsername(), 
-					                                                       subject.getPassword(), 
-					                                                       AuthenticationService.authoritiesOf(subject.getUsername(), privilegeService) );
+			List<? extends GrantedAuthority> authorities = AuthenticationService.authoritiesOf(subject.getUsername(), privilegeService);
+			org.springframework.security.core.userdetails.User principal = new org.springframework.security.core.userdetails.User(subject.getUsername(), subject.getPassword(), authorities); 
+			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken( principal, 
+					                                                                            null, 
+					                                                                            authorities );
+			auth.setDetails(new WebAuthenticationDetails( request ));
 			SecurityContextHolder.getContext().setAuthentication( auth );
 		}
 	}
