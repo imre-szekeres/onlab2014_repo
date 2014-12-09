@@ -14,6 +14,7 @@ import hu.bme.aut.wman.service.AuthenticationService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.view.Messages.Severity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -89,6 +90,9 @@ public class LoginController extends AbstractController {
 		if (session.getAttribute("subject") == null)
 			session.setAttribute("subject", new SecurityToken(userService.selectIDOf( request.getRemoteUser() )));
 		model.addAttribute("message", "Welcome to WorkflowManager!");
+		
+		for(String message : Arrays.asList(new String[] {"These are very long long error messages to test behviour...!!!!", "These are very long long error messages to test behviour...!!!!", "These are very long long error messages to test behviour...!!!!", "These are very long long error messages to test behviour...!!!!"}))
+			flash(message, Severity.ERROR, model);
 		return navigateToFrame("index", model);
 	}
 
