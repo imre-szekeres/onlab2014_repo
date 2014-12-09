@@ -47,6 +47,7 @@
 			<privilege name='View Privilege' removable='false' />
 			<privilege name='View ActionType' removable='false' />
 			<privilege name='View User' removable='false' />
+			<privilege name='View HistoryEntry' removable='false' />
 		</role>
 		
 		<role name='System Manager' domain='System' import='System Developer' removable='false' >
@@ -66,8 +67,7 @@
 			<privilege name='Create Role' removable='false' />
 			
 			<privilege name='Assign Privilege' removable='false' />
-			
-			<privilege name='View HistoryEntry' removable='false' />
+
 			<privilege name='Remove Domain' removable='false' />
 			<privilege name='Update Domain' removable='false' />
 		</role>
