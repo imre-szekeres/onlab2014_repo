@@ -4,12 +4,15 @@
 package hu.bme.aut.wman.controllers;
 
 import static hu.bme.aut.wman.utils.StringUtils.asString;
+import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.DetailedAccessDeniedException;
 import hu.bme.aut.wman.exceptions.MessagedAccessDeniedException;
-import hu.bme.aut.wman.handlers.UserHandlerLocal;
+import hu.bme.aut.wman.managers.DomainManager;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.security.SecurityToken;
+import hu.bme.aut.wman.service.AuthenticationService;
 import hu.bme.aut.wman.service.DomainService;
+import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.UserService;
 
 import java.util.Arrays;
@@ -27,6 +30,7 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -55,9 +59,8 @@ public class LoginController extends AbstractController {
 
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
-
-	@EJB(mappedName = "java:module/UserHandlerImpl")
-	private UserHandlerLocal userHandler;
+	@EJB(mappedName = "java:module/DomainManager")
+	private DomainManager domainManager;
 
 	@Autowired
 	@Qualifier("authenticationManager")
@@ -68,6 +71,16 @@ public class LoginController extends AbstractController {
 	private PasswordEncoder encoder;
 
 
+	/**
+	 * Acts as the root of the application, a welcome page for those who logged in. Responsible for setting the custom 
+	 * credentials used by the application (a <code>SecurityToken</code> instance), and placing it into the current 
+	 * <code>HttpSession</code>.
+	 * 
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return the name of the View to navigate to 
+	 * */
 	@RequestMapping(value = APP_ROOT, method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request, HttpSession session) {
 		if (request.getRemoteUser() == null)
@@ -80,6 +93,12 @@ public class LoginController extends AbstractController {
 	}
 
 
+	/**
+	 * Handles the setting of parameters required by the login page.
+	 * 
+	 * @param model
+	 * @return the name of the View that renders the Html response
+	 * */
 	@RequestMapping(value = LOGIN, method = RequestMethod.GET)
 	public String getLogin(Model model) {
 		User subject = new User();
@@ -103,10 +122,11 @@ public class LoginController extends AbstractController {
 
 			String plainPassword = user.getPassword();
 			user.setPassword(encoder.encode( user.getPassword() )); /* hashes the password with BCrypt algorithm */
-			userHandler.createUser(user, DomainService.DEFAULT_ROLE, DomainService.DEFAULT_DOMAIN);
+			
+			user = domainManager.assignToDefault( user );
 			setTokensOf(user.getId(), user.getUsername(), plainPassword, request);
 
-			LOGGER.info("user: " + user.getUsername() + " registered as " + DomainService.DEFAULT_ROLE);
+			LOGGER.info(format("User %s successfully registered as %s.", user, DomainService.DEFAULT_ROLE));
 			return redirectTo(APP_ROOT);
 		}
 		model.addAttribute(AbstractController.ERRORS_MAP, validationErrors);
@@ -133,6 +153,26 @@ public class LoginController extends AbstractController {
 	}
 
 	/**
+	 * Decides whether the <code>User</code> passed as argument is identical to the user currently signed in and
+	 * in case it is, it attempts to refresh its credentials.
+	 * 
+	 * @param user
+	 * @param subject
+	 * @param privilegeService
+	 * */
+	public static final void refreshTokens(User user, User subject, HttpServletRequest request, PrivilegeService privilegeService) {
+		if (subject.getId().equals( user.getId() )) {
+			List<? extends GrantedAuthority> authorities = AuthenticationService.authoritiesOf(subject.getUsername(), privilegeService);
+			org.springframework.security.core.userdetails.User principal = new org.springframework.security.core.userdetails.User(subject.getUsername(), subject.getPassword(), authorities); 
+			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken( principal, 
+					                                                                            null, 
+					                                                                            authorities );
+			auth.setDetails(new WebAuthenticationDetails( request ));
+			SecurityContextHolder.getContext().setAuthentication( auth );
+		}
+	}
+
+	/**
 	 * Responsible for handling the logout operation in which the <code>User</code> credentials are
 	 * cleared from the given <code>HttpSession</code> accessed from the <code>HttpServletRequest</code> passed.
 	 * 
@@ -143,6 +183,7 @@ public class LoginController extends AbstractController {
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.setAttribute("subject", null);
+		SecurityContextHolder.getContext().setAuthentication( null );
 		return redirectTo(LOGIN);
 	}
 

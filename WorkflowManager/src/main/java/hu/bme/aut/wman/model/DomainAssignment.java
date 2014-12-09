@@ -121,9 +121,13 @@ public class DomainAssignment extends AbstractEntity {
 	}
 	
 	/**
+	 * Attempts to maintain the uniqueness of the <code>Role</code>s already contained.
+	 * 
 	 * @param role
 	 * */
 	public boolean addUserRole(Role role) {
+		if (userRoles.contains( role ))
+			return false;
 		return this.userRoles.add(role);
 	}
 	

@@ -10,8 +10,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import hu.bme.aut.wman.model.Domain;
-import hu.bme.aut.wman.model.DomainAssignment;
-import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
 
 import java.util.Arrays;
@@ -89,11 +87,8 @@ public class MockedDomainServiceTestSuite {
 
 		EntityManager mocksEm = mock(EntityManager.class);
 		domainService.setEntityManager( mocksEm );
-		DomainAssignmentService mocksDas = mock(DomainAssignmentService.class);
-		domainService.set(mocksDas);
 		
 		when(mocksEm.merge( domain )).thenReturn( domain );
-		when(mocksDas.selectByDomainName( domainName )).thenReturn(Arrays.asList(new DomainAssignment[0]));
 	}
 
 	@Test
@@ -141,11 +136,9 @@ public class MockedDomainServiceTestSuite {
 
 			domainService.delete( domain );			
 			EntityManager mocksDomain = domainService.getEntityManager();
-			DomainAssignmentService daService = domainService.get();
 
 			verify(mocksDomain, times(1)).merge( domain );
 			verify(mocksDomain, times(1)).remove( domain );
-			verify(daService, times(1)).selectByDomainName( domain.getName() );
 			LOGGER.info(format("Domain %s was removed", domain));
 		} catch(Exception e) {
 			LOGGER.error(e);

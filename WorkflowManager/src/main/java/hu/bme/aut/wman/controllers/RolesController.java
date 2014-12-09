@@ -3,9 +3,12 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.controllers.LoginController.refreshTokens;
 import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
+import static hu.bme.aut.wman.utils.StringUtils.asString;
+import static java.lang.String.format;
+import hu.bme.aut.wman.managers.RoleManager;
 import hu.bme.aut.wman.model.Domain;
-import hu.bme.aut.wman.model.Privilege;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.DomainService;
@@ -18,11 +21,13 @@ import hu.bme.aut.wman.view.objects.transfer.RoleTransferObject;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.EJB;
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -52,6 +57,9 @@ public class RolesController extends AbstractController {
 	public static final String DELETE = ROOT_URL + "/delete";
 	
 
+	@EJB(mappedName = "java:module/RoleManager")
+	private RoleManager roleManager;
+	
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
 	@EJB(mappedName = "java:module/PrivilegeService")
@@ -74,24 +82,19 @@ public class RolesController extends AbstractController {
 		Long subjectID = userIDOf(session);
 		if (errors.isEmpty()) {
 			User subject = userService.selectById( subjectID );
-			List<String> privileges = newRole.privileges();
+			Set<String> privileges = newRole.privileges();
 			
-			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
-			LOGGER.debug("parsed (" + privileges.size() + ") privileges for role " + roleName);
-			
-			for(String s : privileges) {
-				Privilege p = privilegeService.selectByName(s);
-				assign(role, p);
+			String message = null;
+			try {
+				roleManager.assignNew(role, domainName, privileges);
+				message = format("Role %s was added to Domain %s.", role, domainName);
+				LOGGER.info(format("%s by User %s.", message, subject));
+				flash(message, Severity.INFO, model);
+			} catch(EntityNotFoundException e) {
+				message = format("Unable to create Role %s due to %s.", role, e.getMessage());
+				LOGGER.error(message, e);
+				flash(message, Severity.ERROR, model);
 			}
-			roleService.save(role);
-			LOGGER.info(role.toString() + " was created by " + subject.getUsername());
-			
-			Domain d = domainService.selectByName(domainName);
-			d.addRole(role);
-			domainService.save( d );
-			String message = role.toString() + " was added to " + d.toString();
-			LOGGER.info(message);
-			flash(message, Severity.INFO, model);
 			return redirectTo(AdminViewController.ROLES);
 		}
 
@@ -104,55 +107,56 @@ public class RolesController extends AbstractController {
 		return AbstractController.FRAME;
 	}
 
-	@PreAuthorize("hasPermission(#newRole.id, 'Role', 'Assign Privilege')")
+	@PreAuthorize("hasPermission(#updated.id, 'Role', 'Assign Privilege')")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String updateRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
-		String roleName = newRole.getRoleName();
-		String domainName  = newRole.getDomainName();
+	public String updateRole(@ModelAttribute("role") RoleTransferObject updated, Model model, HttpServletRequest request, HttpSession session) {
+		String domainName  = updated.getDomainName();
 		
-		Role role = roleService.selectById(newRole.getId());
-		role.setName( newRole.getRoleName() );
+		Role role = roleService.selectById(updated.getId());
+		role.setName( updated.getRoleName() );
 		Map<String, String> errors = roleService.validate(role, domainName);
 		
 		Long subjectID = userIDOf(session);
 		if (errors.isEmpty()) {
 			User subject = userService.selectById( subjectID );
-			List<String> privileges = newRole.privileges();
+			Set<String> privileges = updated.privileges();
 			
-			LOGGER.debug("found \'" + newRole.getPrivileges() + "\' for role " + roleName);
-			LOGGER.debug("parsed (" + privileges.size() + ") privileges for role " + roleName);
-			
-			role.setPrivileges(new HashSet<Privilege>());
-			for(String s : privileges) {
-				Privilege p = privilegeService.selectByName(s);
-				assign(role, p); /* TODO: add NOT FOUND messages, support */
-			}
-			roleService.save(role);
+			tryAssign(role, privileges, subject, model);
 			String message = role.toString() + " was updated";
 			LOGGER.info(message + " by " + subject.getUsername());
 			flash(message, Severity.INFO, model);
+
+			refreshTokens(subject, subject, request, privilegeService);
 			return redirectTo(AdminViewController.ROLES);
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
 		List<String> authorities = Arrays.asList(new String[] {"Assign Privilege"});
-		setFormAttributes(newRole, subjectID, domainService, RolesController.UPDATE, "update", authorities, model);
+		setFormAttributes(updated, subjectID, domainService, RolesController.UPDATE, "update", authorities, model);
 		AdminViewController.setAdminRolesContent(model, subjectID, domainService, Arrays.asList(new String[] {"View Role"}));
-		model.addAttribute("pageName", "admin_roles"); /* TODO: also USE JSON content */
+		model.addAttribute("pageName", "admin_roles");
 		return AbstractController.FRAME;
 	}
 
 	/**
-	 * Assigns the given <code>Privilege</code> to the given <code>Role</code> instance and logs the operation.
+	 * Attempts to assign the given <code>Privilege</code>s to the given <code>Role</code>.
+	 * <p>
+	 * Flashes messages according to the outcome of the operation.
 	 * 
 	 * @param role
-	 * @param privilege
+	 * @param privileges
+	 * @param subject
+	 * @param model
 	 * */
-	private void assign(Role role, Privilege privilege) {
-		if (privilege != null) {
-			LOGGER.debug(privilege.toString() + " was found");
-			role.addPrivilege( privilege );
-			LOGGER.debug(privilege.toString() + " was addoed to " + role.toString());
+	private final void tryAssign(Role role, Set<String> privileges, User subject, Model model) {
+		try {
+			
+			roleManager.assign(role, privileges);
+			LOGGER.info(format("Role %s now owns %s as Privileges, was updated by %s", role, asString(privileges), subject.getUsername()));
+			flash(format("Role %s was updated.", role), Severity.INFO, model);
+		} catch(EntityNotFoundException e) {
+			LOGGER.error(e.getMessage(),e);
+			flash(format("Role %s could not be updated due to %s", role, e.getMessage()), Severity.ERROR, model);
 		}
 	}
 
