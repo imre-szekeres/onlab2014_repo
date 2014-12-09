@@ -113,6 +113,7 @@ public class User extends AbstractEntity {
 	@Pattern(regexp = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}", message = "invalid email format.")
 	protected String email;
 
+	@NotNull
 	@Size(min = 32, max = 1024, message = "must be between 32 and 1024 characters.")
 	protected String description;
 

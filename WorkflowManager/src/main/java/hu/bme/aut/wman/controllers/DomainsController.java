@@ -110,7 +110,7 @@ public class DomainsController extends AbstractController {
 		model.addAttribute("pageName", "admin_domains");
 		return "wman_frame";
 	}
-	
+
 	/**
 	 * Assigns the given <code>User</code> to the <code>Domain</code> instance passed with the 
 	 * <code>Role</code>s specified in case they exist.
@@ -123,7 +123,7 @@ public class DomainsController extends AbstractController {
 	 * @return the {@link List} of {@link Role} names that could not be found
 	 * */
 	@PreAuthorize("hasPermission(#domain.name, 'Domain', 'Assign User') and hasPermission(#domain.name, 'Domain', 'Assign Role')")
-	private void assignNew(User user, Domain domain, Role role) {
+	private void assignNew(User user, Domain domain, Role role) { /* TODO: remove */
 		userService.save(user);
 		DomainAssignment da = new DomainAssignment(user, domain, role);
 		daService.save( da );

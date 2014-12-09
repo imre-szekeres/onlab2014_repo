@@ -221,7 +221,7 @@ public class DomainService extends AbstractDataService<Domain> {
 	 * @param privilegeName
 	 * @return the {@link List} of {@link Domain} names
 	 * */
-	private List<String> domainNameOf(String username, Long domainID, String privilegeName) {
+	public List<String> domainNameOf(String username, Long domainID, String privilegeName) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainID", domainID));
@@ -252,7 +252,7 @@ public class DomainService extends AbstractDataService<Domain> {
 	 * @param privilegeName
 	 * @return the {@link List} of {@link Domain} names
 	 * */
-	private List<String> domainNameOf(String username, String domainName, String privilegeName) {
+	public List<String> domainNameOf(String username, String domainName, String privilegeName) {
 		List<Map.Entry<String, Object>> parameters = new ArrayList<Map.Entry<String, Object>>(1);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domainName));
@@ -345,5 +345,23 @@ public class DomainService extends AbstractDataService<Domain> {
 		for(DomainAssignment da : assignments)
 			domainAssignmentService.delete( da );
 		super.delete( domain );
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param domainAssignmentService
+	 * */
+	public void set(DomainAssignmentService domainAssignmentService) {
+		this.domainAssignmentService = domainAssignmentService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @return domainAssignmentService
+	 * */
+	public DomainAssignmentService get() {
+		return this.domainAssignmentService;
 	}
 }

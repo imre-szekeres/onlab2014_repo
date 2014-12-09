@@ -232,4 +232,13 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	public void setEntityManager(EntityManager em) {
 		this.em = em;
 	}
+
+	/**
+	 * ONLY for testing purposes, otherwise it is dscouraged to user.
+	 * 
+	 * @return em
+	 * */
+	public EntityManager getEntityManager() {
+		return this.em;
+	}
 }

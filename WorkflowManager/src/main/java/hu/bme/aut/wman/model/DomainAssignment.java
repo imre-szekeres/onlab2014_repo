@@ -70,6 +70,14 @@ public class DomainAssignment extends AbstractEntity {
 		this.userRoles.add(role);
 	}
 
+	public DomainAssignment(User user, Domain domain, List<Role> roles) {
+		super();
+		this.user = user;
+		this.domain = domain;
+		this.userRoles = roles;
+	}
+
+
 	/**
 	 * @return the user
 	 */

@@ -164,6 +164,9 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                    <compilerArgs>
+                        <arg>-A</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             
@@ -216,8 +219,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            
+            </plugin>            
         </plugins>
     </build>
     
