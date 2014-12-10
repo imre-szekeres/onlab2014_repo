@@ -9,8 +9,8 @@ import static hu.bme.aut.wman.utils.StringUtils.asString;
 import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.managers.DomainManager;
+import hu.bme.aut.wman.managers.UserManager;
 import hu.bme.aut.wman.model.Domain;
-import hu.bme.aut.wman.model.DomainAssignment;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
@@ -73,6 +73,8 @@ public class UsersController extends AbstractController {
 
 	@EJB(mappedName = "java:module/DomainManager")
 	private DomainManager domainManager;
+	@EJB(mappedName = "java:module/UserManager")
+	private UserManager userManager;
 
 	@EJB(mappedName = "java:module/PrivilegeService")
 	private PrivilegeService privilegeService;
@@ -188,17 +190,14 @@ public class UsersController extends AbstractController {
 
 	@PreAuthorize("hasPermission(#userID, 'User', 'Create User')")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteUser(@RequestParam("user") Long userID, HttpSession session, Model model) {
-		User user = userService.selectById(userID);
+	public String deleteUser(@RequestParam("user") Long userID, HttpSession session, Model model) {		
+
+		Long subjectID = userIDOf(session);
 		
-		if (user != null) {
-			long subjectID = userIDOf(session);
-			User subject = userService.selectById(subjectID);
-			
-			tryRemove(user, subject, model);
-			if (user.getId().equals(subjectID))
-				return redirectTo(LoginController.LOGOUT);
-		}
+		User removed = tryRemove(userID, subjectID, model);
+		if (removed != null && subjectID.equals( userID ))
+			return redirectTo(LoginController.LOGOUT);
+
 		return redirectTo(AdminViewController.USERS);
 	}
 
@@ -208,28 +207,31 @@ public class UsersController extends AbstractController {
 	 * <p>
 	 * Also logs the action, the output and sets a flash message.
 	 * 
-	 * @param user
-	 * @param subject
+	 * @param userID
+	 * @param subjectID
 	 * @param model
+	 * @return the removed {@link User}
 	 * */
-	private void tryRemove(User user, User subject, Model model) {
+	private User tryRemove(Long userID, Long subjectID, Model model) {
 		try {
 			
-			List<DomainAssignment> assignments = daService.selectByUserID(user.getId());
-			for(DomainAssignment da : assignments) {
-				daService.delete( da );
-				LOGGER.info(da.getUser().getUsername() + " was deassigned from " + da.getDomain().getName());
-			}
-
-			userService.delete( user );
-			String message = "User " + user.getUsername() + " was removed";
-			LOGGER.info(message + " by " + subject.getUsername());
+			User removed = userManager.remove(userID);
+			
+			User subject = userService.selectById(subjectID);
+			String message = format("User %s was removed", removed);
+			LOGGER.info(format("%s by %s", message, subject));
 			flash(message, Severity.INFO, model);
+			
+			return removed;
+		} catch(NullPointerException npe) {
+			LOGGER.error(npe);
+			flash("The User could not be found!", Severity.ERROR, model);
 		} catch(Exception e) {
-			String message = "Unable to delete user " + user.getUsername();
-			LOGGER.error(message + ": " + e.getMessage(), e);
+			String message = "Unable to delete user";
+			LOGGER.error(format("%s: %s", message, e.getMessage()), e);
 			flash(message, Severity.ERROR, model);
 		}
+		return null;
 	}
 
 	@PreAuthorize("hasRole('Create User') and hasRole('Assign User') and hasRole('Assign Role')")
@@ -238,9 +240,10 @@ public class UsersController extends AbstractController {
 		User user = newUser.asUser();
 		
 		Long subjectID = userIDOf(session);
-		Map<String, String> errors = userService.validate(user, newUser.getConfirmPassword());
+		Map<String, String> errors = userManager.validate(user, newUser.getConfirmPassword());
 		if (errors.isEmpty()) {
-			user.setPassword( encoder.encode(user.getPassword()) ); /* hashing the password */
+			
+			user = userManager.create( user );
 			User subject = userService.selectById(subjectID);
 			Map<String, List<String>> assignments = tryParseAssignments(newUser.getUserRoles(), parser);
 			
@@ -252,8 +255,8 @@ public class UsersController extends AbstractController {
 				if (!assignments.containsKey(DomainService.DEFAULT_DOMAIN))
 						domainManager.assignToDefault(user);
 
-				String message = user.getUsername() + " was created";
-				LOGGER.info(message + " by " + subject.getUsername());
+				String message = format("%s was created", user);
+				LOGGER.info(format("%s by %s", message, subject));
 				flash(message, Severity.INFO, model);
 			}
 			else {
@@ -444,13 +447,13 @@ public class UsersController extends AbstractController {
 	public String updatePassword(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User user = userService.selectById( updated.getId() );
 
-		Map<String, String> errors = userService.validate(
-					user, updated.getOldPassword(), updated.getPassword(), updated.getConfirmPassword(), encoder
+		Map<String, String> errors = userManager.validate(
+					user, updated.getOldPassword(), updated.getPassword(), updated.getConfirmPassword()
 		);
 		if (errors.isEmpty()) {
-			user.setPassword( encoder.encode(updated.getPassword()) ); /* hashing the password */
-			userService.save( user );
-			String message = "Password of user " + user.getUsername() + " was modified";
+			
+			userManager.update(user, updated.getPassword());
+			String message = format("Password of %s was modified", user);
 			LOGGER.info(message);
 			flash(message, Severity.INFO, model);
 			return redirectTo(UsersController.PROFILE + "?user=" + updated.getId());

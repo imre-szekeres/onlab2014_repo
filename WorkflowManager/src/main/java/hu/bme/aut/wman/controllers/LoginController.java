@@ -8,6 +8,7 @@ import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.DetailedAccessDeniedException;
 import hu.bme.aut.wman.exceptions.MessagedAccessDeniedException;
 import hu.bme.aut.wman.managers.DomainManager;
+import hu.bme.aut.wman.managers.UserManager;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.AuthenticationService;
@@ -32,7 +33,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,6 +57,8 @@ public class LoginController extends AbstractController {
 	public static final String ACCESS_DENIED = "/403";
 	
 
+	@EJB(mappedName = "java:module/UserManager")
+	private UserManager userManager;
 	@EJB(mappedName = "java:module/UserService")
 	private UserService userService;
 	@EJB(mappedName = "java:module/DomainManager")
@@ -65,10 +67,6 @@ public class LoginController extends AbstractController {
 	@Autowired
 	@Qualifier("authenticationManager")
 	private AuthenticationManager authManager;
-	
-	@Autowired
-	@Qualifier("bcryptEncoder")
-	private PasswordEncoder encoder;
 
 
 	/**
@@ -117,12 +115,11 @@ public class LoginController extends AbstractController {
 	 * */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@ModelAttribute("user") User user, HttpServletRequest request, Model model) {
-		Map<String, String> validationErrors = userService.validate(user, request.getParameter("password-again"));
+		Map<String, String> validationErrors = userManager.validate(user, request.getParameter("password-again"));
 		if (validationErrors.isEmpty()) {
 
 			String plainPassword = user.getPassword();
-			user.setPassword(encoder.encode( user.getPassword() )); /* hashes the password with BCrypt algorithm */
-			
+			user = userManager.create( user );
 			user = domainManager.assignToDefault( user );
 			setTokensOf(user.getId(), user.getUsername(), plainPassword, request);
 
