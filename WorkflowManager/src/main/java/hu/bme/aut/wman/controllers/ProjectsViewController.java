@@ -92,12 +92,7 @@ public class ProjectsViewController extends AbstractController {
 	public ModelAndView postNewProject(@ModelAttribute("project") NewProjectVO projectVO, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
 
-		User user = null;
-		try {
-			user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
-		} catch (NullPointerException e) {
-			// TODO what to do? We don't have authorized user??
-		}
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 
 		Project project = new Project();
 		project.setName(projectVO.getName());

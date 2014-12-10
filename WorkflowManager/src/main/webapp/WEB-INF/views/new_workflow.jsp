@@ -7,15 +7,22 @@
 <div id='new-workflow-wrapper' class='panel panel-default panel-body'>
 	<form:form id='new-workflow-form' modelAttribute='workflow' method='POST' action='/WorkflowManager/new/workflow' class='form-horizontal'>
 		<div class='form-group'>
-			<label for='input-name' class='col-sm-2 control-label'>Name</label>
-			<div class='col-sm-12'>
+			<label for='input-name' class='control-label'>Name</label>
+			<div >
 				<form:input id='name' class='form-control' path='name' placeholder='Name of the workflow' value='TestWorkflow'/>
 			</div>
 		</div>
 		<div class='form-group'>
-			<label for='input-description' class='col-sm-2 control-label'>Description</label>
-			<div class='col-sm-12'>
+			<label for='input-description' class='control-label'>Description</label>
+			<div >
 				<form:textarea id='description' class='form-control' path='description' placeholder='Write here a short description.' rows='4' style='resize:none;' value='TestDescription for test workflow' />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for='select-domain-div' class='col-sm-1 control-label'>Domain</label>
+			<div id='select-domain-div' class='input-group' style='position:relative;left:15px;'>
+				<span class="input-group-addon glyphicon glyphicon-tower" style='position:relative;top:-0.5px;'/></span>
+				<form:select id='select-domain' path="domain" class="form-control"  placeholder="Domain" items="${domains}" style='width:265px;'/>
 			</div>
 		</div>
 		<div class='form-group'>

@@ -23,7 +23,7 @@ import org.codehaus.jackson.annotate.JsonManagedReference;
 public class StateGraph extends AbstractEntity {
 	public static final String NQ_FIND_BY_WORKFLOW_ID = "StateGraph.findByWorkflowId";
 
-	public static final String PR_WORKFLOW = "workflow";
+	public static final String PR_WORKFLOW_ID = "workflowId";
 	public static final String PR_POINTS = "points";
 	public static final String PR_EDGES = "edges";
 

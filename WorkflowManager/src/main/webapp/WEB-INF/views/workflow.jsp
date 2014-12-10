@@ -217,10 +217,10 @@
 		var name = $(this).find(".graph-node").data("nodeid");
 		var workflowId = ${workflow.id};
 		$(this).append( 
-						"<div id='delete-button'  class='graph-button delete-button' style='left:26px;top:-7px'><a class='no-decor-link little-button-link' href='delete/state?nodeId="+name+"&workflowId="+workflowId+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>" +
-						"<div id='add-button'  class='graph-button add-button' style='left:62px; top:-75px; z-index:1100;'><a class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-transfer' style='line-height: 26px;'></a></div>" +
-						"<div id='init-button'  class='graph-button init-button' style='left:26px; top:-143px;'><a class='no-decor-link little-button-link' href='initial/state?nodeId="+name+"&workflowId="+workflowId+"'><span class='glyphicon glyphicon-star' style='line-height: 26px;'></a></div>" +
-						"<div id='state-edit-button'  class='graph-button state-edit-button' style='left:-13px; top:-134px; z-index:1100;'><a data-toggle='modal' data-target='#new-state-modal' class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-pencil' style='line-height: 26px;'></a></div>");
+						"<div id='delete-button'  class='graph-button delete-button' style='left:26px;top:-7px'><a class='no-decor-link little-button-link' href='delete/state?nodeId="+name+"&workflowId="+workflowId+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;position:absolute;left:7px;'></a></div>" +
+						"<div id='add-button'  class='graph-button add-button' style='left:62px; top:-75px; z-index:1100;'><a class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-transfer' style='line-height: 26px;position:absolute;left:7px;'></a></div>" +
+						"<div id='init-button'  class='graph-button init-button' style='left:26px; top:-143px;'><a class='no-decor-link little-button-link' href='initial/state?nodeId="+name+"&workflowId="+workflowId+"'><span class='glyphicon glyphicon-star' style='line-height: 26px;position:absolute;left:8px;'></a></div>" +
+						"<div id='state-edit-button'  class='graph-button state-edit-button' style='left:-13px; top:-134px; z-index:1100;'><a data-toggle='modal' data-target='#new-state-modal' class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-pencil' style='line-height: 26px;position:absolute;left:7px;'></a></div>");
 		$('#add-button').draggable({
 			appendTo: "body",
 			zIndex: 1100,
@@ -500,7 +500,7 @@
 		var left = $(this).position().left;
 		var width = parseInt($(this).css("width").replace("px",""))/2-40;
 		var sumHeight = 0;
-		$(this).append( "<div id='edge-edit-button'  class='graph-button edge-edit-button' style='left:-13px; top:-134px; z-index:1100;'><a data-toggle='modal' data-target='#transition-settings-modal' class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-transfer' style='line-height: 26px;'></a></div>");
+		$(this).append( "<div id='edge-edit-button'  class='graph-button edge-edit-button' style='left:-13px; top:-134px; z-index:1100;'><a data-toggle='modal' data-target='#transition-settings-modal' class='no-decor-link little-button-link' href=''><span class='glyphicon glyphicon-transfer' style='line-height: 26px;position:absolute;left:7px;'></a></div>");
 		$('#edge-edit-button').siblings().each( function(){ sumHeight += parseInt($(this).css("height").replace("px","")); });
 		sumHeight += 12;
 		$('#edge-edit-button').css({

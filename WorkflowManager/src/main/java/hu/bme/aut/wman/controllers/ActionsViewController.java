@@ -3,9 +3,14 @@ package hu.bme.aut.wman.controllers;
 import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Role;
+import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.ActionTypeService;
+import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
+import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.view.Messages.Severity;
 
 import java.util.ArrayList;
@@ -17,6 +22,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.common.collect.Lists;
 
 /**
  * @version "%I%, %G%"
@@ -43,8 +51,13 @@ public class ActionsViewController extends AbstractController {
 	private ActionTypeService actionTypeService;
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
+	@EJB(mappedName="java:module/UserService")
+	private UserService userService;
+	@EJB(mappedName="java:module/DomainService")
+	private DomainService domainService;
 
 	@RequestMapping(value = ACTIONS, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('View ActionType')")
 	public String actionsView(Model model, HttpServletRequest request) {
 
 		List<ActionType> allActions = actionTypeService.selectAll();
@@ -61,14 +74,19 @@ public class ActionsViewController extends AbstractController {
 			rolesByActionTypeIdsAddable.put(actionType.getId(), notAddedActions);
 		}
 
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		List<Domain> domains = domainService.domainsOf(user.getId(), Lists.newArrayList("Create Workflow"));
+
 		model.addAttribute("actions", allActions);
 		model.addAttribute("newAction", new ActionType());
+		model.addAttribute("domains", domains);
 		model.addAttribute("rolesOnActionsMap", rolesByActionTypeIdsAdded);
 		model.addAttribute("rolesToAddMap", rolesByActionTypeIdsAddable);
 		return navigateToFrame("actions", model);
 	}
 
 	@RequestMapping(value = NEW_ACTION, method = RequestMethod.POST)
+	@PreAuthorize("hasRole('Create ActionType')")
 	public ModelAndView postNewWorkflow(@ModelAttribute("action") ActionType action, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		actionTypeService.save(action);
@@ -77,6 +95,7 @@ public class ActionsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = DELETE_ACTION, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('Create ActionType')")
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long actionId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			actionTypeService.deleteById(actionId);
@@ -89,6 +108,7 @@ public class ActionsViewController extends AbstractController {
 
 	@RequestMapping(value = ACTION_ADD_ROLE, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('Create ActionType')")
 	public void addRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		Long actionId = Long.parseLong(request.getParameter("actionid"));
@@ -101,6 +121,7 @@ public class ActionsViewController extends AbstractController {
 
 	@RequestMapping(value = ACTION_REMOVE_ROLE, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('Create ActionType')")
 	public void removeRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		Long actionId = Long.parseLong(request.getParameter("actionid"));

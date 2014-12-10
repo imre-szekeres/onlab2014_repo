@@ -1,6 +1,7 @@
 package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.State;
@@ -44,10 +45,15 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	private StateService stateService;
 	@Inject
 	private StateGraphService graphService;
+	@Inject
+	private DomainService domainService;
 
 	@Override
 	public void save(Workflow entity) {
-		super.save(entity);
+		Domain domain = domainService.selectByName(entity.getDomain().getName());
+		entity.setDomain(domain);
+		domain.getWorkflows().add(entity);
+		domainService.save(domain);
 
 		Workflow workflow = attach(entity);
 		StateGraph graph = new StateGraph(workflow.getId());
@@ -146,8 +152,6 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 			return false;
 		} else if (workflow.getStates().size() == 1 && workflow.getStates().get(0) != workflow.getInitialState()) {
 			return false;
-		} else if (selectByName(workflow.getName()) != null) {
-			return false;
 		} else {
 			return true;
 		}
@@ -174,7 +178,7 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	/**
 	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
 	 * as permission in the <code>Domain</code> that the <code>Workflow</code> specified by its id corresponds to.
-	 * 
+	 *
 	 * @param username
 	 * @param workflowID
 	 * @param privilegeName
@@ -192,7 +196,7 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	/**
 	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
 	 * as permission in the <code>Domain</code> that the <code>Project</code> specified by its name corresponds to.
-	 * 
+	 *
 	 * @param username
 	 * @param workflowName
 	 * @param privilegeName
@@ -212,11 +216,27 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 		return Workflow.class;
 	}
 
-	// public boolean validateName(String name) {
-	// return validator.validateValue(Workflow.class, "name", name).size() == 0;
-	// }
-	//
-	// public boolean validateDescription(String description) {
-	// return validator.validateValue(Workflow.class, "description", description).size() == 0;
-	// }
+	public void setTestDomainService(DomainService domainService) {
+		this.domainService = domainService;
+	}
+
+	public DomainService getTestDomainService() {
+		return domainService;
+	}
+
+	public StateGraphService getTestGraphService() {
+		return graphService;
+	}
+
+	public void setTestGraphService(StateGraphService graphService) {
+		this.graphService = graphService;
+	}
+
+	public ProjectService getTestProjectService() {
+		return projectService;
+	}
+
+	public void setTestProjectService(ProjectService projectService) {
+		this.projectService = projectService;
+	}
 }

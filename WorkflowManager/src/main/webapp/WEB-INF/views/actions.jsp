@@ -33,7 +33,7 @@
 					<div class="panel-heading actions-name">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" style="text-decoration: blink;" data-parent="#accordion${action.id}" href="#collapse${action.id}">
-								${action.actionTypeName}
+								${action.domain.name}: ${action.actionTypeName}
 							</a>
 						</h4>
 					</div>
@@ -84,6 +84,13 @@
 							<div>
 								<form:input id='new-action-name' path='actionTypeName' placeholder='Name of the action' value='TestAction'/>
 							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for='select-domain-div' class='col-sm-1 control-label'>Domain</label>
+						<div id='select-domain-div' class='input-group' style='position:relative;left:15px;'>
+							<span class="input-group-addon glyphicon glyphicon-tower" style='position:relative;top:-0.5px;'/></span>
+							<form:select id='select-domain' path="domain" class="form-control"  placeholder="Domain" items="${domains}" style='width:265px;'/>
 						</div>
 					</div>
 				</div>
@@ -203,7 +210,7 @@
 			if (!deleteButton) { 
 				var name = $(this).find('div.actions-id').text();
 				$(this).find('div.actions-name').append( 
-								"<div id='delete-button'  class='delete-button' style='left:390px;'><a class='no-decor-link little-button-link' href='delete/action?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>");
+								"<div id='delete-button'  class='delete-button' style='left:390px;'><a class='no-decor-link little-button-link' href='delete/action?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;position:absolute;left:7px;'></a></div>");
 			}
 		})
 		.mouseleave(function() {
