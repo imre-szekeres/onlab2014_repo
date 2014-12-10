@@ -28,25 +28,16 @@ import javax.inject.Inject;
 @LocalBean
 public class StateService extends AbstractDataService<State> {
 
-	// private Validator validator;
-
 	@Inject
-	ActionTypeService actionTypeService;
+	private TransitionService transitionService;
 	@Inject
-	TransitionService transitionService;
+	private ProjectService projectService;
 	@Inject
-	ProjectService projectService;
+	private StateGraphService graphService;
 	@Inject
-	StateGraphService graphService;
+	private	GraphNodeService nodeService;
 	@Inject
-	GraphNodeService nodeService;
-	@Inject
-	WorkflowService workflowService;
-
-	// @PostConstruct
-	// public void init() {
-	// validator = Validation.buildDefaultValidatorFactory().getValidator();
-	// }
+	private WorkflowService workflowService;
 
 	@Override
 	public void save(State entity) {
@@ -151,7 +142,7 @@ public class StateService extends AbstractDataService<State> {
 		List<Transition> transitionsOnState = transitionService.selectByParentId(state.getId());
 
 		for (Transition transition : transitionsOnState) {
-			if (transition.getActionType() == actionType) {
+			if (transition.getActionType().equals(actionType)) {
 				throw new IllegalArgumentException("There can not be two transitions with the same source and action type.");
 			}
 		}
@@ -196,12 +187,36 @@ public class StateService extends AbstractDataService<State> {
 		return State.class;
 	}
 
-	// public boolean validateName(String name) {
-	// return validator.validateValue(State.class, "name", name).size() == 0;
-	// }
-	//
-	// public boolean validateDescription(String description) {
-	// return validator.validateValue(State.class, "description",
-	// description).size() == 0;
-	// }
+	public GraphNodeService getTestNodeService() {
+		return nodeService;
+	}
+
+	public void setTestNodeService(GraphNodeService nodeService) {
+		this.nodeService = nodeService;
+	}
+
+	public WorkflowService getTestWorkflowService() {
+		return workflowService;
+	}
+
+	public void setTestWorkflowService(WorkflowService workflowService) {
+		this.workflowService = workflowService;
+	}
+
+	public StateGraphService getTestGraphService() {
+		return graphService;
+	}
+
+	public void setTestGraphService(StateGraphService graphService) {
+		this.graphService = graphService;
+	}
+
+	public TransitionService getTestTransitionService() {
+		return transitionService;
+	}
+
+	public void setTestTransitionService(TransitionService transitionService) {
+		this.transitionService = transitionService;
+	}
+
 }

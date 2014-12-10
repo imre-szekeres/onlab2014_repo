@@ -27,7 +27,6 @@ import org.mockito.Mockito;
 
 import com.google.common.collect.Lists;
 
-//@RunWith(Parameterized.class)
 public class MockedWorkflowServiceTestSuite {
 
 	private static final Logger LOGGER = Logger.getLogger( MockedWorkflowServiceTestSuite.class );
@@ -41,15 +40,6 @@ public class MockedWorkflowServiceTestSuite {
 
 	public MockedWorkflowServiceTestSuite() {
 	}
-
-
-	//	@Parameters
-	//	public static final Collection<Object[]> privilegeNames() {
-	//		return Arrays.asList(new Object[][] {
-	//				{ "View User", "Assign Role" },
-	//				{ "Create Role", "View Privilege" }
-	//		});
-	//	}
 
 	@Before
 	public void initContext() {
