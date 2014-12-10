@@ -116,7 +116,7 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
-	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Owns')")
 	@RequestMapping(value = CLOSE_PROJECT, method = RequestMethod.GET)
 	public ModelAndView close(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
@@ -130,7 +130,7 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
-	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Owns')")
 	@RequestMapping(value = REOPEN_PROJECT, method = RequestMethod.GET)
 	public ModelAndView reopen(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
@@ -148,7 +148,7 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
-	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Owns')")
 	@RequestMapping(value = DELETE_PROJECT, method = RequestMethod.GET)
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		try {
