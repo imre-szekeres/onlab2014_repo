@@ -182,7 +182,7 @@ public class UsersController extends AbstractController {
 	}
 
 	@PreAuthorize("hasPermission(#userID, 'User', 'Create User')")
-	@RequestMapping(value = DELETE, method = RequestMethod.GET)
+	@RequestMapping(value = DELETE, method = RequestMethod.DELETE)
 	public String deleteUser(@RequestParam("user") Long userID, HttpSession session, Model model) {		
 
 		Long subjectID = userIDOf(session);

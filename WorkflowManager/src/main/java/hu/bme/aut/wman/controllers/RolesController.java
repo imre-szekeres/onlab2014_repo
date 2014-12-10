@@ -200,7 +200,7 @@ public class RolesController extends AbstractController {
 	} 
 
 	@PreAuthorize("hasPermission(#roleID, 'Role', 'Create Role')")
-	@RequestMapping(value = DELETE, method = RequestMethod.GET)
+	@RequestMapping(value = DELETE, method = RequestMethod.DELETE)
 	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
