@@ -42,7 +42,19 @@ import javax.validation.constraints.Size;
 												                            "AND da.domain = d " +
 																		    "AND p MEMBER OF r.privileges " + 
 												                            "AND p.name = :privilegeName " +
-																		    "AND r MEMBER OF da.userRoles ")
+																		    "AND r MEMBER OF da.userRoles "),
+
+   @NamedQuery(name = "Project.findCountForOwnerByName", query = "SELECT COUNT(DISTINCT p) FROM Project p " +
+															     "WHERE p.name = :projectName AND p.owner.username = :username "),
+
+   @NamedQuery(name = "Project.findCountForOwnerByID", query = "SELECT COUNT(DISTINCT p) FROM Project p " +
+															   "WHERE p.id = :projectID AND p.owner.username = :username "),
+
+   @NamedQuery(name = "Project.findCountForAssignmentByName", query = "SELECT COUNT(DISTINCT pa) FROM ProjectAssignment pa " +
+															          "WHERE pa.project.name = :projectName AND pa.user.username = :username " ),
+
+   @NamedQuery(name = "Project.findCountForAssignmentByID", query = "SELECT COUNT(DISTINCT pa) FROM ProjectAssignment pa " +
+														            "WHERE pa.project.id = :projectID AND pa.user.username = :username ")
 })
 public class Project extends AbstractEntity {
 
@@ -51,6 +63,12 @@ public class Project extends AbstractEntity {
 	
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "Project.findCountByPrivilege";
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME = "Project.findCountByPrivilegeAndName";
+	
+	public static final String NQ_FIND_COUNT_FOR_OWNER_BY_NAME = "Project.findCountForOwnerByName";
+	public static final String NQ_FIND_COUNT_FOR_OWNER_BY_ID = "Project.findCountForOwnerByID";
+	
+	public static final String NQ_FIND_COUNT_FOR_ASSIGNMENT_BY_NAME = "Project.findCountForAssignmentByName";
+	public static final String NQ_FIND_COUNT_FOR_ASSIGNMENT_BY_ID = "Project.findCountForAssignmentByID";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_CURRENT_STATE = "currentState";
