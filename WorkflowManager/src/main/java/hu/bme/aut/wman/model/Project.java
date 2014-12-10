@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -24,12 +23,32 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "Project.findAllByWorkflowName", query = "SELECT p FROM Project p WHERE p.workflow.name=:name"),
-	@NamedQuery(name = "Project.findProjectsForUser", query = "SELECT p FROM Project p, ProjectAssignment pa WHERE pa.user.username = :username AND pa.project = p")
+	@NamedQuery(name = "Project.findProjectsForUser", query = "SELECT p FROM Project p, ProjectAssignment pa WHERE pa.user.username = :username AND pa.project = p"),
+
+	@NamedQuery(name = "Project.findCountByPrivilege", query = "SELECT COUNT(DISTINCT r) FROM Project pr, Workflow w, Role r, Domain d, DomainAssignment da, Privilege p " +
+			"WHERE pr.workflow = w AND w.domain = d " +
+			"AND pr.id = :projectID " +
+			"AND da.user.username = :username " +
+			"AND da.domain = d " +
+			"AND p MEMBER OF r.privileges " +
+			"AND p.name = :privilegeName " +
+			"AND r MEMBER OF da.userRoles "),
+
+			@NamedQuery(name = "Project.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r) FROM Project pr, Workflow w, Role r, Domain d, DomainAssignment da, Privilege p " +
+					"WHERE pr.workflow = w AND w.domain = d " +
+					"AND pr.name = :projectName " +
+					"AND da.user.username = :username " +
+					"AND da.domain = d " +
+					"AND p MEMBER OF r.privileges " +
+					"AND p.name = :privilegeName " +
+					"AND r MEMBER OF da.userRoles ")
 })
 public class Project extends AbstractEntity {
 
 	public static final String NQ_FIND_BY_WORKFLOW_NAME = "Project.findAllByWorkflowName";
 	public static final String NQ_FIND_PROJECTS_FOR_USER = "Project.findProjectsForUser";
+	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "Project.findCountByPrivilege";
+	public static final String NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME = "Project.findCountByPrivilegeAndName";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_CURRENT_STATE = "currentState";
@@ -42,11 +61,10 @@ public class Project extends AbstractEntity {
 	public static final String PR_HISTORY_ENTRIES = "historyEntries";
 
 	@NotNull
-	@Size(min = 5, max = 16)
-	@Column(unique = true)
+	@Size(min = 5, max = 25)
 	private String name;
 
-	@Size(min = 13, max = 512)
+	@Size(min = 16, max = 512)
 	private String description;
 
 	// FIXME just for test

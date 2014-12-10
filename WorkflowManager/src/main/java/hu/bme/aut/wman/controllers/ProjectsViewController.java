@@ -10,6 +10,7 @@ import hu.bme.aut.wman.service.HistoryEntryService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.service.WorkflowService;
+import hu.bme.aut.wman.view.Messages;
 import hu.bme.aut.wman.view.objects.ErrorMessageVO;
 import hu.bme.aut.wman.view.objects.NewProjectVO;
 
@@ -87,12 +88,7 @@ public class ProjectsViewController extends AbstractController {
 	public ModelAndView postNewProject(@ModelAttribute("project") NewProjectVO projectVO, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
 
-		User user = null;
-		try {
-			user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
-		} catch (NullPointerException e) {
-			// TODO what to do? We don't have authorized user??
-		}
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 
 		Project project = new Project();
 		project.setName(projectVO.getName());
@@ -130,7 +126,7 @@ public class ProjectsViewController extends AbstractController {
 		try {
 			projectService.reopenById(projectId);
 		} catch (Exception e) {
-			// TODO error message
+			flash("You can not reopen this project, because its workflow has been deleted.", Messages.Severity.ERROR, model);
 		}
 
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());

@@ -26,6 +26,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -136,6 +137,7 @@ public class ProjectViewController extends AbstractController {
 
 	@RequestMapping(value = ASSIGN_USER, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('Assign Project')")
 	public void assignUser(@RequestParam("projectId") Long projectId, @RequestParam("id") Long userId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 		try {
@@ -150,6 +152,7 @@ public class ProjectViewController extends AbstractController {
 
 	@RequestMapping(value = UNASSIGN_USER, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('Assign Project')")
 	public void unassignUser(@RequestParam("projectId") Long projectId, @RequestParam("id") Long userId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 		try {

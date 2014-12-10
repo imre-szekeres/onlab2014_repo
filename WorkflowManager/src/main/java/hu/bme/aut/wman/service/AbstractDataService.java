@@ -110,10 +110,11 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(AbstractEntity.PR_ID, id));
 		Iterator<T> results = selectByParameters(parameterList).iterator();
 
-		if (results.hasNext())
+		if (results.hasNext()) {
 			return results.next();
-		else
+		} else {
 			throw new NoSuchElementException("There is not entity with id: " + id + "in class: " + getEntityClass().getSimpleName());
+		}
 	}
 
 	/**
@@ -149,11 +150,11 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	/**
 	 * Support calling <code>NamedQuery</code>s in a more flexible manner, for all kinds
 	 * of types of results.
-	 * 
+	 *
 	 * @param queryName
 	 * @param parameters
 	 * @param cls the expected type of result(s)
-	 * 
+	 *
 	 * @return the list of results
 	 * @see {@link AbstractDataService#callNamedQuery(String, List)}
 	 * */
@@ -174,7 +175,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * @param parameters
 	 *          of the query
 	 * @return the number of rows affected
-	 * 
+	 *
 	 * @see {@link javax.persistence.Query#executeUpdate()}
 	 * @see {@link javax.persistence.TypedQuery#executeUpdate()}
 	 * @see {@link AbstractDataService#callNamedQuery(String, List)}
@@ -187,7 +188,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 		return namedQuery.executeUpdate();
 	}
 
-	
+
 	private CriteriaQuery<T> buildCriteriaByParameters(List<Entry<String, Object>> parameters) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> buildedCriteriaQuery = builder.createQuery(getEntityClass());
@@ -208,7 +209,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 * @return if the entity is new or was persisted before.
 	 */
 	public boolean isNew(T entity) {
-		return entity.getId() == null && 
+		return entity.getId() == null &&
 				(em.find(entity.getClass(), entity.getId()) == null);
 	}
 

@@ -1,6 +1,5 @@
 package hu.bme.aut.wman.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -18,7 +17,6 @@ public class ActionType extends AbstractEntity {
 	public static final String PR_DOMAIN = "domain";
 
 	@NotNull
-	@Column(unique = true)
 	private String actionTypeName;
 
 	// FIXME just for testing
@@ -75,23 +73,30 @@ public class ActionType extends AbstractEntity {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (!(obj instanceof ActionType))
+		}
+		if (!(obj instanceof ActionType)) {
 			return false;
+		}
 		ActionType other = (ActionType) obj;
 		if (actionTypeName == null) {
-			if (other.actionTypeName != null)
+			if (other.actionTypeName != null) {
 				return false;
-		} else if (!actionTypeName.equals(other.actionTypeName))
+			}
+		} else if (!actionTypeName.equals(other.actionTypeName)) {
 			return false;
+		}
 		if (domain == null) {
-			if (other.domain != null)
+			if (other.domain != null) {
 				return false;
-		} else if (!domain.equals(other.domain))
+			}
+		} else if (!domain.equals(other.domain)) {
 			return false;
+		}
 		return true;
 	}
 

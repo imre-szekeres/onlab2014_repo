@@ -203,7 +203,7 @@
 			if (!deleteButton) { 
 				var name = $(this).find('div.actions-id').text();
 				$(this).find('div.actions-name').append( 
-								"<div id='delete-button'  class='delete-button' style='left:390px;'><a class='no-decor-link little-button-link' href='delete/action?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;'></a></div>");
+								"<div id='delete-button'  class='delete-button' style='left:390px;'><a class='no-decor-link little-button-link' href='delete/action?id="+name+"'><span class='glyphicon glyphicon-trash' style='line-height: 26px;position:absolute;left:7px;'></a></div>");
 			}
 		})
 		.mouseleave(function() {

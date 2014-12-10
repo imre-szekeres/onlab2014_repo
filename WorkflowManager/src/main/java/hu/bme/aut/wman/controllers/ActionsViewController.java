@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -44,6 +45,7 @@ public class ActionsViewController extends AbstractController {
 	private RoleService roleService;
 
 	@RequestMapping(value = ACTIONS, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('View ActionType')")
 	public String actionsView(Model model, HttpServletRequest request) {
 
 		List<ActionType> allActions = actionTypeService.selectAll();
@@ -68,6 +70,7 @@ public class ActionsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = NEW_ACTION, method = RequestMethod.POST)
+	@PreAuthorize("hasRole('Create ActionType')")
 	public ModelAndView postNewWorkflow(@ModelAttribute("action") ActionType action, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		actionTypeService.save(action);
@@ -76,6 +79,7 @@ public class ActionsViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = DELETE_ACTION, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('Create ActionType')")
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long actionId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
 
@@ -90,6 +94,7 @@ public class ActionsViewController extends AbstractController {
 
 	@RequestMapping(value = ACTION_ADD_ROLE, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('Create ActionType')")
 	public void addRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		Long actionId = Long.parseLong(request.getParameter("actionid"));
@@ -102,6 +107,7 @@ public class ActionsViewController extends AbstractController {
 
 	@RequestMapping(value = ACTION_REMOVE_ROLE, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('Create ActionType')")
 	public void removeRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		Long actionId = Long.parseLong(request.getParameter("actionid"));
