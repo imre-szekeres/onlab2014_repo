@@ -30,21 +30,22 @@ import javax.validation.constraints.Size;
 												   "WHERE r.name=:roleName "+
 												       "AND d.user = u "+
 													   "AND r MEMBER OF d.userRoles "),
+
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u " +
 											      "WHERE u.username = :username "),
     @NamedQuery(name = "User.findUsersInDomainOf", query = "SELECT DISTINCT u FROM User u, DomainAssignment da1, DomainAssignment da2 " +
                                                            "WHERE da1.domain = da2.domain " + 
     		                                                      "AND da1.user = u AND da2.user.id = :userID "),
 
-   @NamedQuery(name = "User.findUsersInDomainOfByPrivilegeNames", query = "SELECT DISTINCT u FROM User u, DomainAssignment da1, DomainAssignment da2 " +
-    		                                                              "WHERE da1.domain = da2.domain " + 
-    		       		                                                     "AND da1.user = u AND da2.user.id = :userID " + 
-    		                                                                 "AND :count = (" +
-    		       		                                                           "SELECT COUNT(DISTINCT p) FROM Privilege p, Role r " +
-    		                                                                       "WHERE p.name IN :privilegeNames " +
-    		       		                                                               "AND r MEMBER OF da2.userRoles " +
-    		                                                                           "AND p MEMBER OF r.privileges " +
-    		       		                                                  ")"),
+    @NamedQuery(name = "User.findUsersInDomainOfByPrivilegeNames", query = "SELECT DISTINCT u FROM User u, DomainAssignment da1, DomainAssignment da2 " +
+    		                                                               "WHERE da1.domain = da2.domain " + 
+    		       		                                                       "AND da1.user = u AND da2.user.id = :userID " + 
+    		                                                                   "AND :count = (" +
+    		       		                                                             "SELECT COUNT(DISTINCT p) FROM Privilege p, Role r " +
+    		                                                                         "WHERE p.name IN :privilegeNames " +
+    		       		                                                                 "AND r MEMBER OF da2.userRoles " +
+    		                                                                             "AND p MEMBER OF r.privileges " +
+    		       		                                                   ")"),
 
     @NamedQuery(name = "User.findPasswordOf", query = "SELECT u.password FROM User u " +
     		                                          "WHERE u.username = :username "),
@@ -74,10 +75,14 @@ import javax.validation.constraints.Size;
 		                                                            "WHERE p MEMBER OF r.privileges " +
                                                                           "AND r MEMBER OF dau.userRoles " +
 		                                                                  "AND p.name IN :privilegeNames " +
-                                                               " )")
+                                                               " )"),
+
+	@NamedQuery(name = "User.findByDomainName", query = "SELECT DISTINCT u FROM User u, DomainAssignment da " +
+                                                        "WHERE da.user = u AND da.domain.name = :domainName " )
 })
 public class User extends AbstractEntity {
 
+	public static final String NQ_FIND_BY_DOMAIN_NAME = "User.findByDomainName";
 	public static final String NQ_FIND_USERS_FOR_PROJECT = "User.findUsersForProject";
 	public static final String NQ_FIND_USERS_OF = "User.findUsersOf";
 	public static final String NQ_FIND_BY_NAME = "User.findByName";

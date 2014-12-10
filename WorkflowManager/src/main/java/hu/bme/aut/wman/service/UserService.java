@@ -162,12 +162,31 @@ public class UserService extends AbstractDataService<User> implements Serializab
 		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF, parameters);
 	}
 
+	/**
+	 * Lists the <code>User</code>s assigned to the given <code>Project</code>
+	 * 
+	 * @param projectId
+	 * @return the {@link List} of {@link User}s assigned
+	 * */
 	public List<User> selectUsersForProject(Long projectId) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("projectId", projectId));
 		return callNamedQuery(User.NQ_FIND_USERS_FOR_PROJECT, parameterList);
 	}
 
+	/**
+	 * Lists the <code>User</code>s assigned to the given <code>Domain</code>
+	 * 
+	 * @param domain
+	 * @return the {@link List} of {@link User}s assigned
+	 * */
+	public List<User> listUsersInDomain(String domain) {
+		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
+		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("domainName", domain));
+		return callNamedQuery(User.NQ_FIND_BY_DOMAIN_NAME, parameterList);
+	}
+
+	
 	/**
 	 * Selects all the <code>User</code>s assigned to all the <code>Domain</code>s in which the <code>User</code> specified
 	 * by its id is also assigned to and has all the <code>Privilege</code>s specified by their names.
