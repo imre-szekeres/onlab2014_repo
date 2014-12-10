@@ -152,8 +152,6 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 			return false;
 		} else if (workflow.getStates().size() == 1 && workflow.getStates().get(0) != workflow.getInitialState()) {
 			return false;
-		} else if (selectByName(workflow.getName()) != null) {
-			return false;
 		} else {
 			return true;
 		}
@@ -218,11 +216,27 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 		return Workflow.class;
 	}
 
-	// public boolean validateName(String name) {
-	// return validator.validateValue(Workflow.class, "name", name).size() == 0;
-	// }
-	//
-	// public boolean validateDescription(String description) {
-	// return validator.validateValue(Workflow.class, "description", description).size() == 0;
-	// }
+	public void setTestDomainService(DomainService domainService) {
+		this.domainService = domainService;
+	}
+
+	public DomainService getTestDomainService() {
+		return domainService;
+	}
+
+	public StateGraphService getTestGraphService() {
+		return graphService;
+	}
+
+	public void setTestGraphService(StateGraphService graphService) {
+		this.graphService = graphService;
+	}
+
+	public ProjectService getTestProjectService() {
+		return projectService;
+	}
+
+	public void setTestProjectService(ProjectService projectService) {
+		this.projectService = projectService;
+	}
 }
