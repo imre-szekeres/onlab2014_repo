@@ -1,6 +1,7 @@
 package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.model.Domain;
+import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.validation.PasswordValidator;
 import hu.bme.aut.wman.service.validation.UserValidator;
@@ -10,6 +11,7 @@ import hu.bme.aut.wman.utils.StringUtils;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,8 @@ import java.util.Map.Entry;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 /**
@@ -94,14 +98,14 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	 * @param user
 	 * @param oldPassword
 	 * @param confirmPassword
+	 * @param encoder
 	 * @return the {@link java.util.Map} representation of (<code>propertyName</code>, <code>errorMessage</code>) entries
 	 * */
-	public Map<String, String> validate(User old, String oldPassword, String newPassword, String confirmPassword) {
+	public Map<String, String> validate(User old, String oldPassword, String newPassword, String confirmPassword, PasswordEncoder encoder) {
 		Map<String, String> errors = new HashMap<>();
-
-		if (!old.getPassword().equals( oldPassword )) {
-			errors.put("oldPassword", "Given value does not equal to the old one.");
-		}
+		
+		if (!encoder.matches(oldPassword, old.getPassword()))
+			errors.put("oldPassword", "Given value does not match the previous one.");
 		if (StringUtils.isEmpty( newPassword )) {
 			errors.put("password", "cannot be empty");
 		} else if (StringUtils.isEmpty( confirmPassword )) {
@@ -152,7 +156,7 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	 * @param userID
 	 * @return a {@link List} of {@link User}s in the same {@link Domain} as the given {@link User}
 	 * */
-	public List<User> selectUsersInDomainOf(Long userID) {
+	public List<User> usersInDomainOf(Long userID) {
 		List<Entry<String, Object>> parameters = new ArrayList<>();
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
 		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF, parameters);
@@ -165,11 +169,103 @@ public class UserService extends AbstractDataService<User> implements Serializab
 	}
 
 	/**
+	 * Selects all the <code>User</code>s assigned to all the <code>Domain</code>s in which the <code>User</code> specified
+	 * by its id is also assigned to and has all the <code>Privilege</code>s specified by their names.
+	 * 
+	 * @param userID
+	 * @param privilegeNames
+	 * @return a {@link List} of {@link User}s in the same {@link Domain} as the given {@link User}
+	 * */
+	public List<User> usersInDomainOf(Long userID, Collection<? extends String> privilegeNames) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeNames", privilegeNames));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("count", privilegeNames.size()));
+		return callNamedQuery(User.NQ_FIND_USERS_IN_DOMAIN_OF_BY_PRIVILEGE_NAMES, parameters);
+	}
+
+	/**
+	 * Retrieves the password of the given <code>User<code>.
+	 * 
+	 * @param username
+	 * @return the corresponding password
+	 * */
+	public String selectPasswordOf(String username) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		List<String> results = callNamedQuery(User.NQ_FIND_PASSWORD_OF, parameters, String.class);
+		return (results == null || results.isEmpty()) ? null : results.get(0);
+	}
+
+	/**
+	 * Retrieves the ID of the given <code>User<code>.
+	 * 
+	 * @param username
+	 * @return the corresponding ID
+	 * */
+	public Long selectIDOf(String username) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		List<Long> results = callNamedQuery(User.NQ_FIND_ID_OF, parameters, Long.class);
+		return (results == null || results.isEmpty()) ? null : results.get(0);
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
+	 * as permission in any of the <code>Domain</code>s that the <code>User</code> at hand specified by its id is assigned to.
+	 * 
+	 * @param subject
+	 * @param userID
+	 * @param privilegeName
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link User}
+	 * */
+	public boolean hasPrivilege(String subject, Long userID, String privilegeName) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("subjectName", subject));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		List<? extends Number> count = callNamedQuery(User.NQ_FIND_COUNT_BY_ID_AND_PRIVILEGE, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
+	}
+
+	/**
+	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
+	 * as permission in any of the <code>Domain</code>s that the <code>User</code> at hand specified by its id is assigned to.
+	 * 
+	 * @param subject
+	 * @param username
+	 * @param privilegeName
+	 * @return whether the given {@link User} has permissions to execute operations on the given {@link User}
+	 * */
+	public boolean hasPrivilege(String subject, String username, String privilegeName) {
+		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("subjectName", subject));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
+		List<? extends Number> count = callNamedQuery(User.NQ_FIND_COUNT_BY_PRIVILEGE, parameters, Integer.class);
+		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
+	}
+
+	/**
+	 * Lists the accessibility of those <code>User</code>s that own the <code>Privilege</code>s specified and 
+	 * in the same <code>Domain</code> as the <code>User</code> given as its id.
+	 * 
+	 * @param userID
+	 * @param privilegeNames
+	 * */
+	public List<String[]> personellInfoOf(Long userID, Collection<? extends String> privilegeNames) {
+		List<Entry<String, Object>> parameters = new ArrayList<>();
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("subjectID", userID));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeNames", privilegeNames));
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("count", privilegeNames.size()));
+		return callNamedQuery(User.NQ_FIND_PERSONELL_INFO, parameters, String[].class);
+	}
+
+	/**
 	 * @see {@link AbstractDataService#getClass()}
 	 * */
 	@Override
 	protected Class<User> getEntityClass() {
 		return User.class;
 	}
-
 }

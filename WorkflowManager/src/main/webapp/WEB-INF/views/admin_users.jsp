@@ -7,7 +7,7 @@
 
 <c:set var='appRoot' value='${ pageContext.request.contextPath }' />
 
-
+<!DOCTYPE html>
 <div id='roles-list-panel' class='panel panel-default admin-panel user-panel' >
 <div id='admin-roles-content-wrapper' class='panel-group' role='tablist' aria-multiselectable='false' >
     <jsp:include page='fragments/users_list.jsp' />
@@ -23,6 +23,20 @@
 <div class='modal fade' id='new-user-modal' tabindex='-1' role='dialog' aria-labelledby='#new-user-label' aria-hidden='true' >
     <script>
        var form_included = false;
+       var roles_url = "${ appRoot }${ selectRolesForUrl }";
+       
+       function requestRolesFor(domain) {
+           var url_ = roles_url + "?domain=" + domain;
+           $.ajax({
+               url: url_,
+               dataType: 'html',
+               method: 'GET',
+               success: function(data) {
+                   $_roles_src_wrapper.empty();
+                   $(data).appendTo( $_roles_src_wrapper );
+               }
+           });
+       }
     </script>
 
     <c:if test='${ not empty validationErrors }' >
@@ -40,7 +54,6 @@
 <script>
 
    var da_root = "${ appRoot }${ selectDomainsForUrl }";
-   var roles_url = "${ appRoot }${ selectRolesForUrl }";
    var dnames_root = "${ appRoot }${ selectDomainNamesUrl }";
 
    var $_create_user_trigger = $('#create-user-trigger');
@@ -64,19 +77,6 @@
 	   });
    }
 
-   function requestDomainNames($_domains_select) {
-	   $.ajax({
-	   	   url: dnames_root,
-	       dataType: 'html',
-	       method: 'GET',
-	       success: function(data) {
-	    	   $_domains_select.empty();
-	    	   $(data).appendTo( $_domains_select );
-	    	   $_domains_select.trigger('change');
-	       }
-	   });
-   }
-
    $('.user-collapsed-href').click(function(event) {
 	   var $_target = $(event.target);
 	   var $_list_wrapper = $_target.parent().parent().parent().find('.role-list-wrapper');
@@ -89,20 +89,7 @@
    function allowDrop(event) {
        event.preventDefault();
    }
-   
-   function requestRolesFor(domain) {
-	   var url_ = roles_url + "?domain=" + domain;
-	   $.ajax({
-		   url: url_,
-		   dataType: 'html',
-		   method: 'GET',
-		   success: function(data) {
-			   $_roles_src_wrapper.empty();
-			   $(data).appendTo( $_roles_src_wrapper );
-		   }
-	   });
-   }
-   
+
    function requestCreateForm($_modal) {
        $.ajax({
            url: create_form_url,
@@ -112,21 +99,16 @@
                $_modal.empty();
                $(data).appendTo( $_modal );
                current_form = 'create';
-               
-               if ($_domains_select.find('option').length < 1) {
-                   requestDomainNames( $_domains_select );
-               }
+           },
+           error: function() {
+        	   window.location = "${ appRoot }/403";
            }
        });
    }
-   
 
    $_create_user_trigger.click(function(event) {
 	   if (current_form != 'create' && !form_included)
 		   requestCreateForm($_nuser_modal);
-	   
-	   else if ($_domains_select.find('option').length < 1)
-           requestDomainNames( $_domains_select );
    });
 
    $.each($('.edit-icon-href'), function(index, href) {
@@ -147,6 +129,9 @@
                    $_create_user_trigger.trigger('click');
                    form_included = false;
                    $_nuser_modal.find('[data-toggle="tooltip"]').tooltip();
+               },
+               error: function() {
+            	   window.location = "${ appRoot }/403";
                }
            });
        });
@@ -159,5 +144,6 @@
     $('.has-error').tooltip({
         placement: 'top'
     });
+    $_domains_select.trigger('change');
 </script>
 </c:if>

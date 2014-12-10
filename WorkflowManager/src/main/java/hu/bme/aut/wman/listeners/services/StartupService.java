@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -35,6 +36,10 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author Imre Szekeres
@@ -57,6 +62,10 @@ public class StartupService {
 	private DomainService domainService;
 	@Inject
 	private DomainAssignmentService domainAssignmentService;
+	
+	@Autowired
+	@Qualifier("bcryptEncoder")
+	private PasswordEncoder encoder;
 
 	
 	private final QName NAME;
@@ -78,7 +87,24 @@ public class StartupService {
 		EMAIL = new QName(User.PR_EMAIL);
 		DESCRIPTION = new QName(User.PR_DESCRIPTION);
 	}
-	
+
+	/**
+	 * Sets the <code>PasswordEncoder</code> to a <code>BCryptPasswordEncoder</code> in case it was found
+	 * as null.
+	 * */
+	@PostConstruct
+	public void initService() {
+		encoder = (encoder == null) ? new BCryptPasswordEncoder() : encoder;
+	}
+
+	/**
+	 * Parses the XML formatted descriptor, constructs the entities defined by it and their relationships, then inserts those entities.
+	 * <p>
+	 * Also considers the removal of entities also defined by the XML descriptor.
+	 * 
+	 * @param xmlPath
+	 * @throws {@link Exception} that alerts an internal error
+	 * */
 	public void setupWebapp(String xmlPath) throws Exception {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLEventReader eventReader = null;
@@ -295,7 +321,7 @@ public class StartupService {
 				String domain = role.getAttributeByName( DOMAIN ).getValue();
 				String parent = role.getAttributeByName( IMPORT ).getValue();
 				
-				Role r = roleService.selectByName(roleName);
+				Role r = roleService.selectByName(roleName, domain);
 				r = (r == null) ? new Role(roleName) : r;
 				Domain d = domainOf(domains, domain);
 
@@ -399,7 +425,8 @@ public class StartupService {
 				String removable = user.getAttributeByName( REMOVABLE ).getValue();
 				
 				User u = userService.selectByName(username);
-				u = (u == null) ? new User(username, password, email, desc) : u;
+				String encoded = encoder.encode( password );
+				u = (u == null) ? new User(username, encoded, email, desc) : u;
 				
 				LOGGER.debug(u.toString() + " was found");
 				if (Boolean.valueOf( removable ))
@@ -450,7 +477,7 @@ public class StartupService {
 					names.put(name, domain);
 				else {
 					DomainAssignment da = domainAssignmentService.selectByDomainFor(username, domain);
-					Role r = roleService.selectByName(name);
+					Role r = roleService.selectByName(name, domain);
 					da.removeUserRole( r );
 					domainAssignmentService.save( da );
 				}
@@ -459,9 +486,9 @@ public class StartupService {
 		return names;
 	}
 	
-	private final Role roleOf(Map<String, Role> roles, String roleName) throws Exception {
+	private final Role roleOf(Map<String, Role> roles, String roleName, String domain) throws Exception {
 		Role role = roles.get(roleName);
-		role = (role == null) ? roleService.selectByName(roleName) : role;
+		role = (role == null) ? roleService.selectByName(roleName, domain) : role;
 
 		if (role == null)
 			throw new RuntimeException("Role " + roleName + " does not exist!");
@@ -480,5 +507,59 @@ public class StartupService {
 			service.save(entity);
 			LOGGER.debug(entity.toString() + " was inserted");
 		}
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param userService
+	 * */
+	public void set(UserService userService) {
+		this.userService = userService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param roleService
+	 * */
+	public void set(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param privilegeService
+	 * */
+	public void set(PrivilegeService privilegeService) {
+		this.privilegeService = privilegeService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param domainService
+	 * */
+	public void set(DomainService domainService) {
+		this.domainService = domainService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param domainAssignmentService
+	 * */
+	public void set(DomainAssignmentService domainAssignmentService) {
+		this.domainAssignmentService = domainAssignmentService;
+	}
+
+	/**
+	 * Only for testing purposes!
+	 * 
+	 * @param domainAssignmentService
+	 * */
+	public void set(PasswordEncoder encoder) {
+		this.encoder = encoder;
 	}
 }

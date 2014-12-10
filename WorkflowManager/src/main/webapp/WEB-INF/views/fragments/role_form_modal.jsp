@@ -29,6 +29,7 @@
 </c:otherwise>
 </c:choose>
 
+<!DOCTYPE html>
 <form:form modelAttribute='role' action='${ appRoot }${ postRoleAction }' method='POST' id='${ formID }' class='form-horizontal' >
     <div class='modal-dialog' >
     <div class='modal-content' >

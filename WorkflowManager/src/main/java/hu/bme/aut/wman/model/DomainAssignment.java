@@ -32,7 +32,9 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "DomainAssignment.findDomainsAndIds", query = "SELECT da.domain.name, da.id FROM DomainAssignment da " +
 	                                                                 "WHERE da.user.id = :userID "),
     @NamedQuery(name = "DomainAssignment.deleteById", query = "DELETE FROM DomainAssignment da " +
-	                                                          "WHERE da.id = :id ")
+	                                                          "WHERE da.id = :id "),
+    @NamedQuery(name = "DomainAssignment.deleteByUserID", query = "DELETE FROM DomainAssignment da " +
+	    	                                                      "WHERE da.user.id = :userID ")
 })
 public class DomainAssignment extends AbstractEntity {
 
@@ -43,6 +45,7 @@ public class DomainAssignment extends AbstractEntity {
 	public static final String NQ_FIND_ALL_BY_USER = "DomainAssignment.findAllByUser";
 	public static final String NQ_FIND_DOMAINS_AND_IDS = "DomainAssignment.findDomainsAndIds";
 	public static final String NQ_DELETED_BY_ID = "DomainAssignment.deleteById";
+	public static final String NQ_DELETED_BY_USER_ID = "DomainAssignment.deleteByUserID";
 	
 	@NotNull
 	@ManyToOne
@@ -69,6 +72,14 @@ public class DomainAssignment extends AbstractEntity {
 		this.userRoles = new ArrayList<>();
 		this.userRoles.add(role);
 	}
+
+	public DomainAssignment(User user, Domain domain, List<Role> roles) {
+		super();
+		this.user = user;
+		this.domain = domain;
+		this.userRoles = roles;
+	}
+
 
 	/**
 	 * @return the user
@@ -113,9 +124,13 @@ public class DomainAssignment extends AbstractEntity {
 	}
 	
 	/**
+	 * Attempts to maintain the uniqueness of the <code>Role</code>s already contained.
+	 * 
 	 * @param role
 	 * */
 	public boolean addUserRole(Role role) {
+		if (userRoles.contains( role ))
+			return false;
 		return this.userRoles.add(role);
 	}
 	

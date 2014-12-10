@@ -6,6 +6,8 @@ package hu.bme.aut.wman.model;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 /**
+ * Main test class that runs the other test suites and configures the logger.
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -13,5 +15,5 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	BeanValidationTestSuite.class
 })
-public class WorkflowManagerModelTestSuite {
+public class ModelTestLayer {
 }

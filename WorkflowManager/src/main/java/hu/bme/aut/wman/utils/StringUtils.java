@@ -4,6 +4,7 @@
 package hu.bme.aut.wman.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -66,6 +67,21 @@ public class StringUtils {
 	}
 
 	/**
+	 * Transforms the input <code>Collection</code> to a <code>String</code> in a format of 
+	 * [e1, e2, ..., eN] calling the toString() method of each element considering null values.
+	 * 
+	 * @param elements
+	 * @return the {@link String} representation of the given {@link List}
+	 * */
+	public static final <T> String asString(Collection<T> elements) {
+		StringBuffer buffer = new StringBuffer("[");
+		for(T element : elements) {
+			buffer.append(String.format("%s, ", (element == null) ? "null" : element.toString()));
+		}
+		return buffer.substring(0, buffer.length() - 1) + ']';
+	}
+
+	/**
 	 * Transforms the input <code>List</code> to a <code>String</code> in a format of 
 	 * [e1, e2, ..., eN] calling the toString() method of each element considering null values.
 	 * 
@@ -79,7 +95,7 @@ public class StringUtils {
 		}
 		return buffer.substring(0, buffer.length() - 1) + ']';
 	}
-	
+
 	/**
 	 * Transforms the input <code>Set</code> to a <code>String</code> in a format of 
 	 * (e1, e2, ..., eN) calling the toString() method of each element considering null values.

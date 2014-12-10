@@ -29,3 +29,34 @@ function wait($_conatainer) {
 function nowait($_conatainer) {
 	$_conatainer.css('cursor', 'auto');
 }
+
+function wrapAsAlertModal($_data, title, modal_label) {
+	var modal = "<div class='modal-dialog' >" +
+				    "<div class='modal-content' >" + 
+				        "<div class='modal-header' >" +
+				        	"<button type='button' class='close' data-dismiss='modal' >" +
+				        		"<span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>" +
+				        	"</button>" + 
+				        	"<h4 class='modal-title' id='" + modal_label + "' >" + title + "</h4>" +
+				        "</div>" +
+				        
+				        "<div id='alert-as-modal-body' class='modal-body' >" +
+				        	$_data.html() + 
+				        "</div>" +
+				        
+				        "<div class='modal-footer' >" +
+				        "</div>" +
+				    "</div>" +
+	            "</div>";
+	return modal;
+}
+
+function checkAccess($_data, $_target, modal_label) {
+	var $_denial_panel = $_data.find('#access-denied-panel');
+	if ($_denial_panel) {
+		$_denial_panel = (modal_label ? $(wrapAsAlertModal($_denial_panel, 'Access Denied', modal_label)) : $_denial_panel);
+		$_denial_panel.appendTo( $_target );
+		return true;
+	}
+	return false;
+}

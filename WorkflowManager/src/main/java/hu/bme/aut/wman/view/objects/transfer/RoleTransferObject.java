@@ -6,9 +6,10 @@ package hu.bme.aut.wman.view.objects.transfer;
 import hu.bme.aut.wman.model.Privilege;
 import hu.bme.aut.wman.model.Role;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Imre Szekeres
@@ -91,10 +92,24 @@ public class RoleTransferObject {
 		this.privileges = privileges;
 	}
 
-	public List<String> privileges() {
-		return Arrays.asList(privileges.split("\\|"));
+	/**
+	 * Transforms the privileges <code>String</code> into a <code>Set</code> of 
+	 * <code>Privilege</code> names.
+	 * 
+	 * @return a {@link Set} of {@link String}s
+	 * */
+	public Set<String> privileges() {
+		Set<String> results = new HashSet<>();
+		Collections.addAll(results, privileges.split("\\|"));
+		return results;
 	}
-	
+
+	/**
+	 * Transforms the <code>Collection</code> of <code>Privilege</code>s to a <code>String</code>. 
+	 * 
+	 * @param privileges
+	 * @return a {@link String} representing the {@link Collection} passed as argument
+	 * */
 	public static final String privilegesStringOf(Collection<Privilege> privileges) {
 		if (privileges.isEmpty())
 			return "";

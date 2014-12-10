@@ -97,6 +97,19 @@ public class DomainAssignmentService extends AbstractDataService<DomainAssignmen
 	}
 
 	/**
+	 * Attempts to delete the all <code>DomainAssignment</code>s specified by the identifier of the <code>User</code> 
+	 * being assigned to any <code>Domain</code> by them.
+	 * 
+	 * @param userID
+	 * @return the rows affected
+	 * */
+	public int deleteByUserID(Long userID) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<>(2);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
+		return executeNamedQuery(DomainAssignment.NQ_DELETED_BY_USER_ID, parameters);
+	}
+
+	/**
 	 * Retrieves the <code>Domain</code> names and <code>DomainAssignment</code> ids as a <code>Map</code>
 	 * using the domain name as a key.
 	 * 

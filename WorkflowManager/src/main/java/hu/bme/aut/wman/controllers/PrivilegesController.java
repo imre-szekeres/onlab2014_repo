@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
+ * Responsible for handling requests regarding the CRUD operations executed on the <code>Privilege</code> 
+ * instances. 
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -23,7 +26,15 @@ public class PrivilegesController {
 	
 	@EJB(mappedName = "java:module/PrivilegeService")
 	private PrivilegeService privilegeService;
-	
+
+	/**
+	 * Returns the available <code>Privilege</code>s as a Drag-n-Droppable <code>List</code>
+	 * rendered by the dnd_elements view.
+	 * <p>
+	 * For that, it sets the required model attributes.
+	 * 
+	 * @param model
+	 * */
 	@RequestMapping(value = ROOT_URL, method = RequestMethod.GET)
 	public String listPrivileges(Model model) {
 		model.addAttribute("elements", privilegeService.selectAll());

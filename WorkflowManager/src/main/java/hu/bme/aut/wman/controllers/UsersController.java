@@ -3,28 +3,39 @@
  */
 package hu.bme.aut.wman.controllers;
 
+import static hu.bme.aut.wman.controllers.LoginController.refreshTokens;
 import static hu.bme.aut.wman.controllers.LoginController.userIDOf;
 import static hu.bme.aut.wman.utils.StringUtils.asString;
+import static java.lang.String.format;
+import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.managers.DomainManager;
+import hu.bme.aut.wman.managers.UserManager;
 import hu.bme.aut.wman.model.Domain;
-import hu.bme.aut.wman.model.DomainAssignment;
-import hu.bme.aut.wman.model.Role;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.service.DomainAssignmentService;
 import hu.bme.aut.wman.service.DomainService;
+import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.RoleService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.utils.parsers.JsonParser;
+import hu.bme.aut.wman.view.DroppableName;
 import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.transfer.UserTransferObject;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.openjpa.persistence.EntityNotFoundException;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -57,6 +68,13 @@ public class UsersController extends AbstractController {
 	public static final String DOMAINS_AND_ROLES = PROFILE + "/dnr";
 
 
+	@EJB(mappedName = "java:module/DomainManager")
+	private DomainManager domainManager;
+	@EJB(mappedName = "java:module/UserManager")
+	private UserManager userManager;
+
+	@EJB(mappedName = "java:module/PrivilegeService")
+	private PrivilegeService privilegeService;
 	@EJB(mappedName = "java:module/DomainAssignmentService")
 	private DomainAssignmentService daService;
 	@EJB(mappedName = "java:module/UserService")
@@ -65,46 +83,85 @@ public class UsersController extends AbstractController {
 	private DomainService domainService;
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
+
 	@EJB(mappedName = "java:module/UserRolesParser")
 	private JsonParser<String, List<String>> parser;
 
 
 
+	/**
+	 * Handles the navigation to the profile page of the <code>User</code> specified by its id 
+	 * and data setting required by it.
+	 * 
+	 * @param userID
+	 * @param model
+	 * @param session
+	 * @return the name of the View that renders the Html response
+	 * */
 	@RequestMapping(value = PROFILE, method = RequestMethod.GET)
-	public String viewProfile(@RequestParam("user") long userID, Model model, HttpSession session) {
+	public String viewProfile(@RequestParam("user") Long userID, Model model, HttpSession session) {
 		User user = userService.selectById(userID);
 		setProfileAttributes(user, model, session);
 		return navigateToFrame("user_profile", model);
 	}
-	
+
+	/**
+	 * Pre-sets the required values to display the profile page for the given <code>User</code>.
+	 * 
+	 * @param user
+	 * @param model
+	 * @param session
+	 * */
 	public static void setProfileAttributes(User user, Model model, HttpSession session) {
 		model.addAttribute("user", user);
-		boolean isEditable = (user.getId() == userIDOf(session));
+		boolean isEditable = user.getId().equals( userIDOf(session) );
 		model.addAttribute("isEditable", isEditable);
 		model.addAttribute("viewProjectAction", ProjectViewController.PROJECT);
 		model.addAttribute("selectDNRTable", UsersController.DOMAINS_AND_ROLES);
 		model.addAttribute("selectDetailsForm", UsersController.UPDATE_DETAILS_FORM);
 	}
 
+	@PreAuthorize("hasRole('Create User') and hasRole('Assign User') and hasRole('Assign Role')")
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
-	public String requestCreateForm(Model model) {
+	public String requestCreateForm(Model model, HttpSession session) {
 		UserTransferObject user = new UserTransferObject();
 		user.setUserRoles("{}");
-		model.addAttribute("user", user);
-		model.addAttribute("postUserAction", UsersController.CREATE);
+		setFormAttributes( user, userIDOf(session), domainService, UsersController.CREATE, "create", 
+				           Arrays.asList(new String[] {"Assign User", "Assign Role", "Create User"}), 
+				           model );
 		return "fragments/user_form_modal";
 	}
-	
+
+	@PreAuthorize("hasPermission(#userID, 'User', 'Assign User') and hasPermission(#userID, 'User', 'Assign Role')")
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
-	public String requestUpdateForm(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
+	public String requestUpdateForm(@RequestParam(value = "user", defaultValue = "-1") Long userID, Model model, HttpSession session) {
 		UserTransferObject user = new UserTransferObject(userService.selectById(userID));
 		Map<String, List<String>> assignments = daService.assignmentsOf(userID);
 		user.setUserRoles(tryStringifyAssignments(assignments, parser));
-
-		model.addAttribute("user", user);
-		model.addAttribute("postUserAction", UsersController.UPDATE);
-		model.addAttribute("formType", "update");
+		setFormAttributes( user, userIDOf(session), domainService, UsersController.UPDATE, "update",
+				           Arrays.asList(new String[] {"Assign User", "Assign Role"}), 
+				           model );
 		return "fragments/user_form_modal";
+	}
+
+	/**
+	 * Sets the <code>Model</code> attributes required by the forms used to represent <code>User</code> data for
+	 * either creation or update operations.
+	 * 
+	 * @param user
+	 * @param subjectID
+	 * @param domainService
+	 * @param postUserAction
+	 * @param formType
+	 * @param authorities
+	 * @param model
+	 * */
+	public static final void setFormAttributes(UserTransferObject user, Long subjectID, DomainService domainService, String postUserAction, String formType, Collection<? extends String> authorities, Model model) {
+		model.addAttribute("user", user);
+		model.addAttribute("postUserAction", postUserAction);
+		List<String> domainNames = domainService.domainNamesOf(subjectID, authorities);
+		model.addAttribute("domains", DroppableName.namesOf(domainNames, ""));
+		model.addAttribute("formType", formType);
 	}
 	
 	/**
@@ -123,20 +180,17 @@ public class UsersController extends AbstractController {
 		}
 		return null;
 	}
-	
-	@SuppressWarnings("deprecation")
+
+	@PreAuthorize("hasPermission(#userID, 'User', 'Create User')")
 	@RequestMapping(value = DELETE, method = RequestMethod.GET)
-	public String deleteUser(@RequestParam("user") long userID, HttpSession session, Model model) {
-		User user = userService.selectById(userID);
+	public String deleteUser(@RequestParam("user") Long userID, HttpSession session, Model model) {		
+
+		Long subjectID = userIDOf(session);
 		
-		if (user != null) {
-			long subjectID = userIDOf(session);
-			User subject = userService.selectById(subjectID);
-			
-			tryRemove(user, subject, model);
-			if (user.getId() == subjectID)
-				return redirectTo(LoginController.LOGOUT);
-		}
+		User removed = tryRemove(userID, subjectID, model);
+		if (removed != null && subjectID.equals( userID ))
+			return redirectTo(LoginController.LOGOUT);
+
 		return redirectTo(AdminViewController.USERS);
 	}
 
@@ -146,55 +200,56 @@ public class UsersController extends AbstractController {
 	 * <p>
 	 * Also logs the action, the output and sets a flash message.
 	 * 
-	 * @param user
-	 * @param subject
+	 * @param userID
+	 * @param subjectID
 	 * @param model
+	 * @return the removed {@link User}
 	 * */
-	private void tryRemove(User user, User subject, Model model) {
+	private User tryRemove(Long userID, Long subjectID, Model model) {
 		try {
 			
-			List<DomainAssignment> assignments = daService.selectByUserID(user.getId());
-			for(DomainAssignment da : assignments) {
-				daService.delete( da );
-				LOGGER.info(da.getUser().getUsername() + " was deassigned from " + da.getDomain().getName());
-			}
-
-			userService.delete( user );
-			String message = "User " + user.getUsername() + " was removed";
-			LOGGER.info(message + " by " + subject.getUsername());
+			User removed = userManager.remove(userID);
+			
+			User subject = userService.selectById(subjectID);
+			String message = format("User %s was removed", removed);
+			LOGGER.info(format("%s by %s", message, subject));
 			flash(message, Severity.INFO, model);
+			
+			return removed;
+		} catch(NullPointerException npe) {
+			LOGGER.error(npe);
+			flash("The User could not be found!", Severity.ERROR, model);
 		} catch(Exception e) {
-			String message = "Unable to delete user " + user.getUsername();
-			LOGGER.error(message + ": " + e.getMessage(), e);
+			String message = "Unable to delete user";
+			LOGGER.error(format("%s: %s", message, e.getMessage()), e);
 			flash(message, Severity.ERROR, model);
 		}
+		return null;
 	}
-	
-	@SuppressWarnings("deprecation")
+
+	@PreAuthorize("hasRole('Create User') and hasRole('Assign User') and hasRole('Assign Role')")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
-	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpSession session) {
+	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpServletRequest request, HttpSession session) {
 		User user = newUser.asUser();
 		
 		Long subjectID = userIDOf(session);
-		Map<String, String> errors = userService.validate(user, newUser.getConfirmPassword());
+		Map<String, String> errors = userManager.validate(user, newUser.getConfirmPassword());
 		if (errors.isEmpty()) {
+			
+			user = userManager.create( user );
 			User subject = userService.selectById(subjectID);
 			Map<String, List<String>> assignments = tryParseAssignments(newUser.getUserRoles(), parser);
 			
 			if (assignments != null) {
 
-				Domain domain = null;
-				List<String> notFound = new ArrayList<String>(0);
-				for(String domainName : assignments.keySet()) {
-					domain = domainService.selectByName( domainName );
-					notFound.addAll(assign(user, domain, assignments.get( domainName ), model));
-				}
-				assignToDefault(user, domain);
+				for(String domainName : assignments.keySet())
+					tryAssign(user, domainName, assignments.get(domainName), model);
 
-				String message = user.getUsername() + " was created";
-				if (!notFound.isEmpty())
-					message = String.format("%s, but %s roles were not found thus not added..", message, asString(notFound));
-				LOGGER.info(message + " by " + subject.getUsername());
+				if (!assignments.containsKey(DomainService.DEFAULT_DOMAIN))
+						domainManager.assignToDefault(user);
+
+				String message = format("%s was created", user);
+				LOGGER.info(format("%s by %s", message, subject));
 				flash(message, Severity.INFO, model);
 			}
 			else {
@@ -205,38 +260,38 @@ public class UsersController extends AbstractController {
 		}
 		
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
-		AdminViewController.setAdminUsersContent(model, subjectID, userService);
-		model.addAttribute("postUserAction", UsersController.CREATE);
-		model.addAttribute("user", newUser);
+		AdminViewController.setAdminUsersContent(model, subjectID, userService, Arrays.asList(new String[] {"View User"}));
+		setFormAttributes( newUser, subjectID, domainService, UsersController.CREATE, "create",  
+				           Arrays.asList(new String[] {"Create User", "Assign User", "Assign Role"}), 
+				           model );
 		model.addAttribute("pageName", "admin_users");
 		return AbstractController.FRAME;
 	}
-	
-	@SuppressWarnings("deprecation")
+
+	@PreAuthorize("hasPermission(#updated.id, 'User', 'Assign User') and hasPermission(#updated.id, 'User', 'Assign Role')")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
-	public String updateUser(@ModelAttribute("user") UserTransferObject updated, Model model, HttpSession session) {
+	public String updateUser(@ModelAttribute("user") UserTransferObject updated, Model model, HttpServletRequest request, HttpSession session) {
 		User user = userService.selectById( updated.getId() );
-		long subjectID = userIDOf(session);
+		Long subjectID = userIDOf(session);
 		User subject = userService.selectById(subjectID);
-		Map<String, List<String>> assignments = tryParseAssignments(updated.getUserRoles(), parser);
+		/* only consider those that can be manipulated by the current user */
+		Map<String, List<String>> assignments = filter(tryParseAssignments(updated.getUserRoles(), parser));
 		
 		if (assignments != null) {
 
-			Domain domain = null;
-			List<String> notFound = new ArrayList<String>(0);
-			Map<String, Long> removables = daService.selectDomainsAndIds(user.getId());
+			/* only remove those that can be removed by the current user */
+			Map<String, Long> removables = filterRemovables( daService.selectDomainsAndIds(user.getId()) );
+			
 			for(String domainName : assignments.keySet()) {
-				domain = domainService.selectByName( domainName );
-				notFound.addAll(assign(user, domain, assignments.get( domainName ), model));
+				tryAssign(user, domainName, assignments.get(domainName), model);
 				removables.remove( domainName );	
 			}
 			deassign(user, subject, removables, model);
 
 			String message = user.getUsername() + " was updated";
-			if (!notFound.isEmpty())
-				message = String.format("%s, but %s roles were not found thus not added..", message, asString(notFound));
 			LOGGER.info(message + " by " + subject.getUsername());
 			flash(message, Severity.INFO, model);
+			refreshTokens(user, subject, request, privilegeService);
 		}
 		else {
 			LOGGER.error("Unable to process the given JSON String: " + updated.getUserRoles());
@@ -245,6 +300,56 @@ public class UsersController extends AbstractController {
 		return redirectTo(AdminViewController.USERS);
 	}
 
+	/**
+	 * Attempts to assign the <code>User</code> to the given <code>Domain</code> with the given <code>Role</code>s.
+	 * 
+	 * @param user
+	 * @param domainName
+	 * @param roleNames
+	 * @param notFound
+	 * @param model
+	 * */
+	private final void tryAssign(User user, String domainName, List<String> roleNames, Model model) {
+		try {
+			Domain domain = domainService.selectByName(domainName);
+			if (domain != null) {
+				domainManager.assign(user, domain, roleNames);
+				LOGGER.info(format("User %s was assigned to Domain %s as %s.", user, domainName, asString(roleNames)));
+			}
+			else 
+				flash(format("Domain %s was not found.", domainName), Severity.ERROR, model);
+		} catch(EntityNotFoundException e) {
+			LOGGER.error(e.getMessage(), e);
+			flash(format("Unable to assign %s to %s due to %s", user, domainName, e.getMessage()), Severity.ERROR, model);
+		}
+	}
+
+	/**
+	 * 
+	 * 
+	 * */
+	private final Map<String, List<String>> filter(Map<String, List<String>> assignments) {
+		Map<String, List<String>> results = new HashMap<>();
+		for(String domain : filterByPrivilege( assignments.keySet() ))
+			results.put(domain, assignments.get(domain));
+		return results;
+	}
+
+	/**
+	 * 
+	 * 
+	 * */
+	private final Map<String, Long> filterRemovables(Map<String, Long> removables) {
+		Map<String, Long> results = new HashMap<>();
+		for(String domain : filterByPrivilege( removables.keySet() ))
+			results.put(domain, removables.get(domain));
+		return results;
+	}
+
+	@PostFilter("hasPermission(filterObject, 'Domain', 'Assign User') and hasPermission(filterObject, 'Domain', 'Assign Role')")
+	private final Collection<? extends String> filterByPrivilege(Collection<? extends String> collection) {
+		return collection;
+	}
 
 	/**
 	 * Parses the given JSON <code>String</code> into a <code>Map</code>.
@@ -264,63 +369,6 @@ public class UsersController extends AbstractController {
 	}
 
 	/**
-	 * Assigns the given <code>User</code> in the default <code>Role</code> to the default <code>Domain</code> in
-	 * case it is not yet assigned to it.
-	 * 
-	 * @param user
-	 * @param domain
-	 * 
-	 * @see {@link DomainService#DEFAULT_DOMAIN}
-	 * @see {@link DomainService#DEFAULT_ROLE}
-	 * */
-	private void assignToDefault(User user, Domain domain) {
-		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), DomainService.DEFAULT_DOMAIN);
-		
-		if ((domain == null) || ( !DomainService.DEFAULT_DOMAIN.equals(domain.getName()) && (da == null) )) {
-			userService.save( user );
-			Domain defDomain = domainService.selectByName(DomainService.DEFAULT_DOMAIN);
-			Role defRole = roleService.selectByName(DomainService.DEFAULT_ROLE);
-			da = new DomainAssignment(user, defDomain, defRole);
-			daService.save( da );
-			LOGGER.info("User " + user.getUsername() + " was assigned to Domain " + defDomain.getName() + " by default.");
-		}
-	}
-
-	/**
-	 * Assigns the given <code>User</code> to the <code>Domain</code> instance passed with the 
-	 * <code>Role</code>s specified in case they exist.
-	 * 
-	 * @param user
-	 * @param domain
-	 * @param roles
-	 * @param model
-	 * 
-	 * @return the {@link List} of {@link Role} names that could not be found
-	 * */
-	private List<String> assign(User user, Domain domain, List<String> roles, Model model) {
-		userService.save(user);
-		DomainAssignment da = daService.selectByDomainFor(user.getUsername(), domain.getName());
-		da = (da == null) ? new DomainAssignment() : da;
-		
-		List<String> notFound = new ArrayList<String>(0);
-		da.setUserRoles(new ArrayList<Role>(0));
-		for(String r : roles) {
-			Role role = domain.roleOf( r );
-			if (role != null)
-				da.addUserRole(role);
-			else
-				notFound.add( r );
-		}
-		da.setUser(user);
-		da.setDomain(domain);
-		daService.save( da );
-		String message = user.getUsername() + " was assigned to domain " + domain.getName();
-		LOGGER.info(message);
-		flash(message, Severity.INFO, model);
-		return notFound;
-	}
-
-	/**
 	 * Attempts to remove all <code>DomainAssignment</code>s, remove the given <code>User</code> from the <code>Domain</code>s
 	 * specified by their names from the database. 
 	 * <p>
@@ -332,9 +380,16 @@ public class UsersController extends AbstractController {
 	 * @param model
 	 * */
 	private void deassign(User user, User subject, Map<String, Long> removables, Model model) {
-		for(String domain : removables.keySet())
-			daService.deleteAssignmentById(removables.get( domain ));
-		String message = String.format("User %s was removed from Domain %s", user.getUsername(), asString(removables.keySet()));
+		for(String domain : removables.keySet()) {
+			try {
+				domainManager.deassign(user, removables.get(domain));
+			} catch(EntityNotDeletableException e) {
+				LOGGER.error(e.getMessage(), e);
+				flash(format("Unable to deassing %s from %s.", user, domain), Severity.ERROR, model);
+				removables.remove(domain);
+			}
+		}
+		String message = String.format("User %s was removed from Domains %s", user.getUsername(), asString(removables.keySet()));
 		LOGGER.info(String.format("%s by %s.", message, subject.getUsername()));
 		flash(message, Severity.INFO, model);
 	}
@@ -357,8 +412,7 @@ public class UsersController extends AbstractController {
 		setUpdateDetailsAttributes(new UserTransferObject( user ), model);
 		return "fragments/user_details_form";
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	@RequestMapping(value = UPDATE_DETAILS, method = RequestMethod.POST)
 	public String updateDetails(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User old = userService.selectById( updated.getId() );
@@ -382,18 +436,17 @@ public class UsersController extends AbstractController {
 		return navigateToFrame("user_profile", model);
 	}
 
-	@SuppressWarnings("deprecation")
-	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST)
+	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST) 
 	public String updatePassword(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User user = userService.selectById( updated.getId() );
 
-		Map<String, String> errors = userService.validate(
+		Map<String, String> errors = userManager.validate(
 					user, updated.getOldPassword(), updated.getPassword(), updated.getConfirmPassword()
 		);
 		if (errors.isEmpty()) {
-			user.setPassword( updated.getPassword() );
-			userService.save( user );
-			String message = "Password of user " + user.getUsername() + " was modified";
+			
+			userManager.update(user, updated.getPassword());
+			String message = format("Password of %s was modified", user);
 			LOGGER.info(message);
 			flash(message, Severity.INFO, model);
 			return redirectTo(UsersController.PROFILE + "?user=" + updated.getId());

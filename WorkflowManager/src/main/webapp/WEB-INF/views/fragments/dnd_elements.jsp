@@ -7,6 +7,7 @@
 <c:set var='elementRowClass' value="${  (empty elementRowClass)  ? '' : elementRowClass  }" />
 <c:set var='elementBodyClass' value="${ (empty elementBodyClass) ? '' : elementBodyClass }" />
 
+<!DOCTYPE html>
 <c:forEach var='element' items='${ elements }'>
     
     <div class='drag-n-drop-row ${ elementRowClass }' id='${ element.value }' name='${ element.value }' owner='${ element.owner }' >

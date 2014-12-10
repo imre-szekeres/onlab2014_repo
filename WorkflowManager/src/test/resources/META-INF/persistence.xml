@@ -4,9 +4,22 @@
 	version="2.0">
 
 	<persistence-unit name="integrationTest" transaction-type="RESOURCE_LOCAL">
-		<class>hu.raiffeisen.ejbsample.Product</class>
-		<class>hu.raiffeisen.ejbsample.Category</class>
+		<class>hu.bme.aut.wman.model.AbstractEntity</class>
+		<class>hu.bme.aut.wman.model.Privilege</class>
+		<class>hu.bme.aut.wman.model.Role</class>
+		<class>hu.bme.aut.wman.model.Domain</class>
+		<class>hu.bme.aut.wman.model.User</class>
+		<class>hu.bme.aut.wman.model.DomainAssignment</class>
+		<class>hu.bme.aut.wman.model.State</class>
+		<class>hu.bme.aut.wman.model.Workflow</class>
+		<class>hu.bme.aut.wman.model.Project</class>
+		<class>hu.bme.aut.wman.model.ActionType</class>
+		<class>hu.bme.aut.wman.model.HistoryEntry</class>
+		<class>hu.bme.aut.wman.model.Transition</class>
+		<class>hu.bme.aut.wman.model.BlobFile</class>
+		<class>hu.bme.aut.wman.model.Comment</class>
 		<exclude-unlisted-classes/>	
+		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:testDB;create=true" />
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />

@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.controllers;
 
+import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.HistoryEntryEventType;
 import hu.bme.aut.wman.model.Project;
@@ -10,8 +11,7 @@ import hu.bme.aut.wman.service.HistoryEntryService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.service.WorkflowService;
-import hu.bme.aut.wman.view.Messages;
-import hu.bme.aut.wman.view.objects.ErrorMessageVO;
+import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.NewProjectVO;
 
 import java.util.AbstractMap;
@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -57,6 +58,7 @@ public class ProjectsViewController extends AbstractController {
 	@EJB(mappedName="java:module/HistoryEntryService")
 	private HistoryEntryService historyService;
 
+	@PreAuthorize("hasRole('View Project')")
 	@RequestMapping(value = PROJECTS, method = RequestMethod.GET)
 	public String workflowsView(@RequestParam("active") Boolean actives, Model model, HttpServletRequest request) {
 
@@ -68,6 +70,7 @@ public class ProjectsViewController extends AbstractController {
 		return navigateToFrame("projects", model);
 	}
 
+	@PreAuthorize("hasRole('Create Project')")
 	@RequestMapping(value = NEW_PROJECT, method = RequestMethod.GET)
 	public String newWorkflowView(Model model, HttpServletRequest request) {
 
@@ -84,6 +87,7 @@ public class ProjectsViewController extends AbstractController {
 		return navigateToFrame("new_project", model);
 	}
 
+	/* @PreAuthorize("hasPermission(#projectVO.workflowId, 'Workflow', 'Create Project')") *//* TODO: authorize */
 	@RequestMapping(value = NEW_PROJECT, method = RequestMethod.POST)
 	public ModelAndView postNewProject(@ModelAttribute("project") NewProjectVO projectVO, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
@@ -107,6 +111,7 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
 	@RequestMapping(value = CLOSE_PROJECT, method = RequestMethod.GET)
 	public ModelAndView close(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
@@ -120,13 +125,14 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
 	@RequestMapping(value = REOPEN_PROJECT, method = RequestMethod.GET)
 	public ModelAndView reopen(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		try {
 			projectService.reopenById(projectId);
 		} catch (Exception e) {
-			flash("You can not reopen this project, because its workflow has been deleted.", Messages.Severity.ERROR, model);
+			flash(format("Error occurred: %s", e.getMessage()), Severity.ERROR, model); /* TODO: refine */
 		}
 
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
@@ -137,17 +143,16 @@ public class ProjectsViewController extends AbstractController {
 		return view;
 	}
 
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'Create Project')")
 	@RequestMapping(value = DELETE_PROJECT, method = RequestMethod.GET)
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
-
 		try {
 			projectService.deleteById(projectId);
 		} catch (EntityNotDeletableException e) {
-			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
+			flash(format("The workflow is not deletable due to: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
-		ModelAndView view = redirectToFrame(PROJECTS, errors, redirectAttributes);
+		ModelAndView view = redirectToFrame(PROJECTS, redirectAttributes);
 		view.setViewName(view.getViewName() + "?active=false");
 		return view;
 	}

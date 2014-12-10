@@ -224,4 +224,22 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	}
 
 	protected abstract Class<T> getEntityClass();
+
+	/**
+	 * ONLY for testing purposes, otherwise it is dscouraged to user.
+	 * 
+	 * @param em
+	 * */
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+
+	/**
+	 * ONLY for testing purposes, otherwise it is dscouraged to user.
+	 * 
+	 * @return em
+	 * */
+	public EntityManager getEntityManager() {
+		return this.em;
+	}
 }

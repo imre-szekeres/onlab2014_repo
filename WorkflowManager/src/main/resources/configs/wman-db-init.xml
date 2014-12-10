@@ -28,6 +28,9 @@
         <privilege name='View Project' removable='false' />
         <privilege name='View ActionType' removable='false' />
         <privilege name='View HistoryEntry' removable='false' />
+        
+        <privilege name='Remove Domain' removable='false' />
+        <privilege name='Update Domain' removable='false' />
     </privileges>
     
     <roles>
@@ -43,6 +46,8 @@
 			<privilege name='View Role' removable='false' />
 			<privilege name='View Privilege' removable='false' />
 			<privilege name='View ActionType' removable='false' />
+			<privilege name='View User' removable='false' />
+			<privilege name='View HistoryEntry' removable='false' />
 		</role>
 		
 		<role name='System Manager' domain='System' import='System Developer' removable='false' >
@@ -54,9 +59,7 @@
 			<privilege name='Assign User' removable='false' />
 			<privilege name='Assign ActionType' removable='false' />
 			<privilege name='Assign Project' removable='false' />
-			<privilege name='Assign Role' removable='false' />
-			
-			<privilege name='View User' removable='false' />			
+			<privilege name='Assign Role' removable='false' />			
 		</role>
 		
 		<role name='System Administrator' domain='System' import='System Manager' removable='false' >
@@ -64,8 +67,9 @@
 			<privilege name='Create Role' removable='false' />
 			
 			<privilege name='Assign Privilege' removable='false' />
-			
-			<privilege name='View HistoryEntry' removable='false' />
+
+			<privilege name='Remove Domain' removable='false' />
+			<privilege name='Update Domain' removable='false' />
 		</role>
     </roles>
     
@@ -94,8 +98,8 @@
 			<role name='System Developer' domain='System' removable='false' />
 		</user>
 		
-		<user name='viewer7' 
-		      password='viewer77' 
+		<user name='viewer' 
+		      password='viewer7' 
 		      removable='false' 
 		      email='viewer7@workflowmanager.com' 
 		      description='I am just a humble Viewer of Workflow Manager webapplication to create, test and refine functionality.' >

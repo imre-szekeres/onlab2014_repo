@@ -12,6 +12,31 @@
 /* BEGIN xxx */
 /* END   xxx */
 
+/* BEGIN access-denied */
+
+#access-denined-panel {
+	padding: 13px;
+	padding-top: 31px;
+}
+
+#personell-info-list {
+	margin-top: 13px;
+	list-style: none;
+}
+
+#personell-info-list .glyphicon-warning-sign {
+	font-size: 21px;
+	margin-right: 13px;
+}
+
+#personell-info-list .glyphicon-envelope {
+	position: relative;
+	top: 2px;
+	margin-right: 2px;
+}
+
+/* END   access-denied */
+
 /* BEGIN Globals */
 .centralised-hori {
 	left: 50%;
