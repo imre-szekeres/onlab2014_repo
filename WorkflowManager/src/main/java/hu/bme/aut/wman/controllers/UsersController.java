@@ -34,11 +34,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.openjpa.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -89,10 +86,6 @@ public class UsersController extends AbstractController {
 
 	@EJB(mappedName = "java:module/UserRolesParser")
 	private JsonParser<String, List<String>> parser;
-	
-	@Autowired
-	@Qualifier("bcryptEncoder")
-	private PasswordEncoder encoder;
 
 
 
@@ -443,7 +436,7 @@ public class UsersController extends AbstractController {
 		return navigateToFrame("user_profile", model);
 	}
 
-	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST) /* TODO: */
+	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST) 
 	public String updatePassword(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User user = userService.selectById( updated.getId() );
 
