@@ -553,10 +553,9 @@
 	
 	function deleteEdge(id) {
 		$.ajax({
-			type: "post",
-			url: "delete/transition",
+			type: "get",
+			url: "delete/transition?edgeId=" + id,
 			cache: false,
-			data:'edgeId=' + id,
 			success: function(response){
 				var edgeId = parseInt(this['data'].replace("edgeId=",""));
 				$(".transition-settings-modal-action").filter('[data-edgeid="'+edgeId+'"]').remove();
@@ -566,6 +565,7 @@
 				drawEdges();*/
 			},
 			error: function(){
+				window.location = "${ appRoot }/403";
 			}
 		});
 	}
@@ -610,6 +610,7 @@
 				enablePopovers();
 			},
 			error: function(){
+				window.location = "${ appRoot }/403";
 			}
 		});
 		
@@ -621,13 +622,13 @@
 				var id = ui.draggable[0].children[0].attributes['data-nodeid'].value;
 		 
 				$.ajax({
-					type: "post",
-					url: "save/node",
+					type: "get",
+					url: "save/node?nodeId=" + id + "&newX=" + newX + "&newY=" + newY,
 					cache: false,
-					data:'nodeId=' + id + "&newX=" + newX + "&newY=" + newY,
 					success: function(response){
 					},
 					error: function(){
+						window.location = "${ appRoot }/403";
 					}
 				});		
 			}
@@ -650,11 +651,11 @@
 				"description" : description
 			}
 			$.ajax({
-				type: "POST",
+				type: "GET",
 				contentType : 'application/json; charset=utf-8',
 				dataType : 'json',
-				url: "save/workflow?id="+${workflow.id},
-				data: JSON.stringify(workflow),
+				url: "save/workflow?id="+${workflow.id}+"&name=" + workflow["name"] + "&description=" + workflow["description"],
+				//data: JSON.stringify(workflow),
 				success :function(response) {
 					window.location.href = "workflow?id="+${workflow.id};
 				},

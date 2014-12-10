@@ -138,21 +138,13 @@
 						opacity: 0.7
 					});
 				
-				var token = $("meta");
-				var asd = token.attr("content");
-				var header = $("meta[name='_csrf_header']").attr("content");
-				/*$(document).ajaxSend(function(e, xhr, options) {
-				xhr.setRequestHeader(header, token);
-				});*/
-				
 				$.ajax({
-					type: "post",
-					url: "action/add/role",
+					type: "get",
+					url: "action/add/role?actionid=" + actionId + "&roleid=" + roleId,
 					cache: false,
-					data:'actionid=' + actionId + "&roleid=" + roleId,
 					success: function(response){
 					},
-					error: function() {}
+					error: function() { window.location = "${ appRoot }/403";}
 				});
 				$(this).appendTo(parent);
 			}
@@ -194,13 +186,12 @@
 					});
 				
 				$.ajax({
-					type: "post",
-					url: "action/remove/role",
+					type: "get",
+					url: "action/remove/role?actionid=" + actionId + "&roleid=" + roleId,
 					cache: false,
-					data:'actionid=' + actionId + "&roleid=" + roleId,
 					success: function(response){
 					},
-					error: function() {}
+					error: function() { window.location = "${ appRoot }/403"; }
 				});
 				$(this).appendTo(parent);
 			}

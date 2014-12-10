@@ -139,6 +139,11 @@
 								</c:forEach>
 							</ul>
 						</c:when>
+						<c:when test='${not project.active}'>
+							<button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" disabled="true">
+								Action <span class="caret"></span>
+							</button> 
+						</c:when>
 						<c:otherwise>
 							<button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" disabled="true">
 								Action <span class="caret"></span>
@@ -286,12 +291,12 @@
 				"description" : description
 			}
 			$.ajax({
-				type: "POST",
+				type: "Get",
 				contentType : 'application/json',
 				dataType : 'json',
 				accepts: 'json',
-				url: "save/project?id="+${project.id},
-				data: JSON.stringify(project),
+				url: "save/project?id="+${project.id} +"&name=" + project["name"] + "&description=" + project["description"],
+				//data: JSON.stringify(project),
 				success :function(response) {
 					window.location.href = "project?id="+${project.id};
 				},

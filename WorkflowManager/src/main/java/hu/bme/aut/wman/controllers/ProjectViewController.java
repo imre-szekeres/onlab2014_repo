@@ -18,7 +18,6 @@ import hu.bme.aut.wman.service.TransitionService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.FileUploadVO;
-import hu.bme.aut.wman.view.objects.NewProjectVO;
 import hu.bme.aut.wman.view.objects.StringWrapperVO;
 
 import java.util.Date;
@@ -34,7 +33,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -135,14 +133,16 @@ public class ProjectViewController extends AbstractController {
 		return view;
 	}
 
-	@RequestMapping(value = SAVE_PROJECT, method = RequestMethod.POST)
+	@RequestMapping(value = SAVE_PROJECT, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
-	@PreAuthorize("hasPermission(#projectId, 'Project', 'View Project')")
-	public void saveProject(@RequestBody NewProjectVO project, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	@PreAuthorize("hasRole('View Project')")
+	public void saveProject(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Long projectId = Long.parseLong(request.getParameter("id"));
+		String name = request.getParameter("name");
+		String description = request.getParameter("description");
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 
-		projectService.save(projectId, project.getName(), project.getDescription());
+		projectService.save(projectId, name, description);
 		historyService.log(user.getUsername(), new Date(), HistoryEntryEventType.EDITED_PROJECT, "edited the project", projectId);
 	}
 

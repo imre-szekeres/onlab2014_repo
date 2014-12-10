@@ -112,7 +112,7 @@ public class ActionsViewController extends AbstractController {
 		return redirectToFrame(ACTIONS, redirectAttributes);
 	}
 
-	@RequestMapping(value = ACTION_ADD_ROLE, method = RequestMethod.POST)
+	@RequestMapping(value = ACTION_ADD_ROLE, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	@PreAuthorize("hasRole('Assign ActionType')")
 	public void addRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -125,7 +125,7 @@ public class ActionsViewController extends AbstractController {
 		roleService.save(role);
 	}
 
-	@RequestMapping(value = ACTION_REMOVE_ROLE, method = RequestMethod.POST)
+	@RequestMapping(value = ACTION_REMOVE_ROLE, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	@PreAuthorize("hasRole('Assign ActionType')")
 	public void removeRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {

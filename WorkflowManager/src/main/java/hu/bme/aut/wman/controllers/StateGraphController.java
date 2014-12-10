@@ -24,7 +24,7 @@ public class StateGraphController extends AbstractController {
 	@EJB(mappedName = "java:module/GraphNodeService")
 	private GraphNodeService graphNodeService;
 
-	@RequestMapping(value = SAVE_NODE, method = RequestMethod.POST)
+	@RequestMapping(value = SAVE_NODE, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void saveNode(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 

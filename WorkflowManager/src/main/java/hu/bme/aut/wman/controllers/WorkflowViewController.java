@@ -30,7 +30,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -184,7 +183,7 @@ public class WorkflowViewController extends AbstractController {
 		return view;
 	}
 
-	@RequestMapping(value = DELETE_TRANSITION, method = RequestMethod.POST)
+	@RequestMapping(value = DELETE_TRANSITION, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	@PreAuthorize("hasRole('Create Workflow')")
 	public void deleteTransition(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
@@ -199,14 +198,15 @@ public class WorkflowViewController extends AbstractController {
 		}
 	}
 
-	@RequestMapping(value = SAVE_WORKFLOW, method = RequestMethod.POST)
+	@RequestMapping(value = SAVE_WORKFLOW, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	@PreAuthorize("hasRole('Create Workflow')")
-	public void saveWorkflow(@RequestBody Workflow workflow, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	public void saveWorkflow(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Long workflowId = Long.parseLong(request.getParameter("id"));
+		String name = request.getParameter("name");
+		String description = request.getParameter("description");
 
-		workflowService.save(workflowId, workflow.getName(), workflow.getDescription());
-
+		workflowService.save(workflowId, name, description);
 	}
 
 	@Override
