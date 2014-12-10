@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Role
- * 
+ *
  * @version "%I%, %G%"
  */
 @Entity
@@ -23,51 +23,51 @@ import javax.validation.constraints.Size;
 	@NamedQuery(name = "Role.findByActionType", query = "SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes"),
 
 	@NamedQuery(name = "Role.findByAssignment", query = "SELECT r FROM Role r, DomainAssignment d "+
-														"WHERE d.domain.name = :domainName "+
-														    "AND d.user.id = :userID "+
-															"AND r MEMBER OF d.userRoles "),
+			"WHERE d.domain.name = :domainName "+
+			"AND d.user.id = :userID "+
+			"AND r MEMBER OF d.userRoles "),
 
-	@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
-													"WHERE d.name = :domainName "+
-														    "AND r MEMBER OF d.roles"),
+			@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
+					"WHERE d.name = :domainName "+
+					"AND r MEMBER OF d.roles"),
 
-    @NamedQuery(name = "Role.findNamesByDomain", query = "SELECT r.name FROM Role r, Domain d "+
-														 "WHERE d.name = :domainName "+
-														    "AND r MEMBER OF d.roles"),
+					@NamedQuery(name = "Role.findNamesByDomain", query = "SELECT r.name FROM Role r, Domain d "+
+							"WHERE d.name = :domainName "+
+							"AND r MEMBER OF d.roles"),
 
-    @NamedQuery(name = "Role.findByDomainAndName", query = "SELECT r FROM Role r, Domain d "+
-														   "WHERE d.name = :domainName "+
-														          "AND r.name = :roleName " +
-															      "AND r MEMBER OF d.roles "),
+							@NamedQuery(name = "Role.findByDomainAndName", query = "SELECT r FROM Role r, Domain d "+
+									"WHERE d.name = :domainName "+
+									"AND r.name = :roleName " +
+									"AND r MEMBER OF d.roles "),
 
-    @NamedQuery(name = "Role.findCountByPrivileges", query = "SELECT COUNT(DISTINCT r) FROM Role r, Domain d, DomainAssignment da " + 
-													          "WHERE r MEMBER OF d.roles " +
-    		                                                      "AND r.id = :roleID " +
-													              "AND da.user.username = :username " +
-    		                                                      "AND da.domain = d " +
-													              "AND :count = ( SELECT COUNT(DISTINCT p) FROM Role r1, Privilege p " +
-    		                                                                     "WHERE r1 MEMBER OF da.userRoles " +
-													                                 "AND p MEMBER OF r1.privileges " +
-    		                                                                         "AND p.name IN :privilegeNames " +
-    		                                                      ")"),
+									@NamedQuery(name = "Role.findCountByPrivileges", query = "SELECT COUNT(DISTINCT r) FROM Role r, Domain d, DomainAssignment da " +
+											"WHERE r MEMBER OF d.roles " +
+											"AND r.id = :roleID " +
+											"AND da.user.username = :username " +
+											"AND da.domain = d " +
+											"AND :count = ( SELECT COUNT(DISTINCT p) FROM Role r1, Privilege p " +
+											"WHERE r1 MEMBER OF da.userRoles " +
+											"AND p MEMBER OF r1.privileges " +
+											"AND p.name IN :privilegeNames " +
+											")"),
 
-    @NamedQuery(name = "Role.findCountByPrivilege", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " + 
-    														 "WHERE r MEMBER OF d.roles " +
-    		    		                                          "AND r.id = :roleID " +
-    															  "AND da.user.username = :username " +
-    		    		                                          "AND da.domain = d " +
-    															  "AND p MEMBER OF r2.privileges " + 
-    		    		                                          "AND p.name = :privilegeName " +
-    															  "AND r2 MEMBER OF da.userRoles "),
+											@NamedQuery(name = "Role.findCountByPrivilege", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " +
+													"WHERE r MEMBER OF d.roles " +
+													"AND r.id = :roleID " +
+													"AND da.user.username = :username " +
+													"AND da.domain = d " +
+													"AND p MEMBER OF r2.privileges " +
+													"AND p.name = :privilegeName " +
+													"AND r2 MEMBER OF da.userRoles "),
 
-    @NamedQuery(name = "Role.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " + 
-    			    										        "WHERE r MEMBER OF d.roles " +
-    			    		    		                                "AND r.name = :roleName " +
-    			    													"AND da.user.username = :username " +
-    			    		    		                                "AND da.domain = d " +
-    			    													"AND p MEMBER OF r2.privileges " + 
-    			    		    		                                "AND p.name = :privilegeName " +
-    			    													"AND r2 MEMBER OF da.userRoles ")
+													@NamedQuery(name = "Role.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " +
+															"WHERE r MEMBER OF d.roles " +
+															"AND r.name = :roleName " +
+															"AND da.user.username = :username " +
+															"AND da.domain = d " +
+															"AND p MEMBER OF r2.privileges " +
+															"AND p.name = :privilegeName " +
+															"AND r2 MEMBER OF da.userRoles ")
 })
 public class Role extends AbstractEntity {
 
@@ -90,7 +90,7 @@ public class Role extends AbstractEntity {
 	@Size(min = 5, message = "must be longer than 5 characters.")
 	@NotNull
 	private String name;
-	
+
 	@NotNull
 	@ManyToMany(targetEntity = ActionType.class, fetch = FetchType.EAGER)
 	private Set<ActionType> actionTypes;
@@ -107,8 +107,8 @@ public class Role extends AbstractEntity {
 	public Role(String name) {
 		super();
 		this.name = name;
-		this.actionTypes = new HashSet<ActionType>();
-		this.privileges = new HashSet<Privilege>();
+		actionTypes = new HashSet<ActionType>();
+		privileges = new HashSet<Privilege>();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class Role extends AbstractEntity {
 
 	/**
 	 * Add {@link ActionType} to this Role
-	 * 
+	 *
 	 * @param actionType
 	 *            the {@link ActionType} to add
 	 * @return true if the {@link ActionType} is added
@@ -139,7 +139,7 @@ public class Role extends AbstractEntity {
 
 	/**
 	 * Remove {@link ActionType} from this Role
-	 * 
+	 *
 	 * @param actionType
 	 *            the {@link ActionType} to remove
 	 * @return true if the {@link ActionType} is removed
@@ -180,24 +180,24 @@ public class Role extends AbstractEntity {
 
 	/**
 	 * Add {@link Privilege} to this Role
-	 * 
+	 *
 	 * @param privilege
 	 *            the {@link Privilege} to add
 	 * @return true if the {@link Privilege} is added
 	 */
 	public boolean addPrivilege(Privilege privilege) {
-		return this.privileges.add(privilege);
+		return privileges.add(privilege);
 	}
 
 	/**
 	 * Remove {@link Privilege} from this Role
-	 * 
+	 *
 	 * @param privilege
 	 *            the {@link Privilege} to remove
 	 * @return true if the {@link Privilege} is removed
 	 */
 	public boolean removePrivilege(Privilege privilege) {
-		return this.privileges.remove(privilege);
+		return privileges.remove(privilege);
 	}
 
 	// TODO: comment
@@ -210,7 +210,7 @@ public class Role extends AbstractEntity {
 		return false;
 	}
 
-	
+
 
 	/**
 	 * @see java.lang.Object#hashCode()
@@ -219,8 +219,6 @@ public class Role extends AbstractEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((actionTypes == null) ? 0 : actionTypes.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result
 				+ ((privileges == null) ? 0 : privileges.hashCode());
@@ -232,33 +230,42 @@ public class Role extends AbstractEntity {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (!(obj instanceof Role))
+		}
+		if (!(obj instanceof Role)) {
 			return false;
+		}
 		Role other = (Role) obj;
 		if (actionTypes == null) {
-			if (other.actionTypes != null)
+			if (other.actionTypes != null) {
 				return false;
-		} else if (!actionTypes.equals(other.actionTypes))
+			}
+		} else if (!actionTypes.equals(other.actionTypes)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		if (privileges == null) {
-			if (other.privileges != null)
+			if (other.privileges != null) {
 				return false;
-		} else if (!privileges.equals(other.privileges))
+			}
+		} else if (!privileges.equals(other.privileges)) {
 			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return this.name;
+		return name;
 	}
 }

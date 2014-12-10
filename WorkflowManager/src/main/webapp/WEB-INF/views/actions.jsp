@@ -138,6 +138,13 @@
 						opacity: 0.7
 					});
 				
+				var token = $("meta[name='_csrf']");
+				var asd = token.attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+				/*$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+				});*/
+				
 				$.ajax({
 					type: "post",
 					url: "action/add/role",
@@ -145,8 +152,7 @@
 					data:'actionid=' + actionId + "&roleid=" + roleId,
 					success: function(response){
 					},
-					error: function(){
-					}
+					error: function() {}
 				});
 				$(this).appendTo(parent);
 			}
@@ -194,8 +200,7 @@
 					data:'actionid=' + actionId + "&roleid=" + roleId,
 					success: function(response){
 					},
-					error: function(){
-					}
+					error: function() {}
 				});
 				$(this).appendTo(parent);
 			}

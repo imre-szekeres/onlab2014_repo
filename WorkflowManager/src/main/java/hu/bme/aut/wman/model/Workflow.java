@@ -199,13 +199,6 @@ public class Workflow extends AbstractEntity {
 		} else if (!description.equals(other.description)) {
 			return false;
 		}
-		if (getDomain() == null) {
-			if (other.getDomain() != null) {
-				return false;
-			}
-		} else if (!getDomain().equals(other.getDomain())) {
-			return false;
-		}
 		if (name == null) {
 			if (other.name != null) {
 				return false;

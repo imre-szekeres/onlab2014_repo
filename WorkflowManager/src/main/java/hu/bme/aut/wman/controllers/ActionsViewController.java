@@ -59,25 +59,31 @@ public class ActionsViewController extends AbstractController {
 	@RequestMapping(value = ACTIONS, method = RequestMethod.GET)
 	@PreAuthorize("hasRole('View ActionType')")
 	public String actionsView(Model model, HttpServletRequest request) {
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		List<Domain> domainsWithViewPriv = domainService.domainsOf(user.getId(), Lists.newArrayList("View ActionType"));
 
 		List<ActionType> allActions = actionTypeService.selectAll();
-		List<Role> allRoles = roleService.selectAll();
+		List<ActionType> availableActions = new ArrayList<ActionType>();
+		for (ActionType actionType : allActions) {
+			if (domainsWithViewPriv.contains(actionType.getDomain())) {
+				availableActions.add(actionType);
+			}
+		}
 
 		Map<Long, List<Role>> rolesByActionTypeIdsAdded = new HashMap<Long, List<Role>>();
 		Map<Long, List<Role>> rolesByActionTypeIdsAddable = new HashMap<Long, List<Role>>();
 
-		for (ActionType actionType : allActions) {
+		for (ActionType actionType : availableActions) {
 			List<Role> addedActions = roleService.selectByActionType(actionType);
 			rolesByActionTypeIdsAdded.put(actionType.getId(), addedActions);
-			List<Role> notAddedActions = new ArrayList<Role>(allRoles);
+			List<Role> notAddedActions = Lists.newArrayList(roleService.selectByDomain(actionType.getDomain().getName()));
 			notAddedActions.removeAll(addedActions);
-			rolesByActionTypeIdsAddable.put(actionType.getId(), notAddedActions);
+			rolesByActionTypeIdsAddable.put(actionType.getId(), Lists.newArrayList(notAddedActions));
 		}
 
-		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
-		List<Domain> domains = domainService.domainsOf(user.getId(), Lists.newArrayList("Create Workflow"));
+		List<Domain> domains = domainService.domainsOf(user.getId(), Lists.newArrayList("Create ActionType"));
 
-		model.addAttribute("actions", allActions);
+		model.addAttribute("actions", availableActions);
 		model.addAttribute("newAction", new ActionType());
 		model.addAttribute("domains", domains);
 		model.addAttribute("rolesOnActionsMap", rolesByActionTypeIdsAdded);
@@ -108,7 +114,7 @@ public class ActionsViewController extends AbstractController {
 
 	@RequestMapping(value = ACTION_ADD_ROLE, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	@PreAuthorize("hasRole('Create ActionType')")
+	@PreAuthorize("hasRole('Assign ActionType')")
 	public void addRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		Long actionId = Long.parseLong(request.getParameter("actionid"));
@@ -121,7 +127,7 @@ public class ActionsViewController extends AbstractController {
 
 	@RequestMapping(value = ACTION_REMOVE_ROLE, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	@PreAuthorize("hasRole('Create ActionType')")
+	@PreAuthorize("hasRole('Assign ActionType')")
 	public void removeRole(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		Long actionId = Long.parseLong(request.getParameter("actionid"));

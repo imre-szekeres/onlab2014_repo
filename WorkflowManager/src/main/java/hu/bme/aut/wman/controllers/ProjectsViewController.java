@@ -2,11 +2,13 @@ package hu.bme.aut.wman.controllers;
 
 import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.HistoryEntryEventType;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
 import hu.bme.aut.wman.security.SecurityToken;
+import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.HistoryEntryService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.UserService;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -57,16 +60,27 @@ public class ProjectsViewController extends AbstractController {
 	private UserService userService;
 	@EJB(mappedName="java:module/HistoryEntryService")
 	private HistoryEntryService historyService;
+	@EJB(mappedName="java:module/DomainService")
+	private DomainService domainService;
 
 	@PreAuthorize("hasRole('View Project')")
 	@RequestMapping(value = PROJECTS, method = RequestMethod.GET)
 	public String workflowsView(@RequestParam("active") Boolean actives, Model model, HttpServletRequest request) {
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(Project.PR_ACTIVE, actives));
 		List<Project> projects = projectService.selectByParameters(parameterList);
+		List<Domain> domainsWithViewPriv = domainService.domainsOf(user.getId(), Lists.newArrayList("View Project"));
 
-		model.addAttribute("projects", projects);
+		List<Project> availableProjects = new ArrayList<Project>();
+		for (Project project : projects) {
+			if (domainsWithViewPriv.contains(project.getWorkflow().getDomain())) {
+				availableProjects.add(project);
+			}
+		}
+
+		model.addAttribute("projects", availableProjects);
 		return navigateToFrame("projects", model);
 	}
 

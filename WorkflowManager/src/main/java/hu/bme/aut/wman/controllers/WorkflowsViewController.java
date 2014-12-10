@@ -57,10 +57,18 @@ public class WorkflowsViewController extends AbstractController {
 	@PreAuthorize("hasRole('View Workflow')")
 	@RequestMapping(value = WORKFLOWS, method = RequestMethod.GET)
 	public String workflowsView(Model model, HttpServletRequest request) {
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		List<Domain> domainsWithViewPriv = domainService.domainsOf(user.getId(), Lists.newArrayList("View Workflow"));
 
 		List<Workflow> allWorkflow = workflowService.selectAll();
+		List<Workflow> availableWorkflows = new ArrayList<Workflow>();
+		for (Workflow workflow : allWorkflow) {
+			if (domainsWithViewPriv.contains(workflow.getDomain())) {
+				availableWorkflows.add(workflow);
+			}
+		}
 
-		model.addAttribute("workflows", allWorkflow);
+		model.addAttribute("workflows", availableWorkflows);
 		return navigateToFrame("workflows", model);
 	}
 

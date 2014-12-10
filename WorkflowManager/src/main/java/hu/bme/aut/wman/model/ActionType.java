@@ -89,13 +89,6 @@ public class ActionType extends AbstractEntity {
 		} else if (!actionTypeName.equals(other.actionTypeName)) {
 			return false;
 		}
-		if (domain == null) {
-			if (other.domain != null) {
-				return false;
-			}
-		} else if (!domain.equals(other.domain)) {
-			return false;
-		}
 		return true;
 	}
 
