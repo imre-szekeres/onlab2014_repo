@@ -1,5 +1,6 @@
 package hu.bme.aut.wman.controllers;
 
+import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.State;
@@ -11,7 +12,7 @@ import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.StateService;
 import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.service.WorkflowService;
-import hu.bme.aut.wman.view.objects.ErrorMessageVO;
+import hu.bme.aut.wman.view.Messages.Severity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,15 +105,13 @@ public class WorkflowsViewController extends AbstractController {
 	@PreAuthorize("hasPermission(#workflowId, 'Workflow', 'Create Workflow')")
 	@RequestMapping(value = DELETE_WORKFLOW, method = RequestMethod.GET)
 	public ModelAndView deleteWorkflow(@RequestParam("id") Long workflowId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		List<ErrorMessageVO> errors = new ArrayList<ErrorMessageVO>();
-
 		try {
 			workflowService.deleteById(workflowId);
 		} catch (EntityNotDeletableException e) {
-			errors.add(new ErrorMessageVO("The workflow is not deletable.", e.getMessage()));
+			flash(format("Error occurred: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
-		return redirectToFrame(WORKFLOWS, errors, redirectAttributes);
+		return redirectToFrame(WORKFLOWS, redirectAttributes);
 	}
 
 	@Override

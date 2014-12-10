@@ -26,6 +26,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -71,6 +72,7 @@ public class WorkflowViewController extends AbstractController {
 	private ActionTypeService actionService;
 
 	@RequestMapping(value = WORKFLOW, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('View Workflow')")
 	public String workflowView(@RequestParam("id") Long workflowId, Model model, HttpServletRequest request) {
 
 		Workflow workflow = workflowService.selectById(workflowId);
@@ -94,12 +96,14 @@ public class WorkflowViewController extends AbstractController {
 
 	@RequestMapping(value = STATE_GRAPH, method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('View Workflow')")
 	public @ResponseBody StateGraph getGraph(@RequestParam("id") Long workflowId, Model model, HttpServletRequest request) {
 		StateGraph graph = graphService.selectByWorkflowId(workflowId).get(0);
 		return graph;
 	}
 
 	@RequestMapping(value = SAVE_STATE, method = RequestMethod.POST)
+	@PreAuthorize("hasRole('Create Workflow')")
 	public ModelAndView postNewState(@ModelAttribute("newState") State newState, @RequestParam("workflowId") Long workflowId, @RequestParam("stateId") Long stateId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		//		newState.setInitial(false);
 		if (stateId == -1) {
@@ -117,6 +121,7 @@ public class WorkflowViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = INITIAL_STATE, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('Create Workflow')")
 	public ModelAndView setInitialState(@RequestParam("nodeId") Long nodeId, @RequestParam("workflowId") Long workflowId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Workflow workflow = workflowService.selectById(workflowId);
 		State oldInitState = workflow.getInitialState();
@@ -147,14 +152,14 @@ public class WorkflowViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = NEW_TRANSITION, method = RequestMethod.POST)
+	@PreAuthorize("hasRole('Create Workflow')")
 	public ModelAndView postNewTransition(@ModelAttribute("newTransition") NewTransitionVO newTransitionVO, @RequestParam("from") Long fromId, @RequestParam("to") Long toId,
 			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
 		try {
 			transitionService.save(newTransitionVO, fromId, toId);
 		} catch (Exception e) {
-			// TODO
-
+			flash(format("Error occurred: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
 		ModelAndView view = redirectToFrame("workflow", redirectAttributes);
@@ -163,6 +168,7 @@ public class WorkflowViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = DELETE_STATE, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('Create Workflow')")
 	public ModelAndView deleteState(@RequestParam("workflowId") Long workflowId, @RequestParam("nodeId") Long nodeId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Long stateId = graphService.getStateIdOfNode(nodeId);
 
@@ -180,6 +186,7 @@ public class WorkflowViewController extends AbstractController {
 
 	@RequestMapping(value = DELETE_TRANSITION, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('Create Workflow')")
 	public void deleteTransition(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Long edgeId = Long.parseLong(request.getParameter("edgeId"));
 		Long transitionId = graphService.getTransitionIdOfEdge(edgeId);
@@ -194,6 +201,7 @@ public class WorkflowViewController extends AbstractController {
 
 	@RequestMapping(value = SAVE_WORKFLOW, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasRole('Create Workflow')")
 	public void saveWorkflow(@RequestBody Workflow workflow, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Long workflowId = Long.parseLong(request.getParameter("id"));
 

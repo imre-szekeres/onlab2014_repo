@@ -138,7 +138,7 @@
 						opacity: 0.7
 					});
 				
-				var token = $("meta[name='_csrf']");
+				var token = $("meta");
 				var asd = token.attr("content");
 				var header = $("meta[name='_csrf_header']").attr("content");
 				/*$(document).ajaxSend(function(e, xhr, options) {

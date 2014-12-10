@@ -1,6 +1,8 @@
 package hu.bme.aut.wman.controllers;
 
+import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.exceptions.MessagedAccessDeniedException;
 import hu.bme.aut.wman.model.ActionType;
 import hu.bme.aut.wman.model.HistoryEntryEventType;
 import hu.bme.aut.wman.model.Project;
@@ -9,10 +11,12 @@ import hu.bme.aut.wman.model.Transition;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.ActionTypeService;
+import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.HistoryEntryService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.TransitionService;
 import hu.bme.aut.wman.service.UserService;
+import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.FileUploadVO;
 import hu.bme.aut.wman.view.objects.NewProjectVO;
 import hu.bme.aut.wman.view.objects.StringWrapperVO;
@@ -64,11 +68,20 @@ public class ProjectViewController extends AbstractController {
 	private HistoryEntryService historyService;
 	@EJB(mappedName="java:module/ActionTypeService")
 	private ActionTypeService actionService;
+	@EJB(mappedName="java:module/DomainService")
+	private DomainService domainService;
 
 	@RequestMapping(value = PROJECT, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('View Project')")
 	public String projectView(@RequestParam("id") Long projectId, Model model, HttpServletRequest request) {
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
 
 		Project project = projectService.selectById(projectId);
+		List<User> assignedUsers = userService.selectUsersForProject(projectId);
+		List<User> assignableUsers = userService.selectAll();
+		if (!assignedUsers.contains(user) && !project.getOwner().equals(user)) {
+			throw new MessagedAccessDeniedException("you are not assigned to this project.");
+		}
 
 		List<Transition> transitions = transitionService.selectByParentId(project.getCurrentState().getId());
 		List<ActionType> actions = Lists.transform(transitions, new Function<Transition, ActionType>() {
@@ -78,11 +91,6 @@ public class ProjectViewController extends AbstractController {
 			}
 		});
 
-		List<User> assignedUsers = userService.selectUsersForProject(projectId);
-		// TODO in the projects domain !
-		List<User> assignableUsers = userService.selectAll();
-
-		//		model.addAttribute("projectVO", new ProjectVO(project, actions));
 		model.addAttribute("project", project);
 		model.addAttribute("actions", actions);
 		model.addAttribute("message", "Project " + project.getName());
@@ -94,6 +102,7 @@ public class ProjectViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = COMMENT_ON_PROJECT, method = RequestMethod.POST)
+	@PreAuthorize("hasRole('View Project')")
 	public ModelAndView comment(@RequestParam("id") Long projectId, @ModelAttribute("commentMessage") StringWrapperVO commentMessage, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
@@ -108,6 +117,7 @@ public class ProjectViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = DO_ACTION, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('View Project')")
 	public ModelAndView doAction(@RequestParam("projectId") Long projectId, @RequestParam("actionId") Long actionId, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
@@ -127,6 +137,7 @@ public class ProjectViewController extends AbstractController {
 
 	@RequestMapping(value = SAVE_PROJECT, method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
+	@PreAuthorize("hasPermission(#projectId, 'Project', 'View Project')")
 	public void saveProject(@RequestBody NewProjectVO project, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Long projectId = Long.parseLong(request.getParameter("id"));
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
@@ -145,7 +156,7 @@ public class ProjectViewController extends AbstractController {
 			User assignedUser = userService.selectById(userId);
 			historyService.log(user.getUsername(), new Date(), HistoryEntryEventType.ASSIGNED_USER, "assigned "+ assignedUser.getUsername(), projectId);
 		} catch (Exception e) {
-			//TODO
+			flash(format("Error occurred: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
 	}
@@ -158,7 +169,7 @@ public class ProjectViewController extends AbstractController {
 		try {
 			projectService.unassignUser(projectId, userId);
 		} catch (EntityNotDeletableException e) {
-			//TODO
+			flash(format("Error occurred: %s", e.getMessage()), Severity.ERROR, model);
 		}
 
 
