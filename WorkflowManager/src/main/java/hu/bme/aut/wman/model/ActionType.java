@@ -64,7 +64,6 @@ public class ActionType extends AbstractEntity {
 		int result = super.hashCode();
 		result = prime * result
 				+ ((actionTypeName == null) ? 0 : actionTypeName.hashCode());
-		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
 		return result;
 	}
 

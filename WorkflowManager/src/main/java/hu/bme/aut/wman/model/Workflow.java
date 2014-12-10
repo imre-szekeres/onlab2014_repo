@@ -22,30 +22,30 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
-	
-    @NamedQuery(name = "Workflow.findCountByPrivilege", query = "SELECT COUNT(DISTINCT r) FROM Workflow w, Role r, Domain d, DomainAssignment da, Privilege p " + 
-															    "WHERE w.domain = d " +
-													                  "AND w.id = :workflowID " +
-																	  "AND da.user.username = :username " +
-													                  "AND da.domain = d " +
-																	  "AND p MEMBER OF r.privileges " + 
-													                  "AND p.name = :privilegeName " +
-																	  "AND r MEMBER OF da.userRoles "),
 
-    @NamedQuery(name = "Workflow.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r) FROM Workflow w, Role r, Domain d, DomainAssignment da, Privilege p " + 
-															           "WHERE w.domain = d " +
-												                             "AND w.name = :workflowName " +
-																		     "AND da.user.username = :username " +
-												                             "AND da.domain = d " +
-																		     "AND p MEMBER OF r.privileges " + 
-												                             "AND p.name = :privilegeName " +
-																		     "AND r MEMBER OF da.userRoles ")
+	@NamedQuery(name = "Workflow.findCountByPrivilege", query = "SELECT COUNT(DISTINCT r) FROM Workflow w, Role r, Domain d, DomainAssignment da, Privilege p " +
+			"WHERE w.domain = d " +
+			"AND w.id = :workflowID " +
+			"AND da.user.username = :username " +
+			"AND da.domain = d " +
+			"AND p MEMBER OF r.privileges " +
+			"AND p.name = :privilegeName " +
+			"AND r MEMBER OF da.userRoles "),
+
+			@NamedQuery(name = "Workflow.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r) FROM Workflow w, Role r, Domain d, DomainAssignment da, Privilege p " +
+					"WHERE w.domain = d " +
+					"AND w.name = :workflowName " +
+					"AND da.user.username = :username " +
+					"AND da.domain = d " +
+					"AND p MEMBER OF r.privileges " +
+					"AND p.name = :privilegeName " +
+					"AND r MEMBER OF da.userRoles ")
 })
 public class Workflow extends AbstractEntity {
 
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "Workflow.findCountByPrivilege";
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME = "Workflow.findCountByPrivilegeAndName";
-	
+
 	public static final String PR_NAME = "name";
 	public static final String PR_STATES = "states";
 	public static final String PR_DESCRIPTION = "description";
@@ -61,7 +61,7 @@ public class Workflow extends AbstractEntity {
 
 	// FIXME just for test
 	//	@NotNull
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Domain domain;
 
 	@OneToMany(mappedBy = "workflow", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -76,7 +76,7 @@ public class Workflow extends AbstractEntity {
 	public Workflow(String name, String description, Domain domain) {
 		this.name = name;
 		this.description = description;
-		this.domain = domain;
+		this.setDomain(domain);
 	}
 
 	public String getName() {
@@ -176,7 +176,6 @@ public class Workflow extends AbstractEntity {
 		int result = super.hashCode();
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -200,11 +199,11 @@ public class Workflow extends AbstractEntity {
 		} else if (!description.equals(other.description)) {
 			return false;
 		}
-		if (domain == null) {
-			if (other.domain != null) {
+		if (getDomain() == null) {
+			if (other.getDomain() != null) {
 				return false;
 			}
-		} else if (!domain.equals(other.domain)) {
+		} else if (!getDomain().equals(other.getDomain())) {
 			return false;
 		}
 		if (name == null) {
@@ -227,6 +226,14 @@ public class Workflow extends AbstractEntity {
 	@Override
 	public String toString() {
 		return "Workflow [id=" + id + ", name=" + name + "]";
+	}
+
+	public Domain getDomain() {
+		return domain;
+	}
+
+	public void setDomain(Domain domain) {
+		this.domain = domain;
 	}
 
 }

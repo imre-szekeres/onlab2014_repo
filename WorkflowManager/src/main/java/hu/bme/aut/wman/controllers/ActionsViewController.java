@@ -3,9 +3,14 @@ package hu.bme.aut.wman.controllers;
 import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Role;
+import hu.bme.aut.wman.model.User;
+import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.ActionTypeService;
+import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.RoleService;
+import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.view.Messages.Severity;
 
 import java.util.ArrayList;
@@ -28,6 +33,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
+
 /**
  * @version "%I%, %G%"
  */
@@ -44,6 +51,10 @@ public class ActionsViewController extends AbstractController {
 	private ActionTypeService actionTypeService;
 	@EJB(mappedName = "java:module/RoleService")
 	private RoleService roleService;
+	@EJB(mappedName="java:module/UserService")
+	private UserService userService;
+	@EJB(mappedName="java:module/DomainService")
+	private DomainService domainService;
 
 	@RequestMapping(value = ACTIONS, method = RequestMethod.GET)
 	@PreAuthorize("hasRole('View ActionType')")
@@ -63,8 +74,12 @@ public class ActionsViewController extends AbstractController {
 			rolesByActionTypeIdsAddable.put(actionType.getId(), notAddedActions);
 		}
 
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		List<Domain> domains = domainService.domainsOf(user.getId(), Lists.newArrayList("Create Workflow"));
+
 		model.addAttribute("actions", allActions);
 		model.addAttribute("newAction", new ActionType());
+		model.addAttribute("domains", domains);
 		model.addAttribute("rolesOnActionsMap", rolesByActionTypeIdsAdded);
 		model.addAttribute("rolesToAddMap", rolesByActionTypeIdsAddable);
 		return navigateToFrame("actions", model);

@@ -2,6 +2,7 @@ package hu.bme.aut.wman.service;
 
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Transition;
 
 import java.util.List;
@@ -24,12 +25,15 @@ public class ActionTypeService extends AbstractDataService<ActionType> {
 	TransitionService transitionService;
 	@Inject
 	RoleService roleService;
+	@Inject
+	private DomainService domainService;
 
-	// TODO we marked it as complex, but I don't remember why :(
-	// TODO: why do we have to override it if it only calls the method in super?
 	@Override
 	public void save(ActionType entity) {
-		super.save(entity);
+		Domain domain = domainService.selectByName(entity.getDomain().getName());
+		entity.setDomain(domain);
+		domain.getActionTypes().add(entity);
+		domainService.save(domain);
 	};
 
 	/**

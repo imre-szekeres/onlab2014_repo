@@ -31,6 +31,9 @@
 						<div class="panel-body">
 							${workflow.description}
 						</div>
+						<div class="panel-body projects-workflow">
+							Domain: ${workflow.domain.name} <br/>
+						</div>
 					</div>
 					<div class="workflows-id">
 						${workflow.id}

@@ -1,10 +1,15 @@
 package hu.bme.aut.wman.controllers;
 
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.State;
+import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
+import hu.bme.aut.wman.security.SecurityToken;
+import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.StateService;
+import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.service.WorkflowService;
 import hu.bme.aut.wman.view.objects.ErrorMessageVO;
 
@@ -26,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
+
 /**
  * @version "%I%, %G%"
  */
@@ -42,6 +49,10 @@ public class WorkflowsViewController extends AbstractController {
 	private StateService stateService;
 	@EJB(mappedName = "java:module/ProjectService")
 	private ProjectService projectService;
+	@EJB(mappedName="java:module/UserService")
+	private UserService userService;
+	@EJB(mappedName="java:module/DomainService")
+	private DomainService domainService;
 
 	@PreAuthorize("hasRole('View Workflow')")
 	@RequestMapping(value = WORKFLOWS, method = RequestMethod.GET)
@@ -56,8 +67,11 @@ public class WorkflowsViewController extends AbstractController {
 	@PreAuthorize("hasRole('Create Workflow')")
 	@RequestMapping(value = NEW_WORKFLOW, method = RequestMethod.GET)
 	public String newWorkflowView(Model model, HttpServletRequest request) {
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		List<Domain> domains = domainService.domainsOf(user.getId(), Lists.newArrayList("Create Workflow"));
 
 		model.addAttribute("workflow", new Workflow());
+		model.addAttribute("domains", domains);
 		model.addAttribute("message", "Create new workflow");
 		return navigateToFrame("new_workflow", model);
 	}
