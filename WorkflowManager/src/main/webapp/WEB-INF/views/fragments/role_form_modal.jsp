@@ -111,7 +111,17 @@
                 </div>
                 
                 <div class='form-group' >
-                    <div id='privileges-dnd-target-panel' class='panel panel-default new-role-privileges-input-panel pos-rel' 
+                   
+                   <c:set var='hasError' value='' />
+                   <c:set var='title' value='Drag and Drop Privileges here' />
+                   <c:if test='${ (not empty validationErrors) and (not empty validationErrors.privileges) }' >
+                   
+                       <c:set var='hasError' value='has-privileges-error' />
+                       <c:set var='title' value='${ validationErrors.privileges }' />
+                   
+                   </c:if>
+
+                    <div id='privileges-dnd-target-panel' class='panel panel-default new-role-privileges-input-panel pos-rel ${ hasError }' 
                          ondragover='allowDrop(event)' ondrop='onInputDrop(event)' >
                         <div class='panel-heading'>
                             <span class='glyphicon glyphicon-flag' ></span>
@@ -120,7 +130,7 @@
                             </strong>    
                         </div>
                         
-                        <div class='panel-body'>
+                        <div class='panel-body' title='${ title }' data-toggle='tooltip' >
                             <div id='privileges-dnd-input-wrapper' class='col-sm-6 pos-rel input-content' >
                             </div>
                         </div>
@@ -146,6 +156,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <div hidden='true'>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" >
         </div>
 
         <div class='modal-footer' >

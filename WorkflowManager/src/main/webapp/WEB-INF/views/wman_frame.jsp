@@ -46,7 +46,7 @@
 		function errorClosed() {
 			var errorCount = $('#main-error-panel > .error-panel-body').children().size();
 			if (errorCount <= 1) {
-				$("#main-error-panel").remove()
+				$("#main-error-panel").remove();
 			}
 		}
 	</script>
