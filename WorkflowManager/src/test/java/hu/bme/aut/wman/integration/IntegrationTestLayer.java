@@ -13,7 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	RoleManagerTestSuite.class
+	RoleManagerTestSuite.class,
+	WorkflowServiceTestSuite.class
 })
 public class IntegrationTestLayer {
 }

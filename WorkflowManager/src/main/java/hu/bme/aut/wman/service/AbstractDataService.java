@@ -139,7 +139,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 	 *            of the query
 	 * @return result list of the executed query
 	 */
-	protected List<T> callNamedQuery(String queryName, List<Entry<String, Object>> parameters) {
+	public List<T> callNamedQuery(String queryName, List<Entry<String, Object>> parameters) {
 		TypedQuery<T> namedQuery = em.createNamedQuery(queryName, getEntityClass());
 		for (Entry<String, Object> entry : parameters) {
 			namedQuery.setParameter(entry.getKey(), entry.getValue());
@@ -227,7 +227,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 
 	/**
 	 * ONLY for testing purposes, otherwise it is dscouraged to user.
-	 * 
+	 *
 	 * @param em
 	 * */
 	public void setEntityManager(EntityManager em) {
@@ -236,7 +236,7 @@ public abstract class AbstractDataService<T extends AbstractEntity> {
 
 	/**
 	 * ONLY for testing purposes, otherwise it is dscouraged to user.
-	 * 
+	 *
 	 * @return em
 	 * */
 	public EntityManager getEntityManager() {

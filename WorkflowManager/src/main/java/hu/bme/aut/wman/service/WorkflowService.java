@@ -239,4 +239,13 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	public void setTestProjectService(ProjectService projectService) {
 		this.projectService = projectService;
 	}
+
+	public StateService getTestStateService() {
+		return stateService;
+	}
+
+	public void setTestStateService(StateService stateService) {
+		this.stateService = stateService;
+	}
+
 }

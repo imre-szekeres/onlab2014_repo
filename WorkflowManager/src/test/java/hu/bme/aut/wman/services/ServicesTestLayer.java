@@ -17,7 +17,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	MockedDomainServiceTestSuite.class,
 	MockedWorkflowServiceTestSuite.class,
 	MockedStateServiceTestSuite.class,
-	MockedProjectServiceTestSuite.class
+	MockedProjectServiceTestSuite.class,
+	MockedAbstractDataServiceTestSuite.class
 })
 public class ServicesTestLayer {
 	//

@@ -563,6 +563,7 @@
 				delete edges[getIndexById(edges, edgeId)];
 				/*$('.graph-transition-label').empty();
 				drawEdges();*/
+				window.location.href = "workflow?id="+${workflow.id};
 			},
 			error: function(){
 				window.location = "${ appRoot }/403";
