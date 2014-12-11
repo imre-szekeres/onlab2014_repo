@@ -1221,6 +1221,11 @@
 	left: 71px;
 	z-index: 11;
 }
+
+.has-privileges-error {
+	border-color: #a94442;
+}
+
 /* END   Admin Roles */
 
 

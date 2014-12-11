@@ -188,7 +188,7 @@ public class DomainsController extends AbstractController {
 	 * @return the name of the View that renders the Html response
 	 * */
 	@PreAuthorize("hasPermission(#domainID, 'Domain', 'Remove Domain')")
-	@RequestMapping(value = DELETE, method = RequestMethod.GET)
+	@RequestMapping(value = DELETE, method = RequestMethod.DELETE)
 	public String deleteDomain(@RequestParam("domain") Long domainID, HttpServletRequest request, HttpSession session, Model model) {
 		Domain domain = domainService.selectById(domainID);
 		

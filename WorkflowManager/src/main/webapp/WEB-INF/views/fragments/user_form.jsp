@@ -81,6 +81,10 @@
 	                </div>
 	            </c:if> 
 	        </div>
+	        
+	        <div hidden='true'>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" >
+            </div>
         </div>
         
         <div class='user-form-row form-row form-group'>

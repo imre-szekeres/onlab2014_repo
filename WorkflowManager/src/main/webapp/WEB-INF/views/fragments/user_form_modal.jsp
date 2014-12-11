@@ -234,6 +234,10 @@
                 </div>
             </div>
             
+            <div hidden='true'>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" >
+            </div>
+            
         </div>
         
         <div class='modal-footer'>

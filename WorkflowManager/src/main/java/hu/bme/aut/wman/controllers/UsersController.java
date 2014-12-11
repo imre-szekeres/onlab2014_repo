@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.openjpa.persistence.EntityNotFoundException;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -182,7 +181,7 @@ public class UsersController extends AbstractController {
 	}
 
 	@PreAuthorize("hasPermission(#userID, 'User', 'Create User')")
-	@RequestMapping(value = DELETE, method = RequestMethod.GET)
+	@RequestMapping(value = DELETE, method = RequestMethod.DELETE)
 	public String deleteUser(@RequestParam("user") Long userID, HttpSession session, Model model) {		
 
 		Long subjectID = userIDOf(session);
@@ -318,7 +317,7 @@ public class UsersController extends AbstractController {
 			}
 			else 
 				flash(format("Domain %s was not found.", domainName), Severity.ERROR, model);
-		} catch(EntityNotFoundException e) {
+		} catch(Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			flash(format("Unable to assign %s to %s due to %s", user, domainName, e.getMessage()), Severity.ERROR, model);
 		}

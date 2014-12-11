@@ -68,6 +68,10 @@
                 <div class='col-sm-2'>
                     <button type='button' class='btn btn-default submit-row-btn new-domain-input' data-dismiss='modal' >Cancel</button>
                 </div>
+                
+                <div hidden='true'>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" >
+                </div>
             </div>
         </fieldset>
         </form:form>

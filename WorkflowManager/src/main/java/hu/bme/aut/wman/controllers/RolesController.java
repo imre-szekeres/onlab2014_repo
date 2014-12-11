@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -90,12 +89,12 @@ public class RolesController extends AbstractController {
 				message = format("Role %s was added to Domain %s.", role, domainName);
 				LOGGER.info(format("%s by User %s.", message, subject));
 				flash(message, Severity.INFO, model);
-			} catch(EntityNotFoundException e) {
-				message = format("Unable to create Role %s due to %s.", role, e.getMessage());
-				LOGGER.error(message, e);
-				flash(message, Severity.ERROR, model);
+				return redirectTo(AdminViewController.ROLES);
+			} catch(Exception e) {
+				LOGGER.error(format("Unable to create Role %s due to %s.", role, e.getMessage()), e);
+				errors.put("privileges", messageOf( e ));
+				model.addAttribute(AbstractController.ERRORS_MAP, errors);
 			}
-			return redirectTo(AdminViewController.ROLES);
 		}
 
 		model.addAttribute(AbstractController.ERRORS_MAP, errors);
@@ -105,6 +104,20 @@ public class RolesController extends AbstractController {
 		model.addAttribute("pageName", "admin_roles");
 		reset(newRole, model);
 		return AbstractController.FRAME;
+	}
+
+	/**
+	 * Attempts to remove the exception-like parts of the message obtained from the given <code>Exception</code>.
+	 * 
+	 * @param e
+	 * @return the message
+	 * */
+	private static final String messageOf(Exception e) {
+		String message = e.getMessage();
+		int idx = message.lastIndexOf(":");
+		if (idx > 0)
+			return message.substring(idx + 1, message.length());
+		return message;
 	}
 
 	@PreAuthorize("hasPermission(#updated.id, 'Role', 'Assign Privilege')")
@@ -154,7 +167,7 @@ public class RolesController extends AbstractController {
 			roleManager.assign(role, privileges);
 			LOGGER.info(format("Role %s now owns %s as Privileges, was updated by %s", role, asString(privileges), subject.getUsername()));
 			flash(format("Role %s was updated.", role), Severity.INFO, model);
-		} catch(EntityNotFoundException e) {
+		} catch(Exception e) {
 			LOGGER.error(e.getMessage(),e);
 			flash(format("Role %s could not be updated due to %s", role, e.getMessage()), Severity.ERROR, model);
 		}
@@ -200,7 +213,7 @@ public class RolesController extends AbstractController {
 	} 
 
 	@PreAuthorize("hasPermission(#roleID, 'Role', 'Create Role')")
-	@RequestMapping(value = DELETE, method = RequestMethod.GET)
+	@RequestMapping(value = DELETE, method = RequestMethod.DELETE)
 	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
 		Role role = roleService.selectById(roleID);
 		Domain domain = domainService.selectByRoleID(roleID);
