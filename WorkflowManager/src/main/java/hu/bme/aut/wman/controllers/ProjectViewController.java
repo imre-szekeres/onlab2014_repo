@@ -28,7 +28,6 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +35,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -76,7 +74,7 @@ public class ProjectViewController extends AbstractController {
 
 		Project project = projectService.selectById(projectId);
 		List<User> assignedUsers = userService.selectUsersForProject(projectId);
-		List<User> assignableUsers = userService.selectAll();
+		List<User> assignableUsers = userService.listUsersInDomain(project.getWorkflow().getDomain().getName());
 		if (!assignedUsers.contains(user) && !project.getOwner().equals(user)) {
 			throw new MessagedAccessDeniedException("you are not assigned to this project.");
 		}
@@ -134,7 +132,6 @@ public class ProjectViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = SAVE_PROJECT, method = RequestMethod.GET)
-	@ResponseStatus(value = HttpStatus.OK)
 	@PreAuthorize("hasRole('View Project')")
 	public void saveProject(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		Long projectId = Long.parseLong(request.getParameter("id"));
@@ -147,7 +144,6 @@ public class ProjectViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = ASSIGN_USER, method = RequestMethod.GET)
-	@ResponseStatus(value = HttpStatus.OK)
 	@PreAuthorize("hasRole('Assign Project')")
 	public void assignUser(@RequestParam("projectId") Long projectId, @RequestParam("id") Long userId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
@@ -162,7 +158,6 @@ public class ProjectViewController extends AbstractController {
 	}
 
 	@RequestMapping(value = UNASSIGN_USER, method = RequestMethod.GET)
-	@ResponseStatus(value = HttpStatus.OK)
 	@PreAuthorize("hasRole('Assign Project')")
 	public void unassignUser(@RequestParam("projectId") Long projectId, @RequestParam("id") Long userId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());

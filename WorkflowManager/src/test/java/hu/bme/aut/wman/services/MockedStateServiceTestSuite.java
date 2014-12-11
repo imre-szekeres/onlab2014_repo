@@ -37,8 +37,6 @@ public class MockedStateServiceTestSuite {
 
 	private State spyState;
 
-	private Domain domainMock;
-
 	public MockedStateServiceTestSuite() {
 	}
 
@@ -56,7 +54,6 @@ public class MockedStateServiceTestSuite {
 		stateService.setTestGraphService(graphService);
 		stateService.setTestTransitionService(transitionService);
 
-		domainMock = mock(Domain.class);
 		State state = new State("Test state", "Description of test state", true);
 		spyState = Mockito.spy(state);
 

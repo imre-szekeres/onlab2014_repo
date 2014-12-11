@@ -36,54 +36,17 @@ import com.google.common.collect.Collections2;
 public class ProjectService extends AbstractDataService<Project> {
 
 	@Inject
-	TransitionService transitionService;
+	private TransitionService transitionService;
 	@Inject
-	ProjectAssignmentService projectAssignmentService;
+	private ProjectAssignmentService projectAssignmentService;
 	@Inject
-	UserService userService;
+	private UserService userService;
 	@Inject
-	CommentService commentService;
+	private CommentService commentService;
 	@Inject
-	WorkflowService workflowService;
+	private WorkflowService workflowService;
 	@Inject
-	ActionTypeService actionService;
-
-	// private Validator validator;
-
-	// @PostConstruct
-	// private void init() {
-	// validator = Validation.buildDefaultValidatorFactory().getValidator();
-	// }
-
-	// /**
-	// * Validates the given project name against the constraints given in the <code>Project</code> class.
-	// *
-	// * @param name
-	// * of the project that will be validated
-	// * @return true only if the given project name corresponds to the
-	// * constraints given in the class <code>Project</code>
-	// * */
-	// public boolean validateName(String name) {
-	// return validator.validateValue(Project.class, "name", name).size() == 0;
-	// }
-	//
-	// /**
-	// * Validates the given description against the constraints given in the <code>Project</code> class.
-	// *
-	// * @param description
-	// * that will be validated
-	// * @return true only if the given description corresponds to the constraints
-	// * given in the class <code>Project</code>
-	// * */
-	// public boolean validateDescription(String description) {
-	// return validator.validateValue(Project.class, "description", description).size() == 0;
-	// }
-
-	//	@Override
-	//	public void save(Project entity) {
-	//		//		entity.getWorkflow().addProject(entity);
-	//		super.save(entity);
-	//	}
+	private ActionTypeService actionService;
 
 	public void save(NewProjectVO projectVO) {
 		Workflow workflow = workflowService.selectById(projectVO.getWorkflowId());
@@ -104,16 +67,6 @@ public class ProjectService extends AbstractDataService<Project> {
 		project.setDescription(description);
 	}
 
-	// TODO
-	/**
-	 * You can not delete projects, only closing is allowed.
-	 * NOTE: If you call this method, it will not delete the project either! OR will :D We should discuss it again
-	 */
-	//	@Override
-	//	@Deprecated
-	//	public void delete(Project entity) throws EntityNotDeletableException {
-	//	};
-
 	/**
 	 * Closes the project.
 	 *
@@ -123,10 +76,7 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (!project.isActive()) {
 			return;
 		} else {
-			// FIXME
-			//			if (isDetached(project)) {
 			project = attach(project);
-			//			}
 			project.setActive(false);
 		}
 	}
@@ -150,10 +100,7 @@ public class ProjectService extends AbstractDataService<Project> {
 		if (project.isActive()) {
 			return;
 		} else {
-			// FIXME
-			//			if (isDetached(project)) {
 			project = attach(project);
-			//			}
 
 			if (project.getWorkflow() == null) {
 				throw new Exception("You can not reopen this project, because its workflow has been deleted.");
@@ -344,7 +291,7 @@ public class ProjectService extends AbstractDataService<Project> {
 	/**
 	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
 	 * as permission in the <code>Domain</code> that the <code>Project</code> specified by its id corresponds to.
-	 * 
+	 *
 	 * @param username
 	 * @param projectID
 	 * @param privilegeName
@@ -356,10 +303,10 @@ public class ProjectService extends AbstractDataService<Project> {
 	}
 
 	/**
-	 * Accounts two Shadow <code>Privilege</code>s specific to the domain object <code>Project</code>, the one is 
-	 * 'Owns' and the other is 'Assigned To' which constraints these relationships to be with the given <code>User</code>, above all 
+	 * Accounts two Shadow <code>Privilege</code>s specific to the domain object <code>Project</code>, the one is
+	 * 'Owns' and the other is 'Assigned To' which constraints these relationships to be with the given <code>User</code>, above all
 	 * the existing privileges.
-	 * 
+	 *
 	 * @param username
 	 * @param projectID
 	 * @param privilegeName
@@ -370,9 +317,9 @@ public class ProjectService extends AbstractDataService<Project> {
 		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("projectID", projectID));
-		if ("Owns".equals( privilegeName ))
+		if ("Owns".equals( privilegeName )) {
 			queryName = Project.NQ_FIND_COUNT_FOR_OWNER_BY_ID;
-		else if ("Assigned To".equals( privilegeName )) {
+		} else if ("Assigned To".equals( privilegeName )) {
 			queryName = Project.NQ_FIND_COUNT_FOR_ASSIGNMENT_BY_ID;
 		} else {
 			queryName = Project.NQ_FIND_COUNT_BY_PRIVILEGE;
@@ -384,7 +331,7 @@ public class ProjectService extends AbstractDataService<Project> {
 	/**
 	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
 	 * as permission in the <code>Domain</code> that the <code>Project</code> specified by its name corresponds to.
-	 * 
+	 *
 	 * @param username
 	 * @param projectName
 	 * @param privilegeName
@@ -396,10 +343,10 @@ public class ProjectService extends AbstractDataService<Project> {
 	}
 
 	/**
-	 * Accounts two Shadow <code>Privilege</code>s specific to the domain object <code>Project</code>, the one is 
-	 * 'Owns' and the other is 'Assigned To' which constraints these relationships to be with the given <code>User</code>, above all 
+	 * Accounts two Shadow <code>Privilege</code>s specific to the domain object <code>Project</code>, the one is
+	 * 'Owns' and the other is 'Assigned To' which constraints these relationships to be with the given <code>User</code>, above all
 	 * the existing privileges.
-	 * 
+	 *
 	 * @param username
 	 * @param projectName
 	 * @param privilegeName
@@ -411,9 +358,9 @@ public class ProjectService extends AbstractDataService<Project> {
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("projectName", projectName));
 
-		if ("Owns".equals( privilegeName ))
+		if ("Owns".equals( privilegeName )) {
 			queryName = Project.NQ_FIND_COUNT_FOR_OWNER_BY_NAME;
-		else if ("Assigned To".equals( privilegeName )) {
+		} else if ("Assigned To".equals( privilegeName )) {
 			queryName = Project.NQ_FIND_COUNT_FOR_ASSIGNMENT_BY_NAME;
 		} else {
 			queryName = Project.NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME;
@@ -425,5 +372,13 @@ public class ProjectService extends AbstractDataService<Project> {
 	@Override
 	protected Class<Project> getEntityClass() {
 		return Project.class;
+	}
+
+	public WorkflowService getTestWorkflowService() {
+		return workflowService;
+	}
+
+	public void setTestWorkflowService(WorkflowService workflowService) {
+		this.workflowService = workflowService;
 	}
 }
