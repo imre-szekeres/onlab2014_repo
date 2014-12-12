@@ -38,13 +38,16 @@ public class BeanValidationTestSuite {
 		this.errorAttributes = errorAttributes;
 	}
 
+	public final static User newValidUser() {
+		return new User( "sudoer", "sudoer7", 
+                         "sudoer@workflowmanager.com",
+                         "This is a subject User for testing the application via the JUnit testing framework. " +
+                         "Hes sole purpose is that to succeed in the test ahead." );
+	}
 
 	@Parameters
 	public static Collection<Object[]> engines() {
-		User validUser = new User( "sudoer", "sudoer7", 
-				                   "sudoer@workflowmanager.com",
-				                   "This is a subject User for testing the application via the JUnit testing framework. " +
-				                   "Hes sole purpose is that to succeed in the test ahead." );
+		User validUser = newValidUser();
 		List<String> nameErrorAttributes = Arrays.asList(new String[] {"name"});
 		@SuppressWarnings("deprecation")
 		Object[][] engines = new Object[][] {
