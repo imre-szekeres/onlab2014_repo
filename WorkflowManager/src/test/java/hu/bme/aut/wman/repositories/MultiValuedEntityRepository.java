@@ -59,10 +59,7 @@ public abstract class MultiValuedEntityRepository <K, E extends AbstractEntity>
 			idField.set(entity, SEQ.incrementAndGet());
 			idField.setAccessible( false );
 		
-			List<E> entities = repository.get(key);
-			if (entities == null)
-				entities = newList();
-			
+			List<E> entities = entitiesOf( key );
 			entities.add(entity);
 			return entity;
 		} catch(Exception e) {
@@ -127,13 +124,15 @@ public abstract class MultiValuedEntityRepository <K, E extends AbstractEntity>
 	}
 
 	/**
-	 * Use {@link OrderedEntityRepository#remove(Object, Object)} instead!
+	 * Removes all entries corresponding form the given key.
 	 * 
-	 * @throws {@link RuntimeException}
+	 * @param key
+	 * @return null
 	 * */
 	@Override
 	public E remove(K key) {
-		throw new RuntimeException("Unsage operation");
+		repository.remove(key);
+		return null;
 	}
 
 	/**

@@ -3,6 +3,7 @@
  */
 package hu.bme.aut.wman.integration;
 
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -141,7 +142,20 @@ public class DomainManagerTestSuite {
 				return domainRepo.update(domain.getName(), domain);
 			}
 		}).when(mocksDS).save( (Domain)any() );
-		
+
+		try {
+			Mockito.doAnswer(new Answer<Object>() {
+				@Override
+				public Object answer(InvocationOnMock invocation) {
+					Object[] args = invocation.getArguments();
+					Domain d = (Domain) args[0];
+					return domainRepo.remove(d.getName());
+				}
+			}).when(mocksDS).delete( (Domain)any() );
+		} catch(Exception e) {
+			LOGGER.error(e);
+		}
+
 		when(mocksDS.selectByName( anyString() )).thenAnswer(new Answer<Domain>() {
 			@Override
 			public Domain answer(InvocationOnMock invocation) {
@@ -176,7 +190,17 @@ public class DomainManagerTestSuite {
 				DomainAssignment da = (DomainAssignment) args[0];
 				return daRepo.update(da.getDomain().getId(), da);
 			}
-		}).when(mocksDAS).save( (DomainAssignment)any() );;
+		}).when(mocksDAS).save( (DomainAssignment)any() );
+		
+		Mockito.doAnswer(new Answer<Object>() {
+			@Override
+			public Object answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				Long domainID = (Long) args[0];
+				daRepo.remove( domainID );
+				return null;
+			}
+		}).when(mocksDAS).deleteByDomainID( (Long)any() );
 		return mocksDAS;
 	}
 
@@ -185,7 +209,10 @@ public class DomainManagerTestSuite {
 		Domain domain = new Domain( domainName );
 		try {
 			User subject = wrapper.getUserService().selectByName(SUBJECT_NAME);
+			/* also tests assignNew */
 			wrapper.manager().create(subject, domain);
+			
+			Assert.assertTrue(daRepo.readAll(domain.getId()).size() > 0);
 		} catch(Exception e) {
 			LOGGER.error(e);
 			Assert.fail();
@@ -194,5 +221,14 @@ public class DomainManagerTestSuite {
 	
 	@Test
 	public void testRemoval() {
+		User subject = wrapper.getUserService().selectByName(SUBJECT_NAME);
+		Domain domain = wrapper.getDomainService().selectByName(domainName);
+		try {
+
+			wrapper.manager().remove(subject, domain);
+		} catch(Exception e) {
+			LOGGER.error(e);
+			Assert.fail();
+		}
 	}
 }
