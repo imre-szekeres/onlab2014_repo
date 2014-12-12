@@ -28,6 +28,8 @@ import javax.ejb.Stateless;
 @Stateless
 public class DomainService extends AbstractDataService<Domain> {
 
+	private static final long serialVersionUID = -1931804214625340332L;
+
 	public static final String DEFAULT_DOMAIN = "System";
 	public static final String DEFAULT_ROLE = "System Viewer";
 

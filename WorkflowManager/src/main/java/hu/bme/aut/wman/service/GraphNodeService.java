@@ -20,6 +20,8 @@ import javax.ejb.Stateless;
 @LocalBean
 public class GraphNodeService extends AbstractDataService<GraphNode> {
 
+	private static final long serialVersionUID = 5995723106439036263L;
+
 	public StateGraph getGraphByNodeId(Long nodeId) {
 		return selectById(nodeId).getGraph();
 	}
