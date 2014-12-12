@@ -35,6 +35,8 @@ import com.google.common.collect.Collections2;
 @LocalBean
 public class ProjectService extends AbstractDataService<Project> {
 
+	private static final long serialVersionUID = -113131268291497988L;
+
 	@Inject
 	private TransitionService transitionService;
 	@Inject

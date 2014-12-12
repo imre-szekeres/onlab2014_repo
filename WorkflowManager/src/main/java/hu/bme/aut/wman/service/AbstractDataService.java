@@ -3,6 +3,7 @@ package hu.bme.aut.wman.service;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.AbstractEntity;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,7 +27,10 @@ import javax.persistence.criteria.Root;
  * @param <T>
  *            The Entity to use in the operations
  */
-public abstract class AbstractDataService<T extends AbstractEntity> {
+public abstract class AbstractDataService<T extends AbstractEntity>
+						implements Serializable {
+
+	private static final long serialVersionUID = 1928789410516821492L;
 
 	@PersistenceContext
 	private EntityManager em;

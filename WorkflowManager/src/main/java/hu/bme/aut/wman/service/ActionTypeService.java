@@ -21,6 +21,8 @@ import javax.inject.Inject;
 @LocalBean
 public class ActionTypeService extends AbstractDataService<ActionType> {
 
+	private static final long serialVersionUID = 6996015445369539648L;
+
 	@Inject
 	TransitionService transitionService;
 	@Inject

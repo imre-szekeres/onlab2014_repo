@@ -34,7 +34,9 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "DomainAssignment.deleteById", query = "DELETE FROM DomainAssignment da " +
 	                                                          "WHERE da.id = :id "),
     @NamedQuery(name = "DomainAssignment.deleteByUserID", query = "DELETE FROM DomainAssignment da " +
-	    	                                                      "WHERE da.user.id = :userID ")
+	    	                                                      "WHERE da.user.id = :userID "),
+    @NamedQuery(name = "DomainAssignment.deleteByDomainID", query = "DELETE FROM DomainAssignment da " +
+	    	    	                                                "WHERE da.domain.id = :domainID ")
 })
 public class DomainAssignment extends AbstractEntity {
 
@@ -46,6 +48,7 @@ public class DomainAssignment extends AbstractEntity {
 	public static final String NQ_FIND_DOMAINS_AND_IDS = "DomainAssignment.findDomainsAndIds";
 	public static final String NQ_DELETED_BY_ID = "DomainAssignment.deleteById";
 	public static final String NQ_DELETED_BY_USER_ID = "DomainAssignment.deleteByUserID";
+	public static final String NQ_DELETED_BY_DOMAIN_ID = "DomainAssignment.deleteByDomainID";
 	
 	@NotNull
 	@ManyToOne

@@ -8,7 +8,6 @@ import hu.bme.aut.wman.service.validation.UserValidator;
 import hu.bme.aut.wman.service.validation.ValidationEngine;
 import hu.bme.aut.wman.utils.StringUtils;
 
-import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,8 +30,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @LocalBean
 @Stateless
-@SuppressWarnings("serial")
-public class UserService extends AbstractDataService<User> implements Serializable {
+public class UserService extends AbstractDataService<User> {
+
+
+	private static final long serialVersionUID = -2860938270345903130L;
 
 	private ValidationEngine<User> validator;
 	private ValidationEngine<User> passwordValidator;

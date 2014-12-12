@@ -23,6 +23,8 @@ import javax.inject.Inject;
 @LocalBean
 public class CommentService extends AbstractDataService<Comment> {
 
+	private static final long serialVersionUID = 3774527149655355751L;
+
 	@Inject
 	UserService userService;
 	@Inject

@@ -39,6 +39,9 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 	// validator = Validation.buildDefaultValidatorFactory().getValidator();
 	// }
 
+
+	private static final long serialVersionUID = 3225929783931559386L;
+
 	@Inject
 	private ProjectService projectService;
 	@Inject
