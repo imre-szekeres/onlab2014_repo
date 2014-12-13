@@ -28,6 +28,7 @@ import org.junit.runners.Parameterized.Parameters;
 public class BeanValidationTestSuite {
 
 	private static final Logger LOGGER = Logger.getLogger( BeanValidationTestSuite.class );
+	public static final String SUBJECT_NAME = "sudoer";
 	private List<String> errorAttributes;
 	
 	@SuppressWarnings("rawtypes")
@@ -39,7 +40,7 @@ public class BeanValidationTestSuite {
 	}
 
 	public final static User newValidUser() {
-		return new User( "sudoer", "sudoer7", 
+		return new User( SUBJECT_NAME, "sudoer7", 
                          "sudoer@workflowmanager.com",
                          "This is a subject User for testing the application via the JUnit testing framework. " +
                          "Hes sole purpose is that to succeed in the test ahead." );

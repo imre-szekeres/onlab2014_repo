@@ -4,6 +4,7 @@
 package hu.bme.aut.wman.integration;
 
 
+import static hu.bme.aut.wman.model.BeanValidationTestSuite.SUBJECT_NAME;
 import static java.lang.String.format;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -48,7 +49,6 @@ import org.mockito.stubbing.Answer;
 public class DomainManagerTestSuite {
 
 	private static final Logger LOGGER = Logger.getLogger( DomainManagerTestSuite.class );
-	public static final String SUBJECT_NAME = "sudoer";
 	
 	private static MultiValuedEntityRepository<Long, DomainAssignment> daRepo;
 	private static EntityRepository<String, User> userRepo;
@@ -64,7 +64,9 @@ public class DomainManagerTestSuite {
 	@Parameters
 	public static final Collection<Object[]> domainNames() {
 		return Arrays.asList(new Object[][] {
-				{ "Rich Tenant" }
+				{ "Rich Tenant" },
+				{ "Nokia Corp" },
+				{ "Siemens.org" }
 		});
 	}
 
@@ -264,7 +266,7 @@ public class DomainManagerTestSuite {
 
 		return (da != null) && (da.getUserRoles().contains( role ));
 	}
-	
+
 	@Test
 	public void testRemoval() {
 		User subject = wrapper.getUserService().selectByName(SUBJECT_NAME);
@@ -276,7 +278,7 @@ public class DomainManagerTestSuite {
 			List<DomainAssignment> assignments = daRepo.readAll( domain.getId() );
 
 			Assert.assertTrue((assignments == null) || assignments.isEmpty());
-			Assert.assertNull( domainRepo.read( domain.getName() ) );
+			Assert.assertNull(domainRepo.read( domain.getName() ));
 		} catch(Exception e) {
 			LOGGER.error(e);
 			Assert.fail();
