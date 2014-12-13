@@ -65,7 +65,7 @@ public class DomainManager implements Serializable {
 			newRole.setPrivileges( role.getPrivileges() );
 			roleService.save( newRole );
 			domain.addRole( newRole );
-			admin = ("Administrator".equals( roleName.trim() ) ? newRole : null);
+			admin = ("Administrator".equals( roleName.trim() ) ? newRole : admin);
 		}
 		domainService.save( domain );
 		assignNew(subject, domain, admin);

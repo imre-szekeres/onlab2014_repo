@@ -4,6 +4,7 @@
 package hu.bme.aut.wman.integration;
 
 
+import static java.lang.String.format;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -27,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -67,7 +69,7 @@ public class DomainManagerTestSuite {
 	}
 
 	@BeforeClass
-	public static final void initInMemoryPersistence() {
+	public static final void setupInMemoryPersistence() {
 		daRepo = new MultiValuedEntityRepository<Long, DomainAssignment>() {
 			@Override
 			protected List<DomainAssignment> newList() {
@@ -80,6 +82,14 @@ public class DomainManagerTestSuite {
 		
 		roleRepo = initRoleRepo();
 		domainRepo = initDomainRepo( roleRepo );
+	}
+
+	@AfterClass
+	public static final void teardownInMemoryPersistence() {
+		userRepo = null;
+		roleRepo = null;
+		domainRepo = null;
+		daRepo = null;
 	}
 
 	private static final EntityRepository<String, Role> initRoleRepo() {
@@ -177,6 +187,15 @@ public class DomainManagerTestSuite {
 				return roleRepo.update(role.getName(), role);
 			}
 		}).when( mocksRS ).save( (Role)any() );
+		
+		when(mocksRS.selectByName(anyString(), anyString())).thenAnswer(new Answer<Role>() {
+			@Override
+			public Role answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				String roleName = (String) args[0];
+				return roleRepo.read( roleName );
+			}
+		});
 		return mocksRS;
 	}
 
@@ -210,13 +229,40 @@ public class DomainManagerTestSuite {
 		try {
 			User subject = wrapper.getUserService().selectByName(SUBJECT_NAME);
 			/* also tests assignNew */
-			wrapper.manager().create(subject, domain);
+			domain = wrapper.manager().create(subject, domain);
 			
 			Assert.assertTrue(daRepo.readAll(domain.getId()).size() > 0);
+			
+			List<Role> newRoles = domain.getRoles();
+			Assert.assertNotNull( newRoles );
+			
+			Domain def = wrapper.manager().defaultDomain();
+			Assert.assertEquals(newRoles.size(), def.getRoles().size());
+			
+			for(Role role : newRoles)
+				Assert.assertNotNull(roleRepo.read( role.getName() ));
+			
+			String admin = format("%s Administrator", domain.getName());
+			Assert.assertTrue(hasRole(subject, domain, admin));
 		} catch(Exception e) {
 			LOGGER.error(e);
 			Assert.fail();
 		}
+	}
+
+	private final boolean hasRole(User subject, Domain domain, String roleName) {
+		Role role = wrapper.getRoleService().selectByName(roleName, domain.getName());
+		Assert.assertNotNull( role );
+		List<DomainAssignment> assignments = daRepo.readAll( domain.getId() );
+		
+		Assert.assertNotNull( assignments );
+		Assert.assertTrue(assignments.size() > 0);
+		DomainAssignment da = null;
+		for(DomainAssignment assignment : assignments)
+			if (assignment.getUser().equals( subject ))
+				da = assignment;
+
+		return (da != null) && (da.getUserRoles().contains( role ));
 	}
 	
 	@Test
@@ -225,7 +271,12 @@ public class DomainManagerTestSuite {
 		Domain domain = wrapper.getDomainService().selectByName(domainName);
 		try {
 
-			wrapper.manager().remove(subject, domain);
+			domain = wrapper.manager().remove(subject, domain);
+			
+			List<DomainAssignment> assignments = daRepo.readAll( domain.getId() );
+
+			Assert.assertTrue((assignments == null) || assignments.isEmpty());
+			Assert.assertNull( domainRepo.read( domain.getName() ) );
 		} catch(Exception e) {
 			LOGGER.error(e);
 			Assert.fail();
