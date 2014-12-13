@@ -166,6 +166,8 @@ public class DomainManagerTestSuite {
 				public Object answer(InvocationOnMock invocation) {
 					Object[] args = invocation.getArguments();
 					Domain d = (Domain) args[0];
+					for(Role role : d.getRoles())
+						roleRepo.remove( role.getName() );
 					return domainRepo.remove(d.getName());
 				}
 			}).when(mocksDS).delete( (Domain)any() );
@@ -284,6 +286,9 @@ public class DomainManagerTestSuite {
 
 			Assert.assertTrue((assignments == null) || assignments.isEmpty());
 			Assert.assertNull(domainRepo.read( domain.getName() ));
+			
+			for(Role role : domain.getRoles())
+				Assert.assertNull(wrapper.getRoleService().selectByName(role.getName(), domain.getName()));
 		} catch(Exception e) {
 			LOGGER.error(e);
 			Assert.fail();
