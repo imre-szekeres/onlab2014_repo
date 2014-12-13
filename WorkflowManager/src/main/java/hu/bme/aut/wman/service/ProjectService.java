@@ -330,46 +330,6 @@ public class ProjectService extends AbstractDataService<Project> {
 		return callNamedQuery(queryName, parameters, Integer.class);
 	}
 
-	/**
-	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
-	 * as permission in the <code>Domain</code> that the <code>Project</code> specified by its name corresponds to.
-	 *
-	 * @param username
-	 * @param projectName
-	 * @param privilegeName
-	 * @return whether the given {@link User} has permissions to execute operations on the given {@link Role}
-	 * */
-	public boolean hasPrivilege(String username, String projectName, String privilegeName) {
-		List<? extends Number> count = resultsOf(username, projectName, privilegeName);
-		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
-	}
-
-	/**
-	 * Accounts two Shadow <code>Privilege</code>s specific to the domain object <code>Project</code>, the one is
-	 * 'Owns' and the other is 'Assigned To' which constraints these relationships to be with the given <code>User</code>, above all
-	 * the existing privileges.
-	 *
-	 * @param username
-	 * @param projectName
-	 * @param privilegeName
-	 * @return a {@link List} containing (at index 0) the number of entities found
-	 * */
-	private List<? extends Number> resultsOf(String username, String projectName, String privilegeName) {
-		String queryName = null;
-		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
-		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
-		parameters.add(new AbstractMap.SimpleEntry<String, Object>("projectName", projectName));
-
-		if ("Owns".equals( privilegeName )) {
-			queryName = Project.NQ_FIND_COUNT_FOR_OWNER_BY_NAME;
-		} else if ("Assigned To".equals( privilegeName )) {
-			queryName = Project.NQ_FIND_COUNT_FOR_ASSIGNMENT_BY_NAME;
-		} else {
-			queryName = Project.NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME;
-			parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
-		}
-		return callNamedQuery(queryName, parameters, Integer.class);
-	}
 
 	@Override
 	protected Class<Project> getEntityClass() {

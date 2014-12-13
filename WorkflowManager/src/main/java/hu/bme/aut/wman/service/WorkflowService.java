@@ -196,24 +196,6 @@ public class WorkflowService extends AbstractDataService<Workflow> {
 		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
 	}
 
-	/**
-	 * Determines whether the <code>User</code> specified by its name owns the required <code>Privilege</code> accounted
-	 * as permission in the <code>Domain</code> that the <code>Project</code> specified by its name corresponds to.
-	 *
-	 * @param username
-	 * @param workflowName
-	 * @param privilegeName
-	 * @return whether the given {@link User} has permissions to execute operations on the given {@link Role}
-	 * */
-	public boolean hasPrivilege(String username, String workflowName, String privilegeName) {
-		List<Entry<String, Object>> parameters = new ArrayList<Entry<String, Object>>();
-		parameters.add(new AbstractMap.SimpleEntry<String, Object>("username", username));
-		parameters.add(new AbstractMap.SimpleEntry<String, Object>("privilegeName", privilegeName));
-		parameters.add(new AbstractMap.SimpleEntry<String, Object>("workflowName", workflowName));
-		List<? extends Number> count = callNamedQuery(Workflow.NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME, parameters, Integer.class);
-		return count.size() > 0 ? (count.get(0).intValue() > 0) : false;
-	}
-
 	@Override
 	protected Class<Workflow> getEntityClass() {
 		return Workflow.class;
