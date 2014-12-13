@@ -58,16 +58,7 @@ import javax.validation.constraints.Size;
 													"AND da.domain = d " +
 													"AND p MEMBER OF r2.privileges " +
 													"AND p.name = :privilegeName " +
-													"AND r2 MEMBER OF da.userRoles "),
-
-													@NamedQuery(name = "Role.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " +
-															"WHERE r MEMBER OF d.roles " +
-															"AND r.name = :roleName " +
-															"AND da.user.username = :username " +
-															"AND da.domain = d " +
-															"AND p MEMBER OF r2.privileges " +
-															"AND p.name = :privilegeName " +
-															"AND r2 MEMBER OF da.userRoles ")
+													"AND r2 MEMBER OF da.userRoles ")
 })
 public class Role extends AbstractEntity {
 
@@ -78,7 +69,6 @@ public class Role extends AbstractEntity {
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGES = "Role.findCountByPrivileges";
 
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "Role.findCountByPrivilege";
-	public static final String NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME = "Role.findCountByPrivilegeAndName";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_DOMAIN = "domain";

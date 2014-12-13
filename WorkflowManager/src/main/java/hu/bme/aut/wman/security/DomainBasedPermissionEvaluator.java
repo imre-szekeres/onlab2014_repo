@@ -78,7 +78,7 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
 		String username = ((User) authentication.getPrincipal()).getUsername();
 		if ("Role".equals( targetType ))
-			return hasRolePermissions(username, targetId, (String) permission);
+			return roleService.hasPrivilege(username, (Long) targetId, (String) permission);
 		
 		else if ("Domain".equals( targetType ))
 			return hasDomainPermissions(username, targetId, (String) permission);
@@ -92,21 +92,6 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 		else if ("Workflow".equals( targetType ))
 			return hasWorkflowPermissions(username, targetId, (String) permission);
 		return false;
-	}
-
-	/**
-	 * Handles the case when it is to be decided whether the given <code>User</code> has the given <code>Privilege</code>
-	 * (specified by its name) in the <code>Domain</code> that defines the <code>Role</code> given by its identifier (name or id).
-	 * 
-	 * @param username
-	 * @param targetId
-	 * @param permission
-	 * @return true when the {@link User} has any {@link Role} that owns the {@link Privilege} specified in the given {@link Domain}
-	 * */	
-	private boolean hasRolePermissions(String username, Object targetId, String permission) {
-		if (targetId instanceof Long)
-			return roleService.hasPrivilege(username, (Long) targetId, permission);
-		return roleService.hasPrivilege(username, (String) targetId, permission);
 	}
 
 	/**
