@@ -49,7 +49,7 @@
     </security:http>
 
     <bean id='authenticationService' 
-          class='hu.bme.aut.wman.service.AuthenticationService' />
+          class='hu.bme.aut.wman.security.services.AuthenticationService' />
     <bean id='bcryptEncoder' 
           class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder' />
 

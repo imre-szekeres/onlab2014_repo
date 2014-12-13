@@ -11,7 +11,7 @@ import hu.bme.aut.wman.managers.DomainManager;
 import hu.bme.aut.wman.managers.UserManager;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.security.SecurityToken;
-import hu.bme.aut.wman.service.AuthenticationService;
+import hu.bme.aut.wman.security.services.AuthenticationService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.UserService;

@@ -86,6 +86,11 @@ public class DomainManagerTestSuite {
 		domainRepo = initDomainRepo( roleRepo );
 	}
 
+	/**
+	 * Resets the references of the <code>EntityRepository</code> instances to null, 
+	 * allowing the previously referenced Class-member field instances to be garbage collected
+	 * after the execution of tests. 
+	 * */
 	@AfterClass
 	public static final void teardownInMemoryPersistence() {
 		userRepo = null;
