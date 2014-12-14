@@ -14,7 +14,7 @@
                            aria-controls='collapse-${ privilege.id }' 
                            data-toggle='collapse' 
                            data-parent='#admin-roles-content-wrapper' 
-                           href='#collapse-${ privilege.id }' >${ privilege.name }</a>
+                           href='#collapse-${ privilege.id }' ><c:out value='${ privilege.name }' /></a>
                     </h3>
                 </div>
                 <div id='collapse-${ privilege.id }' class='panel-collapse collapse in' role='tabpanel' 

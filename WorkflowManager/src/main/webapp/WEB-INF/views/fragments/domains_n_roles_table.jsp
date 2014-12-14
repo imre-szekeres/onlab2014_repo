@@ -35,10 +35,10 @@
                             <c:set var='count' value='${ count + 1 }' />
                         </td>
                         <td class='role-row dnr-td' >
-                            ${ role.name }
+                            <c:out value='${ role.name }' />
                         </td>
                         <td class='domain-row dnr-td' >
-                            ${ assignment.domain.name }
+                            <c:out value='${ assignment.domain.name }' />
                         </td>
                     </tr>
                 </c:forEach>

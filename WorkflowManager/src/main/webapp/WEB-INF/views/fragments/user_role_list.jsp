@@ -7,7 +7,7 @@
     <c:forEach var='role' items='${ assignment.userRoles }' >
     
         <div class='privilege-row role-row' >
-            <span title='in domain ${ assignment.domain.name }' data-toggle='tooltip' data-placement='right' >
+            <span title='in domain <c:out value="${ assignment.domain.name }" />' data-toggle='tooltip' data-placement='right' >
                 <c:out value='${ role.name }' />
             </span>
         </div>

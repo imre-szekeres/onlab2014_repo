@@ -6,6 +6,6 @@
 <!DOCTYPE html>
 <c:forEach var='option' items='${ options }' >
     <option value='${ option.value }' class='option-list-option ${ optionClass }' >
-        ${ option.label }
+        <c:out value='${ option.label }' />
     </option>
 </c:forEach>

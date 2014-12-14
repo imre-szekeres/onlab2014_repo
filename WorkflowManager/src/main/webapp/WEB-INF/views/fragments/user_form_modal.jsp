@@ -20,7 +20,7 @@
 </c:when>
 <c:otherwise>
     
-    <c:set var='formTitle' value="Update ${ user.username }" />
+    <c:set var='formTitle' value="Update <c:out value='${ user.username }' />" />
     <c:set var='submitText' value='Update' />
     <c:set var='inputPanelClass' value='update-dnr-input-panel' />
     <c:set var='sourcePanelClass' value='update-dnr-source-panel' />
@@ -373,16 +373,16 @@
 	$_domains_select.change(function(event) {
 	    requestRolesFor( $(this).val() );
 	    var domain = $_domains_select.val();
-	    $_dname_plh.html( domain );
+	    $_dname_plh.text( domain );
 	});
 	
 	$_domains_select.trigger('change');
 	   
-	$_uname_plh.html( $_username_in.val() );
-	$_dname_plh.html( $_domains_select.val() );
+	$_uname_plh.text( $_username_in.val() );
+	$_dname_plh.text( $_domains_select.val() );
 	   
 	$_username_in.keyup(function() {
-	     $_uname_plh.html( $_username_in.val() );       
+	     $_uname_plh.text( $_username_in.val() );       
 	});
 	
 	buildUserRoles(domains_n_roles, $_roles_input_wrapper);

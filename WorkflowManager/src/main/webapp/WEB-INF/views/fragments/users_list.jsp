@@ -17,7 +17,7 @@
                            data-toggle='collapse' 
                            data-parent='#admin-roles-content-wrapper' 
                            href='#collapse-${ user.id }' 
-                           name='${ user.id }' >${ user.username }</a>
+                           name='${ user.id }' ><c:out value='${ user.username }' /></a>
                     </h3>
                     <wman:iconRow parentId='user-${ user.id }-heading' 
                                   editPath='${ appRoot }${ selectUpdateFormUrl }?user=${ user.id }' 
