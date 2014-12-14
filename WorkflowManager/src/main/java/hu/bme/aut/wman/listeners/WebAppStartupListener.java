@@ -6,7 +6,6 @@ package hu.bme.aut.wman.listeners;
 
 import hu.bme.aut.wman.listeners.services.StartupService;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 
 import org.apache.log4j.Logger;
@@ -32,18 +31,9 @@ public class WebAppStartupListener
 	
 	@EJB(mappedName = "java:module/StartupService")
 	private StartupService startupService;
-	private volatile boolean isSetupNeeded;
-	
+
 	static {
 		PropertyConfigurator.configure( LOG4J_PROPERTIES );
-	}
-
-	/**
-	 * Initializes the <code>WebAppStartupListener</code> to execute the setup operation.
-	 * */
-	@PostConstruct
-	public void init() {
-		this.isSetupNeeded = true;
 	}
 
 	/**
@@ -56,29 +46,11 @@ public class WebAppStartupListener
 		LOGGER.debug("WebAppStartupListener.onApplicationEvent: start");
 		try {
 
-			if (isSetupNeeded()) {
-				synchronized (this) {
-					startupService.setupWebapp(XML_DB_CONFIG);
-				}
-			}
-			setSetupNeeded( false );
+			if ("Root WebApplicationContext".equals( event.getApplicationContext().getDisplayName() ))
+				startupService.setupWebapp(XML_DB_CONFIG);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.fatal(e);
 		}
-	}
-
-	/**
-	 * @return isSetupNeeded
-	 * */
-	public synchronized boolean isSetupNeeded() {
-		return isSetupNeeded;
-	}
-
-	/**
-	 * @param isSetupNeeded
-	 * */
-	public synchronized void setSetupNeeded(boolean isSetupNeeded) {
-		this.isSetupNeeded = isSetupNeeded;
 	}
 }
