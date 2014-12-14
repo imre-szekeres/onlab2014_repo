@@ -26,7 +26,7 @@
 				</div> 
 			</c:when>
 			<c:otherwise>
-				<h3 class='project-name'> <strong>Project:</strong> ${project.name} </h3>
+				<h3 class='project-name'> <strong>Project:</strong> <c:out value='${project.name}' /> </h3>
 				<a href='project?id=${project.id}&mode=edit' role='button' class='btn btn-primary header-button'> 
 					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
 					<span class='button-text'>Edit</span> 
@@ -85,19 +85,19 @@
 				<c:when test='${param.mode=="edit"}'>
 					<label for='edit-mode-description' class='col-sm-1 control-label' style='text-align:left;'><strong>Description:</strong></label>
 					<div id="edit-mode-description">
-						<textarea id="edit-mode-description-input" class="form-control" rows="4" cols="50" style="width:100%;height:100%;">${project.description}</textarea>
+						<textarea id="edit-mode-description-input" class="form-control" rows="4" cols="50" style="width:100%;height:100%;"><c:out value='${project.description}' /></textarea>
 					</div>
 				</c:when>
 				<c:otherwise>
 					<div id="project-description" class="text-justify panel-body-section">
 						<strong>Description:</strong>
-						<p>${project.description}</p>
+						<p><c:out value='${project.description}' /></p>
 					</div>
 				</c:otherwise>
 			</c:choose>
 			<div id="project-owner" class='panel-body-section'>
 				<strong>Owner:</strong>
-				<a href='users/profile?user=${project.owner.id}' class='no-decor-link'>${project.owner.username}</a>
+				<a href='users/profile?user=${project.owner.id}' class='no-decor-link'><c:out value='${project.owner.username}' /></a>
 			</div>
 			<div id="project-assigned-users" class='panel-body-section'>
 				<strong>Assigned users:</strong> 
@@ -107,7 +107,7 @@
 				<c:forEach var="aUser" items="${assignedUsers}">
 					<div class="row assignment-row">
 						<div class="col-md-10 assigned-user-link-wrapper">
-							<a href='users/profile?user=${aUser.id}' class='no-decor-link' data-userid='${aUser.id}'>${aUser.username}</a>
+							<a href='users/profile?user=${aUser.id}' class='no-decor-link' data-userid='${aUser.id}'><c:out value='${aUser.username}' /></a>
 						</div>
 						<div class="col-md-2">
 							<a id='assign-delete-button' class='assign-delete-button' href='#' role='button'>
@@ -120,10 +120,10 @@
 		</div>
 		<div class="panel-body">
 			<div id="project-workflow" class='panel-body-section'>
-				<strong>Workflow:</strong> ${project.workflow.name}
+				<strong>Workflow:</strong> <c:out value='${project.workflow.name}' />
 			</div>
 			<div id="project-state" class='panel-body-section'>
-				<strong>State:</strong> ${project.currentState.name}
+				<strong>State:</strong> <c:out value='${project.currentState.name}' />
 			</div>
 			<div id="project-actions" class='panel-body-section'>
 				<strong>Do: </strong>
@@ -135,7 +135,7 @@
 							</button>
 							<ul class="dropdown-menu" role="menu">
 								<c:forEach var="action" items="${actions}">
-									<li> <a href="do/action?projectId=${project.id}&actionId=${action.id}" > ${action.actionTypeName} </a> </li>
+									<li> <a href="do/action?projectId=${project.id}&actionId=${action.id}" > <c:out value='${action.actionTypeName}' /> </a> </li>
 								</c:forEach>
 							</ul>
 						</c:when>
@@ -165,10 +165,10 @@
 					<c:forEach var="historyEntry" items="${project.historyEntries}">
 						<c:choose>
 							<c:when test='${historyEntry.event == "DONE_ACTION"}'>
-								<li> <span style="color:#9A9A9A;"> <fmt:formatDate value="${historyEntry.when}" pattern="YYYY-MM-dd"/> - </span><strong>${historyEntry.userName}: </strong> ${historyEntry.message}. New state is <i>${historyEntry.state}.</i></li>
+								<li> <span style="color:#9A9A9A;"> <fmt:formatDate value="${historyEntry.when}" pattern="YYYY-MM-dd"/> - </span><strong><c:out value='${historyEntry.userName}' />: </strong> <c:out value='${historyEntry.message}' />. New state is <i><c:out value='${historyEntry.state}' />.</i></li>
 							</c:when>
 							<c:otherwise>
-								<li> <span style="color:#9A9A9A;"> <fmt:formatDate value="${historyEntry.when}" pattern="YYYY-MM-dd"/> - </span><strong>${historyEntry.userName}: </strong> ${historyEntry.message} in state: <i>${historyEntry.state}.</i></li>
+								<li> <span style="color:#9A9A9A;"> <fmt:formatDate value="${historyEntry.when}" pattern="YYYY-MM-dd"/> - </span><strong><c:out value='${historyEntry.userName}' />: </strong> <c:out value='${historyEntry.message}' /> in state: <i><c:out value='${historyEntry.state}' />.</i></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -198,7 +198,7 @@
 					<c:forEach var="file" items="${project.files}">
 						<div class="attachment-row row"> 
 							<div class="col-xs-8">
-								${file.fileName} 
+								<c:out value='${file.fileName}' /> 
 							</div>
 							<div class="col-xs-2">
 								<a href='download/file?id=${file.id}' role='button' class='btn btn-primary header-button btn-clear-hover-primary'><span class="glyphicon glyphicon-download btn-clear-hover-primary" aria-hidden="true"></span></a>
@@ -221,10 +221,10 @@
 			<c:forEach var="comment" items="${project.comments}">
 				<div class="project-comment-body panel-body">
 					<div class="project-comment-inform">
-						<a href='users/profile?user=${comment.user.id}' class='no-decor-link'><strong>${comment.user.username}</strong></a> <span style="color:#9A9A9A;">- <fmt:formatDate value="${comment.postDate}" pattern="YYYY-MM-dd HH:mm"/><span>
+						<a href='users/profile?user=${comment.user.id}' class='no-decor-link'><strong><c:out value='${comment.user.username}' /></strong></a> <span style="color:#9A9A9A;">- <fmt:formatDate value="${comment.postDate}" pattern="YYYY-MM-dd HH:mm"/><span>
 					</div>
 					<div class="project-comment-message">
-						${comment.description}
+						<c:out value='${comment.description}' />
 					</div>
 				</div>
 			</c:forEach>
@@ -253,7 +253,7 @@
 								<select id='assign-user-select' class="form-control"  placeholder="User" style='width:265px;'>
 									<c:forEach var="user" items="${assignableUsers}">
 										<option value="${user.id}">
-											${user.username}
+											<c:out value='${user.username}' />
 										</option>
 									</c:forEach>
 								</select>

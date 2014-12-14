@@ -42,22 +42,22 @@
 					<div class="projects-name panel-heading" >
 						<h4 class="panel-title">
 							<a data-toggle="collapse" style="text-decoration: blink;" data-parent="#accordion${project.id}" href="#collapse${project.id}">
-								${project.name}
+								<c:out value='${project.name}' />
 							</a>
 						</h4>
 					</div>
 					<div id="collapse${project.id}" class="panel-collapse collapse">
 						<div class="panel-body projects-description">
-							${project.description}
+							<c:out value='${project.description}' />
 						</div>
 						<div class="panel-body projects-workflow">
-							Workflow: ${project.workflow.name} <br/>
-							State: ${project.currentState.name} <br/>
-							Owner: ${project.owner.username} 
+							Workflow: <c:out value='${project.workflow.name}' /> <br/>
+							State: <c:out value='${project.currentState.name}' /> <br/>
+							Owner: <c:out value='${project.owner.username}' /> 
 						</div>
 					</div>
 					<div class="projects-id">
-						${project.id}
+						<c:out value='${project.id}' />
 					</div>
 				</div>
 			</div>
