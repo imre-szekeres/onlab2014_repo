@@ -13,7 +13,7 @@
             <div class='panel panel-default admin-role-panel' >
                 <div class='panel-heading iconed-panel-heading' role='tab' id='role-${ role.id }-heading' title='<c:out value="${ role.name }" /> in <c:out value="${ domain.name }" />' data-toggle='tooltip' data-placement='right' >                    
                     <h3 class='panel-title'>
-                        <a class='collapsed' 
+                        <a class='collapsed admin-role-panel-heading-href' 
                            aria-expanded='false' 
                            aria-controls='collapse-${ role.id }' 
                            data-toggle='collapse' 
