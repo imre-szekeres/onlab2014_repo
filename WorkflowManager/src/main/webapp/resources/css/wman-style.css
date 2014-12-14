@@ -9,8 +9,16 @@
  * */
 
 
-/* BEGIN xxx */
-/* END   xxx */
+/* BEGIN logout */
+#logout-icon-post-ref {
+	z-index: 11;
+}
+
+#log-out-button {
+	z-index: 11;
+}
+
+/* END   logout */
 
 /* BEGIN access-denied */
 
