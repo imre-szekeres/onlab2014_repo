@@ -5,14 +5,11 @@
 <%@ attribute name='href' required='true' %>
 <%@ attribute name='refID' %>
 <%@ attribute name='refClasses' %>
-<%@ attribute name='method' %>
 
 <a href='#' id='${ refID }' class='${ refClasses }' onclick='submitChildForm(event)' >
     <form action='${ href }' method='POST' name='delete-form' >
         
-        <c:if test='${ empty method }' >
-            <input type='hidden' name='_method' value='DELETE' >
-        </c:if>
+        <input type='hidden' name='_method' value='DELETE' >
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" >
         <jsp:doBody />
  

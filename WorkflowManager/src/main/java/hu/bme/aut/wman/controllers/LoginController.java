@@ -176,7 +176,7 @@ public class LoginController extends AbstractController {
 	 * @param request
 	 * @return redirect to the login page
 	 * */
-	@RequestMapping(value = LOGOUT, method = RequestMethod.GET)
+	@RequestMapping(value = LOGOUT, method = RequestMethod.POST)
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.setAttribute("subject", null);
