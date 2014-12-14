@@ -237,7 +237,8 @@ public class UsersController extends AbstractController {
 			
 			user = userManager.create( user );
 			User subject = userService.selectById(subjectID);
-			Map<String, List<String>> assignments = tryParseAssignments(newUser.getUserRoles(), parser);
+			/* filters those assignments out in which the current user has no privilege to Assign User or to Assign Role */
+			Map<String, List<String>> assignments = filter(tryParseAssignments(newUser.getUserRoles(), parser));
 			
 			if (assignments != null) {
 
