@@ -11,7 +11,7 @@
         <c:forEach var='role' items='${ domain.roles }' >
             
             <div class='panel panel-default admin-role-panel' >
-                <div class='panel-heading iconed-panel-heading' role='tab' id='role-${ role.id }-heading' title='in domain <c:out value="${ domain.name }" />' data-toggle='tooltip' data-placement='right' >                    
+                <div class='panel-heading iconed-panel-heading' role='tab' id='role-${ role.id }-heading' title='<c:out value="${ role.name }" /> in <c:out value="${ domain.name }" />' data-toggle='tooltip' data-placement='right' >                    
                     <h3 class='panel-title'>
                         <a class='collapsed' 
                            aria-expanded='false' 
