@@ -248,9 +248,13 @@ public class DomainManagerTestSuite {
 			Domain def = wrapper.manager().defaultDomain();
 			Assert.assertEquals(newRoles.size(), def.getRoles().size());
 			
-			for(Role role : newRoles)
+			List<String> requiredNames = requiredRoleNamesOf( domain );
+			for(Role role : newRoles) {
 				Assert.assertNotNull(roleRepo.read( role.getName() ));
-			
+				Assert.assertTrue( requiredNames.contains( role.getName() ) );
+				requiredNames.remove( role.getName() );
+			}
+						
 			String admin = format("%s Administrator", domain.getName());
 			Assert.assertTrue(hasRole(subject, domain, admin));
 		} catch(Exception e) {
@@ -274,6 +278,14 @@ public class DomainManagerTestSuite {
 		return (da != null) && (da.getUserRoles().contains( role ));
 	}
 
+	private static final List<String> requiredRoleNamesOf(Domain domain) {
+		List<String> requiredNames = new ArrayList<>();
+		requiredNames.add(format("%s Administrator", domain.getName()));
+		requiredNames.add(format("%s Manager", domain.getName()));
+		requiredNames.add(format("%s Developer", domain.getName()));
+		requiredNames.add(format("%s Viewer", domain.getName()));
+		return requiredNames;
+	}
 	@Test
 	public void testRemoval() {
 		User subject = wrapper.getUserService().selectByName(SUBJECT_NAME);
