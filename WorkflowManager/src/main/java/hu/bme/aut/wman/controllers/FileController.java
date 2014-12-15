@@ -24,6 +24,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -52,9 +53,8 @@ public class FileController extends AbstractController{
 	private UserService userService;
 
 	@RequestMapping(value = UPLOAD_FILE_ON_PROJECT, method = RequestMethod.POST)
+	@PreAuthorize("hasRole('View Project')")
 	public ModelAndView upload(@RequestParam("id") Long projectId, @ModelAttribute(value="fileUploadVO") FileUploadVO fileVO, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-
-		// TODO check if the user is on the project
 
 		String contentType = fileVO.getFile().getContentType();
 		byte[] bytes = fileVO.getFile().getBytes();
@@ -74,6 +74,7 @@ public class FileController extends AbstractController{
 	}
 
 	@RequestMapping(value = DOWNLOAD_FILE, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('View Project')")
 	public void download(@RequestParam("id") Long fileId, Model model, HttpServletRequest request,
 			HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
 
@@ -101,6 +102,7 @@ public class FileController extends AbstractController{
 	}
 
 	@RequestMapping(value = DELETE_FILE, method = RequestMethod.GET)
+	@PreAuthorize("hasRole('View Project')")
 	public ModelAndView deleteFile(@RequestParam("id") Long fileId,@RequestParam("projectId") Long projectId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		BlobFile file = blobFileService.selectById(fileId);
 

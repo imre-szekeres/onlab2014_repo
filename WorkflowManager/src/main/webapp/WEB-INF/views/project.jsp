@@ -180,7 +180,7 @@
 				<h3 class="panel-title">Attachments</h3>
 			</div>
 			<div class="panel-body" style="padding-right:0px;">
-				<form:form id='upload-file-form' method='POST' commandName="fileUploadVO" action='/WorkflowManager/project/upload?id=${project.id}' enctype="multipart/form-data" class='form-horizontal'>
+				<form:form id='upload-file-form' method='POST' commandName="fileUploadVO" action='/WorkflowManager/project/upload?id=${project.id}&${_csrf.parameterName}=${_csrf.token}' enctype="multipart/form-data" class='form-horizontal'>
 					<div id="project-file-chooser" class='attachment-input-wrapper panel-body-section'>
 						<strong>Select a file: </strong>
 						<div class="input-group">

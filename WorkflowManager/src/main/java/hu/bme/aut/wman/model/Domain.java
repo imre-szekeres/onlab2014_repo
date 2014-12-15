@@ -275,35 +275,35 @@ public class Domain extends AbstractEntity {
 		if (!(obj instanceof Domain)) {
 			return false;
 		}
-		Domain other = (Domain) obj;
-		if (actionTypes == null) {
-			if (other.actionTypes != null) {
-				return false;
-			}
-		} else if (!actionTypes.equals(other.actionTypes)) {
-			return false;
-		}
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		if (roles == null) {
-			if (other.roles != null) {
-				return false;
-			}
-		} else if (!roles.equals(other.roles)) {
-			return false;
-		}
-		if (workflows == null) {
-			if (other.workflows != null) {
-				return false;
-			}
-		} else if (!workflows.equals(other.workflows)) {
-			return false;
-		}
+		//		Domain other = (Domain) obj;
+		//		if (actionTypes == null) {
+		//			if (other.actionTypes != null) {
+		//				return false;
+		//			}
+		//		} else if (!actionTypes.equals(other.actionTypes)) {
+		//			return false;
+		//		}
+		//		if (name == null) {
+		//			if (other.name != null) {
+		//				return false;
+		//			}
+		//		} else if (!name.equals(other.name)) {
+		//			return false;
+		//		}
+		//		if (roles == null) {
+		//			if (other.roles != null) {
+		//				return false;
+		//			}
+		//		} else if (!roles.equals(other.roles)) {
+		//			return false;
+		//		}
+		//		if (workflows == null) {
+		//			if (other.workflows != null) {
+		//				return false;
+		//			}
+		//		} else if (!workflows.equals(other.workflows)) {
+		//			return false;
+		//		}
 		return true;
 	}
 
