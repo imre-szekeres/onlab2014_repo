@@ -33,7 +33,7 @@
 					<div class="panel-heading actions-name">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" style="text-decoration: blink;" data-parent="#accordion${action.id}" href="#collapse${action.id}">
-								${action.domain.name}: ${action.actionTypeName}
+								<c:out value='${action.domain.name}:' /> <c:out value='${action.actionTypeName}' />
 							</a>
 						</h4>
 					</div>

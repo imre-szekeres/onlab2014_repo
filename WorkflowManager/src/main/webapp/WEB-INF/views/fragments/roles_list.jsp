@@ -11,14 +11,14 @@
         <c:forEach var='role' items='${ domain.roles }' >
             
             <div class='panel panel-default admin-role-panel' >
-                <div class='panel-heading iconed-panel-heading' role='tab' id='role-${ role.id }-heading' title='in domain ${ domain.name }' data-toggle='tooltip' data-placement='right' >                    
+                <div class='panel-heading iconed-panel-heading' role='tab' id='role-${ role.id }-heading' title='<c:out value="${ role.name }" /> in <c:out value="${ domain.name }" />' data-toggle='tooltip' data-placement='right' >                    
                     <h3 class='panel-title'>
-                        <a class='collapsed' 
+                        <a class='collapsed admin-role-panel-heading-href' 
                            aria-expanded='false' 
                            aria-controls='collapse-${ role.id }' 
                            data-toggle='collapse' 
                            data-parent='#admin-roles-content-wrapper' 
-                           href='#collapse-${ role.id }' >${ role.name }</a>
+                           href='#collapse-${ role.id }' ><c:out value='${ role.name }' /></a>
                     </h3>
                     <c:if test='${ domain.name ne "System" }' >
                         <wman:iconRow parentId='role-${ role.id }-heading' 
@@ -34,7 +34,7 @@
                         <div class='privilege-list-wrapper' >
                         <c:forEach var='privilege' items='${ role.privileges }' >
                             <div class='privilege-row' >
-                               ${ privilege.name }
+                               <c:out value='${ privilege.name }' />
                             </div>
                         </c:forEach>
                         </div>

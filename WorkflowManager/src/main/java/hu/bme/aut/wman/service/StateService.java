@@ -28,6 +28,8 @@ import javax.inject.Inject;
 @LocalBean
 public class StateService extends AbstractDataService<State> {
 
+	private static final long serialVersionUID = -5693785877559632002L;
+
 	@Inject
 	private TransitionService transitionService;
 	@Inject

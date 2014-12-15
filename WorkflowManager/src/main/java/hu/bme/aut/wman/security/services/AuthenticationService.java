@@ -1,9 +1,11 @@
 /**
  * AuthenticationService.java
  */
-package hu.bme.aut.wman.service;
+package hu.bme.aut.wman.security.services;
 
 import static hu.bme.aut.wman.utils.StringUtils.isEmpty;
+import hu.bme.aut.wman.service.PrivilegeService;
+import hu.bme.aut.wman.service.UserService;
 
 import java.util.List;
 
@@ -50,5 +52,63 @@ public class AuthenticationService implements UserDetailsService {
 	 * */
 	public static List<? extends GrantedAuthority> authoritiesOf(String username, PrivilegeService privilegeService) {
 		return privilegeService.privilegesOf(username);
+	}
+
+
+
+	/**
+	 * Wraps the <code>AuthenticationService</code> instance and provides setters/getters for the inner 
+	 * service layer for TESTING PURPOSES only.
+	 * */
+	public static class TestWrapper {
+		
+		private AuthenticationService service;
+
+
+		public TestWrapper(AuthenticationService service) {
+			this.service = service;
+		}
+
+		/**
+		 * @param userService
+		 * */
+		public void setPrivilegeService(PrivilegeService privilegeService) {
+			this.service.privilegeService = privilegeService;
+		}
+		
+		/**
+		 * @return privilegeService
+		 * */
+		public PrivilegeService getPrivilegeService() {
+			return service.privilegeService;
+		}
+
+		/**
+		 * @param userService
+		 * */
+		public void setUserService(UserService userService) {
+			this.service.userService = userService;
+		}
+		
+		/**
+		 * @return userService of manager
+		 * */
+		public UserService getUserService() {
+			return service.userService;
+		}
+
+		/**
+		 * @return service
+		 * */
+		public AuthenticationService service() {
+			return service;
+		}
+
+		/**
+		 * @param service
+		 * */
+		public void service(AuthenticationService service) {
+			this.service = service;
+		}
 	}
 }

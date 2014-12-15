@@ -9,8 +9,16 @@
  * */
 
 
-/* BEGIN xxx */
-/* END   xxx */
+/* BEGIN logout */
+#logout-icon-post-ref {
+	z-index: 11;
+}
+
+#log-out-button {
+	z-index: 11;
+}
+
+/* END   logout */
 
 /* BEGIN access-denied */
 
@@ -1061,6 +1069,21 @@
 	left: 70px;
 }
 
+#privileges-dnd-target-panel .panel-heading {
+	max-height: 41px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#privileges-dnd-target-panel #role-name-placeholder {
+	max-width: 210px;
+	max-height: 25px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 #privileges-dnd-source-panel {
 	width: 320px;
 	height: auto;
@@ -1096,11 +1119,10 @@
 	padding: 0;
 }
 
-
 .admin-role-panel {
-	/*width: 210px;*/
-	width: auto;
-	min-width: 210px;
+	/*width: 210px;
+	width: auto;*/
+	width: 240px;
 	display: inline-block;
 }
 
@@ -1109,6 +1131,13 @@
 	width: auto;
 	min-width: 210px;
 	display: inline-block;
+}
+
+.admin-role-panel .panel-heading .admin-role-panel-heading-href {
+	max-width: 240px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .admin-role-panel .list-group {
@@ -1438,6 +1467,7 @@
 	margin: 0;
 	position: relative;
 	top: 0;
+	height: 78px;
 }
 
 #username-text {

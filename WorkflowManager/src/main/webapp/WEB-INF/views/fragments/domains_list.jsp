@@ -16,7 +16,7 @@
                            aria-controls='collapse-${ domain.id }' 
                            data-toggle='collapse' 
                            data-parent='#admin-roles-content-wrapper' 
-                           href='#collapse-${ domain.id }' >${ domain.name }</a>
+                           href='#collapse-${ domain.id }' ><c:out value='${ domain.name }' /></a>
                     </h3>
                     <c:if test='${ domain.name ne "System" }' >
                         <wman:iconRow parentId='domain-${ domain.id }-heading' 
@@ -33,7 +33,7 @@
                         <div class='privilege-list-wrapper role-list-wrapper' >
                         <c:forEach var='role' items='${ domain.roles }' >
                             <div class='privilege-row role-row' >
-                               ${ role.name }
+                               <c:out value='${ role.name }' />
                             </div>
                         </c:forEach>
                         </div>

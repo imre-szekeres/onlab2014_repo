@@ -12,7 +12,7 @@
              <span id='sign-in-user-icon' >
                  <span class='glyphicon glyphicon-user' ></span>
              </span> 
-             <span id='username-text' >${ user.username }</span>
+             <span id='username-text' ><c:out value='${ user.username }' /></span>
         </span>
         
         <span class='button-part' id='visible-trigger-wrapper' >
@@ -39,7 +39,7 @@
         <span class='email-span' >
             <span class='glyphicon glyphicon-envelope' ></span> 
                 <a href='mailto:${ user.email }' class='underlined' >
-                    <span class='email-text' >${ user.email  }</span>
+                    <span class='email-text' ><c:out value='${ user.email  }' /></span>
                 </a>
         </span>
     </div>
@@ -58,7 +58,7 @@
         </div>
         <div class='panel-body'>
             <div id='description-wrapper' >
-                ${ user.description }
+                <c:out value='${ user.description }' />
             </div>
         </div>
     </div>
@@ -74,13 +74,13 @@
             <c:forEach var="comment" items="${ user.comments }">
                 <div class="project-comment-body panel-body">
                     <div class="project-comment-inform">
-                        <strong>${ comment.user.username }</strong> <span style="color:#9A9A9A;">- ${ comment.postDate }<span>
+                        <strong><c:out value='${ comment.user.username }' /></strong> <span style="color:#9A9A9A;">- ${ comment.postDate }<span>
                     </div>
                     <div class='user-comment-project-href-wrapper' >
-                        <span style="color:#9A9A9A;">on <span> <a href='${ appRoot }${ viewProjectAction }?id=${ comment.project.id }' >${ comment.project.name }</a>
+                        <span style="color:#9A9A9A;">on <span> <a href='${ appRoot }${ viewProjectAction }?id=${ comment.project.id }' ><c:out value='${ comment.project.name }' /></a>
                     </div>
                     <div class="project-comment-message">
-                        ${ comment.description }
+                        <c:out value='${ comment.description }' />
                     </div>
                 </div>
             </c:forEach>

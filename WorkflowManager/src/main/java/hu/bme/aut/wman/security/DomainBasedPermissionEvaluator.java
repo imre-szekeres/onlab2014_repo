@@ -5,7 +5,6 @@ package hu.bme.aut.wman.security;
 
 import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Privilege;
-import hu.bme.aut.wman.model.Workflow;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.RoleService;
@@ -78,7 +77,7 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
 		String username = ((User) authentication.getPrincipal()).getUsername();
 		if ("Role".equals( targetType ))
-			return hasRolePermissions(username, targetId, (String) permission);
+			return roleService.hasPrivilege(username, (Long) targetId, (String) permission);
 		
 		else if ("Domain".equals( targetType ))
 			return hasDomainPermissions(username, targetId, (String) permission);
@@ -87,26 +86,11 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 			return hasUserPermissions(username, targetId, (String) permission);
 		
 		else if ("Project".equals( targetType ))
-			return hasProjectPermissions(username, targetId, (String) permission);
+			return projectService.hasPrivilege(username, (Long) targetId, (String) permission);
 		
 		else if ("Workflow".equals( targetType ))
-			return hasWorkflowPermissions(username, targetId, (String) permission);
+			return workflowService.hasPrivilege(username, (Long) targetId, (String) permission);
 		return false;
-	}
-
-	/**
-	 * Handles the case when it is to be decided whether the given <code>User</code> has the given <code>Privilege</code>
-	 * (specified by its name) in the <code>Domain</code> that defines the <code>Role</code> given by its identifier (name or id).
-	 * 
-	 * @param username
-	 * @param targetId
-	 * @param permission
-	 * @return true when the {@link User} has any {@link Role} that owns the {@link Privilege} specified in the given {@link Domain}
-	 * */	
-	private boolean hasRolePermissions(String username, Object targetId, String permission) {
-		if (targetId instanceof Long)
-			return roleService.hasPrivilege(username, (Long) targetId, permission);
-		return roleService.hasPrivilege(username, (String) targetId, permission);
 	}
 
 	/**
@@ -138,38 +122,6 @@ public class DomainBasedPermissionEvaluator implements PermissionEvaluator {
 		if (targetId instanceof Long) 
 			return userService.hasPrivilege(username, (Long) targetId, permission);
 		return userService.hasPrivilege(username, (String) targetId, permission);
-	}
-
-	/**
-	 * Handles the case when it is to be decided whether the given <code>User</code> has the given <code>Privilege</code>
-	 * (specified by its name) in the the <code>Domain</code> the given <code>Project</code> is in.
-	 * 
-	 * @param username
-	 * @param targetId
-	 * @param permission
-	 * @return true when the {@link User} has any {@link Role} that owns the {@link Privilege} specified in the given {@link Domain}
-	 *         in which the given {@link Project} (as its identifier) is
-	 * */
-	private boolean hasProjectPermissions(String username, Object targetId, String permission) {
-		if (targetId instanceof Long) 
-			return projectService.hasPrivilege(username, (Long) targetId, permission);
-		return projectService.hasPrivilege(username, (String) targetId, permission);
-	}
-
-	/**
-	 * Handles the case when it is to be decided whether the given <code>User</code> has the given <code>Privilege</code>
-	 * (specified by its name) in the the <code>Domain</code> the given <code>Workflow</code> is in.
-	 * 
-	 * @param username
-	 * @param targetId
-	 * @param permission
-	 * @return true when the {@link User} has any {@link Role} that owns the {@link Privilege} specified in the given {@link Domain}
-	 *         in which the given {@link Workflow} (as its identifier) is
-	 * */
-	private boolean hasWorkflowPermissions(String username, Object targetId, String permission) {
-		if (targetId instanceof Long) 
-			return workflowService.hasPrivilege(username, (Long) targetId, permission);
-		return workflowService.hasPrivilege(username, (String) targetId, permission);
 	}
 
 	/**

@@ -65,7 +65,7 @@ public class DomainManager implements Serializable {
 			newRole.setPrivileges( role.getPrivileges() );
 			roleService.save( newRole );
 			domain.addRole( newRole );
-			admin = ("Administrator".equals( roleName.trim() ) ? newRole : null);
+			admin = ("Administrator".equals( roleName.trim() ) ? newRole : admin);
 		}
 		domainService.save( domain );
 		assignNew(subject, domain, admin);
@@ -198,9 +198,7 @@ public class DomainManager implements Serializable {
      * @throws {@link EntityNotDeletableException}
      * */
 	public Domain remove(User subject, Domain domain) throws EntityNotDeletableException {
-		List<DomainAssignment> assignments = daService.selectByDomainName(domain.getName());
-		for(DomainAssignment da : assignments)
-			daService.delete( da );
+		daService.deleteByDomainID( domain.getId() );
 		domainService.delete( domain );
 		return domain;
 	}
@@ -210,5 +208,89 @@ public class DomainManager implements Serializable {
 	 * */
 	public Map<String, String> validate(Domain domain) {
 		return domainService.validate(domain);
+	}
+
+	/**
+	 * Wraps the <code>DomainManager</code> instance and provides setters/getters for the inner 
+	 * service layer for TESTING PURPOSES only.
+	 * */
+	public static class TestWrapper {
+		
+		private DomainManager manager;
+
+
+		public TestWrapper(DomainManager manager) {
+			this.manager = manager;
+		}
+
+		/**
+		 * @return roleService of manager
+		 * */
+		public RoleService getRoleService() {
+			return manager.roleService;
+		}
+
+		/**
+		 * @return domainService of manager
+		 * */
+		public DomainService getDomainService() {
+			return manager.domainService;
+		}
+
+		/**
+		 * @param roleService
+		 * */
+		public void setRoleService(RoleService roleService) {
+			this.manager.roleService = roleService;
+		}
+
+		/**
+		 * @param domainService
+		 * */
+		public void setDomainService(DomainService domainService) {
+			this.manager.domainService = domainService;
+		}
+		
+		/**
+		 * @param daService
+		 * */
+		public void setDomainAssignmentService(DomainAssignmentService daService) {
+			this.manager.daService = daService;
+		}
+		
+		/**
+		 * @return daService of manager
+		 * */
+		public DomainAssignmentService getDomainAssignmentService() {
+			return manager.daService;
+		}
+
+		/**
+		 * @param userService
+		 * */
+		public void setUserService(UserService userService) {
+			this.manager.userService = userService;
+		}
+		
+		/**
+		 * @return userService of manager
+		 * */
+		public UserService getUserService() {
+			return manager.userService;
+		}
+
+		/**
+		 * @return manager
+		 * */
+		public DomainManager manager() {
+			return manager;
+		}
+
+		/**
+		 * @param manager
+		 * */
+		public void manager(DomainManager manager) {
+			this.manager = manager;
+		}
 	}
 }

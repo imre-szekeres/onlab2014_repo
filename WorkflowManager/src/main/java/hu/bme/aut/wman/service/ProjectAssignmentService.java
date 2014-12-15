@@ -21,6 +21,8 @@ import javax.ejb.Stateless;
 @LocalBean
 class ProjectAssignmentService extends AbstractDataService<ProjectAssignment> {
 
+	private static final long serialVersionUID = 4574769174313732498L;
+
 	public List<ProjectAssignment> selectByUserName(String userName) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(User.PR_NAME, userName));

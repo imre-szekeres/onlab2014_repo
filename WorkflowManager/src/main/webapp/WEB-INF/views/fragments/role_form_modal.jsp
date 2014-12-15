@@ -22,7 +22,7 @@
 <c:otherwise>
     
     <c:set var='formID' value="update-role-form" />
-    <c:set var='formTitle' value="Update ${ role.roleName }" />
+    <c:set var='formTitle' value="Update <c:out value='${ role.roleName }' />" />
     <c:set var='submitCallback' value='submitUpdateRoleForm(event)' />
     <c:set var='submitText' value='Update' />
 
@@ -179,8 +179,8 @@
 	var $_rname_plh = $('#role-name-placeholder');
 	var $_rolename_in = $('#role-name');
 
-	$_rname_plh.html( $_rolename_in.val() );
+	$_rname_plh.text( $_rolename_in.val() );
 	$_rolename_in.keyup(function() {
-	    $_rname_plh.html( $_rolename_in.val() );
+	    $_rname_plh.text( $_rolename_in.val() );
 	});
 </script>

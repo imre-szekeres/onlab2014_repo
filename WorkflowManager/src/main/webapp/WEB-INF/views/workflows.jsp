@@ -23,20 +23,20 @@
 					<div class="panel-heading workflows-name">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" style="text-decoration: blink;" data-parent="#accordion${workflow.id}" href="#collapse${workflow.id}">
-								${workflow.name}
+								<c:out value='${workflow.name}' />
 							</a>
 						</h4>
 					</div>
 					<div id="collapse${workflow.id}" class="panel-collapse collapse workflows-description">
 						<div class="panel-body">
-							${workflow.description}
+							<c:out value='${workflow.description}' />
 						</div>
 						<div class="panel-body projects-workflow">
-							Domain: ${workflow.domain.name} <br/>
+							Domain: <c:out value='${workflow.domain.name}' /> <br/>
 						</div>
 					</div>
 					<div class="workflows-id">
-						${workflow.id}
+						<c:out value='${workflow.id}' />
 					</div>
 				</div>
 			</div>

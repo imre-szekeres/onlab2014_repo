@@ -19,6 +19,8 @@ import javax.ejb.Stateless;
 @LocalBean
 public class GraphEdgeService extends AbstractDataService<GraphEdge> {
 
+	private static final long serialVersionUID = 5686483541100929162L;
+
 	public List<GraphEdge> selectByStartId(Long id) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>("startId", id));

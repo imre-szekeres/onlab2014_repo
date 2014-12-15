@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib tagdir='/WEB-INF/tags/' prefix='wman' %>
+
 <div id='side-menu-bar'>
 	<div id='home-href-wrapper'>
 		<a id='home-href-side-menu' class='decor-less' href='${ param.appRoot }/'>Workflow Manager</a>
@@ -35,11 +37,12 @@
 			</div>
 		</a>
 		
-		<a href='${ param.appRoot }/logout'>
+		<wman:postRef href='${ param.appRoot }/logout' 
+		              refID='logout-icon-post-ref' >
 			<div id='log-out-button' class='side-menu-button'>
 				<span class='glyphicon glyphicon-off side-menu-icon'/>
 				<div class='side-menu-title'>Logout</div>
 			</div>
-		</a>
+		</wman:postRef>
 	</div>
 </div>

@@ -23,6 +23,8 @@ import javax.inject.Inject;
 @LocalBean
 public class StateGraphService extends AbstractDataService<StateGraph> {
 
+	private static final long serialVersionUID = 1L;
+
 	@Inject
 	GraphNodeService graphNodeService;
 	@Inject

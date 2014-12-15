@@ -14,14 +14,14 @@
         <span>
             <ul>
                 <c:forEach var='user' items='${ users }' >
-                    <li>${ user }</li>
+                    <li><c:out value='${ user }' /></li>
                 </c:forEach>
             </ul>
         </span>
         <span>
             <ul>
                 <c:forEach var='r' items='${ roles }' >
-                    <li>${ r }</li>
+                    <li><c:out value='${ r }' /></li>
                 </c:forEach>
             </ul>
         </span>

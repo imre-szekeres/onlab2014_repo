@@ -33,15 +33,6 @@ import javax.validation.constraints.Size;
 			"AND p.name = :privilegeName " +
 			"AND r MEMBER OF da.userRoles "),
 
-			@NamedQuery(name = "Project.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r) FROM Project pr, Workflow w, Role r, Domain d, DomainAssignment da, Privilege p " +
-					"WHERE pr.workflow = w AND w.domain = d " +
-					"AND pr.name = :projectName " +
-					"AND da.user.username = :username " +
-					"AND da.domain = d " +
-					"AND p MEMBER OF r.privileges " +
-					"AND p.name = :privilegeName " +
-					"AND r MEMBER OF da.userRoles "),
-
 					@NamedQuery(name = "Project.findCountForOwnerByName", query = "SELECT COUNT(DISTINCT p) FROM Project p " +
 							"WHERE p.name = :projectName AND p.owner.username = :username "),
 
@@ -59,7 +50,6 @@ public class Project extends AbstractEntity {
 	public static final String NQ_FIND_BY_WORKFLOW_NAME = "Project.findAllByWorkflowName";
 	public static final String NQ_FIND_PROJECTS_FOR_USER = "Project.findProjectsForUser";
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "Project.findCountByPrivilege";
-	public static final String NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME = "Project.findCountByPrivilegeAndName";
 
 	public static final String NQ_FIND_COUNT_FOR_OWNER_BY_NAME = "Project.findCountForOwnerByName";
 	public static final String NQ_FIND_COUNT_FOR_OWNER_BY_ID = "Project.findCountForOwnerByID";

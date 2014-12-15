@@ -25,6 +25,8 @@ import javax.inject.Inject;
 @LocalBean
 public class HistoryEntryService extends AbstractDataService<HistoryEntry> {
 
+	private static final long serialVersionUID = -6436062508521145745L;
+
 	@Inject
 	ProjectService projectService;
 

@@ -29,8 +29,10 @@ import javax.persistence.EntityNotFoundException;
  */
 @LocalBean
 @Stateless
-@SuppressWarnings("serial")
-public class PrivilegeService extends AbstractDataService<Privilege> implements Serializable {
+public class PrivilegeService extends AbstractDataService<Privilege>
+				implements Serializable {
+
+	private static final long serialVersionUID = -8249165499277206990L;
 
 	private ValidationEngine<Privilege> validationEngine;
 

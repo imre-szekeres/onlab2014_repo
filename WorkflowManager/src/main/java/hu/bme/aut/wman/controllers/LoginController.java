@@ -11,7 +11,7 @@ import hu.bme.aut.wman.managers.DomainManager;
 import hu.bme.aut.wman.managers.UserManager;
 import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.security.SecurityToken;
-import hu.bme.aut.wman.service.AuthenticationService;
+import hu.bme.aut.wman.security.services.AuthenticationService;
 import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.PrivilegeService;
 import hu.bme.aut.wman.service.UserService;
@@ -176,7 +176,7 @@ public class LoginController extends AbstractController {
 	 * @param request
 	 * @return redirect to the login page
 	 * */
-	@RequestMapping(value = LOGOUT, method = RequestMethod.GET)
+	@RequestMapping(value = LOGOUT, method = RequestMethod.POST)
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.setAttribute("subject", null);

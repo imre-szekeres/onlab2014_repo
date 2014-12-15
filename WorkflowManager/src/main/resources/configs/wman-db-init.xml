@@ -77,7 +77,7 @@
 		<user name='sudoer' 
 		      password='sudoer7' 
 		      removable='false' 
-		      email='sudoer@workflowmanager.com' 
+		      email='jonathan.kramer@workflowmanager.com' 
 		      description='I am just a humble administrator of Workflow Manager webapplication to create, test and refine functionality.' >
 			<role name='System Administrator' domain='System' removable='false' />
 		</user>
@@ -85,7 +85,7 @@
 		<user name='manager' 
 		      password='manager7' 
 		      removable='false' 
-		      email='manager@workflowmanager.com' 
+		      email='avril.raymonds@workflowmanager.com' 
 		      description='I am just a humble Manager of Workflow Manager webapplication to create, test and refine functionality.' >
 			<role name='System Manager' domain='System' removable='false' />
 		</user>
@@ -93,7 +93,7 @@
 		<user name='developer' 
 		      password='developer7' 
 		      removable='false' 
-		      email='developer@workflowmanager.com' 
+		      email='carl.armstrong@workflowmanager.com' 
 		      description='I am just a humble Developer of Workflow Manager webapplication to create, test and refine functionality.' >
 			<role name='System Developer' domain='System' removable='false' />
 		</user>
@@ -101,7 +101,7 @@
 		<user name='viewer' 
 		      password='viewer7' 
 		      removable='false' 
-		      email='viewer7@workflowmanager.com' 
+		      email='curl.smith@workflowmanager.com' 
 		      description='I am just a humble Viewer of Workflow Manager webapplication to create, test and refine functionality.' >
 			<role name='System Viewer' domain='System' removable='false' />
 		</user>

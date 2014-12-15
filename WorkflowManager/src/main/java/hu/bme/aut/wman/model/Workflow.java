@@ -32,19 +32,10 @@ import javax.validation.constraints.Size;
 			"AND p.name = :privilegeName " +
 			"AND r MEMBER OF da.userRoles "),
 
-			@NamedQuery(name = "Workflow.findCountByPrivilegeAndName", query = "SELECT COUNT(DISTINCT r) FROM Workflow w, Role r, Domain d, DomainAssignment da, Privilege p " +
-					"WHERE w.domain = d " +
-					"AND w.name = :workflowName " +
-					"AND da.user.username = :username " +
-					"AND da.domain = d " +
-					"AND p MEMBER OF r.privileges " +
-					"AND p.name = :privilegeName " +
-					"AND r MEMBER OF da.userRoles ")
 })
 public class Workflow extends AbstractEntity {
 
 	public static final String NQ_FIND_COUNT_BY_PRIVILEGE = "Workflow.findCountByPrivilege";
-	public static final String NQ_FIND_COUNT_BY_PRIVILEGE_AND_NAME = "Workflow.findCountByPrivilegeAndName";
 
 	public static final String PR_NAME = "name";
 	public static final String PR_STATES = "states";

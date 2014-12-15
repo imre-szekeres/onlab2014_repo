@@ -28,6 +28,8 @@ import javax.ejb.Stateless;
 @Stateless
 public class DomainService extends AbstractDataService<Domain> {
 
+	private static final long serialVersionUID = -1931804214625340332L;
+
 	public static final String DEFAULT_DOMAIN = "System";
 	public static final String DEFAULT_ROLE = "System Viewer";
 
@@ -50,7 +52,8 @@ public class DomainService extends AbstractDataService<Domain> {
 	 * */
 	public Map<String, String> validate(Domain domain) {
 		Map<String, String> errors = validator.validate( domain );
-		if (selectByName(domain.getName()) != null)
+		Domain other = selectByName(domain.getName());
+		if ((other != null) && !other.getId().equals( domain.getId() ))
 			errors.put("name", "Domain " + domain.getName() + " already exists!");
 		return errors;
 	}

@@ -3,7 +3,9 @@
  */
 package hu.bme.aut.wman.tests;
 
+import hu.bme.aut.wman.integration.IntegrationTestLayer;
 import hu.bme.aut.wman.model.ModelTestLayer;
+import hu.bme.aut.wman.security.SecurityTestLayer;
 import hu.bme.aut.wman.services.ServicesTestLayer;
 import hu.bme.aut.wman.utils.UtilityTestLayer;
 import junit.framework.TestCase;
@@ -21,7 +23,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	UtilityTestLayer.class,
 	ModelTestLayer.class,
-	ServicesTestLayer.class
+	ServicesTestLayer.class,
+	IntegrationTestLayer.class,
+	SecurityTestLayer.class
 })
 public class WorkflowManagerTestLayer extends TestCase {
 

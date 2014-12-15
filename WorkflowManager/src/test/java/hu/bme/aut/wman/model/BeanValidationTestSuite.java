@@ -28,6 +28,9 @@ import org.junit.runners.Parameterized.Parameters;
 public class BeanValidationTestSuite {
 
 	private static final Logger LOGGER = Logger.getLogger( BeanValidationTestSuite.class );
+	public static final String SUBJECT_NAME = "sudoer";
+	public static final String DEFAULT_DESCRIPTION = "This is a subject User for testing the application via the JUnit testing framework. " +
+            							             "His sole purpose is that to succeed in the test ahead.";
 	private List<String> errorAttributes;
 	
 	@SuppressWarnings("rawtypes")
@@ -38,13 +41,20 @@ public class BeanValidationTestSuite {
 		this.errorAttributes = errorAttributes;
 	}
 
+	public final static User newValidUser(String username, String password) {
+		return new User( username, 
+				         password,  
+                         "sudoer@workflowmanager.com",
+                         DEFAULT_DESCRIPTION );
+	}
+
+	public static final User newValidUser() {
+		return newValidUser(SUBJECT_NAME, "sudoer7");
+	}
 
 	@Parameters
 	public static Collection<Object[]> engines() {
-		User validUser = new User( "sudoer", "sudoer7", 
-				                   "sudoer@workflowmanager.com",
-				                   "This is a subject User for testing the application via the JUnit testing framework. " +
-				                   "Hes sole purpose is that to succeed in the test ahead." );
+		User validUser = newValidUser();
 		List<String> nameErrorAttributes = Arrays.asList(new String[] {"name"});
 		@SuppressWarnings("deprecation")
 		Object[][] engines = new Object[][] {

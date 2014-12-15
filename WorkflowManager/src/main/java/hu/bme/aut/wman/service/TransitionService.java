@@ -30,6 +30,8 @@ import com.google.common.collect.Collections2;
 @LocalBean
 public class TransitionService extends AbstractDataService<Transition> {
 
+	private static final long serialVersionUID = 6443637422553071946L;
+
 	@Inject
 	GraphNodeService nodeService;
 	@Inject

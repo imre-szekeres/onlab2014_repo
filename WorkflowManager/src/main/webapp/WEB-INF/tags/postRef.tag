@@ -3,13 +3,12 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 
 <%@ attribute name='href' required='true' %>
-<%@ attribute name='refID' %>
+<%@ attribute name='refID' required='true' %>
 <%@ attribute name='refClasses' %>
 
 <a href='#' id='${ refID }' class='${ refClasses }' onclick='submitChildForm(event)' >
-    <form action='${ href }' method='POST' name='delete-form' >
-        
-        <input type='hidden' name='_method' value='DELETE' >
+    <form action='${ href }' method='POST' name='post-form' >
+
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" >
         <jsp:doBody />
  
@@ -18,7 +17,7 @@
 
 <script>
    function submitChildForm(event) {
-	   event.preventDefault();
-	   $(event.target).parent().parent().find('form[name="delete-form"]').submit();
+       event.preventDefault();
+       $('#' + '${ refID }').find('form[name="post-form"]').submit();
    }
 </script>

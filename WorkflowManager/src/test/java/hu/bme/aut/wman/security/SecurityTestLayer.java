@@ -1,7 +1,7 @@
 /**
- * IntegrationTestLayer.java
+ * SecurityTestLayer.java
  */
-package hu.bme.aut.wman.integration;
+package hu.bme.aut.wman.security;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -13,9 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	RoleManagerTestSuite.class,
-	DomainManagerTestSuite.class,
-	WorkflowServiceTestSuite.class
+	AuthenticationServiceTestSuite.class
 })
-public class IntegrationTestLayer {
+public class SecurityTestLayer {
 }

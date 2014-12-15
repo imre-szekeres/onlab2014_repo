@@ -24,6 +24,8 @@ import javax.ejb.Stateless;
 @Stateless
 public class DomainAssignmentService extends AbstractDataService<DomainAssignment> {
 
+	private static final long serialVersionUID = -7130755663605495578L;
+
 	/**
 	 * Retrieves the <code>DomainAssignment</code>s corresponding to the given <code>Domain</code> specified
 	 * by its name.
@@ -107,6 +109,18 @@ public class DomainAssignmentService extends AbstractDataService<DomainAssignmen
 		List<Map.Entry<String, Object>> parameters = new ArrayList<>(2);
 		parameters.add(new AbstractMap.SimpleEntry<String, Object>("userID", userID));
 		return executeNamedQuery(DomainAssignment.NQ_DELETED_BY_USER_ID, parameters);
+	}
+
+	/**
+	 * Attempts to delete the all <code>DomainAssignment</code>s specified by the identifier of the <code>Domain</code>.
+	 * 
+	 * @param domainID
+	 * @return the rows affected
+	 * */
+	public int deleteByDomainID(Long domainID) {
+		List<Map.Entry<String, Object>> parameters = new ArrayList<>(2);
+		parameters.add(new AbstractMap.SimpleEntry<String, Object>("domainID", domainID));
+		return executeNamedQuery(DomainAssignment.NQ_DELETED_BY_DOMAIN_ID, parameters);
 	}
 
 	/**

@@ -19,6 +19,8 @@ import javax.ejb.Stateless;
 @LocalBean
 public class BlobFileService extends AbstractDataService<BlobFile> {
 
+	private static final long serialVersionUID = 8410646932629348696L;
+
 	public List<BlobFile> selectByFileName(String fileName) {
 		List<Entry<String, Object>> parameterList = new ArrayList<Entry<String, Object>>();
 		parameterList.add(new AbstractMap.SimpleEntry<String, Object>(BlobFile.PR_FILE_NAME, fileName));

@@ -9,8 +9,8 @@
 
 <!DOCTYPE html>
 <c:forEach var='element' items='${ elements }'>
-    
-    <div class='drag-n-drop-row ${ elementRowClass }' id='${ element.value }' name='${ element.value }' owner='${ element.owner }' >
+
+    <div class='drag-n-drop-row ${ elementRowClass }' id='<c:out value="${ element.value }" />' name='<c:out value="${ element.value }" />' owner='${ element.owner }' >
         <div class='drag-n-drop-body ${ elementBodyClass }' draggable='true' ondragstart='onElementDragged(event)' >
             <c:out value='${ element.label }' />
         </div>
