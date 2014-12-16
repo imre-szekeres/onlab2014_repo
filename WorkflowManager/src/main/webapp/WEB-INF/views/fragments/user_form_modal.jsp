@@ -20,7 +20,7 @@
 </c:when>
 <c:otherwise>
     
-    <c:set var='formTitle' value="Update <c:out value='${ user.username }' />" />
+    <c:set var='formTitle' value="Assign Domains and Roles" />
     <c:set var='submitText' value='Update' />
     <c:set var='inputPanelClass' value='update-dnr-input-panel' />
     <c:set var='sourcePanelClass' value='update-dnr-source-panel' />
@@ -185,7 +185,7 @@
                         </div>
 
                         <c:if test='${ formType ne "create" }' >
-                        <span id='remove-domain-icon' data-toggle='tooltip' data-placement='right' title='Deassign ${ user.username } from domain' >
+                        <span id='remove-domain-icon' data-toggle='tooltip' data-placement='right' title='Deassign <c:out value="${ user.username }" /> from domain' >
 	                        <span class='glyphicon glyphicon-remove' onclick='removeDomain(event)' ></span>
 	                    </span>
 	                    </c:if>
@@ -204,7 +204,7 @@
                         <div class='panel-heading'>
                             <span class='glyphicon glyphicon-screenshot' ></span>
                             <strong>
-                                <spring:message code='user.form.roles.label' ></spring:message> <span id='username-placeholder'>${ user.username }</span>
+                                <spring:message code='user.form.roles.label' ></spring:message> <span id='username-placeholder'><c:out value='${ user.username }' /></span>
                             </strong>    
                         </div>
                         
