@@ -3,21 +3,27 @@ package hu.bme.aut.wman.controllers;
 import static java.lang.String.format;
 import hu.bme.aut.wman.exceptions.EntityNotDeletableException;
 import hu.bme.aut.wman.model.ActionType;
+import hu.bme.aut.wman.model.Domain;
 import hu.bme.aut.wman.model.Project;
 import hu.bme.aut.wman.model.State;
+import hu.bme.aut.wman.model.User;
 import hu.bme.aut.wman.model.Workflow;
 import hu.bme.aut.wman.model.graph.GraphNode;
 import hu.bme.aut.wman.model.graph.StateGraph;
+import hu.bme.aut.wman.security.SecurityToken;
 import hu.bme.aut.wman.service.ActionTypeService;
+import hu.bme.aut.wman.service.DomainService;
 import hu.bme.aut.wman.service.GraphNodeService;
 import hu.bme.aut.wman.service.ProjectService;
 import hu.bme.aut.wman.service.StateGraphService;
 import hu.bme.aut.wman.service.StateService;
 import hu.bme.aut.wman.service.TransitionService;
+import hu.bme.aut.wman.service.UserService;
 import hu.bme.aut.wman.service.WorkflowService;
 import hu.bme.aut.wman.view.Messages.Severity;
 import hu.bme.aut.wman.view.objects.NewTransitionVO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +44,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -69,17 +76,29 @@ public class WorkflowViewController extends AbstractController {
 	private TransitionService transitionService;
 	@EJB(mappedName = "java:module/ActionTypeService")
 	private ActionTypeService actionService;
+	@EJB(mappedName="java:module/UserService")
+	private UserService userService;
+	@EJB(mappedName="java:module/DomainService")
+	private DomainService domainService;
 
 	@RequestMapping(value = WORKFLOW, method = RequestMethod.GET)
 	@PreAuthorize("hasRole('View Workflow')")
 	public String workflowView(@RequestParam("id") Long workflowId, Model model, HttpServletRequest request) {
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		List<Domain> domainsWithViewPriv = domainService.domainsOf(user.getId(), Lists.newArrayList("View Workflow"));
 
 		Workflow workflow = workflowService.selectById(workflowId);
 		List<Project> projects = projectService.selectAllByWorkflowName(workflow.getName());
 
 		List<ActionType> actions = actionService.selectAll();
-		Map<Long, String> actionNamesById = Maps.newHashMap();
+		List<ActionType> availableActions = new ArrayList<ActionType>();
 		for (ActionType action : actions) {
+			if (domainsWithViewPriv.contains(action.getDomain())) {
+				availableActions.add(action);
+			}
+		}
+		Map<Long, String> actionNamesById = Maps.newHashMap();
+		for (ActionType action : availableActions) {
 			actionNamesById.put(action.getId(), action.getActionTypeName());
 		}
 

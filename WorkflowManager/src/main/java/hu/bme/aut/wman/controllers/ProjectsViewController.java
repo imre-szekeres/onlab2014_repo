@@ -87,11 +87,19 @@ public class ProjectsViewController extends AbstractController {
 	@PreAuthorize("hasRole('Create Project')")
 	@RequestMapping(value = NEW_PROJECT, method = RequestMethod.GET)
 	public String newWorkflowView(Model model, HttpServletRequest request) {
+		User user = userService.selectById(((SecurityToken) request.getSession().getAttribute("subject")).getUserID());
+		List<Domain> domainsWithViewPriv = domainService.domainsOf(user.getId(), Lists.newArrayList("View Workflow"));
 
 		List<Workflow> workflows = workflowService.selectAll();
+		List<Workflow> availableWorkflows = new ArrayList<Workflow>();
+		for (Workflow workflow : workflows) {
+			if (domainsWithViewPriv.contains(workflow.getDomain())) {
+				availableWorkflows.add(workflow);
+			}
+		}
 
 		Map<Long, String> worfklowNamesById = Maps.newHashMap();
-		for (Workflow workflow : workflows) {
+		for (Workflow workflow : availableWorkflows) {
 			worfklowNamesById.put(workflow.getId(), workflow.getName());
 		}
 
