@@ -18,7 +18,7 @@
 <c:when test="${ isReadonly eq 'true' }" >
 
 	<form:select id='${ selectId }' path="${ path }" class='${ selectClass }' readonly='true' value='${ readonlyValue }' >
-	   <option value="${ readonlyValue }" > ${ readonlyValue } </option>
+	   <option value="${ readonlyValue }" ><c:out value='${ readonlyValue }' /></option>
 	</form:select>
 
 </c:when>
@@ -26,7 +26,7 @@
 
     <form:select id='${ selectId }' path="${ path }" class='${ selectClass }' >
         <c:forEach var='element' items='${ elements }' >
-            <option value="${ element.value }" > ${ element.label } </option>
+            <option value="${ element.value }" ><c:out value='${ element.label }' /></option>
         </c:forEach>
     </form:select>
 

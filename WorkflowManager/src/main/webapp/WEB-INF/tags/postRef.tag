@@ -6,7 +6,7 @@
 <%@ attribute name='refID' required='true' %>
 <%@ attribute name='refClasses' %>
 
-<a href='#' id='${ refID }' class='${ refClasses }' onclick='submitChildForm(event)' >
+<a href='#' id='${ refID }' class='${ refClasses }' onclick='submitPostChildForm(event)' >
     <form action='${ href }' method='POST' name='post-form' >
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" >
@@ -16,7 +16,7 @@
 </a>
 
 <script>
-   function submitChildForm(event) {
+   function submitPostChildForm(event) {
        event.preventDefault();
        $('#' + '${ refID }').find('form[name="post-form"]').submit();
    }

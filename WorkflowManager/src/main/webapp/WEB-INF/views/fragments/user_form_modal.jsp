@@ -20,7 +20,7 @@
 </c:when>
 <c:otherwise>
     
-    <c:set var='formTitle' value="Assign Domains and Roles" />
+    <c:set var='formTitle' value="Assign Domains and Roles to ${ user.username }" />
     <c:set var='submitText' value='Update' />
     <c:set var='inputPanelClass' value='update-dnr-input-panel' />
     <c:set var='sourcePanelClass' value='update-dnr-source-panel' />
@@ -46,7 +46,7 @@
             <button type='button' class='close' data-dismiss='modal'>
                 <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
             </button>
-            <h4 class='modal-title' id='new-user-label' ><span class='glyphicon glyphicon-user' ></span> ${ formTitle }</h4>
+            <h4 class='modal-title' id='new-user-label' ><span class='glyphicon glyphicon-user' ></span> <c:out value='${ formTitle }' /></h4>
         </div>
         
         <div class='modal-body'>

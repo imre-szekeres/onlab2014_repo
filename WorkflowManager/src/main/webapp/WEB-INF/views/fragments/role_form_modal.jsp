@@ -22,7 +22,7 @@
 <c:otherwise>
     
     <c:set var='formID' value="update-role-form" />
-    <c:set var='formTitle' value="Update <c:out value='${ role.roleName }' />" />
+    <c:set var='formTitle' value='Update ${ role.roleName }' />
     <c:set var='submitCallback' value='submitUpdateRoleForm(event)' />
     <c:set var='submitText' value='Update' />
 
@@ -37,7 +37,7 @@
             <button type='button' class='close' data-dismiss='modal'>
                 <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
             </button>
-            <h4 class='modal-title' id='new-role-label' ><span class='glyphicon glyphicon-screenshot' ></span> ${ formTitle }</h4>
+            <h4 class='modal-title' id='new-role-label' ><span class='glyphicon glyphicon-screenshot' ></span> <c:out value='${ formTitle }' /></h4>
         </div>
         
         <div class='modal-body'>
