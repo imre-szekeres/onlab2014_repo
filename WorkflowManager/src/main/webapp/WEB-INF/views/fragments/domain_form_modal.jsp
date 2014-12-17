@@ -21,7 +21,7 @@
 <c:otherwise>
     
     <c:set var='formID' value="new-domain-form" />
-    <c:set var='formTitle' value="Update Domain" />
+    <c:set var='formTitle' value="Update ${ domain.name }" />
     <c:set var='submitCallback' value='submitNewDomainForm(event)' />
     <c:set var='submitText' value='Update' />
 
@@ -36,7 +36,7 @@
         <button type='button' class='close' data-dismiss='modal'>
             <span aria-hidden='true' >&times;</span><span class='sr-only' >Close</span>
         </button>
-        <h4 class='modal-title' id='new-role-label' ><span class='glyphicon glyphicon-tower' ></span> ${ formTitle }</h4>
+        <h4 class='modal-title' id='new-role-label' ><span class='glyphicon glyphicon-tower' ></span> <c:out value='${ formTitle }' /></h4>
     </div>
 
     <div class='modal-body' >

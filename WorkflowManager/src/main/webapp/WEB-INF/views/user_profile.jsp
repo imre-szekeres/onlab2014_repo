@@ -16,18 +16,11 @@
         </span>
         
         <span class='button-part' id='visible-trigger-wrapper' >
-            <c:choose>
-                <c:when test="${ isEditable eq 'true' }" >
-                    <button type='button' id='edit-profile-trigger' class='btn btn-danger' > 
-                        <span id='edit-trigger-icon' class='glyphicon glyphicon-pencil' ></span>  Edit
-                    </button>
-                </c:when>
-                <c:otherwise>
-                    <button type='button' id='edit-profile-trigger' class='btn btn-danger btn' disabled >
-                        <span id='edit-trigger-icon' class='glyphicon glyphicon-pencil' ></span>  Edit
-                    </button>
-                </c:otherwise>
-            </c:choose>
+            <c:if test="${ isEditable eq 'true' }" >
+                <button type='button' id='edit-profile-trigger' class='btn btn-danger' > 
+                    <span id='edit-trigger-icon' class='glyphicon glyphicon-pencil' ></span>  Edit
+                </button>
+            </c:if>
         </span>
         
         <div hidden='true' id='hidden-trigger-wrapper' >
