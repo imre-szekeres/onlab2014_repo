@@ -27,71 +27,71 @@ import javax.validation.constraints.Size;
 	@NamedQuery(name = "Domain.findByName", query = "SELECT d FROM Domain d WHERE d.name = :domainName "),
 	@NamedQuery(name = "Domain.findAllNames", query = "SELECT d.name FROM Domain d "),
 	@NamedQuery(name = "Domain.findByRoleID", query = "SELECT d FROM Domain d, Role r "+
-			"WHERE r.id = :roleID AND r MEMBER OF d.roles "),
-			@NamedQuery(name = "Domain.findByUserID", query = "SELECT DISTINCT d FROM Domain d, DomainAssignment da " +
-					"WHERE d.id = da.domain.id AND da.user.id = :userID"),
-					@NamedQuery(name = "Domain.findNamesByUserID", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da " +
-							"WHERE d.id = da.domain.id AND da.user.id = :userID"),
+			                                           "WHERE r.id = :roleID AND r MEMBER OF d.roles "),
+    @NamedQuery(name = "Domain.findByUserID", query = "SELECT DISTINCT d FROM Domain d, DomainAssignment da " +
+					                                  "WHERE d.id = da.domain.id AND da.user.id = :userID"),
+    @NamedQuery(name = "Domain.findNamesByUserID", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da " +
+							                               "WHERE d.id = da.domain.id AND da.user.id = :userID"),
 
-							@NamedQuery(name = "Domain.findNamesByUserIDAndPrivilege", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da, Privilege p, Role r " +
-									"WHERE d.id = da.domain.id AND da.user.id = :userID " +
-									"AND p.name = :privilegeName " +
-									"AND r MEMBER OF da.userRoles " +
-									"AND p MEMBER OF r.privileges "),
+    @NamedQuery(name = "Domain.findNamesByUserIDAndPrivilege", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da, Privilege p, Role r " +
+																		"WHERE d.id = da.domain.id AND da.user.id = :userID " +
+																			  "AND p.name = :privilegeName " +
+																			  "AND r MEMBER OF da.userRoles " +
+																			  "AND p MEMBER OF r.privileges "),
 
-									@NamedQuery(name = "Domain.findNamesByUsernameAndPrivilege", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da, Privilege p, Role r " +
-											"WHERE d.id = da.domain.id AND da.user.username = :username " +
-											"AND p.name = :privilegeName " +
-											"AND r MEMBER OF da.userRoles " +
-											"AND p MEMBER OF r.privileges " +
-											"AND d.name = :domainName" ),
+    @NamedQuery(name = "Domain.findNamesByUsernameAndPrivilege", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da, Privilege p, Role r " +
+																		 "WHERE d.id = da.domain.id AND da.user.username = :username " +
+																		       "AND p.name = :privilegeName " +
+																		       "AND r MEMBER OF da.userRoles " +
+																		       "AND p MEMBER OF r.privileges " +
+																		       "AND d.name = :domainName" ),
 
-											@NamedQuery(name = "Domain.findNamesByUsernameAndPrivilegeAndID", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da, Privilege p, Role r " +
-													"WHERE d.id = da.domain.id AND da.user.username = :username " +
-													"AND p.name = :privilegeName " +
-													"AND r MEMBER OF da.userRoles " +
-													"AND p MEMBER OF r.privileges " +
-													"AND d.id = :domainID" ),
+    @NamedQuery(name = "Domain.findNamesByUsernameAndPrivilegeAndID", query = "SELECT DISTINCT d.name FROM Domain d, DomainAssignment da, Privilege p, Role r " +
+																			  "WHERE d.id = da.domain.id AND da.user.username = :username " +
+																			        "AND p.name = :privilegeName " +
+																			        "AND r MEMBER OF da.userRoles " +
+																			        "AND p MEMBER OF r.privileges " +
+																			        "AND d.id = :domainID" ),
 
-													@NamedQuery(name = "Domain.findNamesByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d.name FROM Domain d " +
-															"WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
-															"WHERE da.domain.id = d.id AND da.user.id = :userID " +
-															"AND r MEMBER OF da.userRoles " +
-															"AND p MEMBER OF r.privileges " +
-															"AND p.name IN :privilegeNames " +
-															")" ),
-
-															@NamedQuery(name = "Domain.findAllByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d FROM Domain d " +
-																	"WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
-																	"WHERE da.domain.id = d.id AND da.user.id = :userID " +
-																	"AND r MEMBER OF da.userRoles " +
-																	"AND p MEMBER OF r.privileges " +
-																	"AND p.name IN :privilegeNames " +
-																	")" ),
-
-																	@NamedQuery(name = "Domain.findNameByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d.name FROM Domain d " +
+    @NamedQuery(name = "Domain.findNamesByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d.name FROM Domain d " +
 																			"WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
-																			"WHERE da.domain.id = d.id AND da.user.id = :userID " +
-																			"AND r MEMBER OF da.userRoles " +
-																			"AND p MEMBER OF r.privileges " +
-																			"AND p.name IN :privilegeNames " +
+																							 "WHERE da.domain.id = d.id AND da.user.id = :userID " +
+																							       "AND r MEMBER OF da.userRoles " +
+																							       "AND p MEMBER OF r.privileges " +
+																							       "AND p.name IN :privilegeNames " +
+																			")" ),
+
+    @NamedQuery(name = "Domain.findAllByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d FROM Domain d " +
+																		  "WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
+																		                   "WHERE da.domain.id = d.id AND da.user.id = :userID " +
+																							     "AND r MEMBER OF da.userRoles " +
+																							     "AND p MEMBER OF r.privileges " +
+																							     "AND p.name IN :privilegeNames " +
+																		   ")" ),
+
+    @NamedQuery(name = "Domain.findNameByUserIDAndPrivilegeNames", query = "SELECT DISTINCT d.name FROM Domain d " +
+																			"WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
+																							 "WHERE da.domain.id = d.id AND da.user.id = :userID " +
+																							       "AND r MEMBER OF da.userRoles " +
+																							       "AND p MEMBER OF r.privileges " +
+																							       "AND p.name IN :privilegeNames " +
 																			") AND d.name = :domainName "),
 
-																			@NamedQuery(name = "Domain.findNameByUsernameAndPrivilegeNames", query = "SELECT DISTINCT d.name FROM Domain d " +
-																					"WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
-																					"WHERE da.domain.id = d.id AND da.user.username = :username " +
-																					"AND r MEMBER OF da.userRoles " +
-																					"AND p MEMBER OF r.privileges " +
-																					"AND p.name IN :privilegeNames " +
-																					") AND d.name = :domainName "),
+	@NamedQuery(name = "Domain.findNameByUsernameAndPrivilegeNames", query = "SELECT DISTINCT d.name FROM Domain d " +
+																		     "WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
+																					          "WHERE da.domain.id = d.id AND da.user.username = :username " +
+																									"AND r MEMBER OF da.userRoles " +
+																									"AND p MEMBER OF r.privileges " +
+																									"AND p.name IN :privilegeNames " +
+																			 ") AND d.name = :domainName "),
 
-																					@NamedQuery(name = "Domain.findNameByUsernameAndPrivilegeNamesAndID", query = "SELECT DISTINCT d.name FROM Domain d " +
-																							"WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
-																							"WHERE da.domain.id = d.id AND da.user.username = :username " +
-																							"AND r MEMBER OF da.userRoles " +
-																							"AND p MEMBER OF r.privileges " +
-																							"AND p.name IN :privilegeNames " +
-																							") AND d.id = :domainID ")
+    @NamedQuery(name = "Domain.findNameByUsernameAndPrivilegeNamesAndID", query = "SELECT DISTINCT d.name FROM Domain d " +
+																				  "WHERE :count = ( SELECT COUNT(DISTINCT p) FROM Privilege p, DomainAssignment da, Role r " +
+																							       "WHERE da.domain.id = d.id AND da.user.username = :username " +
+																										"AND r MEMBER OF da.userRoles " +
+																										"AND p MEMBER OF r.privileges " +
+																										"AND p.name IN :privilegeNames " +
+																				  ") AND d.id = :domainID ")
 })
 public class Domain extends AbstractEntity {
 
