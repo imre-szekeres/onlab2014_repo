@@ -39,6 +39,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
+ * Handles <code>HttpServletRequest</code>s regarding the management of <code>Role</code> life cycle.
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -69,6 +71,17 @@ public class RolesController extends AbstractController {
 	private UserService userService;
 	
 
+	/**
+	 * Processes the data transferred, and after a successful validation it creates the <code>Role</code> 
+	 * according to the data obtained from the <code>RoleTransferObject</code>, which involves not just the 
+	 * setting the <code>Set</code> of <code>Privilege</code>s it provides.
+	 * 
+	 * @param newRole
+	 * @param model
+	 * @param session
+	 * 
+	 * @return a {@link String} that specifies where to navigate to
+	 * */
 	@PreAuthorize("hasPermission(#newRole.domainName, 'Domain', 'Create Role') and hasPermission(#newRole.domainName, 'Domain', 'Assign Privilege')")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createRole(@ModelAttribute("role") RoleTransferObject newRole, Model model, HttpSession session) {
@@ -120,6 +133,18 @@ public class RolesController extends AbstractController {
 		return message;
 	}
 
+	/**
+	 * Processes the data transferred, and after a successful validation it updates the <code>Role</code> 
+	 * according to the data obtained from the <code>RoleTransferObject</code>, which involves not just the 
+	 * refreshing of its name, but also the <code>Set</code> of <code>Privilege</code>s it provides.
+	 * 
+	 * @param updated
+	 * @param model
+	 * @param request
+	 * @param session
+	 * 
+	 * @return a {@link String} that specifies where to navigate to
+	 * */
 	@PreAuthorize("hasPermission(#updated.id, 'Role', 'Assign Privilege')")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateRole(@ModelAttribute("role") RoleTransferObject updated, Model model, HttpServletRequest request, HttpSession session) {
@@ -173,6 +198,13 @@ public class RolesController extends AbstractController {
 		}
 	}
 
+	/**
+	 * Provides the parameters required by the view to build an HTML form for creating a <code>Role</code>.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return a name that identifies the View
+	 * */
 	@PreAuthorize("hasRole('Assign Privilege') and hasRole('Create Role')")
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model, HttpSession session) {
@@ -182,6 +214,15 @@ public class RolesController extends AbstractController {
 		return "fragments/role_form_modal";
 	}
 
+	/**
+	 * Provides the parameters required by the view to build an HTML form for updating a <code>Role</code>.
+	 * 
+	 * @param roleID
+	 * @param model
+	 * @param session
+	 * 
+	 * @return a name that identifies the View
+	 * */
 	@PreAuthorize("hasPermission(#roleID, 'Role', 'Assign Privilege')")
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
 	public String requestUpdateForm(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {
@@ -212,6 +253,14 @@ public class RolesController extends AbstractController {
 		model.addAttribute("formType", formType);
 	} 
 
+	/**
+	 * Removes the <code>Role</code> specified by its id.
+	 * 
+	 * @param roleID
+	 * @param session
+	 * @param model
+	 * @return a name that identifies the View
+	 * */
 	@PreAuthorize("hasPermission(#roleID, 'Role', 'Create Role')")
 	@RequestMapping(value = DELETE, method = RequestMethod.DELETE)
 	public String deleteRole(@RequestParam(value = "role", defaultValue = "-1") Long roleID, Model model, HttpSession session) {

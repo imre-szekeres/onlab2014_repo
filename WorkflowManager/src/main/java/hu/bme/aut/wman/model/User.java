@@ -25,7 +25,7 @@ import javax.validation.constraints.Size;
 @Table(name = "WM_USER")
 @NamedQueries({
 	@NamedQuery(name = "User.findUsersForProject", query = "SELECT u FROM User u, ProjectAssignment pa WHERE pa.user = u AND pa.project.id = :projectId"),
-	// TODO:
+
 	@NamedQuery(name = "User.findUsersOf", query = "SELECT u FROM User u, Role r, DomainAssignment d "+
 												   "WHERE r.name=:roleName "+
 												       "AND d.user = u "+
@@ -33,6 +33,7 @@ import javax.validation.constraints.Size;
 
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u " +
 											      "WHERE u.username = :username "),
+
     @NamedQuery(name = "User.findUsersInDomainOf", query = "SELECT DISTINCT u FROM User u, DomainAssignment da1, DomainAssignment da2 " +
                                                            "WHERE da1.domain = da2.domain " + 
     		                                                      "AND da1.user = u AND da2.user.id = :userID "),

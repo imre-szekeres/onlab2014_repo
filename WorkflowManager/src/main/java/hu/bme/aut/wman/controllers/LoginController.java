@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
+ * Responsible for handling login and authentication specific aspects.
  *
  * @author Imre Szekeres
  * @version "%I%, %G%"

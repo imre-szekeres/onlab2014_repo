@@ -43,6 +43,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
+ * Handles <code>HttpServletRequest</code>s regarding the management of <code>User</code> life cycle.
+ * 
  * @author Imre Szekeres
  * @version "%I%, %G%"
  */
@@ -120,6 +122,13 @@ public class UsersController extends AbstractController {
 		model.addAttribute("selectDetailsForm", UsersController.UPDATE_DETAILS_FORM);
 	}
 
+	/**
+	 * Provides the parameters required by the view to build an HTML form for creating a <code>User</code>.
+	 * 
+	 * @param model
+	 * @param session
+	 * @return a name that identifies the View
+	 * */
 	@PreAuthorize("hasRole('Create User') and hasRole('Assign User') and hasRole('Assign Role')")
 	@RequestMapping(value = CREATE_FORM, method = RequestMethod.GET)
 	public String requestCreateForm(Model model, HttpSession session) {
@@ -131,6 +140,15 @@ public class UsersController extends AbstractController {
 		return "fragments/user_form_modal";
 	}
 
+	/**
+	 * Provides the parameters required by the view to build an HTML form for updating the <code>DomainAssignment</code>s 
+	 * and <code>Role</code>s associated with a given <code>User</code>.
+	 * 
+	 * @param userID
+	 * @param model
+	 * @param session
+	 * @return a name that identifies the View
+	 * */
 	@PreAuthorize("hasPermission(#userID, 'User', 'Assign User') and hasPermission(#userID, 'User', 'Assign Role')")
 	@RequestMapping(value = UPDATE_FORM, method = RequestMethod.GET)
 	public String requestUpdateForm(@RequestParam(value = "user", defaultValue = "-1") Long userID, Model model, HttpSession session) {
@@ -180,6 +198,14 @@ public class UsersController extends AbstractController {
 		return null;
 	}
 
+	/**
+	 * Removes the <code>User</code> specified by its id.
+	 * 
+	 * @param userID
+	 * @param session
+	 * @param model
+	 * @return a name that identifies the View
+	 * */
 	@PreAuthorize("hasPermission(#userID, 'User', 'Create User')")
 	@RequestMapping(value = DELETE, method = RequestMethod.DELETE)
 	public String deleteUser(@RequestParam("user") Long userID, HttpSession session, Model model) {		
@@ -226,6 +252,17 @@ public class UsersController extends AbstractController {
 		return null;
 	}
 
+	/**
+	 * Responsible for conducting the creation of a <code>User</code> from the values transfered, 
+	 * which includes the validation and assignment process.
+	 * 
+	 * @param newUser
+	 * @param model
+	 * @param request
+	 * @param session
+	 * 
+	 * @return a {@link String} identifying the View
+	 * */
 	@PreAuthorize("hasRole('Create User') and hasRole('Assign User') and hasRole('Assign Role')")
 	@RequestMapping(value = CREATE, method = RequestMethod.POST)
 	public String createUser(@ModelAttribute("user") UserTransferObject newUser, Model model, HttpServletRequest request, HttpSession session) {
@@ -237,7 +274,7 @@ public class UsersController extends AbstractController {
 			
 			user = userManager.create( user );
 			User subject = userService.selectById(subjectID);
-			/* filters those assignments out in which the current user has no privilege to Assign User or to Assign Role */
+			/** filters those assignments out in which the current user has no privilege to Assign User or to Assign Role */
 			Map<String, List<String>> assignments = filter(tryParseAssignments(newUser.getUserRoles(), parser));
 			
 			if (assignments != null) {
@@ -268,18 +305,28 @@ public class UsersController extends AbstractController {
 		return AbstractController.FRAME;
 	}
 
+	/**
+	 * Updates the <code>DomainAssignment</code>s and <code>Role</code>s associated with a <code>User</code>.
+	 * 
+	 * @param updated
+	 * @param model
+	 * @param request
+	 * @param session
+	 * 
+	 * @return a {@link String} identifying the View
+	 * */
 	@PreAuthorize("hasPermission(#updated.id, 'User', 'Assign User') and hasPermission(#updated.id, 'User', 'Assign Role')")
 	@RequestMapping(value = UPDATE, method = RequestMethod.POST)
 	public String updateUser(@ModelAttribute("user") UserTransferObject updated, Model model, HttpServletRequest request, HttpSession session) {
 		User user = userService.selectById( updated.getId() );
 		Long subjectID = userIDOf(session);
 		User subject = userService.selectById(subjectID);
-		/* only consider those that can be manipulated by the current user */
+		/** only consider those that can be manipulated by the current user */
 		Map<String, List<String>> assignments = filter(tryParseAssignments(updated.getUserRoles(), parser));
 		
 		if (assignments != null) {
 
-			/* only remove those that can be removed by the current user */
+			/** only remove those that can be removed by the current user */
 			Map<String, Long> removables = filterRemovables( daService.selectDomainsAndIds(user.getId()) );
 			
 			for(String domainName : assignments.keySet()) {
@@ -325,8 +372,11 @@ public class UsersController extends AbstractController {
 	}
 
 	/**
+	 * Filters the <code>Map</code> of assignments according to the authorities owned by the executing 
+	 * <code>User</code>.
 	 * 
-	 * 
+	 * @param assignments
+	 * @return the filtered {@link Map}
 	 * */
 	private final Map<String, List<String>> filter(Map<String, List<String>> assignments) {
 		Map<String, List<String>> results = new HashMap<>();
@@ -336,8 +386,11 @@ public class UsersController extends AbstractController {
 	}
 
 	/**
+	 * Filters the <code>Map</code> of assignments according to the authorities owned by the executing 
+	 * <code>User</code>.
 	 * 
-	 * 
+	 * @param removables
+	 * @return the filtered {@link Map}
 	 * */
 	private final Map<String, Long> filterRemovables(Map<String, Long> removables) {
 		Map<String, Long> results = new HashMap<>();
@@ -346,6 +399,13 @@ public class UsersController extends AbstractController {
 		return results;
 	}
 
+	/**
+	 * Filters the given <code>Collection</code> according to the <code>Privilege</code>s owned by the 
+	 * executing <code>User</code>.
+	 * 
+	 * @param collection
+	 * @return the filtered {@link Collection}
+	 * */
 	@PostFilter("hasPermission(filterObject, 'Domain', 'Assign User') and hasPermission(filterObject, 'Domain', 'Assign Role')")
 	private final Collection<? extends String> filterByPrivilege(Collection<? extends String> collection) {
 		return collection;
@@ -394,25 +454,61 @@ public class UsersController extends AbstractController {
 		flash(message, Severity.INFO, model);
 	}
 
+	/**
+	 * Retrieves the <code>DomainAssignment</code>s corresponding to the <code>User</code> specified by its id, 
+	 * and returns them to be displayed as a <code>List</code> of <code>Role</code>s.
+	 * 
+	 * @param userID
+	 * @param model
+	 * 
+	 * @return a {@link String} identifying the correspoding View
+	 * */
 	@RequestMapping(value = DOMAINS, method = RequestMethod.GET)
-	public String listDomains(@RequestParam(value = "userID", defaultValue = "-1") long userID, Model model) {
+	public String listDomains(@RequestParam(value = "userID", defaultValue = "-1") Long userID, Model model) {
 		model.addAttribute("assignments", daService.selectByUserID(userID));
 		return "fragments/user_role_list";
 	}
 
+	/**
+	 * Retrieves the <code>DomainAssignment</code>s corresponding to the <code>User</code> specified by its id, 
+	 * and returns them to be displayed as tabular data.
+	 * 
+	 * @param userID
+	 * @param model
+	 * 
+	 * @return a {@link String} identifying the corresponding View
+	 * */
 	@RequestMapping(value = DOMAINS_AND_ROLES, method = RequestMethod.GET)
-	public String requestDomainsAndRoles(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
+	public String requestDomainsAndRoles(@RequestParam(value = "user", defaultValue = "-1") Long userID, Model model) {
 		model.addAttribute("assignments", daService.selectByUserID(userID));
 		return "fragments/domains_n_roles_table";
 	}
-	
+
+	/**
+	 * Provides the parameters required by the view to build an HTML form for updating the detailed information or the password  
+	 * associated with a given <code>User</code>.
+	 * 
+	 * @param userID
+	 * @param model
+	 * 
+	 * @return a {@link String} that identifies the View
+	 * */
 	@RequestMapping(value = UPDATE_DETAILS_FORM, method = RequestMethod.GET)
-	public String requestDetailsForm(@RequestParam(value = "user", defaultValue = "-1") long userID, Model model) {
+	public String requestDetailsForm(@RequestParam(value = "user", defaultValue = "-1") Long userID, Model model) {
 		User user = userService.selectById(userID);
 		setUpdateDetailsAttributes(new UserTransferObject( user ), model);
 		return "fragments/user_details_form";
 	}
 
+	/**
+	 * Updates the detailed information of a <code>User</code>
+	 * 
+	 * @param updated
+	 * @param model
+	 * @param session
+	 * 
+	 * @return a {@link String} that identifies the View
+	 * */
 	@RequestMapping(value = UPDATE_DETAILS, method = RequestMethod.POST)
 	public String updateDetails(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User old = userService.selectById( updated.getId() );
@@ -423,7 +519,7 @@ public class UsersController extends AbstractController {
 			old.setUsername( updated.getUsername() );
 			old.setEmail( updated.getEmail() );
 			old.setDescription( updated.getDescription() );
-			userService.save( old ); /* to preserve the collections in User */
+			userService.save( old ); /** to preserve the collections in User */
 
 			String message = "User " + old.getUsername() + " was updated";
 			LOGGER.info(message);
@@ -436,6 +532,15 @@ public class UsersController extends AbstractController {
 		return navigateToFrame("user_profile", model);
 	}
 
+	/**
+	 * Updates the password of a <code>User</code>
+	 * 
+	 * @param updated
+	 * @param model
+	 * @param session
+	 * 
+	 * @return a {@link String} that identifies the View
+	 * */
 	@RequestMapping(value = UPDATE_PASSWORD, method = RequestMethod.POST) 
 	public String updatePassword(@ModelAttribute("updated") UserTransferObject updated, Model model, HttpSession session) {
 		User user = userService.selectById( updated.getId() );

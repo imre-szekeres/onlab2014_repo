@@ -27,8 +27,6 @@ public class WebAppStartupListener
 implements ApplicationListener<ContextRefreshedEvent>{
 
 	private static final Logger LOGGER = Logger.getLogger(WebAppStartupListener.class);
-	//	public static final String XML_DB_CONFIG = "./WEB-INF/classes/configs/wman-db-init.xml";
-	//	public static final String LOG4J_PROPERTIES = "./WEB-INF/classes/log4j.properties";
 	public static final String XML_DB_CONFIG = ResourceLoader.class.getResource("/configs/wman-db-init.xml").getPath();
 	public static final String LOG4J_PROPERTIES = ResourceLoader.class.getResource("/log4j.properties").getPath();
 

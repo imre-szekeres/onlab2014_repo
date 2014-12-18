@@ -23,42 +23,42 @@ import javax.validation.constraints.Size;
 	@NamedQuery(name = "Role.findByActionType", query = "SELECT r FROM Role r WHERE :actionType MEMBER OF r.actionTypes"),
 
 	@NamedQuery(name = "Role.findByAssignment", query = "SELECT r FROM Role r, DomainAssignment d "+
-			"WHERE d.domain.name = :domainName "+
-			"AND d.user.id = :userID "+
-			"AND r MEMBER OF d.userRoles "),
+														"WHERE d.domain.name = :domainName "+
+															  "AND d.user.id = :userID "+
+															  "AND r MEMBER OF d.userRoles "),
 
-			@NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
-					"WHERE d.name = :domainName "+
-					"AND r MEMBER OF d.roles"),
+    @NamedQuery(name = "Role.findByDomain", query = "SELECT r FROM Role r, Domain d "+
+							                        "WHERE d.name = :domainName "+
+					                                      "AND r MEMBER OF d.roles"),
 
-					@NamedQuery(name = "Role.findNamesByDomain", query = "SELECT r.name FROM Role r, Domain d "+
-							"WHERE d.name = :domainName "+
-							"AND r MEMBER OF d.roles"),
+    @NamedQuery(name = "Role.findNamesByDomain", query = "SELECT r.name FROM Role r, Domain d "+
+							                             "WHERE d.name = :domainName "+
+							                                   "AND r MEMBER OF d.roles"),
 
-							@NamedQuery(name = "Role.findByDomainAndName", query = "SELECT r FROM Role r, Domain d "+
-									"WHERE d.name = :domainName "+
-									"AND r.name = :roleName " +
-									"AND r MEMBER OF d.roles "),
+    @NamedQuery(name = "Role.findByDomainAndName", query = "SELECT r FROM Role r, Domain d "+
+															"WHERE d.name = :domainName "+
+															      "AND r.name = :roleName " +
+															      "AND r MEMBER OF d.roles "),
 
-									@NamedQuery(name = "Role.findCountByPrivileges", query = "SELECT COUNT(DISTINCT r) FROM Role r, Domain d, DomainAssignment da " +
-											"WHERE r MEMBER OF d.roles " +
-											"AND r.id = :roleID " +
-											"AND da.user.username = :username " +
-											"AND da.domain = d " +
-											"AND :count = ( SELECT COUNT(DISTINCT p) FROM Role r1, Privilege p " +
-											"WHERE r1 MEMBER OF da.userRoles " +
-											"AND p MEMBER OF r1.privileges " +
-											"AND p.name IN :privilegeNames " +
-											")"),
+    @NamedQuery(name = "Role.findCountByPrivileges", query = "SELECT COUNT(DISTINCT r) FROM Role r, Domain d, DomainAssignment da " +
+															 "WHERE r MEMBER OF d.roles " +
+															       "AND r.id = :roleID " +
+															       "AND da.user.username = :username " +
+															       "AND da.domain = d " +
+															       "AND :count = ( SELECT COUNT(DISTINCT p) FROM Role r1, Privilege p " +
+																				   "WHERE r1 MEMBER OF da.userRoles " +
+																				         "AND p MEMBER OF r1.privileges " +
+																					     "AND p.name IN :privilegeNames " +
+															")"),
 
-											@NamedQuery(name = "Role.findCountByPrivilege", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " +
-													"WHERE r MEMBER OF d.roles " +
-													"AND r.id = :roleID " +
-													"AND da.user.username = :username " +
-													"AND da.domain = d " +
-													"AND p MEMBER OF r2.privileges " +
-													"AND p.name = :privilegeName " +
-													"AND r2 MEMBER OF da.userRoles ")
+    @NamedQuery(name = "Role.findCountByPrivilege", query = "SELECT COUNT(DISTINCT r2) FROM Role r, Role r2, Domain d, DomainAssignment da, Privilege p " +
+															"WHERE r MEMBER OF d.roles " +
+																 "AND r.id = :roleID " +
+																 "AND da.user.username = :username " +
+																 "AND da.domain = d " +
+																 "AND p MEMBER OF r2.privileges " +
+																 "AND p.name = :privilegeName " +
+																 "AND r2 MEMBER OF da.userRoles ")
 })
 public class Role extends AbstractEntity {
 
